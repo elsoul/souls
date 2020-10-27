@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "souls"
+
+puts "Welcome to Souls!"
