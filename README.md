@@ -30,9 +30,13 @@ SOULS is a Web Application Framework for Microservices on Google Cloud Platform.
    [https://www.docker.com/](https://www.docker.com/)
 
 Using:
-Google Kubernates Engine
-Google Traffic Director
-Google Cloud Run
+
+☆Google Kubernates Engine
+
+☆Google Traffic Director
+
+☆Google Cloud Run
+
 
 SOULS creates 3 types of framework.
 
