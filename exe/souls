@@ -4,23 +4,27 @@ require "souls"
 def download_souls_service
   version = "v0.0.1"
   app_name = ARGV[1]
-  system "wget https://storage.googleapis.com/souls/service/souls_service_#{version}.tar.gz"
+  system "curl -O https://storage.googleapis.com/souls/service/souls_service_#{version}.tar.gz"
   system "tar -zxvf souls_service_#{version}.tar.gz"
   system "mkdir #{app_name}"
   system "cp -r souls_service_#{version}/* #{app_name}/"
   system "rm -rf souls_service_#{version}.tar.gz && rm -rf souls_service_#{version}"
   puts "Welcome to Souls gRPC Service!"
+  puts "Go to `./#{app_name}` and"
+  puts "`souls s` !"
 end
 
 def download_souls_api
   version = "v0.0.1"
   app_name = ARGV[1]
-  system "wget https://storage.googleapis.com/souls/api/souls_api_#{version}.tar.gz"
+  system "curl -O https://storage.googleapis.com/souls/api/souls_api_#{version}.tar.gz"
   system "tar -zxvf souls_api_#{version}.tar.gz"
   system "mkdir #{app_name}"
   system "cp -r souls_api_#{version}/* #{app_name}/"
   system "rm -rf souls_api_#{version}.tar.gz && rm -rf souls_api_#{version}"
   puts "Welcome to Souls GraphQL API!"
+  puts "Go to `./#{app_name}` and"
+  puts "`rails grpc:test` !"
 end
 
 case ARGV[0]
