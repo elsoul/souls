@@ -4,6 +4,31 @@ Welcome to SOULS Framework!
 
 SOULS is a Web Application Framework for Microservices on Google Cloud Platform.
 
+<p align="center">
+
+  <a aria-label="Ruby logo" href="https://el-soul.com">
+    <img src="https://badgen.net/badge/icon/Made%20by%20ELSOUL?icon=ruby&label&color=black&labelColor=black">
+  </a>
+  <br/>
+
+  <a aria-label="Ruby Gem version" href="https://rubygems.org/gems/souls">
+    <img alt="" src="https://badgen.net/rubygems/v/souls/latest">
+  </a>
+  <a aria-label="Downloads Number" href="https://rubygems.org/gems/souls">
+    <img alt="" src="https://badgen.net/rubygems/dt/souls">
+  </a>
+  <a aria-label="License" href="https://github.com/elsoul/souls/blob/master/LICENSE">
+    <img alt="" src="https://badgen.net/badge/license/Apache/blue">
+  </a>
+</p>
+
+## Dependency
+
+1. Google SDK
+   [https://cloud.google.com/sdk/docs](https://cloud.google.com/sdk/docs)
+2. Docker
+   [https://www.docker.com/](https://www.docker.com/)
+
 Using:
 Google Kubernates Engine
 Google Traffic Director
