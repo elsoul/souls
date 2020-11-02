@@ -15,7 +15,7 @@ def download_souls_service
 end
 
 def download_souls_api
-  version = "v0.0.1"
+  version = "v0.0.2"
   app_name = ARGV[1]
   system "curl -O https://storage.googleapis.com/souls/api/souls_api_#{version}.tar.gz"
   system "tar -zxvf souls_api_#{version}.tar.gz"
