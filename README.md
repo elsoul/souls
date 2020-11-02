@@ -1,8 +1,14 @@
 # Souls
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/souls`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to SOULS Framework!
 
-TODO: Delete this and the text above, and describe your gem
+SOULS is a Web Application Framework for Microservices on Google Cloud Platform.
+
+SOULS creates 3 types of framework.
+
+1. Service - gRPC Serverless Scalable Service
+2. API - GraphQL to call gRPC 
+3. Client - TypeScript Framework
 
 ## Installation
 
@@ -22,7 +28,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Create Your APP
+
+    $ souls new app_name
+
+### Choose SOULS Type:
+1. Serivice
+2. API
+3. Client
+
+### Run Local
+1. Serivice
+    $ souls s
+
+2. API
+    $ rails s
+
+3. Client
+    $ yarn dev
 
 ## Development
 
@@ -32,5 +55,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/souls.
+Bug reports and pull requests are welcome on GitHub at https://github.com/elsoul/souls.
 

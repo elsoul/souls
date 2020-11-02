@@ -1,26 +1,26 @@
 #!/usr/bin/env ruby
 require "souls"
 
-def download_souls_server
+def download_souls_service
   version = "v0.0.1"
   app_name = ARGV[1]
-  system "wget https://storage.googleapis.com/souls/souls-#{version}.tar.gz"
-  system "tar -zxvf souls-#{version}.tar.gz"
+  system "wget https://storage.googleapis.com/souls/service/souls_service_#{version}.tar.gz"
+  system "tar -zxvf souls_service_#{version}.tar.gz"
   system "mkdir #{app_name}"
-  system "cp -r souls-#{version}/* #{app_name}/"
-  system "rm -rf souls-#{version}.tar.gz && rm -rf souls-#{version}"
-  puts "Welcome to Souls Server!"
+  system "cp -r souls_service_#{version}/* #{app_name}/"
+  system "rm -rf souls_service_#{version}.tar.gz && rm -rf souls_service_#{version}"
+  puts "Welcome to Souls gRPC Service!"
 end
 
-def download_souls_client
+def download_souls_api
   version = "v0.0.1"
   app_name = ARGV[1]
-  system "wget https://storage.googleapis.com/souls/souls-#{version}.tar.gz"
-  system "tar -zxvf souls-#{version}.tar.gz"
+  system "wget https://storage.googleapis.com/souls/api/souls_api_#{version}.tar.gz"
+  system "tar -zxvf souls_api_#{version}.tar.gz"
   system "mkdir #{app_name}"
-  system "cp -r souls-#{version}/* #{app_name}/"
-  system "rm -rf souls-#{version}.tar.gz && rm -rf souls-#{version}"
-  puts "Welcome to Souls Client!"
+  system "cp -r souls_api_#{version}/* #{app_name}/"
+  system "rm -rf souls_api_#{version}.tar.gz && rm -rf souls_api_#{version}"
+  puts "Welcome to Souls GraphQL API!"
 end
 
 case ARGV[0]
@@ -29,13 +29,13 @@ when "new"
     puts "you need to specify your app name \n `souls new app_name`"
     exit
   end
-  puts "Which framewerk:   \n 1. Server \n 2. Client \n Enter Number: "
+  puts "Which framework:   \n 1. Server \n 2. Client \n Enter Number: "
   fw = STDIN.gets.chomp.to_i
   case fw
   when 1
-    download_souls_server
+    download_souls_service
   else
-    download_souls_client
+    download_souls_api
   end
 when "s" || "server"
   system "bundle exec rake run_server"
