@@ -1,4 +1,46 @@
 #!/usr/bin/env ruby
 require "souls"
 
-puts "Welcome to Souls!"
+def download_souls_server
+  version = "v0.0.1"
+  app_name = ARGV[1]
+  system "wget https://storage.googleapis.com/souls/souls-#{version}.tar.gz"
+  system "tar -zxvf souls-#{version}.tar.gz"
+  system "mkdir #{app_name}"
+  system "cp -r souls-#{version}/* #{app_name}/"
+  system "rm -rf souls-#{version}.tar.gz && rm -rf souls-#{version}"
+  puts "Welcome to Souls Server!"
+end
+
+def download_souls_client
+  version = "v0.0.1"
+  app_name = ARGV[1]
+  system "wget https://storage.googleapis.com/souls/souls-#{version}.tar.gz"
+  system "tar -zxvf souls-#{version}.tar.gz"
+  system "mkdir #{app_name}"
+  system "cp -r souls-#{version}/* #{app_name}/"
+  system "rm -rf souls-#{version}.tar.gz && rm -rf souls-#{version}"
+  puts "Welcome to Souls Client!"
+end
+
+case ARGV[0]
+when "new"
+  if ARGV[1].nil?
+    puts "you need to specify your app name \n `souls new app_name`"
+    exit
+  end
+  puts "Which framewerk:   \n 1. Server \n 2. Client \n Enter Number: "
+  fw = STDIN.gets.chomp.to_i
+  case fw
+  when 1
+    download_souls_server
+  else
+    download_souls_client
+  end
+when "s" || "server"
+  system "bundle exec rake run_server"
+when "c" || "console"
+  system "bundle exec irb"
+else
+  puts "Welcome to Souls!Yeah!"
+end
