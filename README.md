@@ -1,8 +1,13 @@
-# Souls
+# SOULS
 
 Welcome to SOULS Framework!
 
 SOULS is a Web Application Framework for Microservices on Google Cloud Platform.
+
+Using:
+Google Kubernates Engine
+Google Traffic Director
+Google Cloud Run
 
 SOULS creates 3 types of framework.
 
@@ -38,13 +43,16 @@ Or install it yourself as:
 3. Client
 
 ### Run Local
-1. Serivice
+1.Service
+
     $ souls s
 
-2. API
+2.API
+
     $ rails s
 
-3. Client
+3.Client
+
     $ yarn dev
 
 ## Development
