@@ -29,13 +29,15 @@ when "new"
     puts "you need to specify your app name \n `souls new app_name`"
     exit
   end
-  puts "Which framework:   \n 1. Server \n 2. Client \n Enter Number: "
+  puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS NEXT JS Client \n Enter Number: "
   fw = STDIN.gets.chomp.to_i
   case fw
   when 1
     download_souls_service
-  else
+  when 2
     download_souls_api
+  else
+    puts "Coming Soon ..."
   end
 when "s" || "server"
   system "bundle exec rake run_server"
