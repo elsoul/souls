@@ -27,26 +27,31 @@ def download_souls_api
   puts "`rails grpc:test` !"
 end
 
-case ARGV[0]
-when "new"
-  if ARGV[1].nil?
-    puts "you need to specify your app name \n `souls new app_name`"
-    exit
-  end
-  puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS NEXT JS Client \n Enter Number: "
-  fw = STDIN.gets.chomp.to_i
-  case fw
-  when 1
-    download_souls_service
-  when 2
-    download_souls_api
+begin
+  case ARGV[0]
+  when "new"
+    if ARGV[1].nil?
+      puts "you need to specify your app name \n `souls new app_name`"
+      exit
+    end
+    puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS NEXT JS Client \n Enter Number: "
+    fw = STDIN.gets.chomp.to_i
+    case fw
+    when 1
+      download_souls_service
+    when 2
+      download_souls_api
+    else
+      puts "Coming Soon ..."
+    end
+  when "s" || "server"
+    system "bundle exec rake run_server"
+  when "c" || "console"
+    system "bundle exec irb"
   else
-    puts "Coming Soon ..."
+    puts "Welcome to Souls!Yeah!"
   end
-when "s" || "server"
-  system "bundle exec rake run_server"
-when "c" || "console"
-  system "bundle exec irb"
-else
-  puts "Welcome to Souls!Yeah!"
+rescue StandardError => error
+  puts error
+  puts "Thank you!Souls!"
 end
