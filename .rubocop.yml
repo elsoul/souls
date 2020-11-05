@@ -189,3 +189,5 @@ Layout/MultilineAssignmentLayout:
   Enabled: false
 Style/Send:
   Enabled: false
+Style/RedundantFileExtensionInRequire:
+  Enabled: false

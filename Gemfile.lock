@@ -1,12 +1,27 @@
 PATH
   remote: .
   specs:
-    souls (0.2.4)
+    souls (0.2.5)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (6.0.3.4)
+      activesupport (= 6.0.3.4)
+    activerecord (6.0.3.4)
+      activemodel (= 6.0.3.4)
+      activesupport (= 6.0.3.4)
+    activesupport (6.0.3.4)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
+    concurrent-ruby (1.1.7)
     diff-lcs (1.4.4)
+    i18n (1.8.5)
+      concurrent-ruby (~> 1.0)
+    minitest (5.14.2)
     rake (12.3.3)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -21,11 +36,16 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.3)
+    thread_safe (0.3.6)
+    tzinfo (1.2.7)
+      thread_safe (~> 0.1)
+    zeitwerk (2.4.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord
   rake (~> 12.0)
   rspec (~> 3.0)
   souls!
