@@ -48,6 +48,8 @@ begin
     system "bundle exec rake run_server"
   when "c" || "console"
     system "bundle exec irb"
+  when "i" || "infra"
+    Souls::Infra.#{ARGV[2]}
   else
     puts "Welcome to Souls!Yeah!"
   end
