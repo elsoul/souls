@@ -1,8 +1,12 @@
+require "mechanize"
+
 module Souls
   module Init
     class << self
       def create_souls mode: 1, app_name: "souls"
+        modes = ["service", "api", "media", "admin"]
         project = {}
+        project[:souls_mode] = modes[mode - 1]
         begin
           puts "Google Cloud PROJECT_ID:      (default: elsoul2)"
           project[:project_id] = STDIN.gets.chomp
@@ -26,24 +30,16 @@ module Souls
           puts "Enter to finish set up!"
           confirm = STDIN.gets.chomp
           raise StandardError, "Retry" unless confirm == ""
-          project[:souls_mode] =  case mode
-                                  when 1
-                                    download_souls_service app_name: app_name
-                                    irbrc_init app_name: app_name
-                                    "Service"
-                                  when 2
-                                    download_souls_api app_name: app_name
-                                    "API"
-                                  when "Media"
-                                    download_souls_media app_name: app_name
-                                    "Media"
-                                  else
-                                    download_souls_admin app_name: app_name
-                                    "Admin"
-                                  end
-        rescue
+          download_souls app_name: app_name, repository_name: "souls_#{modes[mode - 1]}"
+          config_init app_name: app_name, project: project if (1..2).include?(mode)
+        rescue StandardError => error
+          puts error
           retry
         end
+        puts "Souls All Set!!"
+      end
+
+      def config_init app_name: "souls", project: {}
         file_path = "#{app_name}/config/initialize.rb"
         File.open(file_path, "a") do |f|
           f.write <<~EOS
@@ -59,76 +55,27 @@ module Souls
             end
           EOS
         end
-        puts "config at #{app_name}/config/initializer.rb"
-        puts "Souls All Set!!"
       end
 
-      def irbrc_init app_name: "souls"
-        file_path = "#{app_name}/.irbrc"
-        File.open(file_path, "a") do |f|
-          f.write <<~EOS
-            require "yaml"
-            require "erb"
-            require "active_record"
-            require "logger"
-
-            $LOAD_PATH << "#{Dir.pwd}/app/services"
-
-            Dir[File.expand_path "app/*.rb"].each do |file|
-              require file
-            end
-
-            db_conf = YAML.safe_load(ERB.new(File.read("./config/database.yml")).result)
-            ActiveRecord::Base.establish_connection(db_conf)
-            Dir[File.expand_path "./app/controllers/*.rb"].sort.each do |file|
-              require file
-            end
-          EOS
-        end
+      def get_version repository_name: "souls_service"
+        agent = Mechanize.new
+        page = agent.get("https://github.com/elsoul/#{repository_name}/releases")
+        page.search("span.css-truncate-target")[0].to_s.scan(/^*+>(.+)</)[0][0].to_s
       end
 
-      def download_souls_service app_name: "souls"
-        version = "v0.0.1"
-        system "curl -OL https://github.com/elsoul/souls_service/archive/#{version}.tar.gz"
+      def download_souls app_name: "souls", repository_name: "souls_service"
+        version = get_version repository_name: repository_name
+        system "curl -OL https://github.com/elsoul/#{repository_name}/archive/#{version}.tar.gz"
         system "tar -zxvf ./#{version}.tar.gz"
         system "mkdir #{app_name}"
         folder = version.delete "v"
-        system "cp -r souls_service-#{folder}/* #{app_name}/"
-        system "rm -rf #{version}.tar.gz && rm -rf souls_service-#{folder}"
-        puts "Welcome to Souls gRPC Service!"
-      end
-
-      def download_souls_api app_name: "souls"
-        version = "v0.0.1"
-        system "curl -OL https://github.com/elsoul/souls_api/archive/#{version}.tar.gz"
-        system "tar -zxvf #{version}.tar.gz"
-        system "mkdir #{app_name}"
-        folder = version.delete "v"
-        system "cp -r souls_api-#{folder}/* #{app_name}/"
-        system "rm -rf #{version}.tar.gz && rm -rf souls_api-#{folder}"
-        puts "Welcome to Souls GraphQL API!"
-      end
-
-      def download_souls_media app_name: "souls"
-        version = "v0.0.1"
-        system "curl -OL https://github.com/elsoul/souls_media/archive/#{version}.tar.gz"
-        system "tar -zxvf #{version}.tar.gz"
-        system "mkdir #{app_name}"
-        folder = version.delete "v"
-        system "cp -r souls_media-#{folder}/* #{app_name}/"
-        system "rm -rf #{version}.tar.gz && rm -rf souls_media-#{folder}"
-        puts "Welcome to Souls Media Web!"
-      end
-
-      def download_souls_admin app_name: "souls"
-        version = "v0.0.1"
-        system "curl -OL https://github.com/elsoul/souls_admin/archive/#{version}.tar.gz"
-        system "tar -zxvf #{version}.tar.gz"
-        system "mkdir #{app_name}"
-        folder = version.delete "v"
-        system "cp -r souls_admin-#{folder}/* #{app_name}/"
-        system "rm -rf #{version}.tar.gz && rm -rf souls_admin-#{folder}"
-        puts "Welcome to Souls Admin Web!"
+        system "cp -r #{repository_name}-#{folder}/* #{app_name}/"
+        system "rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}"
+        puts "==="
+        puts "Welcome to Souls!"
+        puts "==="
+        puts "$ cd #{app_name}"
+        puts "---"
       end
 
     end

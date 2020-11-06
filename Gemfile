@@ -4,6 +4,6 @@ source "https://rubygems.org"
 gemspec
 
 gem "activerecord", require: "active_record"
-gem "activesupport", require: "active_support"
+gem "mechanize", "2.7.6"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"

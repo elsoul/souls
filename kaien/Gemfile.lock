@@ -1,0 +1,67 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (6.0.3.4)
+      activesupport (= 6.0.3.4)
+    activerecord (6.0.3.4)
+      activemodel (= 6.0.3.4)
+      activesupport (= 6.0.3.4)
+    activesupport (6.0.3.4)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
+    ast (2.4.1)
+    concurrent-ruby (1.1.7)
+    google-protobuf (3.13.0)
+    googleapis-common-protos-types (1.0.5)
+      google-protobuf (~> 3.11)
+    grpc (1.31.1)
+      google-protobuf (~> 3.12)
+      googleapis-common-protos-types (~> 1.0)
+    grpc-tools (1.31.1)
+    i18n (1.8.5)
+      concurrent-ruby (~> 1.0)
+    minitest (5.14.2)
+    parallel (1.19.2)
+    parser (2.7.2.0)
+      ast (~> 2.4.1)
+    pg (1.2.3)
+    rails-gke (0.6.5)
+    rainbow (3.0.0)
+    rake (13.0.1)
+    regexp_parser (1.8.2)
+    rexml (3.2.4)
+    rubocop (1.1.0)
+      parallel (~> 1.10)
+      parser (>= 2.7.1.5)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8)
+      rexml
+      rubocop-ast (>= 1.0.1)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 2.0)
+    rubocop-ast (1.1.0)
+      parser (>= 2.7.1.5)
+    ruby-progressbar (1.10.1)
+    thread_safe (0.3.6)
+    tzinfo (1.2.7)
+      thread_safe (~> 0.1)
+    unicode-display_width (1.7.0)
+    zeitwerk (2.4.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activerecord
+  grpc (= 1.31.1)
+  grpc-tools (= 1.31.1)
+  pg (>= 0.18, < 2.0)
+  rails-gke (= 0.6.5)
+  rake (= 13.0.1)
+  rubocop (= 1.1.0)
+
+BUNDLED WITH
+   2.1.4
