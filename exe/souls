@@ -11,9 +11,8 @@ begin
     end
     puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS Media Web \n 4. SOULS Admin Web \n Enter Number: "
     mode = STDIN.gets.chomp.to_i
-    mode.in?((1..4).to_a) ? puts("Type Your APP Name: \n") : raise(StandardError, "Choose Number 1..4")
-    app_name = STDIN.gets.chomp
-    Souls::Init.create_souls mode: mode, app_name: app_name
+    mode.in?((1..4).to_a) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..4")
+    Souls::Init.create_souls mode: mode, app_name: ARGV[1]
   when "s" || "server"
     system "bundle exec rake run_server"
   when "c" || "console"
