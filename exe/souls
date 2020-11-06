@@ -1,35 +1,6 @@
 #!/usr/bin/env ruby
 require "souls"
-
-def download_souls_service
-  version = "v0.0.1"
-  app_name = ARGV[1]
-  system "curl -O https://storage.googleapis.com/souls/service/souls_service_#{version}.tar.gz"
-  system "tar -zxvf souls_service_#{version}.tar.gz"
-  system "mkdir #{app_name}"
-  system "cp -r souls_service_#{version}/* #{app_name}/"
-  system "rm -rf souls_service_#{version}.tar.gz && rm -rf souls_service_#{version}"
-  puts "Welcome to Souls gRPC Service!"
-  puts "Go to `./#{app_name}` and"
-  puts "`souls s` !"
-end
-
-def download_souls_api
-  version = "v0.0.2"
-  app_name = ARGV[1]
-  system "curl -O https://storage.googleapis.com/souls/api/souls_api_#{version}.tar.gz"
-  system "tar -zxvf souls_api_#{version}.tar.gz"
-  system "mkdir #{app_name}"
-  system "cp -r souls_api_#{version}/* #{app_name}/"
-  system "rm -rf souls_api_#{version}.tar.gz && rm -rf souls_api_#{version}"
-  puts "Welcome to Souls GraphQL API!"
-  puts "Go to `./#{app_name}` and"
-  puts "`rails grpc:test` !"
-end
-
-def download_souls_client
-  puts "Coming Soon ..."
-end
+require "active_support/all"
 
 begin
   case ARGV[0]
@@ -38,24 +9,19 @@ begin
       puts "you need to specify your app name \n `souls new app_name`"
       exit
     end
-    puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS NEXT JS Client \n Enter Number: "
-    fw = STDIN.gets.chomp.to_i
-    case fw
-    when 1
-      download_souls_service
-    when 2
-      download_souls_api
-    when 3
-      download_souls_client
-    else
-      raise StandardError, "Choose 1 or 2 or 3"
-    end
+    puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS Media Web \n 4. SOULS Admin Web \n Enter Number: "
+    mode = STDIN.gets.chomp.to_i
+    mode.in?((1..4).to_a) ? puts("Type Your APP Name: \n") : raise(StandardError, "Choose Number 1..4")
+    app_name = STDIN.gets.chomp
+    Souls::Init.create_souls mode: mode, app_name: app_name
   when "s" || "server"
     system "bundle exec rake run_server"
   when "c" || "console"
     system "bundle exec irb"
   when "i" || "infra"
-    Souls::Infra.#{ARGV[2]}
+    Souls.send ARGV[1]
+  when "init"
+    Souls::Init.config
   else
     puts "Welcome to Souls!Yeah!"
   end

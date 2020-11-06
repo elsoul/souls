@@ -191,3 +191,5 @@ Style/Send:
   Enabled: false
 Style/RedundantFileExtensionInRequire:
   Enabled: false
+Style/ClassMethodsDefinitions:
+  Enabled: false
