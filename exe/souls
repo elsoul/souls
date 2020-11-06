@@ -27,6 +27,10 @@ def download_souls_api
   puts "`rails grpc:test` !"
 end
 
+def download_souls_client
+  puts "Coming Soon ..."
+end
+
 begin
   case ARGV[0]
   when "new"
@@ -41,8 +45,10 @@ begin
       download_souls_service
     when 2
       download_souls_api
+    when 3
+      download_souls_client
     else
-      puts "Coming Soon ..."
+      raise StandardError, "Choose 1 or 2 or 3"
     end
   when "s" || "server"
     system "bundle exec rake run_server"
