@@ -69,11 +69,15 @@ module Souls
         system "curl -OL https://github.com/elsoul/#{repository_name}/archive/#{version}.tar.gz"
         system "tar -zxvf ./#{version}.tar.gz"
         system "mkdir #{app_name}"
+        version_file_path = "./#{app_name}/.souls_version"
+        File.open(version_file_path, "w") do |f|
+          f.write version
+        end
         folder = version.delete "v"
         system "cp -r #{repository_name}-#{folder}/* #{app_name}/"
         system "rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}"
         puts "==="
-        puts "Welcome to Souls!"
+        puts "Welcome to SOULS!"
         puts "==="
         puts "$ cd #{app_name}"
         puts "---"
