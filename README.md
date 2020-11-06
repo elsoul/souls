@@ -37,12 +37,15 @@ Using:
 
 ☆Google Cloud Run
 
+☆Google Firebase
 
-SOULS creates 3 types of framework.
+
+SOULS creates 4 types of framework.
 
 1. Service - gRPC Serverless Scalable Service
 2. API - GraphQL to call gRPC 
-3. Client - TypeScript Framework
+3. Media Web Client - Medeia Auto Analiytics
+4. Admin Web Client - Admin Console Panel
 
 ## Installation
 
@@ -60,29 +63,30 @@ Or install it yourself as:
 
     $ gem install souls
 
-## Usage
 
-### Create Your APP
+And Create Your APP
 
     $ souls new app_name
 
 ### Choose SOULS Type:
-1. Serivice
+1. Service
 2. API
-3. Client
+3. Media Web
+4. Admin Web
 
-### Run Local
-1.Service
+### Usage
+Run Server
 
     $ souls s
 
-2.API
+Run Console
 
-    $ rails s
+    $ souls c
 
-3.Client
+Run Infra Command
 
-    $ yarn dev
+    $ souls i `method_name`
+
 
 ## Development
 
