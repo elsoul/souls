@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.2.5)
+    souls (0.2.7)
 
 GEM
   remote: https://rubygems.org/
@@ -46,6 +46,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  activesupport
   rake (~> 12.0)
   rspec (~> 3.0)
   souls!

@@ -17,7 +17,7 @@ module Souls
                 --address=0.0.0.0 \
                 --target-grpc-proxy=#{proxy_name} \
                 --ports #{port} \
-                --network #{Rails::Gke.configuration.network}"
+                --network #{Souls.configuration.network}"
       end
 
       def delete_target_grpc_proxy proxy_name: "grpc-gke-proxy"
@@ -73,7 +73,7 @@ module Souls
 
       def create_firewall_rule firewall_rule_name: "grpc-gke-allow-health-checks"
         system "gcloud compute -q firewall-rules create #{firewall_rule_name} \
-                --network #{Rails::Gke.configuration.network} \
+                --network #{Souls.configuration.network} \
                 --action allow \
                 --direction INGRESS \
                 --source-ranges 35.191.0.0/16,130.211.0.0/22 \
@@ -90,8 +90,8 @@ module Souls
       end
 
       def create_network
-        return "Error: Please Set Rails::Gke.configuration" if Rails::Gke.configuration.nil?
-        system("gcloud compute networks create #{Rails::Gke.configuration.network}")
+        return "Error: Please Set Souls.configuration" if Souls.configuration.nil?
+        system("gcloud compute networks create #{Souls.configuration.network}")
       end
 
       def get_network_group_list
@@ -99,9 +99,9 @@ module Souls
       end
 
       def create_network_group
-        app = Rails::Gke.configuration.app
-        network = Rails::Gke.configuration.network
-        sub_network = Rails::Gke.configuration.network
+        app = Souls.configuration.app
+        network = Souls.configuration.network
+        sub_network = Souls.configuration.network
         system("gcloud compute network-endpoint-groups create #{app} \
                 --default-port=0 \
                 --network #{network} \
@@ -110,25 +110,25 @@ module Souls
       end
 
       def set_network_group_list_env
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system "NEG_NAME=$(gcloud compute network-endpoint-groups list | grep #{app} | awk '{print $1}')"
         `echo $NEG_NAME`
       end
 
       def delete_network_group_list neg_name: ""
-        system "gcloud compute network-endpoint-groups delete #{neg_name} --zone #{Rails::Gke.configuration.zone} -q"
+        system "gcloud compute network-endpoint-groups delete #{neg_name} --zone #{Souls.configuration.zone} -q"
       end
 
       def delete_cluster cluster_name: "grpc-td-cluster"
-        system "gcloud container clusters delete #{cluster_name} --zone #{Rails::Gke.configuration.zone} -q"
+        system "gcloud container clusters delete #{cluster_name} --zone #{Souls.configuration.zone} -q"
       end
 
       def create_cluster
-        app = Rails::Gke.configuration.app
-        network = Rails::Gke.configuration.network
-        sub_network = Rails::Gke.configuration.network
-        machine_type = Rails::Gke.configuration.machine_type
-        zone = Rails::Gke.configuration.zone
+        app = Souls.configuration.app
+        network = Souls.configuration.network
+        sub_network = Souls.configuration.network
+        machine_type = Souls.configuration.machine_type
+        zone = Souls.configuration.zone
         system("gcloud container clusters create #{app} \
                 --network #{network} \
                 --subnetwork #{sub_network} \
@@ -145,86 +145,86 @@ module Souls
       end
 
       def resize_cluster pool_name: "default-pool", node_num: 1
-        app = Rails::Gke.configuration.app
-        zone = Rails::Gke.configuration.zone
+        app = Souls.configuration.app
+        zone = Souls.configuration.zone
         system "gcloud container clusters resize #{app} --node-pool #{pool_name} --num-nodes #{node_num} --zone #{zone}"
       end
 
       def create_namespace
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl create namespace #{app}")
       end
 
       def create_ip
-        ip_name = Rails::Gke.configuration.app.to_s + "-ip"
+        ip_name = Souls.configuration.app.to_s + "-ip"
         system("gcloud compute addresses create #{ip_name} --global")
       end
 
       def apply_deployment
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl apply -f deployment.yml --namespace=#{app}")
       end
 
       def apply_secret
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl apply -f secret.yml --namespace=#{app}")
       end
 
       def apply_service
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl apply -f service.yml --namespace=#{app}")
       end
 
       def apply_ingress
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl apply -f ingress.yml --namespace=#{app}")
       end
 
       def delete_deployment
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl delete -f deployment.yml --namespace=#{app}")
       end
 
       def delete_secret
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl delete -f secret.yml --namespace=#{app}")
       end
 
       def delete_service
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl delete -f service.yml --namespace=#{app}")
       end
 
       def delete_ingress
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl delete -f ingress.yml --namespace=#{app}")
       end
 
       def update_container version: "latest"
-        app = Rails::Gke.configuration.app
-        project_id = Rails::Gke.configuration.project_id
+        app = Souls.configuration.app
+        project_id = Souls.configuration.project_id
         system("docker build . -t #{app}:#{version}")
         system("docker tag #{app}:#{version} asia.gcr.io/#{project_id}/#{app}:#{version}")
         system("docker push asia.gcr.io/#{project_id}/#{app}:#{version}")
       end
 
       def get_pods
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl get pods --namespace=#{app}")
       end
 
       def get_svc
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl get svc --namespace=#{app}")
       end
 
       def get_ingress
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("kubectl get ingress --namespace=#{app}")
       end
 
       def run_test
-        app = Rails::Gke.configuration.app
+        app = Souls.configuration.app
         system("docker rm -f web")
         system("docker build . -t #{app}:latest")
         system("docker run --name web -it --env-file $PWD/.local_env -p 3000:3000 #{app}:latest")
@@ -243,13 +243,13 @@ module Souls
       end
 
       def get_credentials
-        app = Rails::Gke.configuration.app
-        zone = Rails::Gke.configuration.zone
+        app = Souls.configuration.app
+        zone = Souls.configuration.zone
         system("gcloud container clusters get-credentials #{app} -cluster --zone #{zone}")
       end
 
       def create_ssl
-        system("gcloud compute ssl-certificates create #{Rails::Gke.configuration.app}-ssl --domains=#{Rails::Gke.configuration.domain} --global")
+        system("gcloud compute ssl-certificates create #{Souls.configuration.app}-ssl --domains=#SoulsGke.configuration.domain} --global")
       end
 
       def update_proxy
@@ -266,7 +266,7 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :project_id, :app, :network, :machine_type, :zone, :domain, :google_application_credentials, :channel
+    attr_accessor :project_id, :app, :network, :machine_type, :zone, :domain, :google_application_credentials, :mode
 
     def initialize
       @project_id = nil
@@ -276,7 +276,7 @@ module Souls
       @zone = nil
       @domain = nil
       @google_application_credentials = nil
-      @channel = nil
+      @mode = nil
     end
   end
 end

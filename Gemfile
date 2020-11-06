@@ -4,5 +4,6 @@ source "https://rubygems.org"
 gemspec
 
 gem "activerecord", require: "active_record"
+gem "activesupport", require: "active_support"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
