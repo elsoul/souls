@@ -1,7 +1,0 @@
-adapter: postgresql
-encoding: utf8
-username:  <%= ENV["DB_USER"] %>
-port: 5432
-database: grpc-server-production
-password: <%= ENV["DB_PW"] %>
-host: <%= ENV["DB_HOST"] %>

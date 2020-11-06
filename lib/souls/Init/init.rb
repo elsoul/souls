@@ -5,6 +5,7 @@ module Souls
     class << self
       def create_souls mode: 1, app_name: "souls"
         modes = ["service", "api", "media", "admin"]
+        config_needed = (1..2)
         project = {}
         project[:souls_mode] = modes[mode - 1]
         begin
@@ -31,7 +32,7 @@ module Souls
           confirm = STDIN.gets.chomp
           raise StandardError, "Retry" unless confirm == ""
           download_souls app_name: app_name, repository_name: "souls_#{modes[mode - 1]}"
-          config_init app_name: app_name, project: project if (1..2).include?(mode)
+          config_init app_name: app_name, project: project if config_needed.include?(mode)
         rescue StandardError => error
           puts error
           retry
