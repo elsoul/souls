@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.3.1)
+    souls (0.3.2)
 
 GEM
   remote: https://rubygems.org/
@@ -75,7 +75,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   mechanize (= 2.7.6)
-  nokogiri
   rake (~> 12.0)
   rspec (~> 3.0)
   souls!
