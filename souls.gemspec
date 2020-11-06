@@ -3,8 +3,8 @@ require_relative 'lib/souls/version'
 Gem::Specification.new do |spec|
   spec.name          = "souls"
   spec.version       = Souls::VERSION
-  spec.authors       = ["POPPIN-FUMI"]
-  spec.email         = ["fumitake.kawasaki@el-soul.com"]
+  spec.authors       = ["POPPIN-FUMI", "KishiTheMechanic"]
+  spec.email         = ["fumitake.kawasaki@el-soul.com", "shota.kishi@el-soul.com"]
 
   spec.summary       = "Souls"
   spec.description   = "Souls"
