@@ -112,12 +112,6 @@ module Souls
           end
         end
         FileUtils.rm service_pb_path
-        File.open(new_file, "a") do |f|
-          f.write <<~EOS
-            module #{proto_package_name.capitalize}
-            end
-          EOS
-        end
         puts "SOULS Proto Created!"
       end
 
