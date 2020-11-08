@@ -22,6 +22,8 @@ begin
     Souls::Init.proto proto_package_name: ARGV[1], service: ARGV[2]
   when "init"
     Souls::Init.config
+  when "test"
+    system "ruby greeter_client.rb 'SOULS TEST RUN!'"
   else
     puts "Welcome to Souls!Yeah!"
   end
