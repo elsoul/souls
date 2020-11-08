@@ -18,6 +18,8 @@ begin
     system "bundle exec irb"
   when "i" || "infra"
     Souls.send ARGV[1]
+  when "p" || "proto"
+    Souls::Init.proto
   when "init"
     Souls::Init.config
   else
