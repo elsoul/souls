@@ -85,7 +85,7 @@ module Souls
 
       def proto proto_package_name: "elquest", service: "blog"
         system "grpc_tools_ruby_protoc -I ./protos --ruby_out=./app/services --grpc_out=./app/services ./protos/#{service}.proto"
-        file_path = "./app/services/#{service}_pb"
+        file_path = "./app/services/#{service}_pb.rb"
         File.open(file_path, "a") do |f|
           f.write <<~EOS
             module #{service.capitalize}
@@ -94,7 +94,7 @@ module Souls
         end
         system "mv ./app/services/#{service}_services_pb.rb ./app/services/#{proto_package_name}.rb"
         file_path2 = "./app/services/#{proto_package_name}.rb"
-        File.open(file_path2, "a") do |f|
+        File.open(file_path2, "a+") do |f|
           f.each_line.with_index do |l, i|
             case i
             when 0
