@@ -3,11 +3,11 @@ require "mechanize"
 module Souls
   module Init
     class << self
-      def create_souls mode: 1, app_name: "souls"
-        modes = ["service", "api", "media", "admin"]
+      def create_souls strain: 1, app_name: "souls"
+        strains = ["service", "api", "media", "admin"]
         config_needed = (1..2)
         project = {}
-        project[:souls_mode] = modes[mode - 1]
+        project[:strain] = strains[strain - 1]
         begin
           puts "Google Cloud PROJECT_ID:      (default: elsoul2)"
           project[:project_id] = STDIN.gets.chomp
@@ -31,8 +31,8 @@ module Souls
           puts "Enter to finish set up!"
           confirm = STDIN.gets.chomp
           raise StandardError, "Retry" unless confirm == ""
-          download_souls app_name: app_name, repository_name: "souls_#{modes[mode - 1]}"
-          config_init app_name: app_name, project: project if config_needed.include?(mode)
+          download_souls app_name: app_name, repository_name: "souls_#{strains[strain - 1]}"
+          config_init app_name: app_name, project: project if config_needed.include?(strain)
         rescue StandardError => error
           puts error
           retry
@@ -52,7 +52,8 @@ module Souls
               config.zone = "#{project[:zone]}"
               config.domain = "#{project[:domain]}"
               config.google_application_credentials = "#{project[:google_application_credentials]}"
-              config.souls_mode = "#{project[:souls_mode]}"
+              config.strain = "#{project[:strain]}"
+              config.proto_package_name = "souls"
             end
           EOS
         end
@@ -83,7 +84,9 @@ module Souls
         puts "---"
       end
 
-      def proto proto_package_name: "elquest", service: "blog"
+      def proto
+        proto_package_name = Souls.configuration.proto_package_name
+        service = Souls.configuration.app
         system "grpc_tools_ruby_protoc -I ./protos --ruby_out=./app/services --grpc_out=./app/services ./protos/#{service}.proto"
         file_path = "./app/services/#{service}_pb.rb"
         File.open(file_path, "a") do |f|
@@ -105,7 +108,7 @@ module Souls
               when 4
                 new_line.write "require \"./app/services/#{service}_pb\""
               else
-                puts i.to_s + ":" + line.to_s
+                puts "#{i}: #{line}"
                 new_line.write line.to_s
               end
             end
