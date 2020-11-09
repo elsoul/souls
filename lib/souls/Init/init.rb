@@ -84,9 +84,7 @@ module Souls
         puts "---"
       end
 
-      def proto
-        proto_package_name = Souls.configuration.proto_package_name
-        service = Souls.configuration.app
+      def proto proto_package_name: "souls", service: "blog"
         system "grpc_tools_ruby_protoc -I ./protos --ruby_out=./app/services --grpc_out=./app/services ./protos/#{service}.proto"
         file_path = "./app/services/#{service}_pb.rb"
         File.open(file_path, "a") do |f|
