@@ -266,7 +266,7 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :project_id, :app, :network, :machine_type, :zone, :domain, :google_application_credentials, :mode
+    attr_accessor :project_id, :app, :network, :machine_type, :zone, :domain, :google_application_credentials, :mode, :proto_package_name
 
     def initialize
       @project_id = nil
@@ -277,6 +277,7 @@ module Souls
       @domain = nil
       @google_application_credentials = nil
       @mode = nil
+      @proto_package_name = nil
     end
   end
 end

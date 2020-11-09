@@ -7,4 +7,5 @@ Souls.configure do |config|
   config.domain = "sdf"
   config.google_application_credentials = "sdf"
   config.souls_mode = "Client"
+  config.proto_package_name = "souls"
 end
