@@ -9,9 +9,9 @@ begin
       exit
     end
     puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS Media Web \n 4. SOULS Admin Web \n Enter Number: "
-    mode = STDIN.gets.chomp.to_i
-    (1..4).include?(mode) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..4")
-    Souls::Init.create_souls mode: mode, app_name: ARGV[1]
+    strain = STDIN.gets.chomp.to_i
+    (1..4).include?(strain) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..4")
+    Souls::Init.create_souls strain: strain, app_name: ARGV[1]
   when "s" || "server"
     system "bundle exec rake run_server"
   when "c" || "console"
@@ -19,7 +19,7 @@ begin
   when "i" || "infra"
     Souls.send ARGV[1]
   when "p" || "proto"
-    Souls::Init.proto proto_package_name: ARGV[1], service: ARGV[2]
+    Souls::Init.proto proto_package_name: Souls.configuration.proto_package_name, service: Souls.configuration.app
   when "init"
     Souls::Init.config
   when "test"

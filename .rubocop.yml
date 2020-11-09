@@ -193,3 +193,5 @@ Style/RedundantFileExtensionInRequire:
   Enabled: false
 Style/ClassMethodsDefinitions:
   Enabled: false
+Style/GlobalStdStream:
+  Enabled: false
