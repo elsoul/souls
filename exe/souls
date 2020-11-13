@@ -19,7 +19,7 @@ begin
   when "i" || "infra"
     Souls.send ARGV[1]
   when "p" || "proto"
-    Souls::Init.proto proto_package_name: Souls.configuration.proto_package_name, service: Souls.configuration.app
+    Souls::Init.proto proto_package_name: "souls", service: ARGV[1]
   when "init"
     Souls::Init.config
   else
