@@ -75,6 +75,11 @@ And Create Your APP
 4. Admin Web
 
 ### Usage
+Init Proto Files
+
+    $ souls p `service_name`
+
+
 Run Server
 
     $ souls s
