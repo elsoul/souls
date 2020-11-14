@@ -41,7 +41,12 @@ module Souls
       end
 
       def config_init app_name: "souls", project: {}
-        file_path = "#{app_name}/config/souls.rb"
+        file_path = case project[:strain]
+                    when "api"
+                      "#{app_name}/config/initialize/souls.rb"
+                    else
+                      "#{app_name}/config/souls.rb"
+                    end
         File.open(file_path, "a") do |f|
           f.write <<~EOS
             Souls.configure do |config|
@@ -85,6 +90,7 @@ module Souls
       end
 
       def proto proto_package_name: "souls", service: "blog"
+        require "./config/souls.rb"
         system "grpc_tools_ruby_protoc -I ./protos --ruby_out=./app/services --grpc_out=./app/services ./protos/#{service}.proto"
         file_path = "./app/services/#{service}_pb.rb"
         File.open(file_path, "a") do |f|
