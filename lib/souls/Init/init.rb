@@ -41,12 +41,7 @@ module Souls
       end
 
       def config_init app_name: "souls", project: {}
-        file_path = case project[:strain]
-                    when "api"
-                      "#{app_name}/config/initialize/souls.rb"
-                    else
-                      "#{app_name}/config/souls.rb"
-                    end
+        file_path = "#{app_name}/config/souls.rb"
         File.open(file_path, "a") do |f|
           f.write <<~EOS
             Souls.configure do |config|

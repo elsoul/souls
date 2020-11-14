@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require "souls"
+require "./config/souls"
 
 begin
   case ARGV[0]
@@ -13,7 +14,15 @@ begin
     (1..4).include?(strain) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..4")
     Souls::Init.create_souls strain: strain, app_name: ARGV[1]
   when "s" || "server"
-    system "bundle exec rake run_server"
+    strain = Souls.configuration.strain
+    case strain
+    when "api"
+      system "bundle exec rails s"
+    when "service"
+      system "bundle exec rake run_server"
+    else
+      system "yarn dev"
+    end
   when "c" || "console"
     system "bundle exec irb"
   when "i" || "infra"
