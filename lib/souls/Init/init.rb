@@ -41,7 +41,7 @@ module Souls
       end
 
       def config_init app_name: "souls", project: {}
-        file_path = "#{app_name}/config/initialize.rb"
+        file_path = "#{app_name}/config/souls.rb"
         File.open(file_path, "a") do |f|
           f.write <<~EOS
             Souls.configure do |config|
