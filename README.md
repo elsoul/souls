@@ -28,8 +28,8 @@ SOULs creates 4 types of framework.
 
 1. Service - gRPC Serverless Scalable Service (Ruby)
 2. API - GraphQL to call gRPC (Ruby)
-3. Media Web Client - Medeia Auto Analiytics (TypeScript)
-4. Admin Web Client - Admin Console Panel (TypeScript)
+3. Media Web Client - Media web client with SSG (TypeScript)
+4. Admin Web Client - Admin Console and CMS (TypeScript)
 
 ## Dependency
 
@@ -39,7 +39,7 @@ SOULs creates 4 types of framework.
 
 ## Cloud Infrastructure
 
-- [Google Kubernates Engine](https://cloud.google.com/kubernetes-engine)
+- [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
 - [Google Traffic Director](https://cloud.google.com/traffic-director)
 - [Google Cloud Run](https://cloud.google.com/run)
 - [Google Firebase](https://firebase.google.com/)
