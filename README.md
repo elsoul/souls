@@ -1,9 +1,3 @@
-# SOULS
-
-Welcome to SOULS Framework!
-
-SOULS is a Web Application Framework for Microservices on Google Cloud Platform.
-
 <p align="center">
 
   <a aria-label="Ruby logo" href="https://el-soul.com">
@@ -22,30 +16,31 @@ SOULS is a Web Application Framework for Microservices on Google Cloud Platform.
   </a>
 </p>
 
+## What's SOULs?
+
+Welcome to SOULs Framework!
+SOULs is a Web Application Framework for Microservices on Google Cloud Platform.
+
+SOULs creates 4 types of framework.
+
+1. Service - gRPC Serverless Scalable Service (Ruby)
+2. API - GraphQL to call gRPC (Ruby)
+3. Media Web Client - Medeia Auto Analiytics (TypeScript)
+4. Admin Web Client - Admin Console Panel (TypeScript)
+
 ## Dependency
 
-1. Google SDK
-   [https://cloud.google.com/sdk/docs](https://cloud.google.com/sdk/docs)
-2. Docker
-   [https://www.docker.com/](https://www.docker.com/)
+- [Google SDK](https://cloud.google.com/sdk/docs)
+- [Docker](https://www.docker.com/)
+- [Firebase CLI](https://firebase.google.com/docs/cli)
 
-Using:
+## Cloud Infrastructure
 
-☆Google Kubernates Engine
-
-☆Google Traffic Director
-
-☆Google Cloud Run
-
-☆Google Firebase
-
-
-SOULS creates 4 types of framework.
-
-1. Service - gRPC Serverless Scalable Service
-2. API - GraphQL to call gRPC 
-3. Media Web Client - Medeia Auto Analiytics
-4. Admin Web Client - Admin Console Panel
+- [Google Kubernates Engine](https://cloud.google.com/kubernetes-engine)
+- [Google Traffic Director](https://cloud.google.com/traffic-director)
+- [Google Cloud Run](https://cloud.google.com/run)
+- [Google Firebase](https://firebase.google.com/)
+- [Google Cloud Scheduler](https://cloud.google.com/scheduler)
 
 ## Installation
 
@@ -63,22 +58,22 @@ Or install it yourself as:
 
     $ gem install souls
 
-
 And Create Your APP
 
     $ souls new app_name
 
 ### Choose SOULS Type:
+
 1. Service
 2. API
 3. Media Web
 4. Admin Web
 
 ### Usage
+
 Init Proto Files
 
     $ souls p `service_name`
-
 
 Run Server
 
@@ -91,7 +86,6 @@ Run Console
 Run Infra Command
 
     $ souls i `method_name`
-
 
 ## Development
 
