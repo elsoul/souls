@@ -1,8 +1,8 @@
-# SOULS
+# SOULs
 
-Welcome to SOULS Framework!
+Welcome to SOULs Framework!
 
-SOULS is a Web Application Framework for Microservices on Google Cloud Platform.
+SOULs is a Web Application Framework for Microservices on Google Cloud Platform.
 
 <p align="center">
 
@@ -68,7 +68,7 @@ And Create Your APP
 
     $ souls new app_name
 
-### Choose SOULS Type:
+### Choose SOULs Type:
 1. Service
 2. API
 3. Media Web
