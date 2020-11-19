@@ -31,6 +31,8 @@ begin
     Souls::Init.proto proto_package_name: "souls", service: ARGV[1]
   when "init"
     Souls::Init.config
+  when "-v"
+    puts Souls::VERSION
   when "test"
     system "ruby greeter_client.rb 'SOULS TEST RUN!'"
   else
