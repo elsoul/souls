@@ -75,6 +75,11 @@ And Create Your APP
 4. Admin Web
 
 ### Usage
+Version Check
+
+    $ souls -v
+
+
 Init Proto Files
 
     $ souls p `service_name`
