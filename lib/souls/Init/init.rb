@@ -1,13 +1,13 @@
 require "mechanize"
 
 module Souls
+  STRAINS = ["service", "api", "media", "admin"]
   module Init
     class << self
       def create_souls strain: 1, app_name: "souls"
-        strains = ["service", "api", "media", "admin"]
         config_needed = (1..2)
         project = {}
-        project[:strain] = strains[strain - 1]
+        project[:strain] = Souls::STRAINS[strain - 1]
         begin
           puts "Google Cloud PROJECT_ID:      (default: elsoul2)"
           project[:project_id] = STDIN.gets.chomp
@@ -41,7 +41,7 @@ module Souls
       end
 
       def config_init app_name: "souls", project: {}
-        file_path = "#{app_name}/config/souls.rb"
+        file_path = "#{app_name}/config/initializers/souls.rb"
         File.open(file_path, "a") do |f|
           f.write <<~EOS
             Souls.configure do |config|

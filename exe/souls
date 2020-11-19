@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require "souls"
-require "./config/souls"
+require "./config/initializers/souls"
 
 begin
   case ARGV[0]
@@ -13,7 +13,7 @@ begin
     strain = STDIN.gets.chomp.to_i
     (1..4).include?(strain) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..4")
     Souls::Init.create_souls strain: strain, app_name: ARGV[1]
-  when "s" || "server"
+  when "s", "server"
     strain = Souls.configuration.strain
     case strain
     when "api"
@@ -23,15 +23,15 @@ begin
     else
       system "yarn dev"
     end
-  when "c" || "console"
+  when "c", "console"
     system "bundle exec irb"
-  when "i" || "infra"
+  when "i", "infra"
     Souls.send ARGV[1]
-  when "p" || "proto"
+  when "p", "proto"
     Souls::Init.proto proto_package_name: "souls", service: ARGV[1]
   when "init"
     Souls::Init.config
-  when "-v"
+  when "-v", "--version"
     puts Souls::VERSION
   when "test"
     system "ruby greeter_client.rb 'SOULS TEST RUN!'"
