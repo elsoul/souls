@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require "souls"
-require "./config/initializers/souls"
 
 begin
+  require "./config/initializers/souls" unless ARGV[0] == "new"
   case ARGV[0]
   when "new"
     if ARGV[1].nil?
