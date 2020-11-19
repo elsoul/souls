@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.4.2)
+    souls (0.4.3)
       mechanize (= 2.7.6)
 
 GEM
