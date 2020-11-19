@@ -24,7 +24,15 @@ begin
       system "yarn dev"
     end
   when "c", "console"
-    system "bundle exec irb"
+    strain = Souls.configuration.strain
+    case strain
+    when "api"
+      system "bundle exec rails c"
+    when "service"
+      system "bundle exec irb"
+    else
+      system "yarn dev"
+    end
   when "i", "infra"
     Souls.send ARGV[1]
   when "p", "proto"
