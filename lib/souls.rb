@@ -222,8 +222,8 @@ module Souls
         app = Souls.configuration.app
         project_id = Souls.configuration.project_id
         system("docker build . -t #{app}:#{version}")
-        system("docker tag #{app}:#{version} #{zones[zone]}gcr.io/#{project_id}/#{app}:#{version}")
-        system("docker push #{zones[zone]}gcr.io/#{project_id}/#{app}:#{version}")
+        system("docker tag #{app}:#{version} #{zones[zone]}/#{project_id}/#{app}:#{version}")
+        system("docker push #{zones[zone]}/#{project_id}/#{app}:#{version}")
       end
 
       def get_pods
