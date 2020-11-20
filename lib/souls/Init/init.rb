@@ -31,7 +31,7 @@ module Souls
           puts "Enter to finish set up!"
           confirm = STDIN.gets.chomp
           raise StandardError, "Retry" unless confirm == ""
-          download_souls app_name: app_name, repository_name: "souls_#{strains[strain - 1]}"
+          download_souls app_name: app_name, repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
           config_init app_name: app_name, project: project if config_needed.include?(strain)
         rescue StandardError => error
           puts error
