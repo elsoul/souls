@@ -123,6 +123,10 @@ module Souls
         system "gcloud container clusters delete #{cluster_name} --zone #{Souls.configuration.zone} -q"
       end
 
+      def config_set
+        system "gcloud config set project #{Souls.configuration.project_id}"
+      end
+
       def create_cluster
         app = Souls.configuration.app
         network = Souls.configuration.network
@@ -144,6 +148,14 @@ module Souls
                 --tags=allow-health-checks")
       end
 
+      def deploy
+        system "souls i config_set"
+        system "souls i create_cluster"
+        system "souls i create_namespace"
+        system "souls i create_ip"
+        system "souls i apply_deployment"
+      end
+
       def resize_cluster pool_name: "default-pool", node_num: 1
         app = Souls.configuration.app
         zone = Souls.configuration.zone
@@ -162,50 +174,56 @@ module Souls
 
       def apply_deployment
         app = Souls.configuration.app
-        system("kubectl apply -f deployment.yml --namespace=#{app}")
+        system("kubectl apply -f ./infra/deployment.yml --namespace=#{app}")
       end
 
       def apply_secret
         app = Souls.configuration.app
-        system("kubectl apply -f secret.yml --namespace=#{app}")
+        system("kubectl apply -f ./infra/secret.yml --namespace=#{app}")
       end
 
       def apply_service
         app = Souls.configuration.app
-        system("kubectl apply -f service.yml --namespace=#{app}")
+        system("kubectl apply -f ./infra/service.yml --namespace=#{app}")
       end
 
       def apply_ingress
         app = Souls.configuration.app
-        system("kubectl apply -f ingress.yml --namespace=#{app}")
+        system("kubectl apply -f ./infra/ingress.yml --namespace=#{app}")
       end
 
       def delete_deployment
         app = Souls.configuration.app
-        system("kubectl delete -f deployment.yml --namespace=#{app}")
+        system("kubectl delete -f ./infra/deployment.yml --namespace=#{app}")
       end
 
       def delete_secret
         app = Souls.configuration.app
-        system("kubectl delete -f secret.yml --namespace=#{app}")
+        system("kubectl delete -f ./infra/secret.yml --namespace=#{app}")
       end
 
       def delete_service
         app = Souls.configuration.app
-        system("kubectl delete -f service.yml --namespace=#{app}")
+        system("kubectl delete -f ./infra/service.yml --namespace=#{app}")
       end
 
       def delete_ingress
         app = Souls.configuration.app
-        system("kubectl delete -f ingress.yml --namespace=#{app}")
+        system("kubectl delete -f ./infra/ingress.yml --namespace=#{app}")
       end
 
-      def update_container version: "latest"
+      # zone = :us, :eu or :asia
+      def update_container version: "latest", zone: :asia
+        zones = {
+          us: "gcr.io",
+          eu: "eu.gcr.io",
+          asia: "asia.gcr.io"
+        }
         app = Souls.configuration.app
         project_id = Souls.configuration.project_id
         system("docker build . -t #{app}:#{version}")
-        system("docker tag #{app}:#{version} asia.gcr.io/#{project_id}/#{app}:#{version}")
-        system("docker push asia.gcr.io/#{project_id}/#{app}:#{version}")
+        system("docker tag #{app}:#{version} #{zones[zone]}gcr.io/#{project_id}/#{app}:#{version}")
+        system("docker push #{zones[zone]}gcr.io/#{project_id}/#{app}:#{version}")
       end
 
       def get_pods
@@ -223,11 +241,11 @@ module Souls
         system("kubectl get ingress --namespace=#{app}")
       end
 
-      def run_test
+      def run
         app = Souls.configuration.app
         system("docker rm -f web")
         system("docker build . -t #{app}:latest")
-        system("docker run --name web -it --env-file $PWD/.local_env -p 3000:3000 #{app}:latest")
+        system("docker run --name web -it --env-file $PWD/.env -p 3000:3000 #{app}:latest")
       end
 
       def get_clusters
