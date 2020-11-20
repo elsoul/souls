@@ -42,7 +42,7 @@ module Souls
 
       def config_init app_name: "souls", project: {}
         file_path = "#{app_name}/config/initializers/souls.rb"
-        File.open(file_path, "a") do |f|
+        File.open(file_path, "w") do |f|
           f.write <<~EOS
             Souls.configure do |config|
               config.project_id = "#{project[:project_id]}"
