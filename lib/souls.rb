@@ -267,7 +267,7 @@ module Souls
       end
 
       def create_ssl
-        system("gcloud compute ssl-certificates create #{Souls.configuration.app}-ssl --domains=#SoulsGke.configuration.domain} --global")
+        system("gcloud compute ssl-certificates create #{Souls.configuration.app}-ssl --domains=#{Souls.configuration.domain} --global")
       end
 
       def update_proxy
