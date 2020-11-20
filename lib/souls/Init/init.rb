@@ -7,7 +7,7 @@ module Souls
       def create_souls strain: 1, app_name: "souls"
         config_needed = (1..2)
         project = {}
-        project[:strain] = STRAINS[strain - 1]
+        project[:strain] = STRAINS[strain.to_i - 1]
         begin
           puts "Google Cloud PROJECT_ID:      (default: elsoul2)"
           project[:project_id] = STDIN.gets.chomp
