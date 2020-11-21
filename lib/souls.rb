@@ -149,11 +149,15 @@ module Souls
       end
 
       def deploy
-        system "souls i config_set"
-        system "souls i create_cluster"
-        system "souls i create_namespace"
-        system "souls i create_ip"
-        system "souls i apply_deployment"
+        strain = Souls.configuration.strain
+        case strain
+        when "api"
+          Souls::Init.api_deploy
+        when "service"
+          Souls::Init.service_deploy
+        else
+          puts "coming soon..."
+        end
       end
 
       def resize_cluster pool_name: "default-pool", node_num: 1
@@ -215,13 +219,13 @@ module Souls
       def create_dns_conf
         app = Souls.configuration.app
         domain = Souls.configuration.domain
-        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{app} | grep #{app} | awk '{print $3}')" >> dns_conf`
+        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{app} | grep #{app} | awk '{print $3}')" >> ./infra/config/dns_conf`
         "created dns file!"
       end
 
       def set_dns
         project_id = Souls.configuration.project_id
-        `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./dns_conf`
+        `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./infra/config/dns_conf`
       end
 
       # zone = :us, :eu or :asia

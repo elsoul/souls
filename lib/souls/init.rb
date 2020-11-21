@@ -112,6 +112,48 @@ module Souls
         puts "SOULs Proto Created!"
       end
 
+      def service_deploy
+        app = Souls.configuration.app
+        health_check_name = "#{app}-hc"
+        firewall_rule_name = "#{app}-allow-health-checks"
+        zone = Souls.configuration.zone
+        neg_name = "k8s1-87bf55a7-default-blog-service-8080-c7e834de"
+        url_map_name = "#{app}-url-map"
+        path_matcher_name = "#{app}-path-mathcher"
+        port = "5000"
+        proxy_name = "#{app}-proxy"
+        forwarding_rule_name = "#{app}-forwarding-rule"
+
+        Souls.create_health_check health_check_name: health_check_name
+        Souls.create_firewall_rule firewall_rule_name: firewall_rule_name
+        Souls.create_backend_service service_name: app, health_check_name: health_check_name
+        Souls.add_backend_service service_name: app, neg_name: neg_name, zone: zone
+        Souls.create_url_map url_map_name: url_map_name, service_name: app
+        Souls.create_path_matcher url_map_name: url_map_name, service_name: app, path_matcher_name: path_matcher_name, hostname: app, port: port
+        Souls.create_target_grpc_proxy proxy_name: proxy_name, url_map_name: url_map_name
+        Souls.create_forwarding_rule forwarding_rule_name: forwarding_rule_name, proxy_name: proxy_name, port: port
+      end
+
+      def api_deploy
+        `souls i config_set`
+        `souls i create_network`
+        `souls i create_cluster`
+        `souls i get_credentials`
+        `souls i create_namespace`
+        `souls i create_ip`
+        `souls i apply_secret`
+        `souls i create_ssl`
+        `souls i apply_deployment`
+        `souls i apply_service`
+        `souls i apply_ingress`
+        puts "Wainting for Ingress to get IP..."
+        sleep 1
+        puts "This migth take a few mins..."
+        sleep 90
+        `souls i create_dns_conf`
+        `souls i set_dns`
+      end
+
     end
   end
 end
