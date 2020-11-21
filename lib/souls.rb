@@ -219,6 +219,11 @@ module Souls
         "created dns file!"
       end
 
+      def set_dns
+        project_id = Souls.configuration.project_id
+        `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./dns_conf`
+      end
+
       # zone = :us, :eu or :asia
       def update_container version: "latest", zone: :asia
         zones = {
