@@ -263,7 +263,7 @@ module Souls
       def get_credentials
         app = Souls.configuration.app
         zone = Souls.configuration.zone
-        system("gcloud container clusters get-credentials #{app} -cluster --zone #{zone}")
+        system "gcloud container clusters get-credentials #{app} --zone #{zone}"
       end
 
       def create_ssl
