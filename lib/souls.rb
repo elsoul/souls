@@ -212,6 +212,13 @@ module Souls
         system("kubectl delete -f ./infra/ingress.yml --namespace=#{app}")
       end
 
+      def create_dns_conf
+        app = Souls.configuration.app
+        domain = Souls.configuration.domain
+        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{app} | grep #{app} | awk '{print $3}')" >> dns_conf`
+        "created dns file!"
+      end
+
       # zone = :us, :eu or :asia
       def update_container version: "latest", zone: :asia
         zones = {
