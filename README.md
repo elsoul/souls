@@ -1,7 +1,6 @@
 [![SOULs](https://firebasestorage.googleapis.com/v0/b/el-quest.appspot.com/o/mediaLibrary%2F1605615287402_souls-ogp.jpg?alt=media&token=1115aa76-6863-469d-acc8-9815ca7fac37)](https://rubygems.org/gems/souls)
 
 <p align="center">
-
   <a aria-label="Ruby logo" href="https://el-soul.com">
     <img src="https://badgen.net/badge/icon/Made%20by%20ELSOUL?icon=ruby&label&color=black&labelColor=black">
   </a>
@@ -65,14 +64,18 @@ And Create Your APP
 
     $ souls new app_name
 
-### Choose SOULS Type:
+### Choose SOULs Type:
 
 1. Service
 2. API
 3. Media Web
 4. Admin Web
 
-### Usage
+## Usage
+
+Version Check
+
+    $ souls -v
 
 Init Proto Files
 
@@ -89,6 +92,16 @@ Run Console
 Run Infra Command
 
     $ souls i `method_name`
+
+Deploy
+
+    $ souls i deploy
+
+※Only Initial
+
+Update
+
+    $ souls i update
 
 ## Development
 
