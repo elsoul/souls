@@ -109,18 +109,23 @@ module Souls
                 --global")
       end
 
-      def set_network_group_list_env
+      def export_network_group
         app = Souls.configuration.app
         system "NEG_NAME=$(gcloud compute network-endpoint-groups list | grep #{app} | awk '{print $1}')"
-        `echo $NEG_NAME`
+        `echo $NEG_NAME > .neg_name`
       end
 
       def delete_network_group_list neg_name: ""
         system "gcloud compute network-endpoint-groups delete #{neg_name} --zone #{Souls.configuration.zone} -q"
       end
 
-      def delete_cluster cluster_name: "grpc-td-cluster"
-        system "gcloud container clusters delete #{cluster_name} --zone #{Souls.configuration.zone} -q"
+      def delete_cluster
+        app = Souls.configuration.app
+        system "gcloud container clusters delete #{app} --zone #{Souls.configuration.zone} -q"
+      end
+
+      def config_set
+        system "gcloud config set project #{Souls.configuration.project_id}"
       end
 
       def create_cluster
@@ -144,6 +149,22 @@ module Souls
                 --tags=allow-health-checks")
       end
 
+      def deploy
+        strain = Souls.configuration.strain
+        case strain
+        when "api"
+          Souls::Init.api_deploy
+        when "service"
+          Souls::Init.service_deploy
+        else
+          puts "coming soon..."
+        end
+      end
+
+      def update
+        `souls i apply_deployment`
+      end
+
       def resize_cluster pool_name: "default-pool", node_num: 1
         app = Souls.configuration.app
         zone = Souls.configuration.zone
@@ -161,73 +182,92 @@ module Souls
       end
 
       def apply_deployment
-        app = Souls.configuration.app
-        system("kubectl apply -f deployment.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/deployment.yml --namespace=#{namespace}")
       end
 
       def apply_secret
-        app = Souls.configuration.app
-        system("kubectl apply -f secret.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/secret.yml --namespace=#{namespace}")
       end
 
       def apply_service
-        app = Souls.configuration.app
-        system("kubectl apply -f service.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/service.yml --namespace=#{namespace}")
       end
 
       def apply_ingress
-        app = Souls.configuration.app
-        system("kubectl apply -f ingress.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/ingress.yml --namespace=#{namespace}")
       end
 
       def delete_deployment
-        app = Souls.configuration.app
-        system("kubectl delete -f deployment.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/deployment.yml --namespace=#{namespace}")
       end
 
       def delete_secret
-        app = Souls.configuration.app
-        system("kubectl delete -f secret.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/secret.yml --namespace=#{namespace}")
       end
 
       def delete_service
-        app = Souls.configuration.app
-        system("kubectl delete -f service.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/service.yml --namespace=#{namespace}")
       end
 
       def delete_ingress
-        app = Souls.configuration.app
-        system("kubectl delete -f ingress.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/ingress.yml --namespace=#{namespace}")
       end
 
-      def update_container version: "latest"
+      def create_dns_conf
+        app = Souls.configuration.app
+        namespace = Souls.configuration.namespace
+        domain = Souls.configuration.domain
+        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{namespace} | grep #{app} | awk '{print $3}')" >> ./infra/config/dns_conf`
+        "created dns file!"
+      end
+
+      def set_dns
+        project_id = Souls.configuration.project_id
+        `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./infra/config/dns_conf`
+      end
+
+      # zone = :us, :eu or :asia
+      def update_container version: "latest", zone: :asia
+        zones = {
+          us: "gcr.io",
+          eu: "eu.gcr.io",
+          asia: "asia.gcr.io"
+        }
         app = Souls.configuration.app
         project_id = Souls.configuration.project_id
         system("docker build . -t #{app}:#{version}")
-        system("docker tag #{app}:#{version} asia.gcr.io/#{project_id}/#{app}:#{version}")
-        system("docker push asia.gcr.io/#{project_id}/#{app}:#{version}")
+        system("docker tag #{app}:#{version} #{zones[zone]}/#{project_id}/#{app}:#{version}")
+        system("docker push #{zones[zone]}/#{project_id}/#{app}:#{version}")
       end
 
       def get_pods
-        app = Souls.configuration.app
-        system("kubectl get pods --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl get pods --namespace=#{namespace}")
       end
 
       def get_svc
-        app = Souls.configuration.app
-        system("kubectl get svc --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl get svc --namespace=#{namespace}")
       end
 
       def get_ingress
-        app = Souls.configuration.app
-        system("kubectl get ingress --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl get ingress --namespace=#{namespace}")
       end
 
-      def run_test
+      def run
         app = Souls.configuration.app
         system("docker rm -f web")
         system("docker build . -t #{app}:latest")
-        system("docker run --name web -it --env-file $PWD/.local_env -p 3000:3000 #{app}:latest")
+        system("docker run --name web -it --env-file $PWD/.env -p 3000:3000 #{app}:latest")
       end
 
       def get_clusters
@@ -245,11 +285,13 @@ module Souls
       def get_credentials
         app = Souls.configuration.app
         zone = Souls.configuration.zone
-        system("gcloud container clusters get-credentials #{app} -cluster --zone #{zone}")
+        system "gcloud container clusters get-credentials #{app} --zone #{zone}"
       end
 
       def create_ssl
-        system("gcloud compute ssl-certificates create #{Souls.configuration.app}-ssl --domains=#SoulsGke.configuration.domain} --global")
+        app = Souls.configuration.app
+        domain = Souls.configuration.domain
+        system "gcloud compute ssl-certificates create #{app}-ssl --domains=#{domain} --global"
       end
 
       def update_proxy
@@ -266,12 +308,14 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :project_id, :app, :network, :machine_type, :zone, :domain, :google_application_credentials, :strain, :proto_package_name
+    attr_accessor :project_id, :app, :network, :namespace, :service_name, :machine_type, :zone, :domain, :google_application_credentials, :strain, :proto_package_name
 
     def initialize
       @project_id = nil
       @app = nil
       @network = nil
+      @namespace = nil
+      @service_name = nil
       @machine_type = nil
       @zone = nil
       @domain = nil
