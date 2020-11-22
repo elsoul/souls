@@ -1,6 +1,8 @@
 Souls.configure do |config|
-  config.project_id = "elsoul"
-  config.app = "elsoul"
+  config.project_id = "elsoul2"
+  config.app = "souls"
+  config.namespace = "souls"
+  config.service_name = "blog-service"
   config.network = "elsoul"
   config.machine_type = "elsoul"
   config.zone = "elsoul"
