@@ -1,11 +1,6 @@
-# SOULs
-
-Welcome to SOULs Framework!
-
-SOULs is a Web Application Framework for Microservices on Google Cloud Platform.
+[![SOULs](https://firebasestorage.googleapis.com/v0/b/el-quest.appspot.com/o/mediaLibrary%2F1605615287402_souls-ogp.jpg?alt=media&token=1115aa76-6863-469d-acc8-9815ca7fac37)](https://rubygems.org/gems/souls)
 
 <p align="center">
-
   <a aria-label="Ruby logo" href="https://el-soul.com">
     <img src="https://badgen.net/badge/icon/Made%20by%20ELSOUL?icon=ruby&label&color=black&labelColor=black">
   </a>
@@ -22,30 +17,32 @@ SOULs is a Web Application Framework for Microservices on Google Cloud Platform.
   </a>
 </p>
 
+## What's SOULs?
+
+Welcome to SOULs Framework!
+
+SOULs is a Web Application Framework for Microservices on Google Cloud Platform.
+
+SOULs creates 4 types of framework.
+
+1. Service - gRPC Serverless Scalable Service (Ruby)
+2. API - GraphQL to call gRPC (Ruby)
+3. Media Web Client - Media web client with SSG (TypeScript)
+4. Admin Web Client - Admin Console and CMS (TypeScript)
+
 ## Dependency
 
-1. Google SDK
-   [https://cloud.google.com/sdk/docs](https://cloud.google.com/sdk/docs)
-2. Docker
-   [https://www.docker.com/](https://www.docker.com/)
+- [Google SDK](https://cloud.google.com/sdk/docs)
+- [Docker](https://www.docker.com/)
+- [Firebase CLI](https://firebase.google.com/docs/cli)
 
-Using:
+## Cloud Infrastructure
 
-☆Google Kubernates Engine
-
-☆Google Traffic Director
-
-☆Google Cloud Run
-
-☆Google Firebase
-
-
-SOULS creates 4 types of framework.
-
-1. Service - gRPC Serverless Scalable Service
-2. API - GraphQL to call gRPC 
-3. Media Web Client - Medeia Auto Analiytics
-4. Admin Web Client - Admin Console Panel
+- [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
+- [Google Traffic Director](https://cloud.google.com/traffic-director)
+- [Google Cloud Run](https://cloud.google.com/run)
+- [Google Firebase](https://firebase.google.com/)
+- [Google Cloud Scheduler](https://cloud.google.com/scheduler)
 
 ## Installation
 
@@ -63,27 +60,26 @@ Or install it yourself as:
 
     $ gem install souls
 
-
 And Create Your APP
 
     $ souls new app_name
 
 ### Choose SOULs Type:
+
 1. Service
 2. API
 3. Media Web
 4. Admin Web
 
-### Usage
+## Usage
+
 Version Check
 
     $ souls -v
 
-
 Init Proto Files
 
     $ souls p `service_name`
-
 
 Run Server
 
@@ -97,17 +93,15 @@ Run Infra Command
 
     $ souls i `method_name`
 
-
-# Deploy
+Deploy
 
     $ souls i deploy
 
 ※Only Initial
 
-# Update
+Update
 
     $ souls i update
-
 
 ## Development
 
