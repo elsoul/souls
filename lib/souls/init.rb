@@ -15,13 +15,21 @@ module Souls
           puts "VPC Network Name:          (default: default)"
           project[:network] = STDIN.gets.chomp
           project[:network] == "" ? project[:network] = "default" : true
+          puts "Namespace:          (default: souls)"
+          project[:namespace] = STDIN.gets.chomp
+          project[:namespace] == "" ? project[:namespace] = "souls" : true
+          if project[:strain] == "service"
+            puts "Service Name:          (default: blog-service)"
+            project[:service_name] = STDIN.gets.chomp
+            project[:service_name] == "" ? project[:service_name] = "blog-service" : true
+          end
           puts "Instance MachineType:       (default: custom-1-6656)"
           project[:machine_type] = STDIN.gets.chomp
           project[:machine_type] == "" ? project[:machine_type] = "custom-1-6656" : true
           puts "Zone:           (default: us-central1-a)"
           project[:zone] = STDIN.gets.chomp
           project[:zone] == "" ? project[:zone] = "us-central1-a" : true
-          puts "Domain:          (default: el-soul.com)"
+          puts "Domain:          (e.g API: el-soul.com, Serive: xds:///blog-service:8000)"
           project[:domain] = STDIN.gets.chomp
           project[:domain] == "" ? project[:domain] = "el-soul.com" : true
           puts "Google Application Credentials Path:      (default: #{app_name}/config/credentials.json)"
@@ -47,6 +55,8 @@ module Souls
             Souls.configure do |config|
               config.project_id = "#{project[:project_id]}"
               config.app = "#{app_name}"
+              config.namespace = "#{project[:namespace]}"
+              config.service_name = "#{project[:service_name]}"
               config.network = "#{project[:network]}"
               config.machine_type = "#{project[:machine_type]}"
               config.zone = "#{project[:zone]}"
@@ -113,23 +123,27 @@ module Souls
       end
 
       def service_deploy
-        app = Souls.configuration.app
-        health_check_name = "#{app}-hc"
-        firewall_rule_name = "#{app}-allow-health-checks"
+        service_name = Souls.configuration.service_name
+        health_check_name = "#{service_name}-hc"
+        firewall_rule_name = "#{service_name}-allow-health-checks"
         zone = Souls.configuration.zone
-        neg_name = "k8s1-87bf55a7-default-blog-service-8080-c7e834de"
-        url_map_name = "#{app}-url-map"
-        path_matcher_name = "#{app}-path-mathcher"
+        url_map_name = "#{service_name}-url-map"
+        path_matcher_name = "#{service_name}-path-mathcher"
         port = "5000"
-        proxy_name = "#{app}-proxy"
-        forwarding_rule_name = "#{app}-forwarding-rule"
+        proxy_name = "#{service_name}-proxy"
+        forwarding_rule_name = "#{service_name}-forwarding-rule"
 
         Souls.create_health_check health_check_name: health_check_name
         Souls.create_firewall_rule firewall_rule_name: firewall_rule_name
-        Souls.create_backend_service service_name: app, health_check_name: health_check_name
-        Souls.add_backend_service service_name: app, neg_name: neg_name, zone: zone
-        Souls.create_url_map url_map_name: url_map_name, service_name: app
-        Souls.create_path_matcher url_map_name: url_map_name, service_name: app, path_matcher_name: path_matcher_name, hostname: app, port: port
+        Souls.create_backend_service service_name: service_name, health_check_name: health_check_name
+        Souls.export_network_group
+        file_path = ".neg_name"
+        File.open(file_path) do |f|
+          Souls.add_backend_service service_name: service_name, neg_name: f.gets.to_s, zone: zone
+        end
+        FileUtils.rm file_path
+        Souls.create_url_map url_map_name: url_map_name, service_name: service_name
+        Souls.create_path_matcher url_map_name: url_map_name, service_name: service_name, path_matcher_name: path_matcher_name, hostname: app, port: port
         Souls.create_target_grpc_proxy proxy_name: proxy_name, url_map_name: url_map_name
         Souls.create_forwarding_rule forwarding_rule_name: forwarding_rule_name, proxy_name: proxy_name, port: port
       end
@@ -152,6 +166,36 @@ module Souls
         sleep 90
         `souls i create_dns_conf`
         `souls i set_dns`
+      end
+
+      def service_update
+        `souls i apply_deployment`
+      end
+
+      def api_update
+        `souls i apply_deployment`
+      end
+
+      def service_delete
+        service_name = Souls.configuration.service_name
+        firewall_rule_name = "#{service_name}-allow-health-checks"
+        url_map_name = "#{service_name}-url-map"
+        proxy_name = "#{service_name}-proxy"
+        forwarding_rule_name = "#{service_name}-forwarding-rule"
+
+        Souls.delete_forwarding_rule forwarding_rule_name: forwarding_rule_name
+        Souls.delete_target_grpc_proxy proxy_name: proxy_name
+        Souls.delete_url_map url_map_name: url_map_name
+        Souls.delete_backend_service service_name: service_name
+        Souls.delete_health_check health_check_name: health_check_name
+        Souls.delete_firewall_rule firewall_rule_name: firewall_rule_name
+      end
+
+      def api_delete
+        `souls i delete_deployment`
+        `souls i delete_secret`
+        `souls i delete_service`
+        `souls i delete_ingress`
       end
 
     end

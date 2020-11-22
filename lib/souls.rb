@@ -109,18 +109,19 @@ module Souls
                 --global")
       end
 
-      def set_network_group_list_env
+      def export_network_group
         app = Souls.configuration.app
         system "NEG_NAME=$(gcloud compute network-endpoint-groups list | grep #{app} | awk '{print $1}')"
-        `echo $NEG_NAME`
+        `echo $NEG_NAME > .neg_name`
       end
 
       def delete_network_group_list neg_name: ""
         system "gcloud compute network-endpoint-groups delete #{neg_name} --zone #{Souls.configuration.zone} -q"
       end
 
-      def delete_cluster cluster_name: "grpc-td-cluster"
-        system "gcloud container clusters delete #{cluster_name} --zone #{Souls.configuration.zone} -q"
+      def delete_cluster
+        app = Souls.configuration.app
+        system "gcloud container clusters delete #{app} --zone #{Souls.configuration.zone} -q"
       end
 
       def config_set
@@ -160,6 +161,10 @@ module Souls
         end
       end
 
+      def update
+        `souls i apply_deployment`
+      end
+
       def resize_cluster pool_name: "default-pool", node_num: 1
         app = Souls.configuration.app
         zone = Souls.configuration.zone
@@ -177,49 +182,50 @@ module Souls
       end
 
       def apply_deployment
-        app = Souls.configuration.app
-        system("kubectl apply -f ./infra/deployment.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/deployment.yml --namespace=#{namespace}")
       end
 
       def apply_secret
-        app = Souls.configuration.app
-        system("kubectl apply -f ./infra/secret.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/secret.yml --namespace=#{namespace}")
       end
 
       def apply_service
-        app = Souls.configuration.app
-        system("kubectl apply -f ./infra/service.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/service.yml --namespace=#{namespace}")
       end
 
       def apply_ingress
-        app = Souls.configuration.app
-        system("kubectl apply -f ./infra/ingress.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl apply -f ./infra/ingress.yml --namespace=#{namespace}")
       end
 
       def delete_deployment
-        app = Souls.configuration.app
-        system("kubectl delete -f ./infra/deployment.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/deployment.yml --namespace=#{namespace}")
       end
 
       def delete_secret
-        app = Souls.configuration.app
-        system("kubectl delete -f ./infra/secret.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/secret.yml --namespace=#{namespace}")
       end
 
       def delete_service
-        app = Souls.configuration.app
-        system("kubectl delete -f ./infra/service.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/service.yml --namespace=#{namespace}")
       end
 
       def delete_ingress
-        app = Souls.configuration.app
-        system("kubectl delete -f ./infra/ingress.yml --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl delete -f ./infra/ingress.yml --namespace=#{namespace}")
       end
 
       def create_dns_conf
         app = Souls.configuration.app
+        namespace = Souls.configuration.namespace
         domain = Souls.configuration.domain
-        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{app} | grep #{app} | awk '{print $3}')" >> ./infra/config/dns_conf`
+        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{namespace} | grep #{app} | awk '{print $3}')" >> ./infra/config/dns_conf`
         "created dns file!"
       end
 
@@ -243,18 +249,18 @@ module Souls
       end
 
       def get_pods
-        app = Souls.configuration.app
-        system("kubectl get pods --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl get pods --namespace=#{namespace}")
       end
 
       def get_svc
-        app = Souls.configuration.app
-        system("kubectl get svc --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl get svc --namespace=#{namespace}")
       end
 
       def get_ingress
-        app = Souls.configuration.app
-        system("kubectl get ingress --namespace=#{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl get ingress --namespace=#{namespace}")
       end
 
       def run
@@ -302,12 +308,14 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :project_id, :app, :network, :machine_type, :zone, :domain, :google_application_credentials, :strain, :proto_package_name
+    attr_accessor :project_id, :app, :network, :namespace, :service_name, :machine_type, :zone, :domain, :google_application_credentials, :strain, :proto_package_name
 
     def initialize
       @project_id = nil
       @app = nil
       @network = nil
+      @namespace = nil
+      @service_name = nil
       @machine_type = nil
       @zone = nil
       @domain = nil
