@@ -137,11 +137,10 @@ module Souls
         Souls.create_firewall_rule firewall_rule_name: firewall_rule_name
         Souls.create_backend_service service_name: service_name, health_check_name: health_check_name
         Souls.export_network_group
-        file_path = ".neg_name"
+        file_path = "./infra/config/neg_name"
         File.open(file_path) do |f|
           Souls.add_backend_service service_name: service_name, neg_name: f.gets.to_s, zone: zone
         end
-        FileUtils.rm file_path
         Souls.create_url_map url_map_name: url_map_name, service_name: service_name
         Souls.create_path_matcher url_map_name: url_map_name, service_name: service_name, path_matcher_name: path_matcher_name, hostname: app, port: port
         Souls.create_target_grpc_proxy proxy_name: proxy_name, url_map_name: url_map_name
