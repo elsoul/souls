@@ -1,5 +1,6 @@
 require "souls/version"
 require "souls/init"
+require "google/cloud/firestore"
 
 module Souls
   class Error < StandardError; end
