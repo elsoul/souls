@@ -8,6 +8,6 @@ Souls.configure do |config|
   config.zone = "elsoul"
   config.domain = "elsoul"
   config.google_application_credentials = "./config/credentials.json"
-  config.strain = "api"
+  config.strain = "service"
   config.proto_package_name = "souls"
 end

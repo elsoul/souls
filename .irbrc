@@ -1,2 +1,3 @@
 require "souls"
-require "./config/initialize"
+require "./config/initialize/souls"
+require "google/cloud/firestore"
