@@ -300,6 +300,17 @@ module Souls
         --global-ssl-certificates \
         --global")
       end
+
+      def run_psql
+        `docker run --rm -d \
+          -p 5433:5432 \
+          -v postgres-tmp:/var/lib/postgresql/data \
+          -e POSTGRES_USER=postgres \
+          -e POSTGRES_PASSWORD=postgres \
+          -e POSTGRES_DB=souls_dev \
+          postgres:12-alpine`
+        system "docker ps"
+      end
     end
 
   def self.configure
