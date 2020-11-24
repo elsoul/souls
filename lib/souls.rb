@@ -7,6 +7,11 @@ module Souls
     class << self
       attr_accessor :configuration
 
+      def con
+        firestore = Google::Cloud::Firestore.new
+        article = firestore.col("versions").doc
+      end
+
       def delete_forwarding_rule forwarding_rule_name: "grpc-gke-forwarding-rule"
         system "gcloud compute -q forwarding-rules delete #{forwarding_rule_name} --global"
       end
@@ -235,18 +240,55 @@ module Souls
         `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./infra/config/dns_conf`
       end
 
-      # zone = :us, :eu or :asia
-      def update_container version: "latest", zone: :asia
+      def update_container zone: :asia
+        project_id = Souls.configuration.project_id
+        firestore = Google::Cloud::Firestore.new
+        strain = Souls.configuration.strain
+        container = case strain
+                    when "api"
+                      Souls.configuration.app
+                    when "service"
+                      Souls.configuration.service_name
+                    else
+                      Souls.configuration.service_name
+                    end
         zones = {
           us: "gcr.io",
           eu: "eu.gcr.io",
           asia: "asia.gcr.io"
         }
-        app = Souls.configuration.app
-        project_id = Souls.configuration.project_id
-        system("docker build . -t #{app}:#{version}")
-        system("docker tag #{app}:#{version} #{zones[zone]}/#{project_id}/#{app}:#{version}")
-        system("docker push #{zones[zone]}/#{project_id}/#{app}:#{version}")
+        versions = firestore.doc "containers/#{container}/versions/1"
+        if versions.get.exists?
+          versions = firestore.col("containers").doc(container).col("versions")
+          query = versions.order("version_counter", "desc").limit 1
+          query.get do |v|
+            @next_version = v.data[:version_counter] + 1
+          end
+        else
+          @next_version = 1
+        end
+        version = firestore.col("containers").doc(container).col("versions").doc @next_version
+        version_string = get_version(@next_version)
+        version.set version: version_string, version_counter: @next_version, zone: zones[zone], created_at: Time.now.utc.to_i
+
+        system("docker build . -t #{app}:#{version_string}")
+        system("docker tag #{app}:#{version_string} #{zones[zone]}/#{project_id}/#{app}:#{version_string}")
+        system("docker push #{zones[zone]}/#{project_id}/#{app}:#{version_string}")
+      end
+
+      def get_version num
+        case num.to_s.size
+        when 1
+          "v0.0.#{num}"
+        when 2
+          v = num.to_s.chars
+          "v0.#{v[0]}.#{v[1]}"
+        when 3
+          v = num.to_s.chars
+          "v#{v[0]}.#{v[1]}.#{v[2]}"
+        else
+          "something wrong..."
+        end
       end
 
       def get_pods
