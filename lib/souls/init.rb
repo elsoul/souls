@@ -167,6 +167,11 @@ module Souls
         `souls i set_dns`
       end
 
+      def local_deploy
+        `souls i run_psql`
+        `docker pull`
+      end
+
       def service_update
         `souls i apply_deployment`
       end

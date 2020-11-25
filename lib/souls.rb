@@ -268,27 +268,11 @@ module Souls
           @next_version = 1
         end
         version = firestore.col("containers").doc(container).col("versions").doc @next_version
-        version_string = get_version(@next_version)
-        version.set version: version_string, version_counter: @next_version, zone: zones[zone], created_at: Time.now.utc.to_i
+        version.set version: "v#{@next_version}", version_counter: @next_version, zone: zones[zone], created_at: Time.now.utc
 
-        system("docker build . -t #{app}:#{version_string}")
-        system("docker tag #{app}:#{version_string} #{zones[zone]}/#{project_id}/#{app}:#{version_string}")
-        system("docker push #{zones[zone]}/#{project_id}/#{app}:#{version_string}")
-      end
-
-      def get_version num
-        case num.to_s.size
-        when 1
-          "v0.0.#{num}"
-        when 2
-          v = num.to_s.chars
-          "v0.#{v[0]}.#{v[1]}"
-        when 3
-          v = num.to_s.chars
-          "v#{v[0]}.#{v[1]}.#{v[2]}"
-        else
-          "something wrong..."
-        end
+        system("docker build . -t #{app}:#{@next_version}")
+        system("docker tag #{app}:#{@next_version} #{zones[zone]}/#{project_id}/#{app}:#{@next_version}")
+        system("docker push #{zones[zone]}/#{project_id}/#{app}:#{@next_version}")
       end
 
       def get_pods
