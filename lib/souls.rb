@@ -275,6 +275,28 @@ module Souls
         system("docker push #{zones[zone]}/#{project_id}/#{app}:#{@next_version}")
       end
 
+      def create_service_account
+        service_account = Souls.configuration.app
+        `gcloud iam service-accounts create #{service_account} \
+        --description="Souls Service Account" \
+        --display-name="#{service_account}"`
+      end
+
+      def create_service_account_key
+        project_id = Souls.configuration.project_id
+        service_account = Souls.configuration.app
+        `gcloud iam service-accounts keys create ./config/keyfile.json \
+          --iam-account #{service_account}@#{project_id}.iam.gserviceaccount.com`
+      end
+
+      def add_service_account_role role: "roles/firebase.admin"
+        project_id = Souls.configuration.project_id
+        service_account = Souls.configuration.app
+        `gcloud projects add-iam-policy-binding #{project_id} \
+        --member="serviceAccount:#{service_account}@#{project_id}.iam.gserviceaccount.com" \
+        --role="#{role}"`
+      end
+
       def get_pods
         namespace = Souls.configuration.namespace
         system("kubectl get pods --namespace=#{namespace}")

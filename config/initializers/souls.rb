@@ -1,6 +1,6 @@
 Souls.configure do |config|
-  config.project_id = "elsoul2"
-  config.app = "souls"
+  config.project_id = "el-quest"
+  config.app = "el-quest"
   config.namespace = "souls"
   config.service_name = "blog-service"
   config.network = "elsoul"
