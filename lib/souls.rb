@@ -343,13 +343,6 @@ module Souls
         system "gcloud compute ssl-certificates create #{app}-ssl --domains=#{domain} --global"
       end
 
-      def update_proxy
-        system("gcloud compute target-https-proxies update TARGET_PROXY_NAME \
-        --ssl-certificates SSL_CERTIFICATE_LIST \
-        --global-ssl-certificates \
-        --global")
-      end
-
       def run_psql
         `docker run --rm -d \
           -p 5433:5432 \

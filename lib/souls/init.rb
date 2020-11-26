@@ -154,7 +154,6 @@ module Souls
         `souls i get_credentials`
         `souls i create_namespace`
         `souls i create_ip`
-        `souls i apply_secret`
         `souls i create_ssl`
         `souls i apply_deployment`
         `souls i apply_service`
