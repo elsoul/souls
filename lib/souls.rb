@@ -353,6 +353,37 @@ module Souls
           postgres:12-alpine`
         system "docker ps"
       end
+
+      def deploy_local
+        `docker network create --driver bridge shared`
+        `docker run -d --name proxy \
+         -p 80:80 -p 443:443 \
+         -v "/var/run/docker.sock:/tmp/docker.sock:ro" \
+         -v "$pwd/certs:/etc/nginx/certs:ro" \
+         -v "/etc/nginx/vhost.d" \
+         -v "/usr/share/nginx/html" \
+         --network shared \
+         --restart always \
+         jwilder/nginx-proxy`
+        `docker run -d --name letsencrypt \
+        -v "/home/kaien/certs:/etc/nginx/certs" \
+        -v "/var/run/docker.sock:/var/run/docker.sock:ro" \
+        --volumes-from proxy \
+        --network shared \
+        --restart always \
+        jrcs/letsencrypt-nginx-proxy-companion`
+        `docker run -d --name nginx \
+        -e VIRTUAL_HOST=kaien.el-soul.com \
+        -e LETSENCRYPT_HOST=kaien.el-soul.com \
+        -e LETSENCRYPT_EMAIL=fumitake.kawasaki@el-soul.com \
+        --network shared \
+        --link web \
+        poppinfumi/nginx-http:latest`
+        `docker run -d --name web \
+         -p 3000:3000 \
+         --network shared \
+         asia.gcr.io/kaien-elixir/kaien:v2`
+      end
     end
 
   def self.configure
