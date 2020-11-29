@@ -45,7 +45,6 @@ module Souls
           puts error
           retry
         end
-        puts "SOULs All Set!!"
       end
 
       def config_init app_name: "souls", project: {}
@@ -83,11 +82,20 @@ module Souls
         folder = version.delete "v"
         system "cp -r #{repository_name}-#{folder}/* #{app_name}/"
         system "rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}"
-        puts "==="
+        txt = <<~TEXT
+           _____ ____  __  ____        
+          / ___// __ \\/ / / / /   _____
+          \\__ \\/ / / / / / / /   / ___/
+         ___/ / /_/ / /_/ / /___(__  ) 
+        /____/\\____/\\____/_____/____/  
+        TEXT
+        puts txt
+        puts "=============================="
         puts "Welcome to SOULs!"
-        puts "==="
+        puts "SOULs Version: #{Souls::VERSION}"
+        puts "=============================="
         puts "$ cd #{app_name}"
-        puts "---"
+        puts "------------------------------"
       end
 
       def proto proto_package_name: "souls", service: "blog"
