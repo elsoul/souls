@@ -361,7 +361,7 @@ module Souls
          --restart always \
          jwilder/nginx-proxy`
         `docker run -d --name letsencrypt \
-        -v "/home/kaien/certs:/etc/nginx/certs" \
+        -v "/home/certs:/etc/nginx/certs" \
         -v "/var/run/docker.sock:/var/run/docker.sock:ro" \
         --volumes-from proxy \
         --network shared \
@@ -369,9 +369,9 @@ module Souls
         jrcs/letsencrypt-nginx-proxy-companion`
         `docker run -d --name nginx \
         -p 80:80 \
-        -e VIRTUAL_HOST=kaien.el-soul.com \
-        -e LETSENCRYPT_HOST=kaien.el-soul.com \
-        -e LETSENCRYPT_EMAIL=fumitake.kawasaki@el-soul.com \
+        -e VIRTUAL_HOST=souls.el-soul.com \
+        -e LETSENCRYPT_HOST=souls.el-soul.com \
+        -e LETSENCRYPT_EMAIL=info@gmail.com \
         --network shared \
         --link web \
         poppinfumi/nginx-http:latest`
