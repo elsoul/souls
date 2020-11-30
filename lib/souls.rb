@@ -7,11 +7,6 @@ module Souls
     class << self
       attr_accessor :configuration
 
-      def con
-        firestore = Google::Cloud::Firestore.new
-        article = firestore.col("versions").doc
-      end
-
       def delete_forwarding_rule forwarding_rule_name: "grpc-gke-forwarding-rule"
         system "gcloud compute -q forwarding-rules delete #{forwarding_rule_name} --global"
       end
@@ -373,6 +368,7 @@ module Souls
         --restart always \
         jrcs/letsencrypt-nginx-proxy-companion`
         `docker run -d --name nginx \
+        -p 80:80 \
         -e VIRTUAL_HOST=kaien.el-soul.com \
         -e LETSENCRYPT_HOST=kaien.el-soul.com \
         -e LETSENCRYPT_EMAIL=fumitake.kawasaki@el-soul.com \
