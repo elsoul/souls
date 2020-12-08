@@ -73,8 +73,9 @@ module Souls
       end
 
       def create_firewall_rule firewall_rule_name: "grpc-gke-allow-health-checks"
+        network = Souls.configuration.network
         system "gcloud compute -q firewall-rules create #{firewall_rule_name} \
-                --network #{Souls.configuration.network} \
+                --network #{network} \
                 --action allow \
                 --direction INGRESS \
                 --source-ranges 35.191.0.0/16,130.211.0.0/22 \
@@ -92,7 +93,18 @@ module Souls
 
       def create_network
         return "Error: Please Set Souls.configuration" if Souls.configuration.nil?
-        system("gcloud compute networks create #{Souls.configuration.network}")
+        network = Souls.configuration.network
+        system "gcloud compute networks create #{network}"
+      end
+
+      def create_firewall_tcp ip_range:
+        network = Souls.configuration.network
+        `gcloud compute firewall-rules create #{network} --network #{network} --allow tcp,udp,icmp --source-ranges #{ip_range}`
+      end
+
+      def create_firewall_ssh
+        network = Souls.configuration.network
+        `gcloud compute firewall-rules create #{network}-ssh --network #{network} --allow tcp:22,tcp:3389,icmp`
       end
 
       def get_network_group_list
@@ -116,17 +128,20 @@ module Souls
         `echo $NEG_NAME > ./infra/config/neg_name`
       end
 
-      def delete_network_group_list neg_name: ""
-        system "gcloud compute network-endpoint-groups delete #{neg_name} --zone #{Souls.configuration.zone} -q"
+      def delete_network_group_list neg_name:
+        zone = Souls.configuration.zone
+        system "gcloud compute network-endpoint-groups delete #{neg_name} --zone #{zone} -q"
       end
 
       def delete_cluster
         app = Souls.configuration.app
-        system "gcloud container clusters delete #{app} --zone #{Souls.configuration.zone} -q"
+        zone = Souls.configuration.zone
+        system "gcloud container clusters delete #{app} --zone #{zone} -q"
       end
 
       def config_set
-        system "gcloud config set project #{Souls.configuration.project_id}"
+        project_id = Souls.configuration.project_id
+        system "gcloud config set project #{project_id}"
       end
 
       def create_cluster
@@ -178,7 +193,7 @@ module Souls
       end
 
       def create_ip
-        ip_name = Souls.configuration.app.to_s + "-ip"
+        ip_name = "#{Souls.configuration.app}-ip"
         system("gcloud compute addresses create #{ip_name} --global")
       end
 
