@@ -284,9 +284,9 @@ module Souls
         version = firestore.col("containers").doc(container).col("versions").doc @next_version
         version.set version: "v#{@next_version}", version_counter: @next_version, zone: zones[zone], created_at: Time.now.utc
 
-        system("docker build . -t #{app}:#{@next_version}")
-        system("docker tag #{app}:#{@next_version} #{zones[zone]}/#{project_id}/#{app}:#{@next_version}")
-        system("docker push #{zones[zone]}/#{project_id}/#{app}:#{@next_version}")
+        system("docker build . -t #{app}:v#{@next_version}")
+        system("docker tag #{app}:v#{@next_version} #{zones[zone]}/#{project_id}/#{app}:v#{@next_version}")
+        system("docker push #{zones[zone]}/#{project_id}/#{app}:v#{@next_version}")
       end
 
       def create_service_account

@@ -145,6 +145,10 @@ module Souls
         proxy_name = "#{service_name}-proxy"
         forwarding_rule_name = "#{service_name}-forwarding-rule"
 
+        `souls i create_service_account`
+        `souls i create_service_account_key`
+        `souls i add_service_account_role`
+        Souls.add_service_account_role role: "roles/containerregistry.ServiceAgent"
         Souls.create_health_check health_check_name: health_check_name
         Souls.create_firewall_rule firewall_rule_name: firewall_rule_name
         Souls.create_backend_service service_name: service_name, health_check_name: health_check_name
@@ -160,6 +164,10 @@ module Souls
       end
 
       def api_deploy
+        `souls i create_service_account`
+        `souls i create_service_account_key`
+        `souls i add_service_account_role`
+        Souls.add_service_account_role role: "roles/containerregistry.ServiceAgent"
         `souls i config_set`
         `souls i create_network`
         `souls i create_cluster`
