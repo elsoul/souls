@@ -9,6 +9,9 @@ module Souls
         project = {}
         project[:strain] = STRAINS[strain.to_i - 1]
         begin
+          puts "Google Cloud Main PROJECT_ID(This project will controll Cloud DNS):      (default: elsoul2)"
+          project[:main_project_id] = STDIN.gets.chomp
+          project[:main_project_id] == "" ? project[:main_project_id] = "elsoul2" : true
           puts "Google Cloud PROJECT_ID:      (default: elsoul2)"
           project[:project_id] = STDIN.gets.chomp
           project[:project_id] == "" ? project[:project_id] = "elsoul2" : true
@@ -52,6 +55,7 @@ module Souls
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             Souls.configure do |config|
+              config.main_project_id = "#{project[:main_project_id]}"
               config.project_id = "#{project[:project_id]}"
               config.app = "#{app_name}"
               config.namespace = "#{project[:namespace]}"

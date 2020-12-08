@@ -402,9 +402,10 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :project_id, :app, :network, :namespace, :service_name, :machine_type, :zone, :domain, :google_application_credentials, :strain, :proto_package_name
+    attr_accessor :main_project_id, :project_id, :app, :network, :namespace, :service_name, :machine_type, :zone, :domain, :google_application_credentials, :strain, :proto_package_name
 
     def initialize
+      @main_project_id = nil
       @project_id = nil
       @app = nil
       @network = nil
