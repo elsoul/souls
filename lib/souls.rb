@@ -254,11 +254,10 @@ module Souls
         project_id = Souls.configuration.project_id
         firestore = Google::Cloud::Firestore.new
         strain = Souls.configuration.strain
+        app = Souls.configuration.app
         container = case strain
                     when "api"
-                      Souls.configuration.app
-                    when "service"
-                      Souls.configuration.service_name
+                      app
                     else
                       Souls.configuration.service_name
                     end
