@@ -139,6 +139,11 @@ module Souls
         system "gcloud container clusters delete #{app} --zone #{zone} -q"
       end
 
+      def config_set_main
+        project_id = Souls.configuration.main_project_id
+        system "gcloud config set project #{project_id}"
+      end
+
       def config_set
         project_id = Souls.configuration.project_id
         system "gcloud config set project #{project_id}"

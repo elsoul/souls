@@ -175,7 +175,9 @@ module Souls
         puts "This migth take a few mins..."
         sleep 90
         `souls i create_dns_conf`
+        `souls i config_set_main`
         `souls i set_dns`
+        `souls i config_set`
       end
 
       def local_deploy
