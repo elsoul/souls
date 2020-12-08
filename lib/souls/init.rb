@@ -145,9 +145,9 @@ module Souls
         proxy_name = "#{service_name}-proxy"
         forwarding_rule_name = "#{service_name}-forwarding-rule"
 
-        `souls i create_service_account`
-        `souls i create_service_account_key`
-        `souls i add_service_account_role`
+        Souls.create_service_account
+        Souls.create_service_account_key
+        Souls.add_service_account_role
         Souls.add_service_account_role role: "roles/containerregistry.ServiceAgent"
         Souls.create_health_check health_check_name: health_check_name
         Souls.create_firewall_rule firewall_rule_name: firewall_rule_name
@@ -164,28 +164,28 @@ module Souls
       end
 
       def api_deploy
-        `souls i create_service_account`
-        `souls i create_service_account_key`
-        `souls i add_service_account_role`
+        Souls.create_service_account
+        Souls.create_service_account_key
+        Souls.add_service_account_role
         Souls.add_service_account_role role: "roles/containerregistry.ServiceAgent"
-        `souls i config_set`
-        `souls i create_network`
-        `souls i create_cluster`
-        `souls i get_credentials`
-        `souls i create_namespace`
-        `souls i create_ip`
-        `souls i create_ssl`
-        `souls i apply_deployment`
-        `souls i apply_service`
-        `souls i apply_ingress`
+        Souls.config_set
+        Souls.create_network
+        Souls.create_cluster
+        Souls.get_credentials
+        Souls.create_namespace
+        Souls.create_ip
+        Souls.create_ssl
+        Souls.apply_deployment
+        Souls.apply_service
+        Souls.apply_ingress
         puts "Wainting for Ingress to get IP..."
         sleep 1
         puts "This migth take a few mins..."
         sleep 90
-        `souls i create_dns_conf`
-        `souls i config_set_main`
-        `souls i set_dns`
-        `souls i config_set`
+        Souls.create_dns_conf
+        Souls.config_set_main
+        Souls.set_dns
+        Souls.config_set
       end
 
       def local_deploy
