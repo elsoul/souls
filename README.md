@@ -21,7 +21,7 @@
 
 Welcome to SOULs Framework!
 
-SOULs is a Web Application Framework for Microservices on Google Cloud Platform.
+SOULS is a Web Application Framework for Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. You can focus on business logic. No more infra problems.
 
 SOULs creates 4 types of framework.
 

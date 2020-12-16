@@ -1,13 +1,13 @@
 require_relative 'lib/souls/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "souls"
+  spec.name          = "SOULs"
   spec.version       = Souls::VERSION
   spec.authors       = ["POPPIN-FUMI", "KishiTheMechanic"]
   spec.email         = ["fumitake.kawasaki@el-soul.com", "shota.kishi@el-soul.com"]
 
-  spec.summary       = "SOULS is a Web Application Framework for Microservices on Google Cloud Platform."
-  spec.description   = "SOULS is a Web Application Framework for Microservices on Google Cloud Platform."
+  spec.summary       = "SOULS is a Web Application Framework for Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. You can focus on business logic. No more infra problems."
+  spec.description   = "SOULS is a Web Application Framework for Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. You can focus on business logic. No more infra problems."
   spec.homepage      = "https://github.com/elsoul/souls"
   spec.license       = "Apache-2.0"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
