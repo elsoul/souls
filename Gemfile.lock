@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.6.1)
+    SOULs (0.6.3)
       google-cloud-firestore (= 2.4.0)
       mechanize (= 2.7.6)
 
@@ -112,11 +112,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  SOULs!
   google-cloud-firestore (= 2.4.0)
   mechanize (= 2.7.6)
   rake (~> 12.0)
   rspec (~> 3.0)
-  souls!
 
 BUNDLED WITH
    2.1.4
