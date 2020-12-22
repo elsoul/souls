@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    SOULs (0.6.3)
+    SOULs (0.6.5)
       google-cloud-firestore (= 2.4.0)
       mechanize (= 2.7.6)
 
