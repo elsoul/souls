@@ -17,7 +17,7 @@ begin
     strain = Souls.configuration.strain
     case strain
     when "api"
-      system "bundle exec rails s"
+      system "bundle exec puma -p 3000"
     when "service"
       system "bundle exec rake run_server"
     else
@@ -27,7 +27,7 @@ begin
     strain = Souls.configuration.strain
     case strain
     when "api"
-      system "bundle exec rails c"
+      system "bundle exec irb"
     when "service"
       system "bundle exec irb"
     else
