@@ -1,5 +1,3 @@
-require "mechanize"
-
 module Souls
   STRAINS = ["service", "api", "graph", "media", "admin"]
   module Init
@@ -73,9 +71,10 @@ module Souls
       end
 
       def get_version repository_name: "souls_service"
-        agent = Mechanize.new
-        page = agent.get("https://github.com/elsoul/#{repository_name}/releases")
-        page.search("span.css-truncate-target")[0].to_s.scan(/^*+>(.+)</)[0][0].to_s
+        data = JSON.parse `curl \
+        -H "Accept: application/vnd.github.v3+json" \
+        -s https://api.github.com/repos/elsoul/#{repository_name}/releases`
+        data[0]["tag_name"]
       end
 
       def download_souls app_name: "souls", repository_name: "souls_service"
