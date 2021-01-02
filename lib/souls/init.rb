@@ -1,7 +1,7 @@
 require "mechanize"
 
 module Souls
-  STRAINS = ["service", "api", "media", "admin"]
+  STRAINS = ["service", "api", "graph", "media", "admin"]
   module Init
     class << self
       def create_souls strain: 1, app_name: "souls"

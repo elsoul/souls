@@ -9,9 +9,9 @@ begin
       puts "you need to specify your app name \n `souls new app_name`"
       exit
     end
-    puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API \n 3. SOULS Media Web \n 4. SOULS Admin Web \n Enter Number: "
+    puts "Which framework:   \n 1. SOULS gRPC Service \n 2. SOULS GraphQL API gRPC compatible \n 3. SOULS GraphQL API \n 4. SOULS Media Web \n 5. SOULS Admin Web \n Enter Number: "
     strain = STDIN.gets.chomp.to_i
-    (1..4).include?(strain) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..4")
+    (1..5).include?(strain) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..5")
     Souls::Init.create_souls strain: strain, app_name: ARGV[1]
   when "s", "server"
     strain = Souls.configuration.strain
