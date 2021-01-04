@@ -41,8 +41,15 @@ begin
     Souls::Init.config
   when "-v", "--version"
     puts Souls::VERSION
-  when "test"
-    system "ruby greeter_client.rb 'SOULS TEST RUN!'"
+  when "g", "generate"
+    `touch .rubocop.yml`
+    `touch .env`
+    `touch .gitignore`
+    `touch .irbrc`
+  when "t", "test"
+    `bundle exec rspec`
+  when "deploy"
+    `gcloud builds submit --config=cloudbuild.yml --project $PROJECT_ID`
   else
     puts "Welcome to Souls!Yeah!"
   end
