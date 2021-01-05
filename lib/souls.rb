@@ -1,5 +1,6 @@
 require "souls/version"
 require "souls/init"
+require "json"
 
 module Souls
   class Error < StandardError; end
