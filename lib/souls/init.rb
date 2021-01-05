@@ -163,6 +163,7 @@ module Souls
       end
 
       def api_deploy
+        Souls.service_api_enable
         Souls.create_service_account
         Souls.create_service_account_key
         Souls.add_service_account_role

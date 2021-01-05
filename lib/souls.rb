@@ -149,6 +149,11 @@ module Souls
         system "gcloud config set project #{project_id}"
       end
 
+      def config_set
+        project_id = Souls.configuration.project_id
+        system "gcloud config set project #{project_id}"
+      end
+
       def create_cluster
         app = Souls.configuration.app
         network = Souls.configuration.network
@@ -251,8 +256,16 @@ module Souls
       end
 
       def set_dns
-        project_id = Souls.configuration.project_id
+        project_id = Souls.configuration.main_project_id
         `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./infra/dns_conf`
+      end
+
+      def service_api_enable
+        `gcloud services enable iam.googleapis.com`
+        `gcloud services enable dns.googleapis.com`
+        `gcloud services enable container.googleapis.com`
+        `gcloud services enable containerregistry.googleapis.com`
+        `gcloud services enable servicenetworking.googleapis.com`
       end
 
       def update_container zone: :asia
