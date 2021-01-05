@@ -246,13 +246,13 @@ module Souls
         app = Souls.configuration.app
         namespace = Souls.configuration.namespace
         domain = Souls.configuration.domain
-        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{namespace} | grep #{app} | awk '{print $3}')" >> ./infra/config/dns_conf`
+        `echo "#{domain}. 300 IN A $(kubectl get ingress --namespace #{namespace} | grep #{app} | awk '{print $3}')" >> ./infra/dns_conf`
         "created dns file!"
       end
 
       def set_dns
         project_id = Souls.configuration.project_id
-        `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./infra/config/dns_conf`
+        `gcloud dns record-sets import -z=#{project_id} --zone-file-format ./infra/dns_conf`
       end
 
       def update_container zone: :asia
