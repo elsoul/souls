@@ -193,8 +193,8 @@ module Souls
       end
 
       def create_namespace
-        app = Souls.configuration.app
-        system("kubectl create namespace #{app}")
+        namespace = Souls.configuration.namespace
+        system("kubectl create namespace #{namespace}")
       end
 
       def create_ip

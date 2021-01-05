@@ -47,7 +47,15 @@ begin
     `touch .gitignore`
     `touch .irbrc`
   when "t", "test"
-    `bundle exec rspec`
+    case ARGV[1]
+    when "-r"
+      `bundle exec rspec`
+    when "-s"
+      `bundle exec steep check`
+    else
+      `bundle exec steep check`
+      `bundle exec rspec`
+    end
   when "deploy"
     `gcloud builds submit --config=cloudbuild.yml --project $PROJECT_ID`
   else
