@@ -57,7 +57,8 @@ begin
       `bundle exec rspec`
     end
   when "deploy"
-    `gcloud builds submit --config=cloudbuild.yml --project $PROJECT_ID`
+    project_id = Souls.configuration.project_id
+    `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`
   else
     puts "Welcome to Souls!Yeah!"
   end
