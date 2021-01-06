@@ -266,6 +266,9 @@ module Souls
         `gcloud services enable container.googleapis.com`
         `gcloud services enable containerregistry.googleapis.com`
         `gcloud services enable servicenetworking.googleapis.com`
+        `gcloud services enable sqladmin.googleapis.com`
+        `gcloud services enable sql-component.googleapis.com`
+        `gcloud services enable cloudbuild.googleapis.com`
       end
 
       def update_container zone: :asia
