@@ -149,11 +149,6 @@ module Souls
         system "gcloud config set project #{project_id}"
       end
 
-      def config_set
-        project_id = Souls.configuration.project_id
-        system "gcloud config set project #{project_id}"
-      end
-
       def create_cluster
         app = Souls.configuration.app
         network = Souls.configuration.network
@@ -379,13 +374,19 @@ module Souls
           -v postgres-tmp:/var/lib/postgresql/data \
           -e POSTGRES_USER=postgres \
           -e POSTGRES_PASSWORD=postgres \
-          -e POSTGRES_DB=souls_dev \
-          postgres:12-alpine`
-        system "docker ps"
+          -e POSTGRES_DB=souls_test \
+          postgres:13-alpine`
+        `docker ps`
+      end
+
+      def run_awake
+        app = Souls.configuration.app
+        `gcloud scheduler jobs create http #{app}-awake --schedule "0,10,20,30,40,50 * * * *" --uri "https://#{app}.el-soul.com" --http-method GET`
       end
 
       def deploy_local
         `docker network create --driver bridge shared`
+
         `docker run -d --name proxy \
          -p 80:80 -p 443:443 \
          -v "/var/run/docker.sock:/tmp/docker.sock:ro" \
@@ -395,6 +396,7 @@ module Souls
          --network shared \
          --restart always \
          jwilder/nginx-proxy`
+
         `docker run -d --name letsencrypt \
         -v "/home/certs:/etc/nginx/certs" \
         -v "/var/run/docker.sock:/var/run/docker.sock:ro" \
@@ -402,6 +404,7 @@ module Souls
         --network shared \
         --restart always \
         jrcs/letsencrypt-nginx-proxy-companion`
+
         `docker run -d --name nginx \
         -p 80:80 \
         -e VIRTUAL_HOST=souls.el-soul.com \
@@ -409,11 +412,12 @@ module Souls
         -e LETSENCRYPT_EMAIL=info@gmail.com \
         --network shared \
         --link web \
-        poppinfumi/nginx-http:latest`
+        poppinfumi/ruby-nginx:latest`
+
         `docker run -d --name web \
          -p 3000:3000 \
          --network shared \
-         asia.gcr.io/kaien-elixir/kaien:v2`
+         poppinfumi/souls_api`
       end
     end
 

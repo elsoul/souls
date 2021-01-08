@@ -195,3 +195,7 @@ Style/ClassMethodsDefinitions:
   Enabled: false
 Style/GlobalStdStream:
   Enabled: false
+Layout/IndentationConsistency:
+  Enabled: false
+Layout/IndentationWidth:
+  Enabled: false
