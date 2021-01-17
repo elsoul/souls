@@ -12,7 +12,7 @@ module Souls
           project[:main_project_id] == "" ? project[:main_project_id] = "elsoul2" : true
           puts "Google Cloud PROJECT_ID:      (default: elsoul2)"
           project[:project_id] = STDIN.gets.chomp
-          project[:project_id] == "" ? project[:project_id] = "elsoul2" : true
+          project[:project_id] = "elsoul2" if project[:project_id] == ""
           puts "VPC Network Name:          (default: default)"
           project[:network] = STDIN.gets.chomp
           project[:network] == "" ? project[:network] = "default" : true
