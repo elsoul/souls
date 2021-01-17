@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package Souls;
+
+import "google/protobuf/timestamp.proto";
+
+service Blog {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+    // Sends another greeting
+    rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+
+    // Blog Service Sample
+    rpc GetArticle(GetArticlRequest) returns (GetArticleReply) {}
+    rpc GetArticles(GetArticlesRequest) returns (stream Article) {}
+    rpc CreateArticle(Article) returns (CreateArticleReply) {}
+    rpc UpdateArticles(stream Article) returns (UpdateArticlesReply) {}
+    rpc DeleteArticle(DeleteArticlRequest) returns (DeleteArticleReply) {}
+    rpc CreateArticlesInStream(stream Article) returns (stream Article) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+
+
+// Blog Protos
+message Article {
+    string id = 1;
+    string user_id = 2;
+    string title = 3;
+    string body = 4;
+    string thumnail_url = 5;
+    uint32 public_date = 6;
+    uint32 article_category_id = 7;
+    bool is_public = 8;
+    repeated string tag = 9;
+    bool has_series = 10;
+    uint32 series_id = 11;
+    uint32 episode_num = 12;
+    google.protobuf.Timestamp created_at = 13;
+    google.protobuf.Timestamp updated_at = 14;
+}
+
+
+message GetArticlRequest {
+    uint32 id = 1;
+}
+
+message GetArticleReply {
+    Article article = 1;
+}
+
+message GetArticlesRequest {
+    string search = 1;
+    uint32 limit = 2;
+}
+
+message UpdateArticlesReply {
+    repeated Article articles = 1;
+}
+
+message DeleteArticlRequest {
+    uint32 id = 1;
+}
+
+message DeleteArticleReply {
+    Article article = 1;
+}
+
+message CreateArticleReply {
+    Article article = 1;
+}

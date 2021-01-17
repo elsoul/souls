@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: souls_service
+  annotations:
+    cloud.google.com/neg: '{"exposed_ports":{"8080":{}}}'
+spec:
+  ports:
+  - port: 8080
+    name: souls_service
+    protocol: TCP
+    targetPort: 50051
+  selector:
+    run: souls_service
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: souls_service
+  name: souls_service
+spec:
+  selector:
+    matchLabels:
+      run: souls_service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: souls_service
+    spec:
+      containers:
+      - image: asia.gcr.io/elsoul2/souls_service:0.0.1
+        name: souls_service
+        ports:
+        - protocol: TCP
+          containerPort: 50051

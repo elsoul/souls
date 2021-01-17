@@ -84,7 +84,7 @@ module Souls
         system "tar -zxvf ./#{version}.tar.gz"
         system "mkdir #{app_name}"
         folder = version.delete "v"
-        system "cp -aiv #{repository_name}-#{folder}/* #{app_name}/"
+        system "cp -r #{repository_name}-#{folder}/ #{app_name}/"
         system "rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}"
         txt = <<~TEXT
            _____ ____  __  ____        
