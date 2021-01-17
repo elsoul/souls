@@ -2,7 +2,11 @@
 require "souls"
 
 begin
-  require "./config/initializers/souls" unless ARGV[0] == "new"
+  begin
+    require "./config/initializers/souls" unless ARGV[0] == "new"
+  rescue
+    Souls::Init.config_init
+  end
   case ARGV[0]
   when "new"
     if ARGV[1].nil?
@@ -38,7 +42,7 @@ begin
   when "p", "proto"
     Souls::Init.proto proto_package_name: "souls", service: ARGV[1]
   when "init"
-    Souls::Init.config
+    Souls::Init.config_init
   when "-v", "--version"
     puts Souls::VERSION
   when "g", "generate"

@@ -49,6 +49,7 @@ module Souls
       end
 
       def config_init app_name: "souls", project: {}
+        puts "Generating souls conf..."
         file_path = "#{app_name}/config/initializers/souls.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS

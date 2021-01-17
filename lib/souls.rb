@@ -376,8 +376,8 @@ module Souls
           -v postgres-tmp:/var/lib/postgresql/data \
           -e POSTGRES_USER=postgres \
           -e POSTGRES_PASSWORD=postgres \
-          -e POSTGRES_DB=souls_dev \
-          postgres:12-alpine`
+          -e POSTGRES_DB=souls_test \
+          postgres:13-alpine`
         system "docker ps"
       end
 
