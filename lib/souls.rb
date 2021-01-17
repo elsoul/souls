@@ -125,7 +125,7 @@ module Souls
       def export_network_group
         app = Souls.configuration.app
         system "NEG_NAME=$(gcloud compute network-endpoint-groups list | grep #{app} | awk '{print $1}')"
-        `echo $NEG_NAME > ./infra/config/neg_name`
+        `echo $NEG_NAME > ./config/neg_name`
       end
 
       def delete_network_group_list neg_name:
