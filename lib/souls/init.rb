@@ -41,16 +41,44 @@ module Souls
           confirm = STDIN.gets.chomp
           raise StandardError, "Retry" unless confirm == ""
           download_souls app_name: app_name, repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
-          config_init app_name: app_name, project: project if config_needed.include?(strain)
+          initial_config_init app_name: app_name, project: project if config_needed.include?(strain)
         rescue StandardError => error
           puts error
           retry
         end
       end
 
-      def config_init app_name: "souls", project: {}
+      def initial_config_init app_name: "souls", project: {}
         puts "Generating souls conf..."
+        `touch "#{app_name}/config/initializers/souls.rb"`
         file_path = "#{app_name}/config/initializers/souls.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            Souls.configure do |config|
+              config.main_project_id = "#{project[:main_project_id]}"
+              config.project_id = "#{project[:project_id]}"
+              config.app = "#{app_name}"
+              config.namespace = "#{project[:namespace]}"
+              config.service_name = "#{project[:service_name]}"
+              config.network = "#{project[:network]}"
+              config.machine_type = "#{project[:machine_type]}"
+              config.zone = "#{project[:zone]}"
+              config.domain = "#{project[:domain]}"
+              config.google_application_credentials = "#{project[:google_application_credentials]}"
+              config.strain = "#{project[:strain]}"
+              config.proto_package_name = "souls"
+            end
+          EOS
+        end
+      end
+
+      def config_init app_name: "souls", project: {}
+        `touch ./config/initializers/souls.rb`
+        file_path = "./config/initializers/souls.rb"
+        puts "Generating souls conf..."
+        sleep(rand(0.1..0.3))
+        puts "Generated!"
+        puts "Let's Edit SOULs Conf: `#{file_path}`"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             Souls.configure do |config|
