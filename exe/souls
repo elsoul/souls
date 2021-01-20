@@ -46,10 +46,27 @@ begin
   when "-v", "--version"
     puts Souls::VERSION
   when "g", "generate"
-    `touch .rubocop.yml`
-    `touch .env`
-    `touch .gitignore`
-    `touch .irbrc`
+    case ARGV[1]
+    when "model"
+      Souls::Init.model class_name: ARGV[2]
+    when "mutation"
+      Souls::Init.mutation class_name: ARGV[2]
+    when "query"
+      Souls::Init.query class_name: ARGV[2]
+    when "type"
+      Souls::Init.type class_name: ARGV[2]
+    when "migration"
+      Souls::Init.migration class_name: ARGV[2]
+    when "rspec_model"
+      Souls::Init.rspec_model class_name: ARGV[2]
+    when "rspec_mutation"
+      Souls::Init.rspec_mutation class_name: ARGV[2]
+    when "rspec_query"
+      Souls::Init.rspec_query class_name: ARGV[2]
+    when "rspec_type"
+      Souls::Init.rspec_type class_name: ARGV[2]
+    else
+    end
   when "t", "test"
     case ARGV[1]
     when "-r"

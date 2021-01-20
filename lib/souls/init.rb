@@ -243,6 +243,149 @@ module Souls
         `souls i delete_ingress`
       end
 
+      def model class_name: "souls"
+        file_path = "./app/models/#{class_name}.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            class #{class_name.capitalize} < ActiveRecord::Base
+            end
+          EOS
+        end
+        puts "model #{class_name}.rb created!: `#{file_path}`"
+      end
+
+      def mutation class_name: "souls"
+        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            module Mutations
+              class Create#{class_name.capitalize} < BaseMutation
+                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+                field :error, String, null: true
+
+                ## Change argument as you needed
+                # argument :id, Integer, required: true
+                # argument :title, String, required: true
+                # argument :tag, [String], required: false
+                # argument :is_public, Boolean, required: true
+                # argument :public_date, GraphQL::Types::ISO8601DateTime, required: true
+
+                def resolve **args
+                  #{class_name} = #{class_name.capitalize}.new args
+                  if #{class_name}.save
+                    { #{class_name}: #{class_name} }
+                  else
+                    { error: #{class_name}.errors.full_messages }
+                  end
+                rescue StandardError => error
+                  GraphQL::ExecutionError.new error
+                end
+              end
+            end
+          EOS
+        end
+        puts "mutation create_#{class_name}.rb created!: `#{file_path}`"
+      end
+
+      def query class_name: "souls"
+        file_path = "./app/graphql/queries/#{class_name}s.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            module Queries
+              class #{class_name.capitalize}s < Queries::BaseQuery
+                type [Types::#{class_name.capitalize}Type], null: false
+
+                def resolve
+                  ::#{class_name.capitalize}.all
+                rescue StandardError => error
+                  GraphQL::ExecutionError.new error
+                end
+              end
+            end
+          EOS
+        end
+        puts "query #{class_name}s.rb created!: `#{file_path}`"
+        file_path = "./app/graphql/queries/#{class_name}.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            module Queries
+              class #{class_name.capitalize} < Queries::BaseQuery
+                type Types::#{class_name.capitalize}Type, null: false
+                argument :id, Integer, required: true
+
+                def resolve id:
+                  ::#{class_name.capitalize}.find(id)
+                rescue StandardError => error
+                  GraphQL::ExecutionError.new error
+                end
+              end
+            end
+          EOS
+          puts "query #{class_name}.rb created!: `#{file_path}`"
+        end
+      end
+
+      def type class_name: "souls"
+        file_path = "./app/graphql/types/#{class_name}_type.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            module Types
+              class #{class_name.capitalize}Type < GraphQL::Schema::Object
+                implements GraphQL::Types::Relay::Node
+
+                ## Change field as you needed
+                # global_id_field :id
+                # field :user, Types::UserType, null: false
+                # field :title, String, null: false
+                # field :tag, [String], null: true
+                # field :public_date, GraphQL::Types::ISO8601DateTime, null: false
+                # field :is_public, Boolean, null: false
+                # field :article_category, Types::ArticleCategoryType, null: false
+                # field :created_at, GraphQL::Types::ISO8601DateTime, null: true
+                # field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
+              end
+            end
+          EOS
+        end
+        puts "type #{class_name}.rb created!: `#{file_path}`"
+      end
+
+      def rspec_model class_name: "souls"
+        file_path = "./spec/models/#{class_name}_spec.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            RSpec.describe #{class_name.capitalize}, type: :model do
+              it "作成する" do
+                expect(FactoryBot.build(:#{class_name})).to be_valid
+              end
+
+              it "同じtitleがあると作成できない" do
+                FactoryBot.build(:#{class_name}, title: "hey")
+                expect(FactoryBot.build(:#{class_name}, title: "hey")).to be_valid
+              end
+            end
+          EOS
+        end
+        puts "rspec_model #{class_name}_spec.rb created!: `#{file_path}`"
+      end
+
+      def rspec_mutation class_name: "souls"
+      end
+
+      def rspec_query class_name: "souls"
+      end
+
+      def rspec_type class_name: "souls"
+      end
+
+      def migration class_name: "souls"
+        model class_name: class_name
+        mutation class_name: class_name
+        query class_name: class_name
+        type class_name: class_name
+        rspec_model class_name: class_name
+      end
+
     end
   end
 end
