@@ -199,3 +199,5 @@ Layout/IndentationConsistency:
   Enabled: false
 Layout/IndentationWidth:
   Enabled: false
+Style/DateTime:
+  Enabled: false

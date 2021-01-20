@@ -254,38 +254,69 @@ module Souls
         puts "model #{class_name}.rb created!: `#{file_path}`"
       end
 
-      def mutation class_name: "souls"
-        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
-        File.open(file_path, "w") do |f|
-          f.write <<~EOS
-            module Mutations
-              class Create#{class_name.capitalize} < BaseMutation
-                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
-                field :error, String, null: true
-
-                ## Change argument as you needed
-                # argument :id, Integer, required: true
-                # argument :title, String, required: true
-                # argument :tag, [String], required: false
-                # argument :is_public, Boolean, required: true
-                # argument :public_date, GraphQL::Types::ISO8601DateTime, required: true
-
-                def resolve **args
-                  #{class_name} = #{class_name.capitalize}.new args
-                  if #{class_name}.save
-                    { #{class_name}: #{class_name} }
-                  else
-                    { error: #{class_name}.errors.full_messages }
-                  end
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new error
-                end
-              end
-            end
-          EOS
-        end
-        puts "mutation create_#{class_name}.rb created!: `#{file_path}`"
+      def type_check type
+        {
+          bigint: "Integer",
+          string: "String",
+          text: "String",
+          datetime: "GraphQL::Types::ISO8601DateTime",
+          boolean: "Boolean",
+          integer: "Integer"
+        }[type.to_sym]
       end
+
+      def table_check line: "", class_name: ""
+        if line.include?("create_table")
+          return true if line.split(" ")[1].gsub("\"", "").gsub(",", "") == "#{class_name}s"
+        end
+        false
+      end
+
+      # def mutation class_name: "souls"
+      #   file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+      #   path = "./db/schema.rb"
+      #   File.open(file_path, "w") do |new_line|
+      #     new_line.write <<~EOS
+      #       module Mutations
+      #         class Create#{class_name.capitalize} < BaseMutation
+      #           field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+      #           field :error, String, null: true
+
+      #           ## Change argument as you needed
+      #           # argument :id, Integer, required: true
+      #           # argument :title, String, required: true
+      #           # argument :tag, [String], required: false
+      #           # argument :is_public, Boolean, required: true
+      #           # argument :public_date, GraphQL::Types::ISO8601DateTime, required: true
+      #     EOS
+      #     File.open(path, "r") do |f|
+      #       f.each_line.with_index do |line, i|
+      #         puts line
+      #         if table_check(line: line, class_name: class_name)
+      #           type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+      #           field = type_check type
+      #           new_line.write "argument :#{name}, #{field} , required: false"
+      #           break if line.include?("end")
+      #         end
+      #       end
+      #     end
+      #     new_line.write <<~EOS
+      #       def resolve **args
+      #             #{class_name} = #{class_name.capitalize}.new args
+      #             if #{class_name}.save
+      #               { #{class_name}: #{class_name} }
+      #             else
+      #               { error: #{class_name}.errors.full_messages }
+      #             end
+      #           rescue StandardError => error
+      #             GraphQL::ExecutionError.new error
+      #           end
+      #         end
+      #       end
+      #     EOS
+      #   end
+      #   puts "mutation create_#{class_name}.rb created!: `#{file_path}`"
+      # end
 
       def query class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name}s.rb"
