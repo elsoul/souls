@@ -293,7 +293,7 @@ module Souls
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
               if @on
-                new_line.write "\n" && break if line.include?("end") || line.include?("t.index")
+                break if line.include?("end") || line.include?("t.index")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field = type_check type
                 new_line.write "    argument :#{name}, #{field}, required: false\n"
@@ -370,29 +370,55 @@ module Souls
         end
       end
 
-      def type class_name: "souls"
+      def create_type_head class_name: "souls"
         file_path = "./app/graphql/types/#{class_name}_type.rb"
-        File.open(file_path, "w") do |f|
-          f.write <<~EOS
-            module Types
-              class #{class_name.capitalize}Type < GraphQL::Schema::Object
-                implements GraphQL::Types::Relay::Node
+          File.open(file_path, "w") do |f|
+            f.write <<~EOS
+              module Types
+                class #{class_name.capitalize}Type < GraphQL::Schema::Object
+                  implements GraphQL::Types::Relay::Node
 
-                ## Change field as you needed
-                # global_id_field :id
-                # field :user, Types::UserType, null: false
-                # field :title, String, null: false
-                # field :tag, [String], null: true
-                # field :public_date, GraphQL::Types::ISO8601DateTime, null: false
-                # field :is_public, Boolean, null: false
-                # field :article_category, Types::ArticleCategoryType, null: false
-                # field :created_at, GraphQL::Types::ISO8601DateTime, null: true
-                # field :updated_at, GraphQL::Types::ISO8601DateTime, null: true
+            EOS
+          end
+      end
+
+      def create_type_params class_name: "souls"
+        file_path = "./app/graphql/types/#{class_name}_type.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                new_line.write "\n" && break if line.include?("end") || line.include?("t.index")
+                type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                field = type_check type
+                new_line.write "    field :#{name}, #{field}, null: true\n"
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
+                new_line.write "    global_id_field :id\n"
+              end
+            end
+          end
+        end
+      end
+
+      def create_type_end class_name: "souls"
+        file_path = "./app/graphql/types/#{class_name}_type.rb"
+        File.open(file_path, "a") do |f|
+          f.write <<~EOS
               end
             end
           EOS
         end
-        puts "type #{class_name}.rb created!: `#{file_path}`"
+        puts "Type #{class_name}_type.rb Auto Generated from schema.rb!: `#{file_path}`"
+      end
+
+      def type class_name: "souls"
+        create_type_head class_name: class_name
+        create_type_params class_name: class_name
+        create_type_end class_name: class_name
       end
 
       def rspec_model class_name: "souls"
