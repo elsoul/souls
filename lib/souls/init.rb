@@ -394,6 +394,26 @@ module Souls
       end
 
       def delete_mutation class_name: "souls"
+        file_path = "./app/graphql/mutations/delete_#{class_name}.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            module Mutations
+              class Delete#{class_name.capitalize} < BaseMutation
+                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+                argument :id, Integer, required: true
+
+                def resolve id:
+                  #{class_name} = #{class_name.capitalize}.find id
+                  #{class_name}.destroy
+                  { #{class_name}: #{class_name} }
+                rescue StandardError => error
+                  GraphQL::ExecutionError.new error
+                end
+              end
+            end
+          EOS
+        end
+        puts "Mutation create_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
       end
 
       def mutation class_name: "souls"
@@ -401,6 +421,7 @@ module Souls
         create_mutation_params class_name: class_name
         create_mutation_end class_name: class_name
         update_mutation class_name: class_name
+        delete_mutation class_name: class_name
       end
 
       def query class_name: "souls"
