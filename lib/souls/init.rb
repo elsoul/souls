@@ -427,11 +427,12 @@ module Souls
       end
 
       def mutation class_name: "souls"
-        create_mutation_head class_name: class_name
-        create_mutation_params class_name: class_name
-        create_mutation_end class_name: class_name
-        update_mutation class_name: class_name
-        delete_mutation class_name: class_name
+        singularized_class_name = class_name.singularize
+        create_mutation_head class_name: singularized_class_name
+        create_mutation_params class_name: singularized_class_name
+        create_mutation_end class_name: singularized_class_name
+        update_mutation class_name: singularized_class_name
+        delete_mutation class_name: singularized_class_name
       end
 
       def create_query class_name: "souls"
@@ -476,8 +477,9 @@ module Souls
       end
 
       def query class_name: "souls"
-        create_query class_name: class_name
-        create_queries class_name: class_name
+        singularized_class_name = class_name.singularize
+        create_query class_name: singularized_class_name
+        create_queries class_name: singularized_class_name
       end
 
       def create_type_head class_name: "souls"
@@ -526,9 +528,10 @@ module Souls
       end
 
       def type class_name: "souls"
-        create_type_head class_name: class_name
-        create_type_params class_name: class_name
-        create_type_end class_name: class_name
+        singularized_class_name = class_name.singularize
+        create_type_head class_name: singularized_class_name
+        create_type_params class_name: singularized_class_name
+        create_type_end class_name: singularized_class_name
       end
 
       def rspec_factory_head class_name: "souls"
@@ -574,9 +577,10 @@ module Souls
       end
 
       def rspec_factory class_name: "souls"
-        rspec_factory_head class_name: class_name
-        rspec_factory_params class_name: class_name
-        rspec_factory_end class_name: class_name
+        singularized_class_name = class_name.singularize
+        rspec_factory_head class_name: singularized_class_name
+        rspec_factory_params class_name: singularized_class_name
+        rspec_factory_end class_name: singularized_class_name
       end
 
       def rspec_model class_name: "souls"
@@ -628,7 +632,7 @@ module Souls
       end
 
       def migration class_name: "souls"
-        # `rake db:migrate`
+        `rake db:migrate`
         model class_name: class_name
         mutation class_name: class_name
         query class_name: class_name
