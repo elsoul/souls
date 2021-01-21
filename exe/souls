@@ -59,6 +59,8 @@ begin
       Souls::Init.type class_name: ARGV[2]
     when "migration"
       Souls::Init.migration class_name: ARGV[2]
+    when "rspec_factory"
+      Souls::Init.rspec_factory class_name: ARGV[2]
     when "rspec_model"
       Souls::Init.rspec_model class_name: ARGV[2]
     when "rspec_mutation"

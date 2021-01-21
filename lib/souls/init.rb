@@ -265,6 +265,17 @@ module Souls
         }[type.to_sym]
       end
 
+      def get_test_type type
+        {
+          bigint: 1,
+          string: '"MyString"',
+          text: '"MyString"',
+          datetime: "Time.now",
+          boolean: false,
+          integer: 1
+        }[type.to_sym]
+      end
+
       def table_check line: "", class_name: ""
         if line.include?("create_table")
           return true if line.split(" ")[1].gsub("\"", "").gsub(",", "") == "#{class_name}s"
@@ -419,6 +430,54 @@ module Souls
         create_type_head class_name: class_name
         create_type_params class_name: class_name
         create_type_end class_name: class_name
+      end
+
+      def rspec_factory_head class_name: "souls"
+        file_path = "./spec/factories/#{class_name}s.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            FactoryBot.define do
+              factory :#{class_name} do
+          EOS
+        end
+      end
+
+      def rspec_factory_params class_name: "souls"
+        file_path = "./spec/factories/#{class_name}s.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                new_line.write "\n" && break if line.include?("end") || line.include?("t.index")
+                type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                field = get_test_type type
+                new_line.write "    #{name} { #{field} }\n"
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
+              end
+            end
+          end
+        end
+      end
+
+      def rspec_factory_end class_name: "souls"
+        file_path = "./spec/factories/#{class_name}s.rb"
+        File.open(file_path, "a") do |f|
+          f.write <<~EOS
+              end
+            end
+          EOS
+        end
+        puts "FactoryBot #{class_name}s.rb Auto Generated from schema.rb!: `#{file_path}`"
+      end
+
+      def rspec_factory class_name: "souls"
+        rspec_factory_head class_name: class_name
+        rspec_factory_params class_name: class_name
+        rspec_factory_end class_name: class_name
       end
 
       def rspec_model class_name: "souls"
