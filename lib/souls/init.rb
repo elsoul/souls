@@ -581,12 +581,15 @@ module Souls
       end
 
       def rspec_mutation class_name: "souls"
+        # if needed
       end
 
       def rspec_query class_name: "souls"
+        # if needed
       end
 
       def rspec_type class_name: "souls"
+        # if needed
       end
 
       def get_end_point
@@ -599,19 +602,15 @@ module Souls
       end
 
       def add_mutation_type class_name: "souls"
-        file_path = "./app/graphql/types/mutation_type.rb"
-        # mutation_type = File.open(file_path, "r")
-        @on = false
-        File.open(file_path, "w+"){ |f|
-          f.seek(2, IO::SEEK_END)
-          f.write("hhhhhhhhhhh")
-        }
+        # let's do this later
       end
 
       def add_query_type class_name: "souls"
+        # let's do this later
       end
 
       def migration class_name: "souls"
+        `rake db:migrate`
         model class_name: class_name
         mutation class_name: class_name
         query class_name: class_name
@@ -619,7 +618,6 @@ module Souls
         rspec_factory class_name: class_name
         rspec_model class_name: class_name
       end
-
     end
   end
 end
