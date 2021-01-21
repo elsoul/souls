@@ -201,3 +201,6 @@ Layout/IndentationWidth:
   Enabled: false
 Style/DateTime:
   Enabled: false
+Layout/HeredocIndentation:
+  Exclude: 
+    - "lib/souls/init.rb"

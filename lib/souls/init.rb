@@ -272,51 +272,65 @@ module Souls
         false
       end
 
-      # def mutation class_name: "souls"
-      #   file_path = "./app/graphql/mutations/create_#{class_name}.rb"
-      #   path = "./db/schema.rb"
-      #   File.open(file_path, "w") do |new_line|
-      #     new_line.write <<~EOS
-      #       module Mutations
-      #         class Create#{class_name.capitalize} < BaseMutation
-      #           field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
-      #           field :error, String, null: true
+      def create_mutation_head class_name: "souls"
+        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+        File.open(file_path, "w") do |new_line|
+          new_line.write <<~EOS
+            module Mutations
+              class Create#{class_name.capitalize} < BaseMutation
+                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+                field :error, String, null: true
 
-      #           ## Change argument as you needed
-      #           # argument :id, Integer, required: true
-      #           # argument :title, String, required: true
-      #           # argument :tag, [String], required: false
-      #           # argument :is_public, Boolean, required: true
-      #           # argument :public_date, GraphQL::Types::ISO8601DateTime, required: true
-      #     EOS
-      #     File.open(path, "r") do |f|
-      #       f.each_line.with_index do |line, i|
-      #         puts line
-      #         if table_check(line: line, class_name: class_name)
-      #           type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-      #           field = type_check type
-      #           new_line.write "argument :#{name}, #{field} , required: false"
-      #           break if line.include?("end")
-      #         end
-      #       end
-      #     end
-      #     new_line.write <<~EOS
-      #       def resolve **args
-      #             #{class_name} = #{class_name.capitalize}.new args
-      #             if #{class_name}.save
-      #               { #{class_name}: #{class_name} }
-      #             else
-      #               { error: #{class_name}.errors.full_messages }
-      #             end
-      #           rescue StandardError => error
-      #             GraphQL::ExecutionError.new error
-      #           end
-      #         end
-      #       end
-      #     EOS
-      #   end
-      #   puts "mutation create_#{class_name}.rb created!: `#{file_path}`"
-      # end
+          EOS
+        end
+      end
+
+      def create_mutation_params class_name: "souls"
+        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                new_line.write "\n" && break if line.include?("end") || line.include?("t.index")
+                type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                field = type_check type
+                new_line.write "    argument :#{name}, #{field}, required: false\n"
+              end
+              @on = true if table_check(line: line, class_name: class_name)
+            end
+          end
+        end
+      end
+
+      def create_mutation_end class_name: "souls"
+        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+        File.open(file_path, "a") do |new_line|
+          new_line.write <<~EOS
+
+                def resolve **args
+                  #{class_name} = #{class_name.capitalize}.new args
+                  if #{class_name}.save
+                    { #{class_name}: #{class_name} }
+                  else
+                    { error: #{class_name}.errors.full_messages }
+                  end
+                rescue StandardError => error
+                  GraphQL::ExecutionError.new error
+                end
+              end
+            end
+          EOS
+        end
+        puts "Mutation create_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+      end
+
+      def mutation class_name: "souls"
+        create_mutation_head class_name: class_name
+        create_mutation_params class_name: class_name
+        create_mutation_end class_name: class_name
+      end
 
       def query class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name}s.rb"
