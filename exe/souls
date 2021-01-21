@@ -57,8 +57,10 @@ begin
       Souls::Init.query class_name: ARGV[2]
     when "type"
       Souls::Init.type class_name: ARGV[2]
-    when "migration"
+    when "migrate"
       Souls::Init.migration class_name: ARGV[2]
+    when "migration"
+      `rake db:create_migration NAME=#{ARGV[3]}`
     when "rspec_factory"
       Souls::Init.rspec_factory class_name: ARGV[2]
     when "rspec_model"
