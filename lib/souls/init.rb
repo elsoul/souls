@@ -247,7 +247,7 @@ module Souls
         file_path = "./app/models/#{class_name}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
-            class #{class_name.capitalize} < ActiveRecord::Base
+            class #{class_name.camelize} < ActiveRecord::Base
             end
           EOS
         end
@@ -278,7 +278,7 @@ module Souls
 
       def table_check line: "", class_name: ""
         if line.include?("create_table")
-          return true if line.split(" ")[1].gsub("\"", "").gsub(",", "") == "#{class_name}s"
+          return true if line.split(" ")[1].gsub("\"", "").gsub(",", "") == "#{class_name.pluralize}"
         end
         false
       end
@@ -288,8 +288,8 @@ module Souls
         File.open(file_path, "w") do |new_line|
           new_line.write <<~EOS
             module Mutations
-              class Create#{class_name.capitalize} < BaseMutation
-                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+              class Create#{class_name.camelize} < BaseMutation
+                field :#{class_name}, Types::#{class_name.camelize}Type, null: false
                 field :error, String, null: true
 
           EOS
@@ -321,7 +321,7 @@ module Souls
           new_line.write <<~EOS
 
                 def resolve **args
-                  #{class_name} = #{class_name.capitalize}.new args
+                  #{class_name} = #{class_name.camelize}.new args
                   if #{class_name}.save
                     { #{class_name}: #{class_name} }
                   else
@@ -342,8 +342,8 @@ module Souls
         File.open(file_path, "w") do |new_line|
           new_line.write <<~EOS
             module Mutations
-              class Update#{class_name.capitalize} < BaseMutation
-                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+              class Update#{class_name.camelize} < BaseMutation
+                field :#{class_name}, Types::#{class_name.camelize}Type, null: false
 
           EOS
         end
@@ -374,9 +374,9 @@ module Souls
           new_line.write <<~EOS
 
                 def resolve **args
-                  #{class_name} = #{class_name.capitalize}.find args[:id]
+                  #{class_name} = #{class_name.camelize}.find args[:id]
                   #{class_name}.update args
-                  { #{class_name}: #{class_name.capitalize}.find(args[:id]) }
+                  { #{class_name}: #{class_name.camelize}.find(args[:id]) }
                 rescue StandardError => error
                   GraphQL::ExecutionError.new error
                 end
@@ -398,12 +398,12 @@ module Souls
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Mutations
-              class Delete#{class_name.capitalize} < BaseMutation
-                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+              class Delete#{class_name.camelize} < BaseMutation
+                field :#{class_name}, Types::#{class_name.camelize}Type, null: false
                 argument :id, Integer, required: true
 
                 def resolve id:
-                  #{class_name} = #{class_name.capitalize}.find id
+                  #{class_name} = #{class_name.camelize}.find id
                   #{class_name}.destroy
                   { #{class_name}: #{class_name} }
                 rescue StandardError => error
@@ -425,15 +425,15 @@ module Souls
       end
 
       def query class_name: "souls"
-        file_path = "./app/graphql/queries/#{class_name}s.rb"
+        file_path = "./app/graphql/queries/#{class_name.pluralize}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Queries
-              class #{class_name.capitalize}s < Queries::BaseQuery
-                type [Types::#{class_name.capitalize}Type], null: false
+              class #{class_name.camelize.pluralize} < Queries::BaseQuery
+                type [Types::#{class_name.camelize}Type], null: false
 
                 def resolve
-                  ::#{class_name.capitalize}.all
+                  ::#{class_name.camelize}.all
                 rescue StandardError => error
                   GraphQL::ExecutionError.new error
                 end
@@ -441,17 +441,17 @@ module Souls
             end
           EOS
         end
-        puts "query #{class_name}s.rb created!: `#{file_path}`"
+        puts "query #{class_name.pluralize}.rb created!: `#{file_path}`"
         file_path = "./app/graphql/queries/#{class_name}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Queries
-              class #{class_name.capitalize} < Queries::BaseQuery
-                type Types::#{class_name.capitalize}Type, null: false
+              class #{class_name.camelize} < Queries::BaseQuery
+                type Types::#{class_name.camelize}Type, null: false
                 argument :id, Integer, required: true
 
                 def resolve id:
-                  ::#{class_name.capitalize}.find(id)
+                  ::#{class_name.camelize}.find(id)
                 rescue StandardError => error
                   GraphQL::ExecutionError.new error
                 end
@@ -467,7 +467,7 @@ module Souls
           File.open(file_path, "w") do |f|
             f.write <<~EOS
               module Types
-                class #{class_name.capitalize}Type < GraphQL::Schema::Object
+                class #{class_name.camelize}Type < GraphQL::Schema::Object
                   implements GraphQL::Types::Relay::Node
 
             EOS
@@ -514,7 +514,7 @@ module Souls
       end
 
       def rspec_factory_head class_name: "souls"
-        file_path = "./spec/factories/#{class_name}s.rb"
+        file_path = "./spec/factories/#{class_name.pluralize}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             FactoryBot.define do
@@ -524,7 +524,7 @@ module Souls
       end
 
       def rspec_factory_params class_name: "souls"
-        file_path = "./spec/factories/#{class_name}s.rb"
+        file_path = "./spec/factories/#{class_name.pluralize}.rb"
         path = "./db/schema.rb"
         @on = false
         File.open(file_path, "a") do |new_line|
@@ -545,14 +545,14 @@ module Souls
       end
 
       def rspec_factory_end class_name: "souls"
-        file_path = "./spec/factories/#{class_name}s.rb"
+        file_path = "./spec/factories/#{class_name.pluralize}.rb"
         File.open(file_path, "a") do |f|
           f.write <<~EOS
               end
             end
           EOS
         end
-        puts "FactoryBot #{class_name}s.rb Auto Generated from schema.rb!: `#{file_path}`"
+        puts "FactoryBot #{class_name.pluralize}.rb Auto Generated from schema.rb!: `#{file_path}`"
       end
 
       def rspec_factory class_name: "souls"
@@ -565,7 +565,7 @@ module Souls
         file_path = "./spec/models/#{class_name}_spec.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
-            RSpec.describe #{class_name.capitalize}, type: :model do
+            RSpec.describe #{class_name.camelize}, type: :model do
               it "作成する" do
                 expect(FactoryBot.build(:#{class_name})).to be_valid
               end
