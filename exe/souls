@@ -74,15 +74,8 @@ begin
     else
     end
   when "t", "test"
-    case ARGV[1]
-    when "-r"
-      `bundle exec rspec`
-    when "-s"
-      `bundle exec steep check`
-    else
-      `rubocop`
-      `bundle exec rspec`
-    end
+    `rubocop`
+    `bundle exec rspec`
   when "deploy"
     project_id = Souls.configuration.project_id
     `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`
