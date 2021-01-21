@@ -80,7 +80,7 @@ begin
     when "-s"
       `bundle exec steep check`
     else
-      `bundle exec rubocop`
+      `rubocop`
       `bundle exec rspec`
     end
   when "deploy"
