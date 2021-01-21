@@ -48,7 +48,7 @@ begin
   when "g", "generate"
     case ARGV[1]
     when "test"
-      Souls::Init.create_type_end class_name: "article"
+      Souls::Init.update_mutation class_name: "article"
     when "model"
       Souls::Init.model class_name: ARGV[2]
     when "mutation"

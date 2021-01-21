@@ -337,10 +337,70 @@ module Souls
         puts "Mutation create_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
       end
 
+      def update_mutation_head class_name: "souls"
+        file_path = "./app/graphql/mutations/update_#{class_name}.rb"
+        File.open(file_path, "w") do |new_line|
+          new_line.write <<~EOS
+            module Mutations
+              class Update#{class_name.capitalize} < BaseMutation
+                field :#{class_name}, Types::#{class_name.capitalize}Type, null: false
+
+          EOS
+        end
+      end
+
+      def update_mutation_params class_name: "souls"
+        file_path = "./app/graphql/mutations/update_#{class_name}.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                break if line.include?("end") || line.include?("t.index")
+                type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                field = type_check type
+                new_line.write "    argument :#{name}, #{field}, required: false\n"
+              end
+              @on = true if table_check(line: line, class_name: class_name)
+            end
+          end
+        end
+      end
+
+      def update_mutation_end class_name: "souls"
+        file_path = "./app/graphql/mutations/update_#{class_name}.rb"
+        File.open(file_path, "a") do |new_line|
+          new_line.write <<~EOS
+
+                def resolve **args
+                  #{class_name} = #{class_name.capitalize}.find args[:id]
+                  #{class_name}.update args
+                  { #{class_name}: #{class_name.capitalize}.find(args[:id]) }
+                rescue StandardError => error
+                  GraphQL::ExecutionError.new error
+                end
+              end
+            end
+          EOS
+        end
+        puts "Mutation update_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+      end
+
+      def update_mutation class_name: "souls"
+        update_mutation_head class_name: class_name
+        update_mutation_params class_name: class_name
+        update_mutation_end class_name: class_name
+      end
+
+      def delete_mutation class_name: "souls"
+      end
+
       def mutation class_name: "souls"
         create_mutation_head class_name: class_name
         create_mutation_params class_name: class_name
         create_mutation_end class_name: class_name
+        update_mutation class_name: class_name
       end
 
       def query class_name: "souls"
@@ -508,11 +568,34 @@ module Souls
       def rspec_type class_name: "souls"
       end
 
+      def get_end_point
+        file_path = "./app/graphql/types/mutation_type.rb"
+        File.open(file_path, "r") do |f|
+          f.each_line.with_index do |line, i|
+            return i if line.include?("end")
+          end
+        end
+      end
+
+      def add_mutation_type class_name: "souls"
+        file_path = "./app/graphql/types/mutation_type.rb"
+        # mutation_type = File.open(file_path, "r")
+        @on = false
+        File.open(file_path, "w+"){ |f|
+          f.seek(2, IO::SEEK_END)
+          f.write("hhhhhhhhhhh")
+        }
+      end
+
+      def add_query_type class_name: "souls"
+      end
+
       def migration class_name: "souls"
         model class_name: class_name
         mutation class_name: class_name
         query class_name: class_name
         type class_name: class_name
+        rspec_factory class_name: class_name
         rspec_model class_name: class_name
       end
 
