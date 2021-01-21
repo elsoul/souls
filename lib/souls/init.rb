@@ -251,7 +251,7 @@ module Souls
             end
           EOS
         end
-        puts "model #{class_name}.rb created!: `#{file_path}`"
+        puts "Model #{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
       end
 
       def type_check type
@@ -307,7 +307,12 @@ module Souls
                 break if line.include?("end") || line.include?("t.index")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field = type_check type
-                new_line.write "    argument :#{name}, #{field}, required: false\n"
+                case name
+                when "created_at", "updated_at"
+                  next
+                else
+                  new_line.write "    argument :#{name}, #{field}, required: false\n"
+                end
               end
               @on = true if table_check(line: line, class_name: class_name)
             end
@@ -360,7 +365,12 @@ module Souls
                 break if line.include?("end") || line.include?("t.index")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field = type_check type
-                new_line.write "    argument :#{name}, #{field}, required: false\n"
+                case name
+                when "created_at", "updated_at"
+                  next
+                else
+                  new_line.write "    argument :#{name}, #{field}, required: false\n"
+                end
               end
               @on = true if table_check(line: line, class_name: class_name)
             end
@@ -424,7 +434,7 @@ module Souls
         delete_mutation class_name: class_name
       end
 
-      def query class_name: "souls"
+      def create_query class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name.pluralize}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
@@ -441,7 +451,10 @@ module Souls
             end
           EOS
         end
-        puts "query #{class_name.pluralize}.rb created!: `#{file_path}`"
+        puts "Query #{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+      end
+
+      def create_queries class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
@@ -458,8 +471,13 @@ module Souls
               end
             end
           EOS
-          puts "query #{class_name}.rb created!: `#{file_path}`"
+          puts "Query #{class_name.pluralize}.rb Auto Generated from schema.rb!: `#{file_path}`"
         end
+      end
+
+      def query class_name: "souls"
+        create_query class_name: class_name
+        create_queries class_name: class_name
       end
 
       def create_type_head class_name: "souls"
@@ -577,7 +595,7 @@ module Souls
             end
           EOS
         end
-        puts "rspec_model #{class_name}_spec.rb created!: `#{file_path}`"
+        puts "Rspec #{class_name}_spec.rb Auto Generated from schema.rb!: `#{file_path}`"
       end
 
       def rspec_mutation class_name: "souls"
@@ -610,7 +628,7 @@ module Souls
       end
 
       def migration class_name: "souls"
-        `rake db:migrate`
+        # `rake db:migrate`
         model class_name: class_name
         mutation class_name: class_name
         query class_name: class_name

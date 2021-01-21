@@ -63,7 +63,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
+  activesupport (= 6.1.0)
   rake (= 13.0.3)
   rspec (= 3.1.0)
   souls!
