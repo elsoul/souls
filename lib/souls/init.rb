@@ -269,6 +269,7 @@ module Souls
       def get_test_type type
         {
           bigint: 1,
+          float: 4.2,
           string: '"MyString"',
           text: '"MyString"',
           datetime: "Time.now",
@@ -307,8 +308,9 @@ module Souls
             f.each_line.with_index do |line, i|
               if @on
                 break if line.include?("end") || line.include?("t.index")
+                field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                field = type_check type
+                field ||= type_check type
                 case name
                 when "created_at", "updated_at"
                   next
@@ -367,8 +369,9 @@ module Souls
             f.each_line.with_index do |line, i|
               if @on
                 break if line.include?("end") || line.include?("t.index")
+                field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                field = type_check type
+                field ||= type_check type
                 case name
                 when "created_at", "updated_at"
                   next
