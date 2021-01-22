@@ -261,6 +261,7 @@ module Souls
           float: "Float",
           text: "String",
           datetime: "GraphQL::Types::ISO8601DateTime",
+          date: "GraphQL::Types::ISO8601DateTime",
           boolean: "Boolean",
           integer: "Integer"
         }[type.to_sym]
@@ -273,6 +274,7 @@ module Souls
           string: '"MyString"',
           text: '"MyString"',
           datetime: "Time.now",
+          date: "Time.now",
           boolean: false,
           integer: 1
         }[type.to_sym]
@@ -526,8 +528,9 @@ module Souls
             f.each_line.with_index do |line, i|
               if @on
                 new_line.write "\n" && break if line.include?("end") || line.include?("t.index")
+                field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                field = type_check type
+                field ||= type_check type
                 new_line.write "    field :#{name}, #{field}, null: true\n"
               end
               if table_check(line: line, class_name: class_name)
@@ -576,8 +579,9 @@ module Souls
             f.each_line.with_index do |line, i|
               if @on
                 new_line.write "\n" && break if line.include?("end") || line.include?("t.index")
+                field = '["tag1", "tag2", "tag3"]' if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                field = get_test_type type
+                field ||= get_test_type type
                 new_line.write "    #{name} { #{field} }\n"
               end
               if table_check(line: line, class_name: class_name)
