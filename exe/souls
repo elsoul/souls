@@ -48,7 +48,7 @@ begin
   when "g", "generate"
     case ARGV[1]
     when "test"
-      Souls::Init.delete_mutation class_name: "article"
+      Souls::Init.get_tables
     when "model"
       Souls::Init.model class_name: ARGV[2]
     when "mutation"
@@ -59,6 +59,10 @@ begin
       Souls::Init.type class_name: ARGV[2]
     when "migrate"
       Souls::Init.migration class_name: ARGV[2]
+    when "migrate_all"
+      Souls::Init.get_tables.each do |class_name|
+        Souls::Init.migration class_name: class_name
+      end
     when "migration"
       `rake db:create_migration NAME=#{ARGV[3]}`
     when "rspec_factory"
@@ -74,15 +78,16 @@ begin
     else
     end
   when "t", "test"
-    `rubocop`
-    `bundle exec rspec`
+    puts `rubocop`
+    puts `bundle exec rspec`
   when "deploy"
     project_id = Souls.configuration.project_id
     `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`
   else
-    puts "Welcome to Souls!Yeah!"
+    puts "Welcome to SOULs!"
   end
 rescue StandardError => error
   puts error
-  puts "Thank you!Souls!"
+  puts "Thank you!!"
+  puts "SOULs"
 end

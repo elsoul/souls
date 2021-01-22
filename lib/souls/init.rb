@@ -284,20 +284,21 @@ module Souls
       end
 
       def create_mutation_head class_name: "souls"
-        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{class_name}/create_#{class_name}.rb"
         File.open(file_path, "w") do |new_line|
           new_line.write <<~EOS
             module Mutations
-              class Create#{class_name.camelize} < BaseMutation
-                field :#{class_name}, Types::#{class_name.camelize}Type, null: false
-                field :error, String, null: true
+              module #{class_name.camelize}
+                class Create#{class_name.camelize} < BaseMutation
+                  field :#{class_name}, Types::#{class_name.camelize}Type, null: false
+                  field :error, String, null: true
 
           EOS
         end
       end
 
       def create_mutation_params class_name: "souls"
-        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{class_name}/create_#{class_name}.rb"
         path = "./db/schema.rb"
         @on = false
         File.open(file_path, "a") do |new_line|
@@ -311,7 +312,7 @@ module Souls
                 when "created_at", "updated_at"
                   next
                 else
-                  new_line.write "    argument :#{name}, #{field}, required: false\n"
+                  new_line.write "      argument :#{name}, #{field}, required: false\n"
                 end
               end
               @on = true if table_check(line: line, class_name: class_name)
@@ -321,19 +322,20 @@ module Souls
       end
 
       def create_mutation_end class_name: "souls"
-        file_path = "./app/graphql/mutations/create_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{class_name}/create_#{class_name}.rb"
         File.open(file_path, "a") do |new_line|
           new_line.write <<~EOS
 
-                def resolve **args
-                  #{class_name} = #{class_name.camelize}.new args
-                  if #{class_name}.save
-                    { #{class_name}: #{class_name} }
-                  else
-                    { error: #{class_name}.errors.full_messages }
+                  def resolve **args
+                    #{class_name} = #{class_name.camelize}.new args
+                    if #{class_name}.save
+                      { #{class_name}: #{class_name} }
+                    else
+                      { error: #{class_name}.errors.full_messages }
+                    end
+                  rescue StandardError => error
+                    GraphQL::ExecutionError.new error
                   end
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new error
                 end
               end
             end
@@ -343,19 +345,20 @@ module Souls
       end
 
       def update_mutation_head class_name: "souls"
-        file_path = "./app/graphql/mutations/update_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{class_name}/update_#{class_name}.rb"
         File.open(file_path, "w") do |new_line|
           new_line.write <<~EOS
             module Mutations
-              class Update#{class_name.camelize} < BaseMutation
-                field :#{class_name}, Types::#{class_name.camelize}Type, null: false
+              module #{class_name.camelize}
+                class Update#{class_name.camelize} < BaseMutation
+                  field :#{class_name}, Types::#{class_name.camelize}Type, null: false
 
           EOS
         end
       end
 
       def update_mutation_params class_name: "souls"
-        file_path = "./app/graphql/mutations/update_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{class_name}/update_#{class_name}.rb"
         path = "./db/schema.rb"
         @on = false
         File.open(file_path, "a") do |new_line|
@@ -369,7 +372,7 @@ module Souls
                 when "created_at", "updated_at"
                   next
                 else
-                  new_line.write "    argument :#{name}, #{field}, required: false\n"
+                  new_line.write "      argument :#{name}, #{field}, required: false\n"
                 end
               end
               @on = true if table_check(line: line, class_name: class_name)
@@ -379,16 +382,17 @@ module Souls
       end
 
       def update_mutation_end class_name: "souls"
-        file_path = "./app/graphql/mutations/update_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{class_name}/update_#{class_name}.rb"
         File.open(file_path, "a") do |new_line|
           new_line.write <<~EOS
 
-                def resolve **args
-                  #{class_name} = #{class_name.camelize}.find args[:id]
-                  #{class_name}.update args
-                  { #{class_name}: #{class_name.camelize}.find(args[:id]) }
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new error
+                  def resolve **args
+                    #{class_name} = #{class_name.camelize}.find args[:id]
+                    #{class_name}.update args
+                    { #{class_name}: #{class_name.camelize}.find(args[:id]) }
+                  rescue StandardError => error
+                    GraphQL::ExecutionError.new error
+                  end
                 end
               end
             end
@@ -404,20 +408,22 @@ module Souls
       end
 
       def delete_mutation class_name: "souls"
-        file_path = "./app/graphql/mutations/delete_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{class_name}/delete_#{class_name}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Mutations
-              class Delete#{class_name.camelize} < BaseMutation
-                field :#{class_name}, Types::#{class_name.camelize}Type, null: false
-                argument :id, Integer, required: true
+              module #{class_name.camelize}
+                class Delete#{class_name.camelize} < BaseMutation
+                  field :#{class_name}, Types::#{class_name.camelize}Type, null: false
+                  argument :id, Integer, required: true
 
-                def resolve id:
-                  #{class_name} = #{class_name.camelize}.find id
-                  #{class_name}.destroy
-                  { #{class_name}: #{class_name} }
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new error
+                  def resolve id:
+                    #{class_name} = #{class_name.camelize}.find id
+                    #{class_name}.destroy
+                    { #{class_name}: #{class_name} }
+                  rescue StandardError => error
+                    GraphQL::ExecutionError.new error
+                  end
                 end
               end
             end
@@ -426,13 +432,32 @@ module Souls
         puts "Mutation create_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
       end
 
+      def create_confirm
+        puts "Directory already exists, Overwrite?? (Y/N)"
+        input = STDIN.gets.chomp
+        return true if input == "Y"
+        raise StandardError.new "Directory Already Exist!"
+      end
+
       def mutation class_name: "souls"
         singularized_class_name = class_name.singularize
+        if Dir.exist? "./app/graphql/mutations/#{singularized_class_name}"
+          create_confirm
+          FileUtils.rm_r("./app/graphql/mutations/#{singularized_class_name}")
+        end
+        Dir.mkdir "./app/graphql/mutations/#{singularized_class_name}"
         create_mutation_head class_name: singularized_class_name
         create_mutation_params class_name: singularized_class_name
         create_mutation_end class_name: singularized_class_name
         update_mutation class_name: singularized_class_name
         delete_mutation class_name: singularized_class_name
+        puts "\n#############################################################################################################"
+        puts "\nAdd these lines at `./app/graphql/types/mutation_type.rb`"
+        puts "\n\n"
+        puts "field :create_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Create#{singularized_class_name.camelize}"
+        puts "field :update_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Update#{singularized_class_name.camelize}"
+        puts "field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}"
+        puts "\n\n#############################################################################################################"
       end
 
       def create_query class_name: "souls"
@@ -480,6 +505,12 @@ module Souls
         singularized_class_name = class_name.singularize
         create_query class_name: singularized_class_name
         create_queries class_name: singularized_class_name
+        puts "\n#############################################################################################################"
+        puts "\nAdd these lines at `./app/graphql/types/query_type.rb`"
+        puts "\n\n"
+        puts "field :#{singularized_class_name}, resolber: Queries::#{singularized_class_name.camelize}"
+        puts "field :#{singularized_class_name.pluralize}, Types::#{singularized_class_name.camelize}Type.connection_type, null: true"
+        puts "\n\n#############################################################################################################"
       end
 
       def create_type_head class_name: "souls"
@@ -623,6 +654,17 @@ module Souls
         end
       end
 
+      def get_tables
+        path = "./db/schema.rb"
+        tables = []
+        File.open(path, "r") do |f|
+          f.each_line.with_index do |line, i|
+              tables << line.split("\"")[1] if line.include?("create_table")
+          end
+        end
+        tables
+      end
+
       def add_mutation_type class_name: "souls"
         # let's do this later
       end
@@ -632,13 +674,13 @@ module Souls
       end
 
       def migration class_name: "souls"
-        `rake db:migrate`
+        # `rake db:migrate`
         model class_name: class_name
-        mutation class_name: class_name
-        query class_name: class_name
         type class_name: class_name
         rspec_factory class_name: class_name
         rspec_model class_name: class_name
+        query class_name: class_name
+        mutation class_name: class_name
       end
     end
   end

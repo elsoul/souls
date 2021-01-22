@@ -204,3 +204,5 @@ Style/DateTime:
 Layout/HeredocIndentation:
   Exclude: 
     - "lib/souls/init.rb"
+Style/RaiseArgs:
+  Enabled: false

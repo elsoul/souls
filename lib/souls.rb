@@ -2,6 +2,7 @@ require "souls/version"
 require "souls/init"
 require "json"
 require "active_support/core_ext/string/inflections"
+require "fileutils"
 
 module Souls
   class Error < StandardError; end
