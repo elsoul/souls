@@ -244,7 +244,7 @@ module Souls
       end
 
       def model class_name: "souls"
-        file_path = "./app/models/#{class_name}.rb"
+        file_path = "./app/models/#{class_name.singularize}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             class #{class_name.camelize} < ActiveRecord::Base
@@ -438,17 +438,17 @@ module Souls
         file_path
       end
 
-      def create_confirm
-        puts "Directory already exists, Overwrite?? (Y/N)"
+      def create_confirm dir_path: ""
+        puts "Directory already exists, Overwrite?? (Y/N)\n#{dir_path}"
         input = STDIN.gets.chomp
         return true if input == "Y"
-        raise StandardError.new "Directory Already Exist!"
+        raise StandardError.new "Directory Already Exist!\n#{dir_path}"
       end
 
       def mutation class_name: "souls"
         singularized_class_name = class_name.singularize
         if Dir.exist? "./app/graphql/mutations/#{singularized_class_name}"
-          # create_confirm
+          create_confirm dir_path: "./app/graphql/mutations/#{singularized_class_name}"
           FileUtils.rm_r("./app/graphql/mutations/#{singularized_class_name}")
         end
         Dir.mkdir "./app/graphql/mutations/#{singularized_class_name}"
@@ -665,7 +665,6 @@ module Souls
       end
 
       def migrate class_name: "souls"
-        # `rake db:migrate`
         singularized_class_name = class_name.singularize
         model_paths = model class_name: singularized_class_name
         type_paths = type class_name: singularized_class_name
@@ -694,8 +693,9 @@ module Souls
 
       def migrate_all
         puts "◆◆◆ Let's Auto Generate CRUD API ◆◆◆\n"
+        `rake db:migrate`
         paths = get_tables.map do |class_name|
-          migrate class_name: class_name
+          migrate class_name: class_name.singularize
         end
         puts "\n============== Model ======================\n\n"
         paths.each do |class_name|
