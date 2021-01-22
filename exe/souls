@@ -58,11 +58,9 @@ begin
     when "type"
       Souls::Init.type class_name: ARGV[2]
     when "migrate"
-      Souls::Init.migration class_name: ARGV[2]
+      Souls::Init.migrate class_name: ARGV[2]
     when "migrate_all"
-      Souls::Init.get_tables.each do |class_name|
-        Souls::Init.migration class_name: class_name
-      end
+      Souls::Init.migrate_all
     when "migration"
       `rake db:create_migration NAME=#{ARGV[3]}`
     when "rspec_factory"

@@ -115,11 +115,11 @@ module Souls
         system "cp -r #{repository_name}-#{folder}/ #{app_name}/"
         system "rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}"
         txt = <<~TEXT
-           _____ ____  __  ____        
+           _____ ____  __  ____#{'        '}
           / ___// __ \\/ / / / /   _____
           \\__ \\/ / / / / / / /   / ___/
-         ___/ / /_/ / /_/ / /___(__  ) 
-        /____/\\____/\\____/_____/____/  
+         ___/ / /_/ / /_/ / /___(__  )#{' '}
+        /____/\\____/\\____/_____/____/#{'  '}
         TEXT
         puts txt
         puts "=============================="
@@ -251,7 +251,7 @@ module Souls
             end
           EOS
         end
-        puts "Model #{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+        [file_path]
       end
 
       def type_check type
@@ -277,8 +277,8 @@ module Souls
       end
 
       def table_check line: "", class_name: ""
-        if line.include?("create_table")
-          return true if line.split(" ")[1].gsub("\"", "").gsub(",", "") == "#{class_name.pluralize}"
+        if line.include?("create_table") && (line.split(" ")[1].gsub("\"", "").gsub(",", "") == class_name.pluralize.to_s)
+          return true
         end
         false
       end
@@ -341,7 +341,7 @@ module Souls
             end
           EOS
         end
-        puts "Mutation create_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+        file_path
       end
 
       def update_mutation_head class_name: "souls"
@@ -398,7 +398,7 @@ module Souls
             end
           EOS
         end
-        puts "Mutation update_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+        file_path
       end
 
       def update_mutation class_name: "souls"
@@ -429,7 +429,7 @@ module Souls
             end
           EOS
         end
-        puts "Mutation create_#{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+        file_path
       end
 
       def create_confirm
@@ -442,22 +442,17 @@ module Souls
       def mutation class_name: "souls"
         singularized_class_name = class_name.singularize
         if Dir.exist? "./app/graphql/mutations/#{singularized_class_name}"
-          create_confirm
+          # create_confirm
           FileUtils.rm_r("./app/graphql/mutations/#{singularized_class_name}")
         end
         Dir.mkdir "./app/graphql/mutations/#{singularized_class_name}"
         create_mutation_head class_name: singularized_class_name
         create_mutation_params class_name: singularized_class_name
-        create_mutation_end class_name: singularized_class_name
-        update_mutation class_name: singularized_class_name
-        delete_mutation class_name: singularized_class_name
-        puts "\n#############################################################################################################"
-        puts "\nAdd these lines at `./app/graphql/types/mutation_type.rb`"
-        puts "\n\n"
-        puts "field :create_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Create#{singularized_class_name.camelize}"
-        puts "field :update_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Update#{singularized_class_name.camelize}"
-        puts "field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}"
-        puts "\n\n#############################################################################################################"
+        [
+          create_mutation_end(class_name: singularized_class_name),
+          update_mutation(class_name: singularized_class_name),
+          delete_mutation(class_name: singularized_class_name)
+        ]
       end
 
       def create_query class_name: "souls"
@@ -477,7 +472,7 @@ module Souls
             end
           EOS
         end
-        puts "Query #{class_name}.rb Auto Generated from schema.rb!: `#{file_path}`"
+        file_path
       end
 
       def create_queries class_name: "souls"
@@ -497,20 +492,13 @@ module Souls
               end
             end
           EOS
-          puts "Query #{class_name.pluralize}.rb Auto Generated from schema.rb!: `#{file_path}`"
+          file_path
         end
       end
 
       def query class_name: "souls"
         singularized_class_name = class_name.singularize
-        create_query class_name: singularized_class_name
-        create_queries class_name: singularized_class_name
-        puts "\n#############################################################################################################"
-        puts "\nAdd these lines at `./app/graphql/types/query_type.rb`"
-        puts "\n\n"
-        puts "field :#{singularized_class_name}, resolber: Queries::#{singularized_class_name.camelize}"
-        puts "field :#{singularized_class_name.pluralize}, Types::#{singularized_class_name.camelize}Type.connection_type, null: true"
-        puts "\n\n#############################################################################################################"
+        [create_query(class_name: singularized_class_name), create_queries(class_name: singularized_class_name)]
       end
 
       def create_type_head class_name: "souls"
@@ -555,7 +543,7 @@ module Souls
             end
           EOS
         end
-        puts "Type #{class_name}_type.rb Auto Generated from schema.rb!: `#{file_path}`"
+        [file_path]
       end
 
       def type class_name: "souls"
@@ -604,7 +592,7 @@ module Souls
             end
           EOS
         end
-        puts "FactoryBot #{class_name.pluralize}.rb Auto Generated from schema.rb!: `#{file_path}`"
+        [file_path]
       end
 
       def rspec_factory class_name: "souls"
@@ -630,7 +618,7 @@ module Souls
             end
           EOS
         end
-        puts "Rspec #{class_name}_spec.rb Auto Generated from schema.rb!: `#{file_path}`"
+        [file_path]
       end
 
       def rspec_mutation class_name: "souls"
@@ -673,14 +661,97 @@ module Souls
         # let's do this later
       end
 
-      def migration class_name: "souls"
+      def migrate class_name: "souls"
         # `rake db:migrate`
-        model class_name: class_name
-        type class_name: class_name
-        rspec_factory class_name: class_name
-        rspec_model class_name: class_name
-        query class_name: class_name
-        mutation class_name: class_name
+        singularized_class_name = class_name.singularize
+        model_paths = model class_name: singularized_class_name
+        type_paths = type class_name: singularized_class_name
+        rspec_factory_paths = rspec_factory class_name: singularized_class_name
+        rspec_model_paths = rspec_model class_name: singularized_class_name
+        query_path = query class_name: singularized_class_name
+        mutation_path = mutation class_name: singularized_class_name
+        [
+          model: model_paths,
+          type: type_paths,
+          rspec_factory: rspec_factory_paths,
+          rspec_model: rspec_model_paths,
+          query: query_path,
+          mutation: mutation_path,
+          add_query_type: [
+            "field :#{singularized_class_name}, resolver: Queries::#{singularized_class_name.camelize}",
+            "field :#{singularized_class_name.pluralize}, Types::#{singularized_class_name.camelize}Type.connection_type, null: true"
+          ],
+          add_mutation_type: [
+            "field :create_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Create#{singularized_class_name.camelize}",
+            "field :update_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Update#{singularized_class_name.camelize}",
+            "field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}"
+          ]
+        ]
+      end
+
+      def migrate_all
+        puts "◆◆◆ Let's Auto Generate CRUD API ◆◆◆\n"
+        paths = get_tables.map do |class_name|
+          migrate class_name: class_name
+        end
+        puts "\n============== Model ======================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:model].each { |line| puts line }
+          end
+        end
+        puts "\n============== Type =======================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:type].each { |line| puts line }
+          end
+        end
+        puts "\n============== FactoryBot =================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:rspec_factory].each { |line| puts line }
+          end
+        end
+        puts "\n============== RspecModel =================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:rspec_model].each { |line| puts line }
+          end
+        end
+        puts "\n============== Query ======================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:query].each { |line| puts line }
+          end
+        end
+        puts "\n============== Mutation ===================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:mutation].each { |line| puts line }
+          end
+        end
+        puts "\nAll files created from ./db/schema.rb"
+        puts "\n\n"
+        puts "\n##########################################################\n"
+        puts "#                                                        #\n"
+        puts "# Add These Lines at ./app/graphql/types/query_type.rb   #\n"
+        puts "#                                                        #\n"
+        puts "##########################################################\n\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:add_query_type].each { |line| puts line }
+          end
+        end
+        puts "\n#############################################################\n"
+        puts "#                                                           #\n"
+        puts "# Add These Lines at ./app/graphql/types/mutation_type.rb   #\n"
+        puts "#                                                           #\n"
+        puts "#############################################################\n\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:add_mutation_type].each { |line| puts line }
+          end
+        end
       end
     end
   end
