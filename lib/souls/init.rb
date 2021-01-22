@@ -745,11 +745,11 @@ module Souls
             path[:add_query_type].each { |line| puts line }
           end
         end
-        puts "\n\n    ## Connection Type\n\n"
+        puts "\n    ## Connection Type\n\n"
         get_tables.each do |class_name|
           puts "    def #{class_name.pluralize}"
           puts "      #{class_name.camelize}.all.order(id: :desc)"
-          puts "    end\n"
+          puts "    end\n\n"
         end
         puts "\n#############################################################\n"
         puts "#                                                           #\n"
