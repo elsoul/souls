@@ -332,7 +332,7 @@ module Souls
           new_line.write <<~EOS
 
                   def resolve **args
-                    #{class_name} = #{class_name.camelize}.new args
+                    #{class_name} = ::#{class_name.camelize}.new args
                     if #{class_name}.save
                       { #{class_name}: #{class_name} }
                     else
@@ -393,9 +393,9 @@ module Souls
           new_line.write <<~EOS
 
                   def resolve **args
-                    #{class_name} = #{class_name.camelize}.find args[:id]
+                    #{class_name} = ::#{class_name.camelize}.find args[:id]
                     #{class_name}.update args
-                    { #{class_name}: #{class_name.camelize}.find(args[:id]) }
+                    { #{class_name}: ::#{class_name.camelize}.find(args[:id]) }
                   rescue StandardError => error
                     GraphQL::ExecutionError.new error
                   end
@@ -424,7 +424,7 @@ module Souls
                   argument :id, Integer, required: true
 
                   def resolve id:
-                    #{class_name} = #{class_name.camelize}.find id
+                    #{class_name} = ::#{class_name.camelize}.find id
                     #{class_name}.destroy
                     { #{class_name}: #{class_name} }
                   rescue StandardError => error
@@ -744,6 +744,15 @@ module Souls
           class_name.each do |path|
             path[:add_query_type].each { |line| puts line }
           end
+        end
+        puts "\n\n##Connection Type\n\n"
+        get_tables.each do |class_name|
+          puts <<~EOS
+            def #{class_name.pluralize}
+              #{class_name.camelize}.all.order(id: :desc)
+            end
+            \n
+          EOS
         end
         puts "\n#############################################################\n"
         puts "#                                                           #\n"
