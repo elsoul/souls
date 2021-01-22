@@ -76,8 +76,8 @@ begin
     else
     end
   when "t", "test"
-    puts `rubocop`
-    puts `bundle exec rspec`
+    `rubocop`
+    `bundle exec rspec`
   when "deploy"
     project_id = Souls.configuration.project_id
     `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`

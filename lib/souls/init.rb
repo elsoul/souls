@@ -449,9 +449,9 @@ module Souls
         singularized_class_name = class_name.singularize
         if Dir.exist? "./app/graphql/mutations/#{singularized_class_name}"
           create_confirm dir_path: "./app/graphql/mutations/#{singularized_class_name}"
-          FileUtils.rm_r("./app/graphql/mutations/#{singularized_class_name}")
+        else
+          Dir.mkdir "./app/graphql/mutations/#{singularized_class_name}"
         end
-        Dir.mkdir "./app/graphql/mutations/#{singularized_class_name}"
         create_mutation_head class_name: singularized_class_name
         create_mutation_params class_name: singularized_class_name
         [
@@ -680,13 +680,13 @@ module Souls
           query: query_path,
           mutation: mutation_path,
           add_query_type: [
-            "field :#{singularized_class_name}, resolver: Queries::#{singularized_class_name.camelize}",
-            "field :#{singularized_class_name.pluralize}, Types::#{singularized_class_name.camelize}Type.connection_type, null: true"
+            "    field :#{singularized_class_name}, resolver: Queries::#{singularized_class_name.camelize}",
+            "    field :#{singularized_class_name.pluralize}, Types::#{singularized_class_name.camelize}Type.connection_type, null: true"
           ],
           add_mutation_type: [
-            "field :create_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Create#{singularized_class_name.camelize}",
-            "field :update_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Update#{singularized_class_name.camelize}",
-            "field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}"
+            "    field :create_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Create#{singularized_class_name.camelize}",
+            "    field :update_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Update#{singularized_class_name.camelize}",
+            "    field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}"
           ]
         ]
       end
@@ -745,14 +745,11 @@ module Souls
             path[:add_query_type].each { |line| puts line }
           end
         end
-        puts "\n\n##Connection Type\n\n"
+        puts "\n\n    ## Connection Type\n\n"
         get_tables.each do |class_name|
-          puts <<~EOS
-            def #{class_name.pluralize}
-              #{class_name.camelize}.all.order(id: :desc)
-            end
-            \n
-          EOS
+          puts "    def #{class_name.pluralize}"
+          puts "      #{class_name.camelize}.all.order(id: :desc)"
+          puts "    end\n"
         end
         puts "\n#############################################################\n"
         puts "#                                                           #\n"
