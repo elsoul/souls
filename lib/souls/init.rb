@@ -748,7 +748,7 @@ module Souls
         puts "\n    ## Connection Type\n\n"
         get_tables.each do |class_name|
           puts "    def #{class_name.pluralize}"
-          puts "      #{class_name.camelize}.all.order(id: :desc)"
+          puts "      #{class_name.singularize.camelize}.all.order(id: :desc)"
           puts "    end\n\n"
         end
         puts "\n#############################################################\n"
