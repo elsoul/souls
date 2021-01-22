@@ -612,12 +612,7 @@ module Souls
           f.write <<~EOS
             RSpec.describe #{class_name.camelize}, type: :model do
               it "作成する" do
-                expect(FactoryBot.build(:#{class_name})).to be_valid
-              end
-
-              it "同じtitleがあると作成できない" do
-                FactoryBot.build(:#{class_name}, title: "hey")
-                expect(FactoryBot.build(:#{class_name}, title: "hey")).to be_valid
+                expect(FactoryBot.build(:#{class_name.singularize})).to be_valid
               end
             end
           EOS
