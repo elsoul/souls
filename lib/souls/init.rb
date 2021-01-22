@@ -258,6 +258,7 @@ module Souls
         {
           bigint: "Integer",
           string: "String",
+          float: "Float",
           text: "String",
           datetime: "GraphQL::Types::ISO8601DateTime",
           boolean: "Boolean",
