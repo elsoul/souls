@@ -3,7 +3,7 @@ module Souls
   module Init
     class << self
       def create_souls strain: 1, app_name: "souls"
-        config_needed = (1..2)
+        config_needed = (1..3)
         project = {}
         project[:strain] = STRAINS[strain.to_i - 1]
         begin
@@ -49,7 +49,6 @@ module Souls
       end
 
       def initial_config_init app_name: "souls", project: {}
-        puts "Generating souls conf..."
         `touch "#{app_name}/config/initializers/souls.rb"`
         file_path = "#{app_name}/config/initializers/souls.rb"
         File.open(file_path, "w") do |f|
