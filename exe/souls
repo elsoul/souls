@@ -20,7 +20,7 @@ begin
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
-    when "api"
+    when "api", "graph"
       system "bundle exec puma -p 3000"
     when "service"
       system "bundle exec rake run_server"
@@ -30,9 +30,7 @@ begin
   when "c", "console"
     strain = Souls.configuration.strain
     case strain
-    when "api"
-      system "bundle exec irb"
-    when "service"
+    when "api", "graph", "service"
       system "bundle exec irb"
     else
       system "yarn dev"
@@ -74,10 +72,14 @@ begin
     when "rspec_type"
       Souls::Init.rspec_type class_name: ARGV[2]
     else
+      "SOULs!"
     end
   when "t", "test"
     `rubocop`
     `bundle exec rspec`
+  when "run"
+    `docker build . -t souls:latest`
+    `docker run --rm -p 3000:3000 souls:latest`
   when "deploy"
     project_id = Souls.configuration.project_id
     `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`
