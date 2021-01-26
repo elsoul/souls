@@ -206,3 +206,5 @@ Layout/HeredocIndentation:
     - "lib/souls/init.rb"
 Style/RaiseArgs:
   Enabled: false
+Metrics/BlockNesting:
+  Enable: false
