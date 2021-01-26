@@ -759,6 +759,7 @@ end
               end
             end
           end
+          [file_path]
         end
 
       def rspec_mutation class_name: "souls"
@@ -807,6 +808,7 @@ end
         type_paths = type class_name: singularized_class_name
         rspec_factory_paths = rspec_factory class_name: singularized_class_name
         rspec_model_paths = rspec_model class_name: singularized_class_name
+        rspec_mutation_paths = rspec_mutation class_name: singularized_class_name
         query_path = query class_name: singularized_class_name
         mutation_path = mutation class_name: singularized_class_name
         [
@@ -814,6 +816,7 @@ end
           type: type_paths,
           rspec_factory: rspec_factory_paths,
           rspec_model: rspec_model_paths,
+          rspec_mutation: rspec_mutation_paths,
           query: query_path,
           mutation: mutation_path,
           add_query_type: [
@@ -856,6 +859,12 @@ end
         paths.each do |class_name|
           class_name.each do |path|
             path[:rspec_model].each { |line| puts line }
+          end
+        end
+        puts "\n============== RspecMutation =================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:rspec_mutation].each { |line| puts line }
           end
         end
         puts "\n============== Query ======================\n\n"
