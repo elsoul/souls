@@ -460,7 +460,7 @@ module Souls
         ]
       end
 
-      def create_query class_name: "souls"
+      def create_queries class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name.pluralize}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
@@ -480,17 +480,18 @@ module Souls
         file_path
       end
 
-      def create_queries class_name: "souls"
+      def create_query class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Queries
               class #{class_name.camelize} < Queries::BaseQuery
                 type Types::#{class_name.camelize}Type, null: false
-                argument :id, Integer, required: true
+                argument :id, String, required: true
 
-                def resolve id:
-                  ::#{class_name.camelize}.find(id)
+                def resolve **args
+                  _, #{class_name.singularize.underscore}_id = SoulsApiSchema.from_global_id args[:id]
+                  ::#{class_name.camelize}.find(#{class_name.singularize.underscore}_id)
                 rescue StandardError => error
                   GraphQL::ExecutionError.new error
                 end
@@ -777,10 +778,11 @@ end
             RSpec.describe \"#{class_name.camelize} Query テスト\" do
               describe "#{class_name.camelize} データを取得する" do
                 let!(:#{class_name.singularize.underscore}) { FactoryBot.create(:#{class_name.singularize.underscore}) }
+                let!(:#{class_name.singularize.underscore}_id) { Base64.encode64 "User:\#{user.id}" }
 
                 let(:query) do
                   %(query {
-                    #{class_name.camelize}(id: 1) {
+                    #{class_name.singularize.underscore}(id: \#{#{class_name.singularize.underscore}_id}) {
                       id
           EOS
         end
@@ -916,6 +918,7 @@ end
         rspec_factory_paths = rspec_factory class_name: singularized_class_name
         rspec_model_paths = rspec_model class_name: singularized_class_name
         rspec_mutation_paths = rspec_mutation class_name: singularized_class_name
+        rspec_query_paths = rspec_query class_name: singularized_class_name
         query_path = query class_name: singularized_class_name
         mutation_path = mutation class_name: singularized_class_name
         [
@@ -924,6 +927,7 @@ end
           rspec_factory: rspec_factory_paths,
           rspec_model: rspec_model_paths,
           rspec_mutation: rspec_mutation_paths,
+          rspec_query: rspec_query_paths,
           query: query_path,
           mutation: mutation_path,
           add_query_type: [
@@ -972,6 +976,12 @@ end
         paths.each do |class_name|
           class_name.each do |path|
             path[:rspec_mutation].each { |line| puts line }
+          end
+        end
+        puts "\n============== RspecQuery =================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:rspec_query].each { |line| puts line }
           end
         end
         puts "\n============== Query ======================\n\n"
