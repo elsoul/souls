@@ -659,11 +659,11 @@ module Souls
                   else
                     case type
                     when "string", "text"
-                      new_line.write "          #{name.camelize(:lower)}: \"\#{#{class_name.singularize}.#{name.underscore}}\"\n"
+                      new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}.#{name.singularize.underscore}}\"\n"
                     when "bigint", "integer", "float", "boolean"
-                      new_line.write "          #{name.camelize(:lower)}: \#{#{class_name.singularize}.#{name.underscore}}\n"
+                      new_line.write "          #{name.singularize.camelize(:lower)}: \#{#{class_name.singularize}.#{name.singularize.underscore}}\n"
                     when "date", "datetime"
-                      new_line.write "          #{name.camelize(:lower)}: \#{Time.now}\n"
+                      new_line.write "          #{name.singularize.camelize(:lower)}: \#{Time.now}\n"
                     end
                   end
                 end
@@ -707,7 +707,7 @@ module Souls
                   when "created_at", "updated_at"
                     next
                   else
-                    new_line.write "              #{name.camelize(:lower)}\n"
+                    new_line.write "              #{name.singularize.camelize(:lower)}\n"
                   end
                 end
                 if table_check(line: line, class_name: class_name)
