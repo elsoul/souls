@@ -788,7 +788,7 @@ end
       end
 
         def rspec_query_params class_name: "souls"
-          file_path = "./spec/queries/#{class_name.pluralize}.rb"
+          file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
           path = "./db/schema.rb"
           @on = false
           File.open(file_path, "a") do |new_line|
@@ -830,7 +830,7 @@ end
         end
 
         def rspec_query_end class_name: "souls"
-          file_path = "./spec/queries/#{class_name.pluralize}.rb"
+          file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
           path = "./db/schema.rb"
           @on = false
           File.open(file_path, "a") do |new_line|
