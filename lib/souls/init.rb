@@ -627,7 +627,7 @@ module Souls
         file_path = "./spec/mutations/#{class_name.pluralize}.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
-            RSpec.describe #{class_name.camelize} Mutation do
+            RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
               describe "#{class_name.camelize} を作成する" do
                 let!(:#{class_name.singularize.downcase}) { FactoryBot.create(:#{class_name.singularize.downcase}) }
 
@@ -650,9 +650,7 @@ module Souls
                     new_line.write "        }) {\n            user {\n              id\n"
                     break
                   end
-                  field = '["tag1", "tag2", "tag3"]' if line.include?("array: true")
                   type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                  field ||= get_test_type type
                   case name
                   when "created_at", "updated_at"
                     next
