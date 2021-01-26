@@ -46,7 +46,7 @@ begin
   when "g", "generate"
     case ARGV[1]
     when "test"
-      Souls::Init.rspec_mutation class_name: "user"
+      Souls::Init.rspec_query class_name: "user"
     when "model"
       Souls::Init.model class_name: ARGV[2]
     when "mutation"

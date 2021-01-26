@@ -628,8 +628,8 @@ module Souls
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
-              describe "#{class_name.camelize} を作成する" do
-                let!(:#{class_name.singularize.downcase}) { FactoryBot.create(:#{class_name.singularize.downcase}) }
+              describe "#{class_name.camelize} データを登録する" do
+                let!(:#{class_name.singularize.underscore}) { FactoryBot.create(:#{class_name.singularize.underscore}) }
 
                 let(:mutation) do
                   %(mutation {
@@ -647,7 +647,7 @@ module Souls
               f.each_line.with_index do |line, i|
                 if @on 
                   if line.include?("end") || line.include?("t.index")
-                    new_line.write "        }) {\n            user {\n              id\n"
+                    new_line.write "        }) {\n            #{class_name.singularize.camelize} {\n              id\n"
                     break
                   end
                   type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
@@ -770,8 +770,115 @@ end
         rspec_mutation_end class_name: singularized_class_name
       end
 
+      def rspec_query_head class_name: "souls"
+        file_path = "./spec/queries/#{class_name.pluralize}.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            RSpec.describe \"#{class_name.camelize} Query テスト\" do
+              describe "#{class_name.camelize} データを取得する" do
+                let!(:#{class_name.singularize.underscore}) { FactoryBot.create(:#{class_name.singularize.underscore}) }
+
+                let(:query) do
+                  %(query {
+                    #{class_name.camelize}(id: 1) {
+                      id
+          EOS
+        end
+      end
+
+        def rspec_query_params class_name: "souls"
+          file_path = "./spec/queries/#{class_name.pluralize}.rb"
+          path = "./db/schema.rb"
+          @on = false
+          File.open(file_path, "a") do |new_line|
+            File.open(path, "r") do |f|
+              f.each_line.with_index do |line, i|
+                if @on 
+                  if line.include?("end") || line.include?("t.index")
+                    new_line.write <<-EOS
+          }
+        }
+      )
+    end
+
+    subject(:result) do
+      SoulsApiSchema.execute(query).as_json
+    end
+
+    it "return #{class_name.camelize} Data" do
+      a1 = result.dig("data", "#{class_name.singularize.underscore}")
+      expect(a1).to include(
+        "id" => be_a(String),
+                    EOS
+                    break
+                  end
+                  _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                  case name
+                  when "created_at", "updated_at"
+                    next
+                  else
+                    new_line.write "          #{name.singularize.camelize(:lower)}\n"
+                  end
+                end
+                if table_check(line: line, class_name: class_name)
+                  @on = true
+                end
+              end
+            end
+          end
+        end
+
+        def rspec_query_end class_name: "souls"
+          file_path = "./spec/queries/#{class_name.pluralize}.rb"
+          path = "./db/schema.rb"
+          @on = false
+          File.open(file_path, "a") do |new_line|
+            File.open(path, "r") do |f|
+              f.each_line.with_index do |line, i|
+                if @on 
+                  if line.include?("end") || line.include?("t.index")
+                    new_line.write <<-EOS
+        )
+    end
+  end
+end
+                    EOS
+                    break
+                  end
+                  type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                  field ||= type_check type
+                  array_true = line.include?("array: true")
+                  case name
+                  when "created_at", "updated_at"
+                    next
+                  else
+                    case type
+                    when "text"
+                        if array_true
+                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_all(String),\n"
+                        end
+                        new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
+                    when "string", "bigint", "integer", "float", "boolean"
+                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
+                    when "date", "datetime"
+                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(DateTime),\n"
+                    end
+                  end
+                end
+                if table_check(line: line, class_name: class_name)
+                  @on = true
+                end
+              end
+            end
+          end
+          [file_path]
+        end
+
       def rspec_query class_name: "souls"
-        # if needed
+        singularized_class_name = class_name.singularize
+        rspec_query_head class_name: singularized_class_name
+        rspec_query_params class_name: singularized_class_name
+        rspec_query_end class_name: singularized_class_name
       end
 
       def get_end_point
