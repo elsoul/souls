@@ -624,15 +624,83 @@ module Souls
         [file_path]
       end
 
+      def rspec_mutation_head class_name: "souls"
+        file_path = "./spec/mutations/#{class_name.pluralize}.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            RSpec.describe Types::#{class_name.camelize}Type do
+              describe "#{class_name.camelize}" do
+                let!(:#{class_name.singularize.downcase}) { FactoryBot.create(:#{class_name.singularize.downcase}) }
+
+                let(:mutation) do
+                  %(query {
+                    #{class_name.singularize}(id: 1) {
+          EOS
+        end
+      end
+
+        def rspec_mutation_params class_name: "souls"
+          file_path = "./spec/mutations/#{class_name.pluralize}.rb"
+          path = "./db/schema.rb"
+          @on = false
+          File.open(file_path, "a") do |new_line|
+            File.open(path, "r") do |f|
+              f.each_line.with_index do |line, i|
+                if @on
+                  new_line.write "\n" && break if line.include?("end") || line.include?("t.index")
+                  field = '["tag1", "tag2", "tag3"]' if line.include?("array: true")
+                  type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                  field ||= get_test_type type
+                  new_line.write "            #{name}\n"
+                end
+                if table_check(line: line, class_name: class_name)
+                  @on = true
+                end
+              end
+            end
+          end
+        end
+
+        def rspec_mutation_end class_name: "souls"
+          file_path = "./spec/mutations/#{class_name.pluralize}.rb"
+          File.open(file_path, "a") do |f|
+            f.write <<~EOS
+                      }
+                    })
+                  end
+
+                  subject(:result) do
+                    SoulsApiSchema.execute(query).as_json
+                  end
+
+                  it "return #{class_name.camelize} Data" do
+                    article_user = JSON.parse(article.user.to_json)
+                    user = {}
+                    article_user.each do |key, value|
+                      user[key.camelize(:lower)] = value
+                      user.delete("createdAt") if key == "created_at"
+                      user.delete("updatedAt") if key == "updated_at"
+                    end
+                    id = SoulsApiSchema.to_global_id "User", user["id"]
+                    user["id"] = id
+                    a1 = result.dig("data", "article", "user")
+                    expect(a1).to eq user
+                  end
+                end
+              end
+            EOS
+          end
+          [file_path]
+        end
+
       def rspec_mutation class_name: "souls"
-        # if needed
+        singularized_class_name = class_name.singularize
+        rspec_mutation_head class_name: singularized_class_name
+        rspec_mutation_params class_name: singularized_class_name
+        rspec_mutation_end class_name: singularized_class_name
       end
 
       def rspec_query class_name: "souls"
-        # if needed
-      end
-
-      def rspec_type class_name: "souls"
         # if needed
       end
 

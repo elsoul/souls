@@ -378,7 +378,7 @@ module Souls
           -e POSTGRES_PASSWORD=postgres \
           -e POSTGRES_DB=souls_test \
           postgres:13-alpine`
-        `docker ps`
+        puts `docker ps`
       end
 
       def run_awake
