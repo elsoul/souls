@@ -685,6 +685,7 @@ module Souls
                 if @on
                   if line.include?("end") || line.include?("t.index")
                     new_line.write <<-EOS
+            }
           }
         }
       )
@@ -697,7 +698,7 @@ module Souls
     it "return #{class_name.camelize} Data" do
       a1 = result.dig("data", "create#{class_name.camelize}", "#{class_name.singularize}")
       expect(a1).to include(
-        "id" => be_a(Integer),
+        "id" => be_a(String),
                     EOS
                     break
                   end
