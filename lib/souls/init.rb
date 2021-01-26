@@ -625,7 +625,7 @@ module Souls
       end
 
       def rspec_mutation_head class_name: "souls"
-        file_path = "./spec/mutations/#{class_name.pluralize}.rb"
+        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
@@ -772,7 +772,7 @@ end
       end
 
       def rspec_query_head class_name: "souls"
-        file_path = "./spec/queries/#{class_name.pluralize}.rb"
+        file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Query テスト\" do
@@ -781,7 +781,7 @@ end
 
                 let(:query) do
                   %(query {
-                    #{class_name.singularize.underscore}(id:  \#{Base64.encode64("#{class_name.camelize}:\#{user.id}")}) {
+                    #{class_name.singularize.underscore}(id:  \#{Base64.encode64("#{class_name.camelize}:\#{#{class_name.underscore}.id}")}) {
                       id
           EOS
         end
@@ -943,7 +943,6 @@ end
 
       def migrate_all
         puts "◆◆◆ Let's Auto Generate CRUD API ◆◆◆\n"
-        `rake db:migrate`
         paths = get_tables.map do |class_name|
           migrate class_name: class_name.singularize
         end
