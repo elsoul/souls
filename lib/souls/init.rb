@@ -640,7 +640,7 @@ module Souls
       end
 
         def rspec_mutation_params class_name: "souls"
-          file_path = "./spec/mutations/#{class_name.pluralize}.rb"
+          file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
           path = "./db/schema.rb"
           @on = false
           File.open(file_path, "a") do |new_line|
@@ -675,7 +675,7 @@ module Souls
         end
 
         def rspec_mutation_params_response class_name: "souls"
-          file_path = "./spec/mutations/#{class_name.pluralize}.rb"
+          file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
           path = "./db/schema.rb"
           @on = false
           File.open(file_path, "a") do |new_line|
@@ -718,7 +718,7 @@ module Souls
         end
 
         def rspec_mutation_end class_name: "souls"
-          file_path = "./spec/mutations/#{class_name.pluralize}.rb"
+          file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
           path = "./db/schema.rb"
           @on = false
           File.open(file_path, "a") do |new_line|
