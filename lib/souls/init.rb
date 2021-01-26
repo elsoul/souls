@@ -778,11 +778,10 @@ end
             RSpec.describe \"#{class_name.camelize} Query テスト\" do
               describe "#{class_name.camelize} データを取得する" do
                 let!(:#{class_name.singularize.underscore}) { FactoryBot.create(:#{class_name.singularize.underscore}) }
-                let!(:#{class_name.singularize.underscore}_id) { Base64.encode64 "User:\#{user.id}" }
 
                 let(:query) do
                   %(query {
-                    #{class_name.singularize.underscore}(id: \#{#{class_name.singularize.underscore}_id}) {
+                    #{class_name.singularize.underscore}(id:  \#{Base64.encode64("#{class_name.camelize}:\#{user.id}")}) {
                       id
           EOS
         end
