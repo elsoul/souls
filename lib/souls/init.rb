@@ -648,7 +648,7 @@ module Souls
               f.each_line.with_index do |line, i|
                 if @on 
                   if line.include?("end") || line.include?("t.index")
-                    new_line.write "        }) {\n            #{class_name.singularize.camelize} {\n              id\n"
+                    new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)} {\n              id\n"
                     break
                   end
                   type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
