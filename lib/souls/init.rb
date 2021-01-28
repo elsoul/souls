@@ -759,18 +759,16 @@ end
                     next
                   else
                     case type
-                    when "text"
+                    when "text", "date", "datetime"
                         if array_true
                           new_line.write "        \"#{name.pluralize.camelize(:lower)}\" => be_all(String),\n"
                         else
-                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
+                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n"
                         end
                     when "boolean"
                       new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
                     when "string", "bigint", "integer", "float"
                       new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
-                    when "date", "datetime"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(DateTime),\n"
                     end
                   end
                 end
@@ -875,18 +873,16 @@ end
                     next
                   else
                     case type
-                    when "text"
+                    when "text", "date", "datetime"
                         if array_true
                           new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_all(String),\n"
                         else
-                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
+                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n"
                         end
                     when "boolean"
                       new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
                     when "string", "bigint", "integer", "float"
                       new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
-                    when "date", "datetime"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(DateTime),\n"
                     end
                   end
                 end
