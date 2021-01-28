@@ -582,7 +582,12 @@ module Souls
                 field = '["tag1", "tag2", "tag3"]' if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field ||= get_test_type type
-                new_line.write "    #{name} { #{field} }\n"
+                if type == "bigint" && name.include?("_id")
+                  id_name = name.gsub("_id", "")
+                  new_line.write "    association :#{id_name}, factory: :#{id_name}\n"
+                else
+                  new_line.write "    #{name} { #{field} }\n"
+                end
               end
               if table_check(line: line, class_name: class_name)
                 @on = true
@@ -940,6 +945,43 @@ end
             "    field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}"
           ]
         ]
+      end
+
+      def single_migrate class_name: "user"
+        puts "◆◆◆ Let's Auto Generate CRUD API ◆◆◆\n"
+        result = migrate class_name: class_name
+        puts result[0][:model]
+        puts result[0][:type]
+        puts result[0][:rspec_factory]
+        puts result[0][:rspec_model]
+        puts result[0][:rspec_mutation]
+        puts result[0][:rspec_query]
+        puts result[0][:query]
+        puts result[0][:mutation]
+
+        puts "\nAll files created from ./db/schema.rb"
+        puts "\n\n"
+        puts "##########################################################\n"
+        puts "#                                                        #\n"
+        puts "# Add These Lines at ./app/graphql/types/query_type.rb   #\n"
+        puts "#                                                        #\n"
+        puts "##########################################################\n\n\n"
+        result[0][:add_query_type].each do |path|
+          puts path
+        end
+        puts "\n    ## Connection Type\n\n"
+        puts "    def #{class_name.pluralize}"
+        puts "      #{class_name.singularize.camelize}.all.order(id: :desc)"
+        puts "    end\n\n\n"
+
+        puts "#############################################################\n"
+        puts "#                                                           #\n"
+        puts "# Add These Lines at ./app/graphql/types/mutation_type.rb   #\n"
+        puts "#                                                           #\n"
+        puts "#############################################################\n\n\n"
+        result[0][:add_mutation_type].each do |path|
+          puts path
+        end
       end
 
       def migrate_all

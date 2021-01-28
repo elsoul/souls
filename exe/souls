@@ -46,7 +46,7 @@ begin
   when "g", "generate"
     case ARGV[1]
     when "test"
-      Souls::Init.rspec_query class_name: "user"
+      Souls::Init.single_migrate class_name: "user"
     when "model"
       Souls::Init.model class_name: ARGV[2]
     when "mutation"
@@ -56,7 +56,7 @@ begin
     when "type"
       Souls::Init.type class_name: ARGV[2]
     when "migrate"
-      Souls::Init.migrate class_name: ARGV[2]
+      Souls::Init.single_migrate class_name: ARGV[2]
     when "migrate_all"
       Souls::Init.migrate_all
     when "migration"

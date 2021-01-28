@@ -207,4 +207,4 @@ Layout/HeredocIndentation:
 Style/RaiseArgs:
   Enabled: false
 Metrics/BlockNesting:
-  Enable: false
+  Enabled: false
