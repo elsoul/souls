@@ -304,15 +304,32 @@ module Souls
         file_path = "./app/graphql/mutations/#{class_name}/create_#{class_name}.rb"
         path = "./db/schema.rb"
         @on = false
+        @user_exist = false
         File.open(file_path, "a") do |new_line|
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
               if @on
-                break if line.include?("end") || line.include?("t.index")
+                if line.include?("end") || line.include?("t.index")
+                  if @user_exist
+                    new_line.write <<~EOS
+
+                          def resolve **args
+                            args[:user_id] = context[:user].id
+                    EOS
+                  else
+                    new_line.write <<~EOS
+
+                          def resolve **args
+                    EOS
+                  end
+                  break
+                end
                 field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field ||= type_check type
                 case name
+                when "user_id"
+                  @user_exist = true
                 when "created_at", "updated_at"
                   next
                 else
@@ -329,8 +346,6 @@ module Souls
         file_path = "./app/graphql/mutations/#{class_name}/create_#{class_name}.rb"
         File.open(file_path, "a") do |new_line|
           new_line.write <<~EOS
-
-                  def resolve **args
                     #{class_name} = ::#{class_name.camelize}.new args
                     if #{class_name}.save
                       { #{class_name}: #{class_name} }
