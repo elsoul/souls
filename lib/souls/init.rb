@@ -756,7 +756,7 @@ end
                           new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                         end
                     when "boolean"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a([true, false]),\n"
+                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
                     when "string", "bigint", "integer", "float"
                       new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                     when "date", "datetime"
@@ -872,7 +872,7 @@ end
                           new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                         end
                     when "boolean"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a([true, false]),\n"
+                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
                     when "string", "bigint", "integer", "float"
                       new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                     when "date", "datetime"
