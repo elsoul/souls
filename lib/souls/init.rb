@@ -866,8 +866,9 @@ end
                     when "text"
                         if array_true
                           new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_all(String),\n"
+                        else
+                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                         end
-                        new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                     when "string", "bigint", "integer", "float", "boolean"
                       new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                     when "date", "datetime"
