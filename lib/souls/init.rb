@@ -637,7 +637,7 @@ module Souls
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
               describe "#{class_name.camelize} データを登録する" do
-                let!(:#{class_name.singularize.underscore}) { FactoryBot.attributes_for(:#{class_name.singularize.underscore}) }
+                let(:#{class_name.singularize.underscore}) { FactoryBot.attributes_for(:#{class_name.singularize.underscore}) }
 
                 let(:mutation) do
                   %(mutation {
@@ -666,8 +666,8 @@ module Souls
                   else
                     case type
                     when "string", "text"
-                      if array_true
-                        new_line.write "          #{name.pluralize.camelize(:lower)}: \#{#{class_name.pluralize}[:#{name.pluralize.underscore}]}\n"
+                      if array_true && name != "tag"
+                        new_line.write "          #{name.pluralize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n"
                       else
                         new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
                       end
