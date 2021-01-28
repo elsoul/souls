@@ -700,7 +700,7 @@ module Souls
     end
 
     it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "create#{class_name.camelize}", "#{class_name.singularize}")
+      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
       expect(a1).to include(
         "id" => be_a(String),
                     EOS
@@ -813,7 +813,7 @@ end
     end
 
     it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "#{class_name.singularize.underscore}")
+      a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}")
       expect(a1).to include(
         "id" => be_a(String),
                     EOS
