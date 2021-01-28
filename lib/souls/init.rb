@@ -637,7 +637,7 @@ module Souls
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
               describe "#{class_name.camelize} データを登録する" do
-                let!(:#{class_name.singularize.underscore}) { FactoryBot.create(:#{class_name.singularize.underscore}) }
+                let!(:#{class_name.singularize.underscore}) { FactoryBot.attributes_for(:#{class_name.singularize.underscore}) }
 
                 let(:mutation) do
                   %(mutation {
@@ -659,15 +659,20 @@ module Souls
                     break
                   end
                   type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                  array_true = line.include?("array: true")
                   case name
                   when "created_at", "updated_at"
                     next
                   else
                     case type
                     when "string", "text"
-                      new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}.#{name.singularize.underscore}}\"\n"
+                      if array_true
+                        new_line.write "          #{name.pluralize.camelize(:lower)}: \#{#{class_name.pluralize}[:#{name.pluralize.underscore}]}\n"
+                      else
+                        new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
+                      end
                     when "bigint", "integer", "float", "boolean"
-                      new_line.write "          #{name.singularize.camelize(:lower)}: \#{#{class_name.singularize}.#{name.singularize.underscore}}\n"
+                      new_line.write "          #{name.singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.singularize.underscore}]}\n"
                     when "date", "datetime"
                       new_line.write "          #{name.singularize.camelize(:lower)}: \#{Time.now}\n"
                     end
@@ -709,11 +714,16 @@ module Souls
                     break
                   end
                   _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                  array_true = line.include?("array: true")
                   case name
                   when "created_at", "updated_at"
                     next
                   else
-                    new_line.write "              #{name.singularize.camelize(:lower)}\n"
+                    if array_true
+                      new_line.write "              #{name.pluralize.camelize(:lower)}\n"
+                    else
+                      new_line.write "              #{name.singularize.camelize(:lower)}\n"
+                    end
                   end
                 end
                 if table_check(line: line, class_name: class_name)
@@ -751,7 +761,7 @@ end
                     case type
                     when "text"
                         if array_true
-                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_all(String),\n"
+                          new_line.write "        \"#{name.pluralize.camelize(:lower)}\" => be_all(String),\n"
                         else
                           new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                         end
