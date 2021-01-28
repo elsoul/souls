@@ -621,7 +621,7 @@ module Souls
           f.write <<~EOS
             RSpec.describe "#{class_name.camelize} Model テスト", type: :model do
               describe "#{class_name.camelize} データを書き込む" do
-                it "valid #{class_Name.camelize} Model" do
+                it "valid #{class_name.camelize} Model" do
                   expect(FactoryBot.build(:#{class_name.singularize})).to be_valid
                 end
               end

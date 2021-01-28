@@ -87,7 +87,7 @@ begin
     puts "Welcome to SOULs!"
   end
 rescue StandardError => error
-  puts error
+  puts error.backtrace
   puts "Thank you!!"
   puts "SOULs"
 end
