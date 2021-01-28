@@ -311,15 +311,15 @@ module Souls
               if @on
                 if line.include?("end") || line.include?("t.index")
                   if @user_exist
-                    new_line.write <<~EOS
+                    new_line.write <<-EOS
 
-                          def resolve **args
-                            args[:user_id] = context[:user].id
+      def resolve **args
+        args[:user_id] = context[:user].id
                     EOS
                   else
-                    new_line.write <<~EOS
+                    new_line.write <<-EOS
 
-                          def resolve **args
+      def resolve **args
                     EOS
                   end
                   break
@@ -380,15 +380,32 @@ module Souls
         file_path = "./app/graphql/mutations/#{class_name}/update_#{class_name}.rb"
         path = "./db/schema.rb"
         @on = false
+        @user_exist = false
         File.open(file_path, "a") do |new_line|
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
               if @on
-                break if line.include?("end") || line.include?("t.index")
+                if line.include?("end") || line.include?("t.index")
+                  if @user_exist
+                    new_line.write <<-EOS
+
+      def resolve **args
+        args[:user_id] = context[:user].id
+                    EOS
+                  else
+                    new_line.write <<-EOS
+
+      def resolve **args
+                    EOS
+                  end
+                  break
+                end
                 field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field ||= type_check type
                 case name
+                when "user_id"
+                  @user_exist = true
                 when "created_at", "updated_at"
                   next
                 else
@@ -405,8 +422,6 @@ module Souls
         file_path = "./app/graphql/mutations/#{class_name}/update_#{class_name}.rb"
         File.open(file_path, "a") do |new_line|
           new_line.write <<~EOS
-
-                  def resolve **args
                     #{class_name} = ::#{class_name.camelize}.find args[:id]
                     #{class_name}.update args
                     { #{class_name}: ::#{class_name.camelize}.find(args[:id]) }
@@ -435,10 +450,11 @@ module Souls
               module #{class_name.camelize}
                 class Delete#{class_name.camelize} < BaseMutation
                   field :#{class_name}, Types::#{class_name.camelize}Type, null: false
-                  argument :id, Integer, required: true
+                  argument :id, String, required: true
 
-                  def resolve id:
-                    #{class_name} = ::#{class_name.camelize}.find id
+                  def resolve **args
+                    _, data_id = SoulsApiSchema.from_global_id args[:id]
+                    #{class_name} = ::#{class_name.camelize}.find data_id
                     #{class_name}.destroy
                     { #{class_name}: #{class_name} }
                   rescue StandardError => error
@@ -505,8 +521,8 @@ module Souls
                 argument :id, String, required: true
 
                 def resolve **args
-                  _, #{class_name.singularize.underscore}_id = SoulsApiSchema.from_global_id args[:id]
-                  ::#{class_name.camelize}.find(#{class_name.singularize.underscore}_id)
+                  _, data_id = SoulsApiSchema.from_global_id args[:id]
+                  ::#{class_name.camelize}.find(data_id)
                 rescue StandardError => error
                   GraphQL::ExecutionError.new error
                 end
@@ -665,10 +681,11 @@ module Souls
           file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
           path = "./db/schema.rb"
           @on = false
+          @user_exist = false
           File.open(file_path, "a") do |new_line|
             File.open(path, "r") do |f|
               f.each_line.with_index do |line, i|
-                if @on 
+                if @on
                   if line.include?("end") || line.include?("t.index")
                     new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)} {\n              id\n"
                     break
@@ -678,6 +695,8 @@ module Souls
                   case name
                   when "created_at", "updated_at"
                     next
+                  when "user_id"
+                    @user_exist = true
                   else
                     case type
                     when "string", "text", "date", "datetime"
@@ -708,7 +727,28 @@ module Souls
               f.each_line.with_index do |line, i|
                 if @on
                   if line.include?("end") || line.include?("t.index")
-                    new_line.write <<-EOS
+                    if @user_exist
+                      new_line.write <<-EOS
+            }
+          }
+        }
+      )
+    end
+
+    subject(:result) do
+      context = {
+        user: user
+      }
+      SoulsApiSchema.execute(mutation, context: context).as_json
+    end
+
+    it "return #{class_name.camelize} Data" do
+      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
+      expect(a1).to include(
+        "id" => be_a(String),
+                      EOS
+                    else
+                      new_line.write <<-EOS
             }
           }
         }
@@ -723,13 +763,14 @@ module Souls
       a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
       expect(a1).to include(
         "id" => be_a(String),
-                    EOS
+                      EOS
+                    end
                     break
                   end
                   _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                   array_true = line.include?("array: true")
                   case name
-                  when "created_at", "updated_at"
+                  when "user_id", "created_at", "updated_at"
                     next
                   else
                     if array_true
@@ -756,11 +797,11 @@ module Souls
               f.each_line.with_index do |line, i|
                 if @on 
                   if line.include?("end") || line.include?("t.index")
-                    new_line.write <<-EOS
-        )
-    end
-  end
-end
+                    new_line.write <<~EOS
+                                  )
+                              end
+                            end
+                          end
                     EOS
                     break
                   end
@@ -768,7 +809,7 @@ end
                   field ||= type_check type
                   array_true = line.include?("array: true")
                   case name
-                  when "created_at", "updated_at"
+                  when "user_id", "created_at", "updated_at"
                     next
                   else
                     case type
