@@ -619,9 +619,11 @@ module Souls
         file_path = "./spec/models/#{class_name}_spec.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
-            RSpec.describe #{class_name.camelize}, type: :model do
-              it "作成する" do
-                expect(FactoryBot.build(:#{class_name.singularize})).to be_valid
+            RSpec.describe "#{class_name.camelize} Model テスト", type: :model do
+              describe "#{class_name.camelize} データを書き込む" do
+                it "valid #{class_Name.camelize} Model" do
+                  expect(FactoryBot.build(:#{class_name.singularize})).to be_valid
+                end
               end
             end
           EOS
