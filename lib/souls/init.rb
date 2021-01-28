@@ -787,7 +787,7 @@ end
                 let(:query) do
                   data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
                   %(query {
-                    #{class_name.singularize.underscore}(id: \\"\#{data_id}\\") {
+                    #{class_name.singularize.camelize}(id: \\"\#{data_id}\\") {
                       id
           EOS
         end
