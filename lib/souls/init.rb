@@ -888,7 +888,7 @@ module Souls
                   end
                   _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                   case name
-                  when "created_at", "updated_at"
+                  when "user_id", "created_at", "updated_at"
                     next
                   else
                     new_line.write "          #{name.singularize.camelize(:lower)}\n"
@@ -923,7 +923,7 @@ end
                   field ||= type_check type
                   array_true = line.include?("array: true")
                   case name
-                  when "created_at", "updated_at"
+                  when "user_id", "created_at", "updated_at"
                     next
                   else
                     case type
