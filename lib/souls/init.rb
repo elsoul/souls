@@ -785,7 +785,7 @@ end
                 let!(:#{class_name.singularize.underscore}) { FactoryBot.create(:#{class_name.singularize.underscore}) }
 
                 let(:query) do
-                  data_id = Base64.encode64("User:\#{user.id}")
+                  data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
                   %(query {
                     #{class_name.singularize.underscore}(id: \\"\#{data_id}\\") {
                       id
