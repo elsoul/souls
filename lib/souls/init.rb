@@ -272,8 +272,8 @@ module Souls
           float: 4.2,
           string: '"MyString"',
           text: '"MyString"',
-          datetime: "Time.now",
-          date: "Time.now",
+          datetime: "DateTime.now",
+          date: "DateTime.now",
           boolean: false,
           integer: 1
         }[type.to_sym]
@@ -665,7 +665,7 @@ module Souls
                     next
                   else
                     case type
-                    when "string", "text"
+                    when "string", "text", "date", "datetime"
                       if array_true && name != "tag"
                         new_line.write "          #{name.pluralize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n"
                       else
@@ -673,8 +673,6 @@ module Souls
                       end
                     when "bigint", "integer", "float", "boolean"
                       new_line.write "          #{name.singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.singularize.underscore}]}\n"
-                    when "date", "datetime"
-                      new_line.write "          #{name.singularize.camelize(:lower)}: \#{Time.now}\n"
                     end
                   end
                 end
