@@ -401,6 +401,7 @@ module Souls
                 class Update#{class_name.camelize} < BaseMutation
                   field :#{class_name}, Types::#{class_name.camelize}Type, null: false
 
+                  argument :id, String, required: true
           EOS
         end
       end
@@ -420,11 +421,13 @@ module Souls
 
       def resolve **args
         args[:user_id] = context[:user].id
+        _, args[:id] = SoulsApiSchema.from_global_id(args[:id])
                     EOS
                   else
                     new_line.write <<-EOS
 
       def resolve **args
+        _, args[:id] = SoulsApiSchema.from_global_id(args[:id])
                     EOS
                   end
                   break
