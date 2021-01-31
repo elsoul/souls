@@ -595,7 +595,12 @@ module Souls
                 field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field ||= type_check type
-                new_line.write "    field :#{name}, #{field}, null: true\n"
+                case name
+                when /$*_id\z/
+                  new_line.write "    field :#{name.gsub("_id", "")}, Types::#{name.gsub("_id", "").singularize.camelize}Type, null: false\n"
+                else
+                  new_line.write "    field :#{name}, #{field}, null: true\n"
+                end
               end
               if table_check(line: line, class_name: class_name)
                 @on = true
