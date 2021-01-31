@@ -343,6 +343,8 @@ module Souls
                 case name
                 when "user_id"
                   @user_exist = true
+                when /$*_id\z/
+                  new_line.write "      argument :#{name}, String, required: false\n"
                 when "created_at", "updated_at"
                   next
                 else
