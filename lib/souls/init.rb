@@ -411,6 +411,7 @@ module Souls
         path = "./db/schema.rb"
         @on = false
         @user_exist = false
+        @relation_params = []
         File.open(file_path, "a") do |new_line|
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
@@ -438,6 +439,9 @@ module Souls
                 case name
                 when "user_id"
                   @user_exist = true
+                when /$*_id\z/
+                  @relation_params << name
+                  new_line.write "      argument :#{name}, String, required: false\n"
                 when "created_at", "updated_at"
                   next
                 else
@@ -448,6 +452,18 @@ module Souls
             end
           end
         end
+        @relation_params
+      end
+
+      def update_mutation_after_params class_name: "article", relation_params: []
+        return false if relation_params.empty?
+        file_path = "./app/graphql/mutations/#{class_name}/update_#{class_name}.rb"
+        relation_params.each do |params_name|
+          File.open(file_path, "a") do |new_line|
+            new_line.write "        _, args[:#{params_name}] = SoulsApiSchema.from_global_id(args[:#{params_name}])\n"
+          end
+        end
+        true
       end
 
       def update_mutation_end class_name: "souls"
@@ -470,7 +486,8 @@ module Souls
 
       def update_mutation class_name: "souls"
         update_mutation_head class_name: class_name
-        update_mutation_params class_name: class_name
+        relation_params = update_mutation_params class_name: class_name
+        update_mutation_after_params class_name: class_name, relation_params: relation_params
         update_mutation_end class_name: class_name
       end
 
