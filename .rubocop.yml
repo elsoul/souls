@@ -133,7 +133,7 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/CyclomaticComplexity:
-  Max: 30
+  Max: 40
 
 Metrics/PerceivedComplexity:
   Enabled: false
@@ -205,4 +205,6 @@ Layout/HeredocIndentation:
   Exclude: 
     - "lib/souls/init.rb"
 Style/RaiseArgs:
+  Enabled: false
+Metrics/BlockNesting:
   Enabled: false
