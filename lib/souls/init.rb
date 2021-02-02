@@ -747,16 +747,12 @@ module Souls
                   EOS
                   break
                 end
-                @params = {}
                 _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 case name
                 when /$*_id\z/
-                  @relation_params << "#{name}: #{name.gsub("_id", "")}.id"
-                  @params[name.to_sym] = name.gsub("_id", "")
-                  param_hash = {
-                    "#{name.to_sym}": name.gsub("_id", "")
-                  }
-                  new_line.write "    let(:#{param_hash[name.to_sym]}) { FactoryBot.create(:#{param_hash[name.to_sym]}) }\n"
+                  relation_col = name.gsub("_id", "")
+                  @relation_params << "#{name}: #{relation_col}.id"
+                  new_line.write "    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n"
                 end
               end
               if table_check(line: line, class_name: class_name)
@@ -942,109 +938,141 @@ module Souls
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Query テスト\" do
               describe "#{class_name.camelize} データを取得する" do
-                let!(:#{class_name.singularize.underscore}) { FactoryBot.create(:#{class_name.singularize.underscore}) }
-
-                let(:query) do
-                  data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
-                  %(query {
-                    #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
-                      id
           EOS
         end
       end
 
-        def rspec_query_params class_name: "souls"
-          file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
-          path = "./db/schema.rb"
-          @on = false
-          File.open(file_path, "a") do |new_line|
-            File.open(path, "r") do |f|
-              f.each_line.with_index do |line, i|
-                if @on 
-                  if line.include?("end") || line.include?("t.index")
-                    new_line.write <<-EOS
-          }
-        }
-      )
-    end
+      def rspec_query_after_head class_name: "souls"
+        file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
+        path = "./db/schema.rb"
+        @on = false
+        @user_exist = false
+        @relation_params = []
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                if line.include?("end") || line.include?("t.index")
+                  new_line.write <<-EOS
+    let(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(", ")}) }
 
-    subject(:result) do
-      SoulsApiSchema.execute(query).as_json
-    end
-
-    it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}")
-      expect(a1).to include(
-        "id" => be_a(String),
-                    EOS
-                    break
-                  end
-                  _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                  case name
-                  when "user_id", "created_at", "updated_at"
-                    next
-                  else
-                    new_line.write "          #{name.singularize.camelize(:lower)}\n"
-                  end
+    let(:query) do
+      data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
+      %(query {
+        #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
+          id
+                  EOS
+                  break
                 end
-                if table_check(line: line, class_name: class_name)
-                  @on = true
+                _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                case name
+                when /$*_id\z/
+                  relation_col = name.gsub("_id", "")
+                  @relation_params << "#{name}: #{relation_col}.id"
+                  new_line.write "    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n"
                 end
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
               end
             end
           end
         end
+      end
 
-        def rspec_query_end class_name: "souls"
-          file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
-          path = "./db/schema.rb"
-          @on = false
-          File.open(file_path, "a") do |new_line|
-            File.open(path, "r") do |f|
-              f.each_line.with_index do |line, i|
-                if @on 
-                  if line.include?("end") || line.include?("t.index")
-                    new_line.write <<-EOS
+      def rspec_query_params class_name: "souls"
+        file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on 
+                if line.include?("end") || line.include?("t.index")
+                  new_line.write <<-EOS
+        }
+      }
+    )
+  end
+
+  subject(:result) do
+    SoulsApiSchema.execute(query).as_json
+  end
+
+  it "return #{class_name.camelize} Data" do
+    a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}")
+    expect(a1).to include(
+      "id" => be_a(String),
+                  EOS
+                  break
+                end
+                _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                case name
+                when "user_id", "created_at", "updated_at", /$*_id\z/
+                  next
+                else
+                  new_line.write "          #{name.singularize.camelize(:lower)}\n"
+                end
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
+              end
+            end
+          end
+        end
+      end
+
+      def rspec_query_end class_name: "souls"
+        file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on 
+                if line.include?("end") || line.include?("t.index")
+                  new_line.write <<-EOS
         )
     end
   end
 end
-                    EOS
-                    break
-                  end
-                  type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                  field ||= type_check type
-                  array_true = line.include?("array: true")
-                  case name
-                  when "user_id", "created_at", "updated_at"
-                    next
-                  else
-                    case type
-                    when "text", "date", "datetime"
-                        if array_true
-                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_all(String),\n"
-                        else
-                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n"
-                        end
-                    when "boolean"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
-                    when "string", "bigint", "integer", "float"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
-                    end
+                  EOS
+                  break
+                end
+                type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                field ||= type_check type
+                array_true = line.include?("array: true")
+                case name
+                when "user_id", "created_at", "updated_at", /$*_id\z/
+                  next
+                else
+                  case type
+                  when "text", "date", "datetime"
+                      if array_true
+                        new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_all(String),\n"
+                      else
+                        new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n"
+                      end
+                  when "boolean"
+                    new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
+                  when "string", "bigint", "integer", "float"
+                    new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                   end
                 end
-                if table_check(line: line, class_name: class_name)
-                  @on = true
-                end
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
               end
             end
           end
-          [file_path]
         end
+        [file_path]
+      end
 
       def rspec_query class_name: "souls"
         singularized_class_name = class_name.singularize
         rspec_query_head class_name: singularized_class_name
+        rspec_query_after_head class_name: singularized_class_name
         rspec_query_params class_name: singularized_class_name
         rspec_query_end class_name: singularized_class_name
       end
