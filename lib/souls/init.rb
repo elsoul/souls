@@ -526,6 +526,7 @@ module Souls
 
       def mutation class_name: "souls"
         singularized_class_name = class_name.singularize
+        
         create_mutation_head class_name: singularized_class_name
         relation_params = create_mutation_params class_name: singularized_class_name
         create_mutation_after_params class_name: singularized_class_name, relation_params: relation_params
