@@ -723,11 +723,6 @@ module Souls
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
               describe "#{class_name.camelize} データを登録する" do
-                let(:#{class_name.singularize.underscore}) { FactoryBot.attributes_for(:#{class_name.singularize.underscore}) }
-
-                let(:mutation) do
-                  %(mutation {
-                    create#{class_name.camelize}(input: {
           EOS
         end
       end
@@ -737,25 +732,31 @@ module Souls
         path = "./db/schema.rb"
         @on = false
         @user_exist = false
-
+        @relation_params = []
         File.open(file_path, "a") do |new_line|
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
               if @on
                 if line.include?("end") || line.include?("t.index")
-                  new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)} {\n              id\n"
+                  new_line.write <<-EOS
+    let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@relation_params.join(", ")}) }
+
+    let(:mutation) do
+      %(mutation {
+        create#{class_name.camelize}(input: {
+                  EOS
                   break
                 end
                 @params = {}
                 _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 case name
                 when /$*_id\z/
+                  @relation_params << "#{name}: #{name.gsub("_id", "")}.id"
                   @params[name.to_sym] = name.gsub("_id", "")
-                  new_line.write "    let(:#{@params[name.to_sym]}) { FactoryBot.create(:#{@params[name.to_sym]}) }\n"
-                  new_line.write "    let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@params}) }\n"
-                when "articles"
-                  puts @params
-                  new_line.write "    let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@params}) }\n"
+                  param_hash = {
+                    "#{name.to_sym}": name.gsub("_id", "")
+                  }
+                  new_line.write "    let(:#{param_hash[name.to_sym]}) { FactoryBot.create(:#{param_hash[name.to_sym]}) }\n"
                 end
               end
               if table_check(line: line, class_name: class_name)
@@ -786,6 +787,8 @@ module Souls
                   next
                 when "user_id"
                   @user_exist = true
+                when /$*_id\z/
+                  new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
                 else
                   case type
                   when "string", "text", "date", "datetime"
@@ -818,40 +821,40 @@ module Souls
                 if line.include?("end") || line.include?("t.index")
                   if @user_exist
                     new_line.write <<-EOS
+            }
           }
         }
+      )
+    end
+
+    subject(:result) do
+      context = {
+        user: user
       }
-    )
-  end
+      SoulsApiSchema.execute(mutation, context: context).as_json
+    end
 
-  subject(:result) do
-    context = {
-      user: user
-    }
-    SoulsApiSchema.execute(mutation, context: context).as_json
-  end
-
-  it "return #{class_name.camelize} Data" do
-    a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
-    expect(a1).to include(
-      "id" => be_a(String),
+    it "return #{class_name.camelize} Data" do
+      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
+      expect(a1).to include(
+        "id" => be_a(String),
                     EOS
                   else
                     new_line.write <<-EOS
+            }
           }
         }
-      }
-    )
-  end
+      )
+    end
 
-  subject(:result) do
-    SoulsApiSchema.execute(mutation).as_json
-  end
+    subject(:result) do
+      SoulsApiSchema.execute(mutation).as_json
+    end
 
-  it "return #{class_name.camelize} Data" do
-    a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
-    expect(a1).to include(
-      "id" => be_a(String),
+    it "return #{class_name.camelize} Data" do
+      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
+      expect(a1).to include(
+        "id" => be_a(String),
                     EOS
                   end
                   break
@@ -859,7 +862,7 @@ module Souls
                 _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 array_true = line.include?("array: true")
                 case name
-                when "user_id", "created_at", "updated_at"
+                when "user_id", "created_at", "updated_at", /$*_id\z/
                   next
                 else
                   if array_true
@@ -898,7 +901,7 @@ module Souls
                 field ||= type_check type
                 array_true = line.include?("array: true")
                 case name
-                when "user_id", "created_at", "updated_at"
+                when "user_id", "created_at", "updated_at", /$*_id\z/
                   next
                 else
                   case type
