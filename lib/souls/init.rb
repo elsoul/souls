@@ -300,6 +300,8 @@ module Souls
       end
 
       def create_mutation_head class_name: "souls"
+        dir_name = "./app/graphql/mutations/#{class_name}"
+        FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
         file_path = "./app/graphql/mutations/#{class_name}/create_#{class_name}.rb"
         File.open(file_path, "w") do |new_line|
           new_line.write <<~EOS
@@ -526,7 +528,7 @@ module Souls
 
       def mutation class_name: "souls"
         singularized_class_name = class_name.singularize
-        
+
         create_mutation_head class_name: singularized_class_name
         relation_params = create_mutation_params class_name: singularized_class_name
         create_mutation_after_params class_name: singularized_class_name, relation_params: relation_params
