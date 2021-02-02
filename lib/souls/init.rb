@@ -1,5 +1,5 @@
 module Souls
-  STRAINS = ["service", "api", "graph", "media", "admin"]
+  STRAINS = ["graph", "api", "service", "media", "admin"]
   module Init
     class << self
       def create_souls strain: 1, app_name: "souls"
