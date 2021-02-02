@@ -3,7 +3,7 @@ require "souls"
 
 begin
   begin
-    require "./config/initializers/souls" unless ARGV[0] == "new" || ARGV[0] == "init" || ARGV[0] == "s"
+    require "./config/initializers/souls" unless ARGV[0] == "new" || ARGV[0] == "init"
   rescue
     Souls::Init.config_init
   end
