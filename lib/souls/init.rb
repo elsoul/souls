@@ -749,7 +749,9 @@ module Souls
                   else
                     new_line.write <<-EOS
       
-    get_global_key = proc { |class_name, id| Base64.encode64(\"\#{class_name}:\#{id}\") }
+    def get_global_key class_name, id
+      Base64.encode64("#{class_name}:#{id}")
+    end
     let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@relation_params.join(", ")}) }
 
     let(:mutation) do
@@ -766,7 +768,7 @@ module Souls
                   new_line.write "    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n"
                 when /$*_id\z/
                   relation_col = name.gsub("_id", "")
-                  @relation_params << "#{name}: get_global_key.call(\"#{name.singularize.camelize.gsub("Id", "")}\", #{relation_col}.id)"
+                  @relation_params << "#{name}: get_global_key(\"#{name.singularize.camelize.gsub("Id", "")}\", #{relation_col}.id)"
                   new_line.write "    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n"
                 end
               end
