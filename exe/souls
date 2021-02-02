@@ -62,7 +62,7 @@ begin
     when "migrate_all"
       Souls::Init.migrate_all
     when "migration"
-      `rake db:create_migration NAME=#{ARGV[3]}`
+      `rake db:create_migration NAME=#{ARGV[2]}`
     when "rspec_factory"
       Souls::Init.rspec_factory class_name: ARGV[2]
     when "rspec_model"

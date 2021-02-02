@@ -526,11 +526,6 @@ module Souls
 
       def mutation class_name: "souls"
         singularized_class_name = class_name.singularize
-        if Dir.exist? "./app/graphql/mutations/#{singularized_class_name}"
-          create_confirm dir_path: "./app/graphql/mutations/#{singularized_class_name}"
-        else
-          Dir.mkdir "./app/graphql/mutations/#{singularized_class_name}"
-        end
         create_mutation_head class_name: singularized_class_name
         relation_params = create_mutation_params class_name: singularized_class_name
         create_mutation_after_params class_name: singularized_class_name, relation_params: relation_params
