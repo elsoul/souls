@@ -723,7 +723,6 @@ module Souls
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
               describe "#{class_name.camelize} データを登録する" do
-                get_global_key = proc {|class_name, id| Base64.encode64(\"\#{class_name}:\#{id}\")}
           EOS
         end
       end
@@ -739,17 +738,32 @@ module Souls
             f.each_line.with_index do |line, i|
               if @on
                 if line.include?("end") || line.include?("t.index")
-                  new_line.write <<-EOS
+                  if @relation_params.empty?
+                    new_line.write <<-EOS
+    let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}) }
+
+    let(:mutation) do
+      %(mutation {
+        create#{class_name.camelize}(input: {
+                    EOS
+                  else
+                    new_line.write <<-EOS
+      
+    get_global_key = proc { |class_name, id| Base64.encode64(\"\#{class_name}:\#{id}\") }
     let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@relation_params.join(", ")}) }
 
     let(:mutation) do
       %(mutation {
         create#{class_name.camelize}(input: {
-                  EOS
+                    EOS
+                  end
                   break
                 end
                 _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 case name
+                when "user_id"
+                  relation_col = name.gsub("_id", "")
+                  new_line.write "    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n"
                 when /$*_id\z/
                   relation_col = name.gsub("_id", "")
                   @relation_params << "#{name}: get_global_key.call(\"#{name.singularize.camelize.gsub("Id", "")}\", #{relation_col}.id)"
@@ -789,7 +803,7 @@ module Souls
                 else
                   case type
                   when "string", "text", "date", "datetime"
-                    if array_true && name != "tag"
+                    if array_true
                       new_line.write "          #{name.pluralize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n"
                     else
                       new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
@@ -954,6 +968,18 @@ module Souls
             f.each_line.with_index do |line, i|
               if @on
                 if line.include?("end") || line.include?("t.index")
+                  if @relation_params.empty?
+                  new_line.write <<-EOS
+    let(:#{class_name}) { FactoryBot.create(:#{class_name} }
+
+    let(:query) do
+      data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
+      %(query {
+        #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
+          id
+                  EOS
+                  break
+                  else
                   new_line.write <<-EOS
     let(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(", ")}) }
 
@@ -964,6 +990,7 @@ module Souls
           id
                   EOS
                   break
+                  end
                 end
                 _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 case name
