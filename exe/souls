@@ -45,6 +45,8 @@ begin
     puts Souls::VERSION
   when "g", "generate"
     case ARGV[1]
+    when "test_dir"
+      Souls::Init.test_dir
     when "test"
       Souls::Init.single_migrate class_name: "user"
     when "model"
