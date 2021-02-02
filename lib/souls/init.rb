@@ -970,7 +970,7 @@ module Souls
                 if line.include?("end") || line.include?("t.index")
                   if @relation_params.empty?
                   new_line.write <<-EOS
-    let(:#{class_name}) { FactoryBot.create(:#{class_name} }
+    let(:#{class_name}) { FactoryBot.create(:#{class_name}) }
 
     let(:query) do
       data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
