@@ -723,6 +723,7 @@ module Souls
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
               describe "#{class_name.camelize} データを登録する" do
+                get_global_key = proc {|class_name, id| Base64.encode64(\"\#{class_name}:\#{id}\")}
           EOS
         end
       end
@@ -751,7 +752,7 @@ module Souls
                 case name
                 when /$*_id\z/
                   relation_col = name.gsub("_id", "")
-                  @relation_params << "#{name}: #{relation_col}.id"
+                  @relation_params << "#{name}: get_global_key.call(\"#{name.singularize.camelize.gsub("Id", "")}\", #{relation_col}.id)"
                   new_line.write "    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n"
                 end
               end
