@@ -732,167 +732,202 @@ module Souls
         end
       end
 
-        def rspec_mutation_params class_name: "souls"
-          file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
-          path = "./db/schema.rb"
-          @on = false
-          @user_exist = false
-          File.open(file_path, "a") do |new_line|
-            File.open(path, "r") do |f|
-              f.each_line.with_index do |line, i|
-                if @on
-                  if line.include?("end") || line.include?("t.index")
-                    new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)} {\n              id\n"
-                    break
-                  end
-                  type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                  array_true = line.include?("array: true")
-                  case name
-                  when "created_at", "updated_at"
-                    next
-                  when "user_id"
-                    @user_exist = true
-                  else
-                    case type
-                    when "string", "text", "date", "datetime"
-                      if array_true && name != "tag"
-                        new_line.write "          #{name.pluralize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n"
-                      else
-                        new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
-                      end
-                    when "bigint", "integer", "float", "boolean"
-                      new_line.write "          #{name.singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.singularize.underscore}]}\n"
-                    end
-                  end
+      def rspec_mutation_after_head class_name: "souls"
+        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        path = "./db/schema.rb"
+        @on = false
+        @user_exist = false
+
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                if line.include?("end") || line.include?("t.index")
+                  new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)} {\n              id\n"
+                  break
                 end
-                if table_check(line: line, class_name: class_name)
-                  @on = true
+                @params = {}
+                _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                case name
+                when /$*_id\z/
+                  @params[name.to_sym] = name.gsub("_id", "")
+                  new_line.write "    let(:#{@params[name.to_sym]}) { FactoryBot.create(:#{@params[name.to_sym]}) }\n"
+                  new_line.write "    let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@params}) }\n"
+                when "articles"
+                  puts @params
+                  new_line.write "    let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@params}) }\n"
                 end
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
               end
             end
           end
         end
+      end
 
-        def rspec_mutation_params_response class_name: "souls"
-          file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
-          path = "./db/schema.rb"
-          @on = false
-          File.open(file_path, "a") do |new_line|
-            File.open(path, "r") do |f|
-              f.each_line.with_index do |line, i|
-                if @on
-                  if line.include?("end") || line.include?("t.index")
-                    if @user_exist
-                      new_line.write <<-EOS
-            }
+      def rspec_mutation_params class_name: "souls"
+        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        path = "./db/schema.rb"
+        @on = false
+        @user_exist = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                if line.include?("end") || line.include?("t.index")
+                  new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)} {\n              id\n"
+                  break
+                end
+                type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                array_true = line.include?("array: true")
+                case name
+                when "created_at", "updated_at"
+                  next
+                when "user_id"
+                  @user_exist = true
+                else
+                  case type
+                  when "string", "text", "date", "datetime"
+                    if array_true && name != "tag"
+                      new_line.write "          #{name.pluralize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n"
+                    else
+                      new_line.write "          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
+                    end
+                  when "bigint", "integer", "float", "boolean"
+                    new_line.write "          #{name.singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.singularize.underscore}]}\n"
+                  end
+                end
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
+              end
+            end
+          end
+        end
+      end
+
+      def rspec_mutation_params_response class_name: "souls"
+        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on
+                if line.include?("end") || line.include?("t.index")
+                  if @user_exist
+                    new_line.write <<-EOS
           }
         }
-      )
-    end
-
-    subject(:result) do
-      context = {
-        user: user
       }
-      SoulsApiSchema.execute(mutation, context: context).as_json
-    end
+    )
+  end
 
-    it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
-      expect(a1).to include(
-        "id" => be_a(String),
-                      EOS
-                    else
-                      new_line.write <<-EOS
-            }
+  subject(:result) do
+    context = {
+      user: user
+    }
+    SoulsApiSchema.execute(mutation, context: context).as_json
+  end
+
+  it "return #{class_name.camelize} Data" do
+    a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
+    expect(a1).to include(
+      "id" => be_a(String),
+                    EOS
+                  else
+                    new_line.write <<-EOS
           }
         }
-      )
-    end
+      }
+    )
+  end
 
-    subject(:result) do
-      SoulsApiSchema.execute(mutation).as_json
-    end
+  subject(:result) do
+    SoulsApiSchema.execute(mutation).as_json
+  end
 
-    it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
-      expect(a1).to include(
-        "id" => be_a(String),
-                      EOS
-                    end
-                    break
+  it "return #{class_name.camelize} Data" do
+    a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
+    expect(a1).to include(
+      "id" => be_a(String),
+                    EOS
                   end
-                  _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                  array_true = line.include?("array: true")
-                  case name
-                  when "user_id", "created_at", "updated_at"
-                    next
+                  break
+                end
+                _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                array_true = line.include?("array: true")
+                case name
+                when "user_id", "created_at", "updated_at"
+                  next
+                else
+                  if array_true
+                    new_line.write "              #{name.pluralize.camelize(:lower)}\n"
                   else
-                    if array_true
-                      new_line.write "              #{name.pluralize.camelize(:lower)}\n"
-                    else
-                      new_line.write "              #{name.singularize.camelize(:lower)}\n"
-                    end
+                    new_line.write "              #{name.singularize.camelize(:lower)}\n"
                   end
                 end
-                if table_check(line: line, class_name: class_name)
-                  @on = true
-                end
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
               end
             end
           end
         end
+      end
 
-        def rspec_mutation_end class_name: "souls"
-          file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
-          path = "./db/schema.rb"
-          @on = false
-          File.open(file_path, "a") do |new_line|
-            File.open(path, "r") do |f|
-              f.each_line.with_index do |line, i|
-                if @on 
-                  if line.include?("end") || line.include?("t.index")
-                    new_line.write <<~EOS
-                                  )
-                              end
+      def rspec_mutation_end class_name: "souls"
+        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        path = "./db/schema.rb"
+        @on = false
+        File.open(file_path, "a") do |new_line|
+          File.open(path, "r") do |f|
+            f.each_line.with_index do |line, i|
+              if @on 
+                if line.include?("end") || line.include?("t.index")
+                  new_line.write <<~EOS
+                                )
                             end
                           end
-                    EOS
-                    break
-                  end
-                  type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                  field ||= type_check type
-                  array_true = line.include?("array: true")
-                  case name
-                  when "user_id", "created_at", "updated_at"
-                    next
-                  else
-                    case type
-                    when "text", "date", "datetime"
-                        if array_true
-                          new_line.write "        \"#{name.pluralize.camelize(:lower)}\" => be_all(String),\n"
-                        else
-                          new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n"
                         end
-                    when "boolean"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
-                    when "string", "bigint", "integer", "float"
-                      new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
-                    end
+                  EOS
+                  break
+                end
+                type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+                field ||= type_check type
+                array_true = line.include?("array: true")
+                case name
+                when "user_id", "created_at", "updated_at"
+                  next
+                else
+                  case type
+                  when "text", "date", "datetime"
+                      if array_true
+                        new_line.write "        \"#{name.pluralize.camelize(:lower)}\" => be_all(String),\n"
+                      else
+                        new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n"
+                      end
+                  when "boolean"
+                    new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
+                  when "string", "bigint", "integer", "float"
+                    new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n"
                   end
                 end
-                if table_check(line: line, class_name: class_name)
-                  @on = true
-                end
+              end
+              if table_check(line: line, class_name: class_name)
+                @on = true
               end
             end
           end
-          [file_path]
         end
+        [file_path]
+      end
 
       def rspec_mutation class_name: "souls"
         singularized_class_name = class_name.singularize
         rspec_mutation_head class_name: singularized_class_name
+        rspec_mutation_after_head class_name: singularized_class_name
         rspec_mutation_params class_name: singularized_class_name
         rspec_mutation_params_response class_name: singularized_class_name
         rspec_mutation_end class_name: singularized_class_name
