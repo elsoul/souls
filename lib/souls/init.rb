@@ -748,9 +748,9 @@ module Souls
                     EOS
                   else
                     new_line.write <<-EOS
-      
+
     def get_global_key class_name, id
-      Base64.encode64("#{class_name}:#{id}")
+      Base64.encode64(\"\#{class_name}:\#{id}\")
     end
     let(:#{class_name}) { FactoryBot.attributes_for(:#{class_name}, #{@relation_params.join(", ")}) }
 
