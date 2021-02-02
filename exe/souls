@@ -3,7 +3,7 @@ require "souls"
 
 begin
   begin
-    require "./config/initializers/souls" unless ARGV[0] == "new" || ARGV[0] == "init"
+    require "./config/initializers/souls" unless ARGV[0] == "new" || ARGV[0] == "init" || ARGV[0] == "s"
   rescue
     Souls::Init.config_init
   end
@@ -20,20 +20,20 @@ begin
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
-    when "api", "graph"
-      system "bundle exec puma -p 3000"
+    when "media", "admin"
+      system "yarn dev"
     when "service"
       system "bundle exec rake run_server"
     else
-      system "yarn dev"
+      system "bundle exec puma -p 3000"
     end
   when "c", "console"
     strain = Souls.configuration.strain
     case strain
-    when "api", "graph", "service"
-      system "bundle exec irb"
-    else
+    when "media", "admin"
       system "yarn dev"
+    else
+      system "bundle exec irb"
     end
   when "i", "infra"
     Souls.send ARGV[1]
