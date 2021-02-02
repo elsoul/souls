@@ -1039,7 +1039,7 @@ module Souls
                 when "user_id", "created_at", "updated_at", /$*_id\z/
                   next
                 else
-                  new_line.write "          #{name.singularize.camelize(:lower)}\n"
+                  new_line.write "          #{name.camelize(:lower)}\n"
                 end
               end
               if table_check(line: line, class_name: class_name)
@@ -1077,9 +1077,9 @@ end
                   case type
                   when "text", "date", "datetime"
                       if array_true
-                        new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_all(String),\n"
+                        new_line.write "        \"#{name.camelize(:lower)}\" => be_all(String),\n"
                       else
-                        new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n"
+                        new_line.write "        \"#{name.camelize(:lower)}\" => be_a(String),\n"
                       end
                   when "boolean"
                     new_line.write "        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n"
