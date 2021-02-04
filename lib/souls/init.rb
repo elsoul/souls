@@ -244,6 +244,7 @@ module Souls
 
       def model class_name: "souls"
         file_path = "./app/models/#{class_name.singularize}.rb"
+        return p("Model already exist! #{file_path}") if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             class #{class_name.camelize} < ActiveRecord::Base
@@ -257,6 +258,7 @@ module Souls
         FileUtils.mkdir_p "./app/graphql/mutations"
         FileUtils.mkdir_p "./app/graphql/queries"
         FileUtils.mkdir_p "./app/graphql/types"
+        FileUtils.mkdir_p "./app/models"
         FileUtils.mkdir_p "./spec/factories"
         FileUtils.mkdir_p "./spec/queries"
         FileUtils.mkdir_p "./spec/mutations"
