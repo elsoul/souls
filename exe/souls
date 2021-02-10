@@ -76,9 +76,12 @@ begin
     else
       "SOULs!"
     end
-  when "db:migrate"
+  when "db:create"
     `rake db:create && rake db:create RACK_ENV=test`
+  when "db:migrate"
     `rake db:migrate && rake db:migrate RACK_ENV=test`
+  when "db:migrate:reset"
+    `rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test`
   when "t", "test"
     `rubocop`
     `bundle exec rspec`
