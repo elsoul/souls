@@ -76,6 +76,9 @@ begin
     else
       "SOULs!"
     end
+  when "db:migrate"
+    `rake db:create && rake db:create RACK_ENV=test`
+    `rake db:migrate && rake db:migrate RACK_ENV=test`
   when "t", "test"
     `rubocop`
     `bundle exec rspec`
