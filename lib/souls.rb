@@ -1,5 +1,6 @@
 require "souls/version"
 require "souls/init"
+require "souls/generate"
 require "json"
 require "active_support/core_ext/string/inflections"
 require "fileutils"

@@ -1139,6 +1139,7 @@ end
         singularized_class_name = class_name.singularize
         model_paths = model class_name: singularized_class_name
         type_paths = type class_name: singularized_class_name
+        node_type_paths = node_type class_name: singularized_class_name
         rspec_factory_paths = rspec_factory class_name: singularized_class_name
         rspec_model_paths = rspec_model class_name: singularized_class_name
         rspec_mutation_paths = rspec_mutation class_name: singularized_class_name
@@ -1148,6 +1149,7 @@ end
         [
           model: model_paths,
           type: type_paths,
+          node_type: node_type_paths,
           rspec_factory: rspec_factory_paths,
           rspec_model: rspec_model_paths,
           rspec_mutation: rspec_mutation_paths,
@@ -1171,6 +1173,7 @@ end
         result = migrate class_name: class_name
         puts result[0][:model]
         puts result[0][:type]
+        puts result[0][:node_type]
         puts result[0][:rspec_factory]
         puts result[0][:rspec_model]
         puts result[0][:rspec_mutation]
@@ -1218,6 +1221,12 @@ end
         paths.each do |class_name|
           class_name.each do |path|
             path[:type].each { |line| puts line }
+          end
+        end
+        puts "\n============== NodeType =======================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:node_type].each { |line| puts line }
           end
         end
         puts "\n============== FactoryBot =================\n\n"
