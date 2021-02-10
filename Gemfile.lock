@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.14.6)
+    souls (0.14.7)
 
 GEM
   remote: https://rubygems.org/
@@ -19,7 +19,7 @@ GEM
     concurrent-ruby (1.1.8)
     diff-lcs (1.4.4)
     ffi (1.14.2)
-    i18n (1.8.7)
+    i18n (1.8.8)
       concurrent-ruby (~> 1.0)
     language_server-protocol (3.15.0.1)
     listen (3.4.1)
