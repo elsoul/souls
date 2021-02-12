@@ -310,7 +310,7 @@ module Souls
             module Mutations
               module #{class_name.camelize}
                 class Create#{class_name.camelize} < BaseMutation
-                  field :#{class_name}, Types::#{class_name.camelize}Type, null: false
+                  field :#{class_name}_edge, Types::#{class_name.camelize}NodeType, null: false
                   field :error, String, null: true
 
           EOS
@@ -381,7 +381,7 @@ module Souls
           new_line.write <<~EOS
                     #{class_name} = ::#{class_name.camelize}.new args
                     if #{class_name}.save
-                      { #{class_name}: #{class_name} }
+                      { #{class_name}_edge: { node: #{class_name} } }
                     else
                       { error: #{class_name}.errors.full_messages }
                     end
