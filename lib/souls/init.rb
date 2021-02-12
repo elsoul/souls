@@ -563,7 +563,8 @@ module Souls
         [
           create_mutation_end(class_name: singularized_class_name),
           update_mutation(class_name: singularized_class_name),
-          delete_mutation(class_name: singularized_class_name)
+          delete_mutation(class_name: singularized_class_name),
+          destroy_delete_mutation(class_name: singularized_class_name)
         ]
       end
 
@@ -817,7 +818,7 @@ module Souls
               if @on
                 if line.include?("end") || line.include?("t.index")
                   new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)}Edge {\n          node {\n"
-                  new_line.write "                                                                                          id\n"
+                  new_line.write "              id\n"
                   break
                 end
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
@@ -1191,7 +1192,8 @@ end
           add_mutation_type: [
             "    field :create_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Create#{singularized_class_name.camelize}",
             "    field :update_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Update#{singularized_class_name.camelize}",
-            "    field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}"
+            "    field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}",
+            "    field :destroy_delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::DestroyDelete#{singularized_class_name.camelize}"
           ]
         ]
       end
