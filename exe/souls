@@ -47,12 +47,12 @@ begin
     case ARGV[1]
     when "test_dir"
       Souls::Init.test_dir
-    when "test"
-      Souls::Init.node_type class_name: "user"
+    when "node_type"
+      Souls::Init.node_type class_name: ARGV[2]
     when "resolver"
-      Souls::Init.resolver class_name: "user"
+      Souls::Init.resolver class_name: ARGV[2]
     when "job"
-      Souls::Init.job class_name: "user"
+      Souls::Init.job class_name: ARGV[2]
     when "model"
       Souls::Init.model class_name: ARGV[2]
     when "mutation"
