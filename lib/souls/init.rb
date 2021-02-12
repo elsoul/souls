@@ -258,6 +258,8 @@ module Souls
         FileUtils.mkdir_p "./app/graphql/mutations"
         FileUtils.mkdir_p "./app/graphql/queries"
         FileUtils.mkdir_p "./app/graphql/types"
+        FileUtils.mkdir_p "./app/graphql/resolvers"
+        FileUtils.mkdir_p "./app/jobs"
         FileUtils.mkdir_p "./app/models"
         FileUtils.mkdir_p "./spec/factories"
         FileUtils.mkdir_p "./spec/queries"

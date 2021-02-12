@@ -51,6 +51,8 @@ begin
       Souls::Init.node_type class_name: "user"
     when "resolver"
       Souls::Init.resolver class_name: "user"
+    when "job"
+      Souls::Init.job class_name: "user"
     when "model"
       Souls::Init.model class_name: ARGV[2]
     when "mutation"
