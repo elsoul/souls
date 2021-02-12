@@ -508,6 +508,32 @@ module Souls
                   def resolve **args
                     _, data_id = SoulsApiSchema.from_global_id args[:id]
                     #{class_name} = ::#{class_name.camelize}.find data_id
+                    #{class_name}.update(is_deleted: true)
+                    { #{class_name}: ::#{class_name.camelize}.find(data_id) }
+                  rescue StandardError => error
+                    GraphQL::ExecutionError.new error
+                  end
+                end
+              end
+            end
+          EOS
+        end
+        file_path
+      end
+
+      def destroy_delete_mutation class_name: "souls"
+        file_path = "./app/graphql/mutations/#{class_name}/destroy_delete_#{class_name}.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            module Mutations
+              module #{class_name.camelize}
+                class DestroyDelete#{class_name.camelize} < BaseMutation
+                  field :#{class_name}, Types::#{class_name.camelize}Type, null: false
+                  argument :id, String, required: true
+
+                  def resolve **args
+                    _, data_id = SoulsApiSchema.from_global_id args[:id]
+                    #{class_name} = ::#{class_name.camelize}.find data_id
                     #{class_name}.destroy
                     { #{class_name}: #{class_name} }
                   rescue StandardError => error
