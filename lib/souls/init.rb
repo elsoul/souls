@@ -724,6 +724,7 @@ module Souls
       end
 
       def rspec_factory class_name: "souls"
+        return ["Aleady Exist!"] unless File.exist? "./spec/factories/#{class_name.singularize}"
         singularized_class_name = class_name.singularize
         rspec_factory_head class_name: singularized_class_name
         rspec_factory_params class_name: singularized_class_name
@@ -732,6 +733,7 @@ module Souls
 
       def rspec_model class_name: "souls"
         file_path = "./spec/models/#{class_name}_spec.rb"
+        return ["Aleady Exist!"] unless File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe "#{class_name.camelize} Model テスト", type: :model do
@@ -885,6 +887,7 @@ module Souls
                     EOS
                   else
                     new_line.write <<-EOS
+              }
             }
           }
         }
