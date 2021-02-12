@@ -816,7 +816,8 @@ module Souls
             f.each_line.with_index do |line, i|
               if @on
                 if line.include?("end") || line.include?("t.index")
-                  new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)} {\n              id\n"
+                  new_line.write "        }) {\n            #{class_name.singularize.camelize(:lower)}Edge {\n          node {\n"
+                  new_line.write "                                                                                          id\n"
                   break
                 end
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
@@ -860,6 +861,7 @@ module Souls
                 if line.include?("end") || line.include?("t.index")
                   if @user_exist
                     new_line.write <<-EOS
+              }
             }
           }
         }
@@ -874,7 +876,7 @@ module Souls
     end
 
     it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
+      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}Edge", "node")
       expect(a1).to include(
         "id" => be_a(String),
                     EOS
@@ -891,7 +893,7 @@ module Souls
     end
 
     it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}")
+      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}Edge", "node")
       expect(a1).to include(
         "id" => be_a(String),
                     EOS
