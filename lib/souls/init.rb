@@ -244,7 +244,7 @@ module Souls
 
       def model class_name: "souls"
         file_path = "./app/models/#{class_name.singularize}.rb"
-        return p("Model already exist! #{file_path}") if File.exist? file_path
+        return ["Model already exist! #{file_path}"] if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             class #{class_name.camelize} < ActiveRecord::Base
