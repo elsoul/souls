@@ -7,7 +7,7 @@ module Souls
           f.write <<~EOS
             module Types
               class #{class_name.camelize}NodeType < GraphQL::Schema::Object
-                field :node, Types::#{class_name.camelize}, null: true
+                field :node, Types::#{class_name.camelize}Type, null: true
               end
             end
           EOS
