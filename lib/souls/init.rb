@@ -403,7 +403,7 @@ module Souls
             module Mutations
               module #{class_name.camelize}
                 class Update#{class_name.camelize} < BaseMutation
-                  field :#{class_name}, Types::#{class_name.camelize}Type, null: false
+                  field :#{class_name}_edge, Types::#{class_name.camelize}NodeType, null: false
 
                   argument :id, String, required: true
           EOS
@@ -476,7 +476,7 @@ module Souls
           new_line.write <<~EOS
                     #{class_name} = ::#{class_name.camelize}.find args[:id]
                     #{class_name}.update args
-                    { #{class_name}: ::#{class_name.camelize}.find(args[:id]) }
+                    { #{class_name}_edge: { node: ::#{class_name.camelize}.find(args[:id]) } }
                   rescue StandardError => error
                     GraphQL::ExecutionError.new error
                   end
