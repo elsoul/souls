@@ -25,7 +25,7 @@ begin
     when "service"
       system "bundle exec rake run_server"
     else
-      STDOUT.write "foreman start -f Procfile.dev"
+      STDOUT.write `foreman start -f Procfile.dev`
     end
   when "c", "console"
     strain = Souls.configuration.strain
@@ -33,7 +33,7 @@ begin
     when "media", "admin"
       system "yarn dev"
     else
-      STDOUT.write "bundle exec irb"
+      STDOUT.write `bundle exec irb`
     end
   when "i", "infra"
     Souls.send ARGV[1]
