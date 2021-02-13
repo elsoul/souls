@@ -25,7 +25,7 @@ begin
     when "service"
       system "bundle exec rake run_server"
     else
-      system "bundle exec puma -p 3000"
+      STDOUT.write "foreman start -f Procfile.dev"
     end
   when "c", "console"
     strain = Souls.configuration.strain
@@ -33,7 +33,7 @@ begin
     when "media", "admin"
       system "yarn dev"
     else
-      system "bundle exec irb"
+      STDOUT.write "bundle exec irb"
     end
   when "i", "infra"
     Souls.send ARGV[1]
@@ -66,7 +66,7 @@ begin
     when "migrate_all"
       Souls::Init.migrate_all
     when "migration"
-      `rake db:create_migration NAME=#{ARGV[2]}`
+      STDOUT.write `rake db:create_migration NAME=#{ARGV[2]}`
     when "rspec_factory"
       Souls::Init.rspec_factory class_name: ARGV[2]
     when "rspec_model"
@@ -81,20 +81,20 @@ begin
       "SOULs!"
     end
   when "db:create"
-    `rake db:create && rake db:create RACK_ENV=test`
+    STDOUT.write `rake db:create && rake db:create RACK_ENV=test`
   when "db:migrate"
-    `rake db:migrate && rake db:migrate RACK_ENV=test`
+    STDOUT.write `rake db:migrate && rake db:migrate RACK_ENV=test`
   when "db:migrate:reset"
-    `rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test`
+    STDOUT.write `rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test`
   when "t", "test"
-    `rubocop`
-    `bundle exec rspec`
+    STDOUT.write `rubocop`
+    STDOUT.write `bundle exec rspec`
   when "run"
-    `docker build . -t souls:latest`
-    `docker run --rm -p 3000:3000 souls:latest`
+    STDOUT.write `docker build . -t souls:latest`
+    STDOUT.write `docker run --rm -p 3000:3000 souls:latest`
   when "deploy"
     project_id = Souls.configuration.project_id
-    `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`
+    STDOUT.write `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`
   else
     puts "Welcome to SOULs!"
   end
