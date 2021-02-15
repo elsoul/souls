@@ -25,7 +25,7 @@ begin
     when "service"
       system "bundle exec rake run_server"
     else
-      STDOUT.write `foreman start -f Procfile.dev`
+      `foreman start -f Procfile.dev`
     end
   when "c", "console"
     strain = Souls.configuration.strain
@@ -33,7 +33,7 @@ begin
     when "media", "admin"
       system "yarn dev"
     else
-      STDOUT.write `bundle exec irb`
+      `bundle exec irb`
     end
   when "i", "infra"
     Souls.send ARGV[1]
@@ -77,6 +77,8 @@ begin
       Souls::Init.rspec_query class_name: ARGV[2]
     when "rspec_type"
       Souls::Init.rspec_type class_name: ARGV[2]
+    when "rspec_resolver"
+      Souls::Init.rspec_resolver class_name: ARGV[2]
     else
       "SOULs!"
     end

@@ -114,11 +114,11 @@ module Souls
         system "cp -r #{repository_name}-#{folder}/ #{app_name}/"
         system "rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}"
         txt = <<~TEXT
-           _____ ____  __  ____#{'        '}
-          / ___// __ \\/ / / / /   _____
-          \\__ \\/ / / / / / / /   / ___/
-         ___/ / /_/ / /_/ / /___(__  )#{' '}
-        /____/\\____/\\____/_____/____/#{'  '}
+             _____ ____  __  ____#{'        '}
+            / ___// __ \\/ / / / /   _____
+            \\__ \\/ / / / / / / /   / ___/
+           ___/ / /_/ / /_/ / /___(__  )#{' '}
+          /____/\\____/\\____/_____/____/#{'  '}
         TEXT
         puts txt
         puts "=============================="
@@ -724,7 +724,7 @@ module Souls
       end
 
       def rspec_factory class_name: "souls"
-        return ["Aleady Exist!"] unless File.exist? "./spec/factories/#{class_name.singularize}"
+        return ["Aleady Exist!"] if File.exist? "./spec/factories/#{class_name.singularize}"
         singularized_class_name = class_name.singularize
         rspec_factory_head class_name: singularized_class_name
         rspec_factory_params class_name: singularized_class_name
@@ -733,7 +733,7 @@ module Souls
 
       def rspec_model class_name: "souls"
         file_path = "./spec/models/#{class_name}_spec.rb"
-        return ["Aleady Exist!"] unless File.exist? file_path
+        return ["Aleady Exist!"] if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe "#{class_name.camelize} Model テスト", type: :model do
@@ -934,13 +934,13 @@ module Souls
         File.open(file_path, "a") do |new_line|
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
-              if @on 
+              if @on
                 if line.include?("end") || line.include?("t.index")
                   new_line.write <<~EOS
-                                )
-                            end
-                          end
+                            )
                         end
+                      end
+                    end
                   EOS
                   break
                 end
@@ -1051,7 +1051,7 @@ module Souls
         File.open(file_path, "a") do |new_line|
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
-              if @on 
+              if @on
                 if line.include?("end") || line.include?("t.index")
                   new_line.write <<-EOS
         }
@@ -1093,13 +1093,13 @@ module Souls
         File.open(file_path, "a") do |new_line|
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, i|
-              if @on 
+              if @on
                 if line.include?("end") || line.include?("t.index")
-                  new_line.write <<-EOS
-        )
-    end
-  end
-end
+                  new_line.write <<~EOS
+                            )
+                        end
+                      end
+                    end
                   EOS
                   break
                 end
@@ -1174,20 +1174,24 @@ end
         model_paths = model class_name: singularized_class_name
         type_paths = type class_name: singularized_class_name
         node_type_paths = node_type class_name: singularized_class_name
+        resolver_paths = resolver class_name: singularized_class_name
         rspec_factory_paths = rspec_factory class_name: singularized_class_name
         rspec_model_paths = rspec_model class_name: singularized_class_name
         rspec_mutation_paths = rspec_mutation class_name: singularized_class_name
         rspec_query_paths = rspec_query class_name: singularized_class_name
+        rspec_resolver_paths = rspec_resolver class_name: singularized_class_name
         query_path = query class_name: singularized_class_name
         mutation_path = mutation class_name: singularized_class_name
         [
           model: model_paths,
           type: type_paths,
+          resolver: resolver_paths,
           node_type: node_type_paths,
           rspec_factory: rspec_factory_paths,
           rspec_model: rspec_model_paths,
           rspec_mutation: rspec_mutation_paths,
           rspec_query: rspec_query_paths,
+          rspec_resolver: rspec_resolver_paths,
           query: query_path,
           mutation: mutation_path,
           add_query_type: [
@@ -1208,11 +1212,13 @@ end
         result = migrate class_name: class_name
         puts result[0][:model]
         puts result[0][:type]
+        puts result[0][:resolver]
         puts result[0][:node_type]
         puts result[0][:rspec_factory]
         puts result[0][:rspec_model]
         puts result[0][:rspec_mutation]
         puts result[0][:rspec_query]
+        puts result[0][:rspec_resolver]
         puts result[0][:query]
         puts result[0][:mutation]
 
@@ -1258,6 +1264,12 @@ end
             path[:type].each { |line| puts line }
           end
         end
+        puts "\n============== Resolver =======================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:resovler].each { |line| puts line }
+          end
+        end
         puts "\n============== NodeType =======================\n\n"
         paths.each do |class_name|
           class_name.each do |path|
@@ -1286,6 +1298,12 @@ end
         paths.each do |class_name|
           class_name.each do |path|
             path[:rspec_query].each { |line| puts line }
+          end
+        end
+        puts "\n============== RspecResolver =================\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:rspec_resolver].each { |line| puts line }
           end
         end
         puts "\n============== Query ======================\n\n"
