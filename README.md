@@ -79,6 +79,19 @@ And Create Your APP
 ## Usage - 1. GraphQL API
 
 ```bash
+# Ruby version (using rbenv)
+$ ruby -v
+ruby 3.0.0p0 (2020-12-25 revision 95aff21468) [x86_64-darwin20]
+
+# Install xcode
+$ xcode-select --install
+
+# Install PostgreSQL (Mac env)
+$ brew install postgresql
+
+# Install redis
+$ brew install redis
+
 # Version Check
 $ souls -v
 
