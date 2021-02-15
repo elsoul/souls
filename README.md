@@ -21,14 +21,18 @@
 
 Welcome to SOULs Framework!
 
-SOULS is a Web Application Framework for Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. You can focus on business logic. No more infra problems.
+SOULS is a Web Application Framework based on GraphQL Relay ( Ruby )
+This is Cloud Based APP Framework. Easy Deployment.
+Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. 
+You can focus on business logic. No more infra problems.
 
-SOULs creates 4 types of framework.
+SOULs creates 5 types of framework.
 
-1. Service - gRPC Serverless Scalable Service (Ruby)
-2. API - GraphQL to call gRPC (Ruby)
-3. Media Web Client - Media web client with SSG (TypeScript)
-4. Admin Web Client - Admin Console and CMS (TypeScript)
+1. API - GraphQL (Ruby) - Simple API 
+2. API - GraphQL to call gRPC (Ruby) - for heavy task processes
+3. Service - gRPC Serverless Scalable Service (Ruby)
+4. Media Web Client - Media web client with SSG (TypeScript)
+5. Admin Web Client - Admin Console and CMS (TypeScript)
 
 ## Dependency
 
@@ -66,42 +70,67 @@ And Create Your APP
 
 ### Choose SOULs Type:
 
-1. Service
-2. API
-3. Media Web
-4. Admin Web
+1. API
+2. API - gRPC
+3. Service
+4. Media Web
+5. Admin Web
 
-## Usage
+## Usage - 1. GraphQL API
 
-Version Check
+```bash
+# Version Check
+$ souls -v
 
-    $ souls -v
+# Init SOULs App
+$ souls new app_name
+$ cd app_name
+$ bundle
 
-Init Proto Files
+# Run Dev & Test DB
+$ souls i run_psql
 
-    $ souls p `service_name`
+# Create DB
+$ souls db:create
 
-Run Server
+# Migrate DB
+$ souls db:migrate
 
-    $ souls s
+# Create Test DB
+$ souls db:seed
 
-Run Console
+# Development (localhost:3000/playground)
+$ souls s
 
-    $ souls c
+# Development with Worker (localhost:3000/playground; localhost:3000/sidekiq)
+$ foreman start -f Procfile.dev
 
-Run Infra Command
+# Test
+$ bundle exec rspec
 
-    $ souls i `method_name`
+# Deploy (Edit: ./cloudbuild.yml)
+$ souls deploy
 
-Deploy
+# Run Infra Command
+$ souls i `method_name`
+```
 
-    $ souls i deploy
+## SOULs Scaffold
+SOULs Scaffold creates CRUD API from `./db/schema.rb`
 
-※Only Initial
+```bash
+# Create migration file
+$ souls g migration user
 
-Update
+# Edit migration file
+# Migrate DB
+$ souls db:migrate
 
-    $ souls i update
+# SOULs Scaffold
+$ souls g migrate user
+```
+
+
 
 ## Development
 

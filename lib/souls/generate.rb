@@ -18,7 +18,7 @@ module Souls
       def resolver class_name: "souls"
         FileUtils.mkdir_p "./app/graphql/resolvers" unless Dir.exist? "./app/graphql/resolvers"
         file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
-        return ["Aleady Exist!"] if File.exist? file_path
+        return ["Resolver already exist! #{file_path}"] if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Resolvers
@@ -80,7 +80,7 @@ module Souls
 
       def job class_name: "send_mail"
         file_path = "./app/jobs/#{class_name.singularize}_job.rb"
-        return ["Aleady Exist!"] if File.exist? file_path
+        return ["Job already exist! #{file_path}"] if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             class #{class_name.camelize}
@@ -273,7 +273,7 @@ end
       def rspec_resolver class_name: "souls"
         singularized_class_name = class_name.singularize
         file_path = "#{Dir.pwd}/spec/resolvers/#{singularized_class_name}_search_spec.rb"
-        return ["Aleady Exist!"] if File.exist? file_path
+        return ["Resolver already exist! #{file_path}"] if File.exist? file_path
         rspec_resolver_head class_name: singularized_class_name
         rspec_resolver_after_head class_name: singularized_class_name
         rspec_resolver_params class_name: singularized_class_name

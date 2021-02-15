@@ -13,9 +13,9 @@ begin
       puts "you need to specify your app name \n `souls new app_name`"
       exit
     end
-    puts "Which framework:   \n 1. SOULS GraphQL API \n 2. SOULS GraphQL API gRPC compatible \n 3. SOULS gRPC Service \n 4. SOULS Media Web \n 5. SOULS Admin Web \n Enter Number: "
+    puts "Which framework:   \n 1. SOULs GraphQL API \n 2. SOULs GraphQL API gRPC compatible \n 3. SOULs gRPC Service \n 4. SOULs Media Web \n 5. SOULs Admin Web \n Enter Number: "
     strain = STDIN.gets.chomp.to_i
-    (1..5).include?(strain) ? puts("Generating Souls.. \n") : raise(StandardError, "Choose Number 1..5")
+    (1..5).include?(strain) ? puts("Generating SOULs.. \n") : raise(StandardError, "Choose Number 1..5")
     Souls::Init.create_souls strain: strain, app_name: ARGV[1]
   when "s", "server"
     strain = Souls.configuration.strain
@@ -25,7 +25,7 @@ begin
     when "service"
       system "bundle exec rake run_server"
     else
-      `foreman start -f Procfile.dev`
+      `bundle exec puma -p 3000 -e development`
     end
   when "c", "console"
     strain = Souls.configuration.strain
@@ -86,6 +86,8 @@ begin
     STDOUT.write `rake db:create && rake db:create RACK_ENV=test`
   when "db:migrate"
     STDOUT.write `rake db:migrate && rake db:migrate RACK_ENV=test`
+  when "db:seed"
+    STDOUT.write `rake db:seed`
   when "db:migrate:reset"
     STDOUT.write `rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test`
   when "t", "test"
