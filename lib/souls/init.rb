@@ -1221,7 +1221,7 @@ module Souls
             "    field :destroy_delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::DestroyDelete#{singularized_class_name.camelize}"
           ],
           add_resolver: [
-            "    field :#{singularized_class_name}_search, resolver: Revolvers::#{singularized_class_name.camelize}Search"
+            "    field :#{singularized_class_name}_search, resolver: Resolvers::#{singularized_class_name.camelize}Search"
           ]
         ]
       end
