@@ -135,7 +135,7 @@ module Souls
                     EOS
                   else
                     new_line.write <<-EOS
-    let(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(", ")}) }
+    let!(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(", ")}) }
 
     let(:query) do
       %(query {
