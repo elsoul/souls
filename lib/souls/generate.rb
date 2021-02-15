@@ -99,6 +99,7 @@ module Souls
 
       def rspec_resolver_head class_name: "souls"
         file_path = "./spec/resolvers/#{class_name.singularize}_search_spec.rb"
+        puts file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize}Search Resolver テスト\" do

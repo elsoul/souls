@@ -1283,7 +1283,7 @@ module Souls
         puts "\n============== Resolver =======================\n\n"
         paths.each do |class_name|
           class_name.each do |path|
-            path[:resovler].each { |line| puts line }
+            path[:resolver].each { |line| puts line }
           end
         end
         puts "\n============== NodeType =======================\n\n"
