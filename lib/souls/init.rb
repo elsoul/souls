@@ -1219,6 +1219,9 @@ module Souls
             "    field :update_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Update#{singularized_class_name.camelize}",
             "    field :delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::Delete#{singularized_class_name.camelize}",
             "    field :destroy_delete_#{singularized_class_name}, mutation: Mutations::#{singularized_class_name.camelize}::DestroyDelete#{singularized_class_name.camelize}"
+          ],
+          add_resolver: [
+            "    field :#{singularized_class_name}_search, resolver: Revolvers::#{singularized_class_name.camelize}Search"
           ]
         ]
       end
@@ -1246,6 +1249,10 @@ module Souls
         puts "#                                                        #\n"
         puts "##########################################################\n\n\n"
         result[0][:add_query_type].each do |path|
+          puts path
+        end
+        puts "\n    ## Resolvers\n\n"
+        result[0][:add_resolver].each do |path|
           puts path
         end
         puts "\n    ## Connection Type\n\n"
@@ -1344,6 +1351,12 @@ module Souls
         paths.each do |class_name|
           class_name.each do |path|
             path[:add_query_type].each { |line| puts line }
+          end
+        end
+        puts "\n    ## Resolvers\n\n"
+        paths.each do |class_name|
+          class_name.each do |path|
+            path[:add_resolver].each { |line| puts line }
           end
         end
         puts "\n    ## Connection Type\n\n"
