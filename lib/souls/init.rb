@@ -881,7 +881,12 @@ module Souls
     end
 
     it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}Edge", "node")
+      begin
+        a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}Edge", "node")
+        raise unless a1.present?
+      rescue
+        raise StandardError, result
+      end
       expect(a1).to include(
         "id" => be_a(String),
                     EOS
@@ -899,7 +904,12 @@ module Souls
     end
 
     it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}Edge", "node")
+      begin
+        a1 = result.dig("data", "create#{class_name.singularize.camelize}", "#{class_name.singularize.camelize(:lower)}Edge", "node")
+        raise unless a1.present?
+      rescue
+        raise StandardError, result
+      end
       expect(a1).to include(
         "id" => be_a(String),
                     EOS
@@ -1006,7 +1016,7 @@ module Souls
                 if line.include?("end") || line.include?("t.index")
                   if @relation_params.empty?
                   new_line.write <<-EOS
-    let(:#{class_name}) { FactoryBot.create(:#{class_name}) }
+    let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
 
     let(:query) do
       data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
@@ -1064,7 +1074,12 @@ module Souls
   end
 
   it "return #{class_name.camelize} Data" do
-    a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}")
+    begin
+      a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}")
+      raise unless a1.present?
+    rescue
+      raise StandardError, result
+    end
     expect(a1).to include(
       "id" => be_a(String),
                   EOS

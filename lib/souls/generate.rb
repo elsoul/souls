@@ -120,7 +120,7 @@ module Souls
                 if line.include?("end") || line.include?("t.index")
                   if @relation_params.empty?
                     new_line.write <<-EOS
-    let(:#{class_name}) { FactoryBot.create(:#{class_name}) }
+    let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
 
     let(:query) do
       %(query {
@@ -196,8 +196,12 @@ module Souls
     end
 
     it "return #{class_name.camelize} Data" do
-      a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}Search", "edges")[0]["node"]
-      p result if a1.nil?
+      begin
+        a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}Search", "edges")[0]["node"]
+        raise unless a1.present?
+      rescue
+        raise StandardError, result
+      end
       expect(a1).to include(
         "id" => be_a(String),
                   EOS
