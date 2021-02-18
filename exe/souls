@@ -25,7 +25,7 @@ begin
     when "service"
       system "bundle exec rake run_server"
     else
-      `bundle exec puma -p 3000 -e development`
+      system "foreman start -f Procfile.dev"
     end
   when "c", "console"
     strain = Souls.configuration.strain
@@ -33,7 +33,7 @@ begin
     when "media", "admin"
       system "yarn dev"
     else
-      `bundle exec irb`
+      system "bundle exec irb"
     end
   when "i", "infra"
     Souls.send ARGV[1]
@@ -66,7 +66,7 @@ begin
     when "migrate_all"
       Souls::Init.migrate_all
     when "migration"
-      STDOUT.write `rake db:create_migration NAME=#{ARGV[2]}`
+      system "rake db:create_migration NAME=create_#{ARGV[2]}"
     when "rspec_factory"
       Souls::Init.rspec_factory class_name: ARGV[2]
     when "rspec_model"
@@ -83,22 +83,22 @@ begin
       "SOULs!"
     end
   when "db:create"
-    STDOUT.write `rake db:create && rake db:create RACK_ENV=test`
+    system "rake db:create && rake db:create RACK_ENV=test"
   when "db:migrate"
-    STDOUT.write `rake db:migrate && rake db:migrate RACK_ENV=test`
+    system "rake db:migrate && rake db:migrate RACK_ENV=test"
   when "db:seed"
-    STDOUT.write `rake db:seed`
+    system "rake db:seed"
   when "db:migrate:reset"
-    STDOUT.write `rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test`
+    system "rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test"
   when "t", "test"
-    STDOUT.write `rubocop`
-    STDOUT.write `bundle exec rspec`
+    system "rubocop"
+    system "bundle exec rspec"
   when "run"
-    STDOUT.write `docker build . -t souls:latest`
-    STDOUT.write `docker run --rm -p 3000:3000 souls:latest`
+    system "docker build . -t souls:latest"
+    system "docker run --rm -p 3000:3000 souls:latest"
   when "deploy"
     project_id = Souls.configuration.project_id
-    STDOUT.write `gcloud builds submit --config=cloudbuild.yml --project #{project_id}`
+    system "gcloud builds submit --config=cloudbuild.yml --project #{project_id}"
   else
     puts "Welcome to SOULs!"
   end
