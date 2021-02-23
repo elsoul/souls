@@ -91,7 +91,7 @@ begin
   when "db:migrate:reset"
     system "rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test"
   when "t", "test"
-    system "rubocop"
+    system "rubocop -a"
     system "bundle exec rspec"
   when "run"
     system "docker build . -t souls:latest"

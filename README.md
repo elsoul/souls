@@ -76,72 +76,10 @@ And Create Your APP
 4. Media Web
 5. Admin Web
 
-## Usage - 1. GraphQL API
 
-```bash
-# Ruby version (using rbenv)
-$ ruby -v
-ruby 3.0.0p0 (2020-12-25 revision 95aff21468) [x86_64-darwin20]
+## SOULs Document
 
-# Install xcode
-$ xcode-select --install
-
-# Install PostgreSQL (Mac env)
-$ brew install postgresql
-
-# Install redis
-$ brew install redis
-
-# Version Check
-$ souls -v
-
-# Init SOULs App
-$ souls new app_name
-$ cd app_name
-$ bundle
-
-# Run Dev & Test DB
-$ souls i run_psql
-
-# Create DB
-$ souls db:create
-
-# Migrate DB
-$ souls db:migrate
-
-# Create Test DB
-$ souls db:seed
-
-# Development (localhost:3000/playground)
-$ souls s
-
-# Development with Worker (localhost:3000/playground; localhost:3000/sidekiq)
-$ foreman start -f Procfile.dev
-
-# Test
-$ bundle exec rspec
-
-# Deploy (Edit: ./cloudbuild.yml)
-$ souls deploy
-
-# Run Infra Command
-$ souls i `method_name`
-```
-
-## SOULs Scaffold
-SOULs Scaffold creates CRUD API from `./db/schema.rb`
-
-```bash
-# Create migration file
-$ souls g migration user
-
-# Edit migration file
-# Migrate DB
-$ souls db:migrate
-
-# SOULs Scaffold
-$ souls g migrate user
-```
+- [SOULs Document](https://elsoul.github.io/souls_doc/)
 
 
 
