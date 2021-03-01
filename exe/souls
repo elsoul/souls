@@ -91,7 +91,12 @@ begin
   when "db:seed"
     system "rake db:seed"
   when "db:migrate:reset"
-    system "rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test"
+    case ARGV[1]
+    when "RACK_ENV=production"
+      system "rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1"
+    else
+      system "rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test"
+    end
   when "t", "test"
     system "rubocop -a"
     system "bundle exec rspec"
