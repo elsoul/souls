@@ -1,8 +1,8 @@
 require "souls/version"
+require "active_support/core_ext/string/inflections"
 require "souls/init"
 require "souls/generate"
 require "json"
-require "active_support/core_ext/string/inflections"
 require "fileutils"
 
 module Souls

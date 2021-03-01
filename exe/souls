@@ -82,6 +82,8 @@ begin
     else
       "SOULs!"
     end
+  when "d"
+    Souls::Init.delete_all class_name: ARGV[1]
   when "db:create"
     system "rake db:create && rake db:create RACK_ENV=test"
   when "db:migrate"
