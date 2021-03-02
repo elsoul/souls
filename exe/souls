@@ -33,7 +33,12 @@ begin
     when "media", "admin"
       system "yarn dev"
     else
-      system "bundle exec irb"
+      case ARGV[1]
+      when "RACK_ENV=production"
+        system "bundle exec irb RACK_ENV=production"
+      else
+        system "bundle exec irb"
+      end
     end
   when "i", "infra"
     Souls.send ARGV[1]
@@ -87,7 +92,12 @@ begin
   when "db:create"
     system "rake db:create && rake db:create RACK_ENV=test"
   when "db:migrate"
-    system "rake db:migrate && rake db:migrate RACK_ENV=test"
+    case ARGV[1]
+    when "RACK_ENV=production"
+      system "rake db:migrate RACK_ENV=production"
+    else
+      system "rake db:migrate && rake db:migrate RACK_ENV=test"
+    end
   when "db:seed"
     system "rake db:seed"
   when "db:migrate:reset"
