@@ -385,6 +385,36 @@ end
       rescue StandardError => error
         puts error
       end
+
+      def add_mutation class_name: "souls", file_name: "hoi"
+        singularized_class_name = class_name.singularize.underscore
+        file_path = "./app/graphql/mutations/#{singularized_class_name}/#{file_name}.rb"
+        file_path
+      end
+
+      def add_type class_name: "souls", file_name: "hoi"
+        singularized_class_name = class_name.singularize.underscore
+        file_path = "./app/graphql/types/#{file_name}.rb"
+        file_path
+      end
+
+      def add_edge class_name: "souls", file_name: "hoi"
+        singularized_class_name = class_name.singularize.underscore
+        file_path = "./app/graphql/types/#{file_name}.rb"
+        file_path
+      end
+
+      def add_connection class_name: "souls", file_name: "hoi"
+        singularized_class_name = class_name.singularize.underscore
+        file_path = "./app/graphql/types/#{file_name}.rb"
+        file_path
+      end
+
+      def add_rspec_mutation class_name: "souls", file_name: "hoi"
+        singularized_class_name = class_name.singularize.underscore
+        file_path = "./app/graphql/types/#{file_name}.rb"
+        file_path
+      end
     end
   end
 end

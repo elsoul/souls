@@ -48,6 +48,21 @@ begin
     Souls::Init.config_init
   when "-v", "--version"
     puts Souls::VERSION
+  when "add"
+    case ARGV[1]
+    when "mutation"
+      Souls::Init.add_mutation class_name: "user", file_name: "hoi"
+    when "type"
+      Souls::Init.add_type class_name: "user", file_name: "hoi"
+    when "connection"
+      Souls::Init.add_connection class_name: "user", file_name: "hoi"
+    when "edge"
+      Souls::Init.add_edge class_name: "user", file_name: "hoi"
+    when "rspec_mutation"
+      Souls::Init.add_rspec_mutation class_name: "user", file_name: "hoi"
+    else
+      puts "HOI!"
+    end
   when "g", "generate"
     case ARGV[1]
     when "test_dir"
