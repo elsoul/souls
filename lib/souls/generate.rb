@@ -110,7 +110,7 @@ module Souls
                 if line.include?("end") || line.include?("t.index")
                   break
                 end
-                _, name = get_type_and_name(line)
+                type, name = get_type_and_name(line)
                 if line.include?("array: true")
                   new_line.write "      scope = scope.where(\"#{name} @> ARRAY[?]::text[]\", value[:#{name}]) if value[:#{name}]\n"
                   next
@@ -124,7 +124,12 @@ module Souls
                 when "created_at", "updated_at"
                   next
                 else
-                  new_line.write "      scope = scope.where(#{name}: value[:#{name}]) if value[:#{name}]\n"
+                  case type
+                  when "boolean"
+                    new_line.write "      scope = scope.where(#{name}: value[:#{name}]) unless value[:#{name}].nil?\n"
+                  else
+                    new_line.write "      scope = scope.where(#{name}: value[:#{name}]) if value[:#{name}]\n"
+                  end
                 end
               end
               @on = true if table_check(line: line, class_name: class_name)
@@ -137,7 +142,7 @@ module Souls
         file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
         File.open(file_path, "a") do |f|
           f.write <<-EOS
-      scope = scope.where(is_deleted: value[:is_deleted]) if value[:is_deleted]
+      scope = scope.where(is_deleted: value[:is_deleted]) unless value[:is_deleted].nil?
       scope = scope.where("created_at >= ?", value[:start_date]) if value[:start_date]
       scope = scope.where("created_at <= ?", value[:end_date]) if value[:end_date]
 
@@ -169,9 +174,6 @@ end
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             class #{class_name.camelize}
-              include Sidekiq::Status::Worker
-              include Sidekiq::Worker
-              sidekiq_options queue: "default"
 
               def perform **args
                 # write task code here

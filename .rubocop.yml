@@ -79,8 +79,6 @@ Style/HashSyntax:
     - "**/*.rake"
     - "Rakefile"
 
-Layout/HeredocIndentation:
-    Enabled: false
 
 Style/IfUnlessModifier:
   Enabled: false
