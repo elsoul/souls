@@ -35,7 +35,7 @@ begin
     else
       case ARGV[1]
       when "RACK_ENV=production"
-        system "bundle exec irb RACK_ENV=production"
+        system "RACK_ENV=production bundle exec irb"
       else
         system "bundle exec irb"
       end
