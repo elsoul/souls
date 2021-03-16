@@ -114,7 +114,12 @@ begin
       system "rake db:migrate && rake db:migrate RACK_ENV=test"
     end
   when "db:seed"
-    system "rake db:seed"
+    case ARGV[1]
+    when "RACK_ENV=production"
+      system "rake db:seed RACK_ENV=production"
+    else
+      system "rake db:seed"
+    end
   when "db:migrate:reset"
     case ARGV[1]
     when "RACK_ENV=production"
