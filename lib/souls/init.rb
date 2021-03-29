@@ -289,8 +289,8 @@ module Souls
           float: 4.2,
           string: '"MyString"',
           text: '"MyString"',
-          datetime: "DateTime.now",
-          date: "DateTime.now",
+          datetime: "Time.now",
+          date: "Time.now",
           boolean: false,
           integer: 1
         }[type.to_sym]
