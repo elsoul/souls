@@ -103,7 +103,10 @@ begin
       "SOULs!"
     end
   when "d"
-    Souls::Init.delete_all class_name: ARGV[1]
+    Souls::Init.add_delete class_name: ARGV[1]
+  when "update"
+    Souls::Init.add_delete class_name: ARGV[1]
+    Souls::Init.single_migrate class_name: ARGV[1]
   when "db:create"
     system "rake db:create && rake db:create RACK_ENV=test"
   when "db:migrate"

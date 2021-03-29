@@ -366,6 +366,25 @@ end
         rspec_resolver_end class_name: singularized_class_name
       end
 
+      def add_delete class_name: "souls"
+        singularized_class_name = class_name.singularize.underscore
+        pluralized_class_name = class_name.pluralize.underscore
+        FileUtils.rm_rf "./app/graphql/mutations/#{singularized_class_name}"
+        FileUtils.rm "./app/graphql/queries/#{singularized_class_name}.rb"
+        FileUtils.rm "./app/graphql/queries/#{pluralized_class_name}.rb"
+        FileUtils.rm "./app/graphql/resolvers/#{singularized_class_name}_search.rb"
+        FileUtils.rm "./app/graphql/types/#{singularized_class_name}_type.rb"
+        FileUtils.rm "./app/graphql/types/#{singularized_class_name}_node_type.rb"
+        FileUtils.rm "./spec/factories/#{pluralized_class_name}.rb"
+        FileUtils.rm "./spec/mutations/#{singularized_class_name}_spec.rb"
+        FileUtils.rm "./spec/models/#{singularized_class_name}_spec.rb"
+        FileUtils.rm "./spec/queries/#{singularized_class_name}_spec.rb"
+        FileUtils.rm "./spec/resolvers/#{singularized_class_name}_search_spec.rb"
+        puts "deleted #{class_name.camelize} CRUD!"
+      rescue StandardError => error
+        puts error
+      end
+
       def delete_all class_name: "souls"
         singularized_class_name = class_name.singularize.underscore
         pluralized_class_name = class_name.pluralize.underscore
