@@ -19,6 +19,46 @@ module Souls
         [file_path]
       end
 
+      def policy class_name: "souls"
+        file_path = "./app/policy/#{class_name.singularize}_policy.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            class #{class_name.camelize}Policy < ApplicationPolicy
+              def show?
+                true
+              end
+
+              def index?
+                true
+              end
+
+              def create?
+                staff_permissions?
+              end
+
+              def update?
+                staff_permissions?
+              end
+
+              def delete?
+                staff_permissions?
+              end
+
+              private
+
+              def staff_permissions?
+                @user.master? or @user.admin? or @user.staff?
+              end
+
+              def admin_permissions?
+                @user.master? or @user.admin?
+              end
+            end
+          EOS
+        end
+        [file_path]
+      end
+
       def resolver_head class_name: "souls"
         FileUtils.mkdir_p "./app/graphql/resolvers" unless Dir.exist? "./app/graphql/resolvers"
         file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
@@ -365,6 +405,9 @@ end
         rspec_resolver_params class_name: singularized_class_name
         rspec_resolver_end class_name: singularized_class_name
       end
+
+
+
 
       def add_delete class_name: "souls"
         singularized_class_name = class_name.singularize.underscore
