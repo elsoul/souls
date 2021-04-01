@@ -69,6 +69,8 @@ begin
       Souls::Init.test_dir
     when "policy"
       Souls::Init.policy class_name: ARGV[2]
+    when "rspec_policy"
+      Souls::Init.rspec_policy class_name: ARGV[2]
     when "node_type"
       Souls::Init.node_type class_name: ARGV[2]
     when "resolver"
