@@ -118,11 +118,13 @@ module Souls
         app = Souls.configuration.app
         network = Souls.configuration.network
         sub_network = Souls.configuration.network
-        system("gcloud compute network-endpoint-groups create #{app} \
+        system(
+          "gcloud compute network-endpoint-groups create #{app} \
                 --default-port=0 \
                 --network #{network} \
                 --subnet #{sub_network} \
-                --global")
+                --global"
+        )
       end
 
       def export_network_group
@@ -158,7 +160,8 @@ module Souls
         sub_network = Souls.configuration.network
         machine_type = Souls.configuration.machine_type
         zone = Souls.configuration.zone
-        system("gcloud container clusters create #{app} \
+        system(
+          "gcloud container clusters create #{app} \
                 --network #{network} \
                 --subnetwork #{sub_network} \
                 --zone #{zone} \
@@ -170,7 +173,8 @@ module Souls
                 --enable-autoscaling \
                 --min-nodes 1 \
                 --max-nodes 4 \
-                --tags=allow-health-checks")
+                --tags=allow-health-checks"
+        )
       end
 
       def deploy

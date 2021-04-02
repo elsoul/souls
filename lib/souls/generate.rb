@@ -20,6 +20,8 @@ module Souls
       end
 
       def policy class_name: "souls"
+        dir_name = "./app/policy"
+        FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
         file_path = "./app/policy/#{class_name.singularize}_policy.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
@@ -224,18 +226,18 @@ module Souls
       def resolver_end class_name: "souls"
         file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
         File.open(file_path, "a") do |f|
-          f.write <<-EOS
-      scope = scope.where("created_at >= ?", value[:start_date]) if value[:start_date]
-      scope = scope.where("created_at <= ?", value[:end_date]) if value[:end_date]
-
-      branches << scope
-
-      value[:OR].inject(branches) { |s, v| normalize_filters(v, s) } if value[:OR].present?
-
-      branches
-    end
-  end
-end
+          f.write <<~EOS
+                              scope = scope.where("created_at >= ?", value[:start_date]) if value[:start_date]
+                              scope = scope.where("created_at <= ?", value[:end_date]) if value[:end_date]
+            #{'            '}
+                              branches << scope
+            #{'            '}
+                              value[:OR].inject(branches) { |s, v| normalize_filters(v, s) } if value[:OR].present?
+            #{'            '}
+                              branches
+                            end
+                          end
+                        end
           EOS
         end
         [file_path]
@@ -402,11 +404,11 @@ end
             f.each_line.with_index do |line, i|
               if @on
                 if line.include?("end") || line.include?("t.index")
-                  new_line.write <<-EOS
-      )
-    end
-  end
-end
+                  new_line.write <<~EOS
+                          )
+                        end
+                      end
+                    end
                   EOS
                   break
                 end
@@ -450,9 +452,6 @@ end
         rspec_resolver_end class_name: singularized_class_name
       end
 
-
-
-
       def add_delete class_name: "souls"
         singularized_class_name = class_name.singularize.underscore
         pluralized_class_name = class_name.pluralize.underscore
@@ -494,32 +493,27 @@ end
 
       def add_mutation class_name: "souls", file_name: "hoi"
         singularized_class_name = class_name.singularize.underscore
-        file_path = "./app/graphql/mutations/#{singularized_class_name}/#{file_name}.rb"
-        file_path
+        "./app/graphql/mutations/#{singularized_class_name}/#{file_name}.rb"
       end
 
       def add_type class_name: "souls", file_name: "hoi"
         singularized_class_name = class_name.singularize.underscore
-        file_path = "./app/graphql/types/#{file_name}.rb"
-        file_path
+        "./app/graphql/types/#{file_name}.rb"
       end
 
       def add_edge class_name: "souls", file_name: "hoi"
         singularized_class_name = class_name.singularize.underscore
-        file_path = "./app/graphql/types/#{file_name}.rb"
-        file_path
+        "./app/graphql/types/#{file_name}.rb"
       end
 
       def add_connection class_name: "souls", file_name: "hoi"
         singularized_class_name = class_name.singularize.underscore
-        file_path = "./app/graphql/types/#{file_name}.rb"
-        file_path
+        "./app/graphql/types/#{file_name}.rb"
       end
 
       def add_rspec_mutation class_name: "souls", file_name: "hoi"
         singularized_class_name = class_name.singularize.underscore
-        file_path = "./app/graphql/types/#{file_name}.rb"
-        file_path
+        "./app/graphql/types/#{file_name}.rb"
       end
     end
   end

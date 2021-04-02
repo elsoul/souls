@@ -5,5 +5,4 @@ target :app do
 
   # check 'app'
   check "rbs"
-
 end
