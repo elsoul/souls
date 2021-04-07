@@ -11,19 +11,19 @@ module Souls
       attr_accessor :configuration
 
       def run_psql
-        `docker run --rm -d \
+        system "docker run --rm -d \
           -p 5433:5432 \
           -v postgres-tmp:/var/lib/postgresql/data \
           -e POSTGRES_USER=postgres \
           -e POSTGRES_PASSWORD=postgres \
           -e POSTGRES_DB=souls_test \
-          postgres:13-alpine`
-        puts `docker ps`
+          postgres:13-alpine"
+        system "docker ps"
       end
 
-      def run_awake
+      def run_awake url
         app = Souls.configuration.app
-        `gcloud scheduler jobs create http #{app}-awake --schedule "0,10,20,30,40,50 * * * *" --uri "https://#{app}.el-soul.com" --http-method GET`
+        system "gcloud scheduler jobs create http #{app}-awake --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
       end
 
       def deploy_local

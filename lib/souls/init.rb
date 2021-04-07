@@ -8,6 +8,19 @@ module Souls
         data[0]["tag_name"]
       end
 
+      def initial_config_init app_name: "souls", project: {}
+        `touch "#{app_name}/config/souls.rb"`
+        file_path = "#{app_name}/config/souls.rb"
+        File.open(file_path, "w") do |f|
+          f.write <<~EOS
+            Souls.configure do |config|
+              config.app = "#{app_name}"
+              config.strain = "#{project[:strain]}"
+            end
+          EOS
+        end
+      end
+
       def download_souls app_name: "souls", repository_name: "souls_service"
         version = get_version repository_name: repository_name
         system "curl -OL https://github.com/elsoul/#{repository_name}/archive/#{version}.tar.gz"
