@@ -17,7 +17,7 @@ begin
     strain = STDIN.gets.chomp.to_i
     (1..4).include?(strain) ? puts("Generating SOULs.. \n") : raise(StandardError, "Choose Number 1..4")
     Souls::Init.download_souls app_name: ARGV[1], repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
-    initial_config_init app_name: "souls", project: { strain: STRAINS[strain.to_i - 1] }
+    Souls::Init.initial_config_init app_name: "souls", project: { strain: STRAINS[strain.to_i - 1] }
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
