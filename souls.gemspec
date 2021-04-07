@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.name          = "souls"
   spec.version       = Souls::VERSION
   spec.authors       = ["POPPIN-FUMI", "KishiTheMechanic", "James Neve"]
-  spec.email         = ["fumitake.kawasaki@el-soul.com", "shota.kishi@el-soul.com", "jamesoneve@gmail.com"]
+  spec.email         = ["f.kawasaki@elsoul.nl", "s.kishi@elsoul.nl", "jamesoneve@gmail.com"]
 
   spec.summary       = "SOULS is a GraphQL Based Web Application Framework for Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. You can focus on business logic. No more infra problems."
   spec.description   = "SOULS is a Web Application Framework for Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. You can focus on business logic. No more infra problems."
