@@ -1,29 +1,24 @@
 #!/usr/bin/env ruby
 require "souls"
-
+STRAINS = ["graph", "worker", "media", "admin"]
 begin
-  begin
-    require "./config/initializers/souls" unless ARGV[0] == "new" || ARGV[0] == "init"
-  rescue
-    Souls::Init.config_init
-  end
   case ARGV[0]
   when "new"
     if ARGV[1].nil?
       puts "you need to specify your app name \n `souls new app_name`"
       exit
     end
-    puts "Which framework:   \n 1. SOULs GraphQL API \n 2. SOULs GraphQL API gRPC compatible \n 3. SOULs gRPC Service \n 4. SOULs Media Web \n 5. SOULs Admin Web \n Enter Number: "
+    puts "Which framework:   \n 1. SOULs GraphQL API \n 2. SOULs Worker \n 3. SOULs Media Web \n 4. SOULs Admin Web \n Enter Number: "
     strain = STDIN.gets.chomp.to_i
-    (1..5).include?(strain) ? puts("Generating SOULs.. \n") : raise(StandardError, "Choose Number 1..5")
-    Souls::Init.create_souls strain: strain, app_name: ARGV[1]
+    (1..4).include?(strain) ? puts("Generating SOULs.. \n") : raise(StandardError, "Choose Number 1..4")
+    Souls::Init.download_souls app_name: ARGV[1], repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
     when "media", "admin"
       system "yarn dev"
-    when "service"
-      system "bundle exec rake run_server"
+    when "worker"
+      system "bundle exec puma -p 3000 -e development"
     else
       system "foreman start -f Procfile.dev"
     end
@@ -42,8 +37,6 @@ begin
     end
   when "i", "infra"
     Souls.send ARGV[1]
-  when "p", "proto"
-    Souls::Init.proto proto_package_name: "souls", service: ARGV[1]
   when "init"
     Souls::Init.config_init
   when "-v", "--version"
@@ -141,8 +134,7 @@ begin
     system "docker build . -t souls:latest"
     system "docker run --rm -p 3000:3000 souls:latest"
   when "deploy"
-    project_id = Souls.configuration.project_id
-    system "gcloud builds submit --config=cloudbuild.yml --project #{project_id}"
+    system "gcloud builds submit --config=cloudbuild.yml --project #{ARGV[1]}"
   else
     puts "Welcome to SOULs!"
   end
