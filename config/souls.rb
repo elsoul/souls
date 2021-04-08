@@ -1,4 +1,4 @@
 Souls.configure do |config|
   config.app = "souls"
-  config.strain = "graph"
+  config.strain = "api"
 end

@@ -70,7 +70,7 @@ And Create Your APP
 ### Choose SOULs Type:
 
 1. API
-2. Workewr
+2. Worker
 3. Media Web
 4. Admin Web
 
