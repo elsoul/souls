@@ -69,10 +69,11 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :app
+    attr_accessor :app, :strain
 
     def initialize
       @app = nil
+      @strain = nil
     end
   end
 end

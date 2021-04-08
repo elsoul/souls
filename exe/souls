@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require "souls"
-STRAINS = ["graph", "worker", "media", "admin"]
 begin
   require "./config/souls" unless ARGV[0] == "new" || ARGV[0] == "i"
 rescue
@@ -9,6 +8,7 @@ end
 begin
   case ARGV[0]
   when "new"
+    STRAINS = ["api", "worker", "media", "admin"]
     if ARGV[1].nil?
       puts "you need to specify your app name \n `souls new app_name`"
       exit
@@ -17,7 +17,7 @@ begin
     strain = STDIN.gets.chomp.to_i
     (1..4).include?(strain) ? puts("Generating SOULs.. \n") : raise(StandardError, "Choose Number 1..4")
     Souls::Init.download_souls app_name: ARGV[1], repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
-    Souls::Init.initial_config_init app_name: "souls", project: { strain: STRAINS[strain.to_i - 1] }
+    Souls::Init.initial_config_init app_name: ARGV[1], strain: STRAINS[strain.to_i - 1]
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
