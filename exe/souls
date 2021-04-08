@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require "souls"
 begin
-  require "./config/souls" unless ARGV[0] == "new" || ARGV[0] == "i"
+  require "./config/souls" unless ARGV[0] == "new" || ARGV[0] == "i" || ARGV[0] == "-v"
 rescue
   Souls::Init.config_init
 end
@@ -63,51 +63,49 @@ begin
   when "g", "generate"
     case ARGV[1]
     when "test_dir"
-      Souls::Init.test_dir
-    when "policy"
-      Souls::Init.policy class_name: ARGV[2]
-    when "rspec_policy"
-      Souls::Init.rspec_policy class_name: ARGV[2]
-    when "node_type"
-      Souls::Init.node_type class_name: ARGV[2]
-    when "resolver"
-      Souls::Init.resolver class_name: ARGV[2]
-    when "job"
-      Souls::Init.job class_name: ARGV[2]
+      Souls::Generate.test_dir
     when "model"
-      Souls::Init.model class_name: ARGV[2]
+      Souls::Generate.model class_name: ARGV[2]
     when "mutation"
-      Souls::Init.mutation class_name: ARGV[2]
+      Souls::Generate.mutation class_name: ARGV[2]
     when "query"
-      Souls::Init.query class_name: ARGV[2]
+      Souls::Generate.query class_name: ARGV[2]
     when "type"
-      Souls::Init.type class_name: ARGV[2]
+      Souls::Generate.type class_name: ARGV[2]
+    when "resolver"
+      Souls::Generate.resolver class_name: ARGV[2]
+    when "policy"
+      Souls::Generate.policy class_name: ARGV[2]
+    when "rspec_factory"
+      Souls::Generate.rspec_factory class_name: ARGV[2]
+    when "rspec_model"
+      Souls::Generate.rspec_model class_name: ARGV[2]
+    when "rspec_mutation"
+      Souls::Generate.rspec_mutation class_name: ARGV[2]
+    when "rspec_query"
+      Souls::Generate.rspec_query class_name: ARGV[2]
+    when "rspec_resolver"
+      Souls::Generate.rspec_resolver class_name: ARGV[2]
+    when "rspec_policy"
+      Souls::Generate.rspec_policy class_name: ARGV[2]
+    when "node_type"
+      Souls::Generate.node_type class_name: ARGV[2]
+    when "job"
+      Souls::Generate.job class_name: ARGV[2]
     when "migrate"
-      Souls::Init.single_migrate class_name: ARGV[2]
+      Souls::Generate.single_migrate class_name: ARGV[2]
     when "migrate_all"
-      Souls::Init.migrate_all
+      Souls::Generate.migrate_all
     when "migration"
       system "rake db:create_migration NAME=create_#{ARGV[2]}"
-    when "rspec_factory"
-      Souls::Init.rspec_factory class_name: ARGV[2]
-    when "rspec_model"
-      Souls::Init.rspec_model class_name: ARGV[2]
-    when "rspec_mutation"
-      Souls::Init.rspec_mutation class_name: ARGV[2]
-    when "rspec_query"
-      Souls::Init.rspec_query class_name: ARGV[2]
-    when "rspec_type"
-      Souls::Init.rspec_type class_name: ARGV[2]
-    when "rspec_resolver"
-      Souls::Init.rspec_resolver class_name: ARGV[2]
     else
       "SOULs!"
     end
   when "d"
-    Souls::Init.add_delete class_name: ARGV[1]
+    Souls::Generate.delete_all class_name: ARGV[1]
   when "update"
-    Souls::Init.add_delete class_name: ARGV[1]
-    Souls::Init.single_migrate class_name: ARGV[1]
+    Souls::Generate.add_delete class_name: ARGV[1]
+    Souls::Generate.single_migrate class_name: ARGV[1]
   when "db:create"
     system "rake db:create && rake db:create RACK_ENV=test"
   when "db:migrate"

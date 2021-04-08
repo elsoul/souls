@@ -1,11 +1,25 @@
 require "souls/version"
 require "active_support/core_ext/string/inflections"
 require "souls/init"
-require "souls/generate"
 require "json"
 require "fileutils"
+Dir["./lib/souls/generate/*.rb"].each { |f| require f }
 
 module Souls
+  SOULS_METHODS = [
+    "model",
+    "query",
+    "mutation",
+    "type",
+    "resolver",
+    "policy",
+    "rspec_factory",
+    "rspec_model",
+    "rspec_query",
+    "rspec_mutation",
+    "rspec_resolver",
+    "rspec_policy"
+  ]
   class Error < StandardError; end
     class << self
       attr_accessor :configuration
@@ -24,42 +38,6 @@ module Souls
       def run_awake url
         app = Souls.configuration.app
         system "gcloud scheduler jobs create http #{app}-awake --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
-      end
-
-      def deploy_local
-        `docker network create --driver bridge shared`
-
-        `docker run -d --name proxy \
-         -p 80:80 -p 443:443 \
-         -v "/var/run/docker.sock:/tmp/docker.sock:ro" \
-         -v "$pwd/certs:/etc/nginx/certs:ro" \
-         -v "/etc/nginx/vhost.d" \
-         -v "/usr/share/nginx/html" \
-         --network shared \
-         --restart always \
-         jwilder/nginx-proxy`
-
-        `docker run -d --name letsencrypt \
-        -v "/home/certs:/etc/nginx/certs" \
-        -v "/var/run/docker.sock:/var/run/docker.sock:ro" \
-        --volumes-from proxy \
-        --network shared \
-        --restart always \
-        jrcs/letsencrypt-nginx-proxy-companion`
-
-        `docker run -d --name nginx \
-        -p 80:80 \
-        -e VIRTUAL_HOST=souls.el-soul.com \
-        -e LETSENCRYPT_HOST=souls.el-soul.com \
-        -e LETSENCRYPT_EMAIL=info@gmail.com \
-        --network shared \
-        --link web \
-        poppinfumi/ruby-nginx:latest`
-
-        `docker run -d --name web \
-         -p 3000:3000 \
-         --network shared \
-         poppinfumi/souls_api`
       end
     end
 

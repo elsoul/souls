@@ -28,11 +28,10 @@ You can focus on business logic. No more infra problems.
 
 SOULs creates 5 types of framework.
 
-1. API - GraphQL (Ruby) - Simple API 
-2. API - GraphQL to call gRPC (Ruby) - for heavy task processes
-3. Service - gRPC Serverless Scalable Service (Ruby)
-4. Media Web Client - Media web client with SSG (TypeScript)
-5. Admin Web Client - Admin Console and CMS (TypeScript)
+1. API - GraphQL (Ruby) - Simple API - Cloud Run
+2. Worker - Google Pub/Sub Worker API (Ruby) - Cloud Run
+3. Media Web Client - Media web client with SSG (TypeScript)
+4. Admin Web Client - Admin Console and CMS (TypeScript)
 
 ## Dependency
 
@@ -71,10 +70,9 @@ And Create Your APP
 ### Choose SOULs Type:
 
 1. API
-2. API - gRPC
-3. Service
-4. Media Web
-5. Admin Web
+2. Workewr
+3. Media Web
+4. Admin Web
 
 
 ## SOULs Document

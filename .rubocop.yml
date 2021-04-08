@@ -104,6 +104,9 @@ Style/FrozenStringLiteralComment:
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
 
+Style/RedundantArgument:
+  Enabled: false
+
 Style/Semicolon:
   Exclude:
     - "spec/**/*"
