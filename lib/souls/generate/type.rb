@@ -9,7 +9,7 @@ module Souls
           File.open(file_path, "w") do |f|
             f.write <<~EOS
               module Types
-                class #{class_name.camelize}Type < GraphQL::Schema::Object
+                class #{class_name.camelize}Type < BaseObject
                   implements GraphQL::Types::Relay::Node
 
             EOS
@@ -60,7 +60,7 @@ module Souls
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Types
-              class #{class_name.camelize}NodeType < GraphQL::Schema::Object
+              class #{class_name.camelize}NodeType < BaseObject
                 field :node, Types::#{class_name.camelize}Type, null: true
               end
             end
