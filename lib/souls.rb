@@ -1,6 +1,6 @@
-require "souls/version"
+require_relative "souls/version"
 require "active_support/core_ext/string/inflections"
-require "souls/init"
+require_relative "souls/init"
 require "json"
 require "fileutils"
 Dir["./lib/souls/generate/*.rb"].each { |f| require f }

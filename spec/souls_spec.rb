@@ -9,7 +9,16 @@ RSpec.describe Souls do
         config.strain = "api"
       end
 
-      expect(Souls.configuration.project_id).to eq "elsoul"
+      expect(Souls.configuration.strain).to eq "api"
+    end
+
+    it "has db/schema.rb file" do
+      path = "./db/schema.rb"
+      expect(File.exist?(path)).to eq true
+    end
+
+    it "has user, article and article_category tables" do
+      expect(Souls::Generate.get_tables).to eq %w[article_categories articles users]
     end
   end
 end
