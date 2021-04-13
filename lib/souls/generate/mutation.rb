@@ -113,6 +113,7 @@ module Souls
                   argument :id, String, required: true
           EOS
         end
+        file_path
       end
 
       def update_mutation_params class_name: "souls"
