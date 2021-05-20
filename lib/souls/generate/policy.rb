@@ -3,7 +3,7 @@ module Souls
     class << self
       ## Generate Policy
       def policy class_name: "souls"
-        dir_name = "#{__dir__}/app/policies"
+        dir_name = "./app/policies"
         FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
         file_path = "#{dir_name}/#{class_name.singularize}_policy.rb"
         File.open(file_path, "w") do |f|

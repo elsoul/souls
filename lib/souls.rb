@@ -3,7 +3,7 @@ require "active_support/core_ext/string/inflections"
 require_relative "souls/init"
 require "json"
 require "fileutils"
-Dir["./lib/souls/generate/*.rb"].each { |f| require f }
+Dir["./lib/souls/generate/*.rb"].each { |f| require_relative f.gsub("./lib/", "") }
 
 module Souls
   SOULS_METHODS = [
