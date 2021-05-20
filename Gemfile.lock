@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.20.0)
+    souls (0.20.2)
 
 GEM
   remote: https://rubygems.org/
@@ -75,6 +75,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+  x86_64-darwin-20
   x86_64-linux
 
 DEPENDENCIES
