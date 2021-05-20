@@ -1,4 +1,4 @@
-Dir["./lib/souls/generate/*.rb"].each { |f| require_relative f.gsub("./lib/souls/generate/", "") }
+Dir["./lib/souls/generate/*.rb"].each { |f| require f }
 module Souls
   module Generate
   end
