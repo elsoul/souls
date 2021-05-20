@@ -3,7 +3,9 @@ module Souls
     class << self
       ## Generate Model
       def model class_name: "souls"
-        file_path = "./app/models/#{class_name.singularize}.rb"
+        file_dir = "./app/models/"
+        FileUtils.mkdir_p file_dir unless Dir.exist? file_dir
+        file_path = "#{file_dir}#{class_name.singularize}.rb"
         return "Model already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS

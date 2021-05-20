@@ -26,7 +26,7 @@ This is Cloud Based APP Framework. Easy Deployment.
 Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. 
 You can focus on business logic. No more infra problems.
 
-SOULs creates 5 types of framework.
+SOULs creates 4 types of framework.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Worker API (Ruby) - Cloud Run

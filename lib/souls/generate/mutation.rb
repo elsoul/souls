@@ -3,20 +3,22 @@ module Souls
     class << self
       ## Generate 4 Mutations - ["create", "update", "delete", "destroy_delete"]
       ## 1.Mutation - Create
-      def create_mutation_head class_name: "souls"
-        dir_name = "./app/graphql/mutations/#{class_name}"
+      def create_mutation_head class_name: "user"
+        singularized_class_name = class_name.singularize.underscore
+        dir_name = "./app/graphql/mutations/#{singularized_class_name}"
         FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
-        file_path = "./app/graphql/mutations/#{class_name}/create_#{class_name}.rb"
+        file_path = "./app/graphql/mutations/#{singularized_class_name}/create_#{singularized_class_name}.rb"
         File.open(file_path, "w") do |new_line|
           new_line.write <<~EOS
             module Mutations
-              module #{class_name.camelize}
-                class Create#{class_name.camelize} < BaseMutation
-                  field :#{class_name}_edge, Types::#{class_name.camelize}NodeType, null: false
+              module #{singularized_class_name.camelize}
+                class Create#{singularized_class_name.camelize} < BaseMutation
+                  field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}NodeType, null: false
                   field :error, String, null: true
 
           EOS
         end
+        file_path
       end
 
       def create_mutation_params class_name: "souls"
