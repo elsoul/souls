@@ -1,4 +1,6 @@
 Dir["./lib/souls/generate/*.rb"].each { |f| require_relative f.gsub("./lib/souls", ".")}
+require_relative "./generate/rspec_policy"
+
 module Souls
   module Generate
     def self.policy class_name: "souls"
