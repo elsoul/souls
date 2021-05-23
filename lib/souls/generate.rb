@@ -1,51 +1,20 @@
-Dir["#{__dir__}/lib/souls/generate/*.rb"].each { |f| require_relative f.gsub("./lib/souls", ".")}
+# Did not work client side
+# Dir["#{__dir__}/lib/souls/generate/*.rb"].each { |f| require_relative f.gsub("./lib/souls", ".")}
+require_relative "./generate/model"
+require_relative "./generate/mutation"
+require_relative "./generate/policy"
+require_relative "./generate/query"
+require_relative "./generate/resolver"
+require_relative "./generate/rspec_factory"
+require_relative "./generate/rspec_model"
+require_relative "./generate/rspec_mutation"
 require_relative "./generate/rspec_policy"
+require_relative "./generate/rspec_query"
+require_relative "./generate/rspec_resolver"
+require_relative "./generate/type"
+require_relative "./generate/application"
 
 module Souls
   module Generate
-    def self.policy class_name: "souls"
-      dir_name = "./app/policies"
-      FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
-      file_path = "#{dir_name}/#{class_name.singularize}_policy.rb"
-      File.open(file_path, "w") do |f|
-        f.write <<~EOS
-          class #{class_name.camelize}Policy < ApplicationPolicy
-            def show?
-              admin_permissions?
-            end
-
-            def index?
-              admin_permissions?
-            end
-
-            def create?
-              admin_permissions?
-            end
-
-            def update?
-              admin_permissions?
-            end
-
-            def delete?
-              admin_permissions?
-            end
-
-            private
-
-            def staff_permissions?
-              @user.master? or @user.admin? or @user.staff?
-            end
-
-            def admin_permissions?
-              @user.master? or @user.admin?
-            end
-          end
-        EOS
-      end
-      file_path
-    rescue StandardError => error
-      puts "method error"
-      puts error.backtrace
-    end
   end
 end

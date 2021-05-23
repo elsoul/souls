@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.20.9)
+    souls (0.21.0)
 
 GEM
   remote: https://rubygems.org/
