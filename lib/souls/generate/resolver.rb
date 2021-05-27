@@ -5,9 +5,7 @@ module Souls
       def resolver_head class_name: "souls"
         FileUtils.mkdir_p "./app/graphql/resolvers" unless Dir.exist? "./app/graphql/resolvers"
         file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
-        return "Resolver already exist! #{file_path}" if File.exist? file_path
         @relation_params = []
-        return ["Resolver already exist! #{file_path}"] if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Resolvers
@@ -143,6 +141,8 @@ module Souls
 
       def resolver class_name: "souls"
         singularized_class_name = class_name.singularize.underscore
+        file_path = "./app/graphql/resolvers/#{singularized_class_name}_search.rb"
+        return "Resolver already exist! #{file_path}" if File.exist? file_path
         resolver_head class_name: singularized_class_name
         resolver_params class_name: singularized_class_name
         resolver_after_params class_name: singularized_class_name
