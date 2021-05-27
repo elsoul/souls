@@ -4,6 +4,7 @@ module Souls
       ## Generate  Rspec Mutation
       def rspec_mutation_head class_name: "souls"
         file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        return "RspecMutation already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do

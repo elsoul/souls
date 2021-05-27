@@ -6,6 +6,7 @@ module Souls
         dir_name = "./spec/policies"
         FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
         file_path = "./spec/policies/#{class_name}_policy_spec.rb"
+        return "RspecPolicy already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |new_line|
           new_line.write <<~EOS
             describe #{class_name.camelize}Policy do

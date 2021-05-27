@@ -4,6 +4,7 @@ module Souls
       ## Generate Rspec Query
       def rspec_query_head class_name: "souls"
         file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
+        return "RspecQuery already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Query テスト\" do
