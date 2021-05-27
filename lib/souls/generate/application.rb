@@ -106,7 +106,9 @@ module Souls
           rspec_query: rspec_query(class_name: singularized_class_name),
           rspec_resolver: rspec_resolver(class_name: singularized_class_name),
           queries: query(class_name: singularized_class_name),
-          mutations: mutation(class_name: singularized_class_name)
+          mutations: mutation(class_name: singularized_class_name),
+          policies: policy(class_name: singularized_class_name),
+          rspec_policies: rspec_policy(class_name: singularized_class_name)
         ]
       end
 
