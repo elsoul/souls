@@ -99,7 +99,7 @@ begin
     when "migration"
       system "rake db:create_migration NAME=create_#{ARGV[2]}"
     when "update"
-      Souls::Generate.delete_all class_name: ARGV[2]
+      Souls::Generate.update_delete class_name: ARGV[2]
       Souls::Generate.single_migrate class_name: ARGV[2]
     else
       "SOULs!"

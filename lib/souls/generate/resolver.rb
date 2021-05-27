@@ -125,11 +125,8 @@ module Souls
           f.write <<~EOS
                               scope = scope.where("created_at >= ?", value[:start_date]) if value[:start_date]
                               scope = scope.where("created_at <= ?", value[:end_date]) if value[:end_date]
-            #{'            '}
                               branches << scope
-            #{'            '}
                               value[:OR].inject(branches) { |s, v| normalize_filters(v, s) } if value[:OR].present?
-            #{'            '}
                               branches
                             end
                           end
