@@ -6,23 +6,24 @@ module Souls
         dir_name = "./app/policies"
         FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
         file_path = "#{dir_name}/#{class_name.singularize}_policy.rb"
+        return "Policy already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             class #{class_name.camelize}Policy < ApplicationPolicy
               def show?
-                admin_permissions?
+                true
               end
 
               def index?
-                admin_permissions?
+                true
               end
 
               def create?
-                admin_permissions?
+                staff_permissions?
               end
 
               def update?
-                admin_permissions?
+                staff_permissions?
               end
 
               def delete?
