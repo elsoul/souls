@@ -236,6 +236,8 @@ module Souls
 
       def rspec_mutation class_name: "souls"
         singularized_class_name = class_name.singularize
+        file_path = "./spec/mutations/#{singularized_class_name}_spec.rb"
+        return "RspecMutation already exist! #{file_path}" if File.exist? file_path
         rspec_mutation_head class_name: singularized_class_name
         rspec_mutation_after_head class_name: singularized_class_name
         rspec_mutation_params class_name: singularized_class_name

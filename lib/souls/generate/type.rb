@@ -71,6 +71,8 @@ module Souls
 
       def type class_name: "souls"
         singularized_class_name = class_name.singularize
+        file_path = "./app/graphql/types/#{singularized_class_name}_node_type.rb"
+        return "Type already exist! #{file_path}" if File.exist? file_path
         create_type_head class_name: singularized_class_name
         create_type_params class_name: singularized_class_name
         [

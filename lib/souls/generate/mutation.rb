@@ -195,6 +195,8 @@ module Souls
       end
 
       def update_mutation class_name: "souls"
+        file_path = "./app/graphql/mutations/#{class_name}/update_#{class_name}.rb"
+        return "Mutation already exist! #{file_path}" if File.exist? file_path
         update_mutation_head class_name: class_name
         relation_params = update_mutation_params class_name: class_name
         update_mutation_after_params class_name: class_name, relation_params: relation_params
@@ -204,6 +206,7 @@ module Souls
       # 3. Mutation - Delete
       def delete_mutation class_name: "souls"
         file_path = "./app/graphql/mutations/#{class_name}/delete_#{class_name}.rb"
+        return "Mutation already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Mutations
@@ -231,6 +234,7 @@ module Souls
       # 4. Mutation - Destroy Delete
       def destroy_delete_mutation class_name: "souls"
         file_path = "./app/graphql/mutations/#{class_name}/destroy_delete_#{class_name}.rb"
+        return "Mutation already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Mutations
@@ -259,7 +263,8 @@ module Souls
 
       def mutation class_name: "souls"
         singularized_class_name = class_name.singularize
-
+        file_path = "./app/graphql/mutations/#{singularized_class_name}/create_#{singularized_class_name}.rb"
+        return "Mutation already exist! #{file_path}" if File.exist? file_path
         create_mutation_head class_name: singularized_class_name
         relation_params = create_mutation_params class_name: singularized_class_name
         create_mutation_after_params class_name: singularized_class_name, relation_params: relation_params

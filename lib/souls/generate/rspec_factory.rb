@@ -52,7 +52,7 @@ module Souls
 
       def rspec_factory class_name: "souls"
         file_path = "./spec/factories/#{class_name.pluralize}.rb"
-        return ["Factory aleady exist! #{file_path}"] if File.exist? file_path
+        return "RspecFactory already exist! #{file_path}" if File.exist? file_path
         singularized_class_name = class_name.singularize
         rspec_factory_head class_name: singularized_class_name
         rspec_factory_params class_name: singularized_class_name

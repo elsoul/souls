@@ -4,6 +4,7 @@ module Souls
       ## Generate Query / Queries
       def create_queries class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name.pluralize}.rb"
+        return "Query already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Queries
@@ -24,6 +25,7 @@ module Souls
 
       def create_query class_name: "souls"
         file_path = "./app/graphql/queries/#{class_name}.rb"
+        return "Query already exist! #{file_path}" if File.exist? file_path
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             module Queries

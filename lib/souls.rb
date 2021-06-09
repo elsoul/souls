@@ -1,9 +1,9 @@
 require_relative "souls/version"
 require "active_support/core_ext/string/inflections"
 require_relative "souls/init"
+require_relative "souls/generate"
 require "json"
 require "fileutils"
-Dir["./lib/souls/generate/*.rb"].each { |f| require f }
 
 module Souls
   SOULS_METHODS = [

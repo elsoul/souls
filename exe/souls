@@ -98,16 +98,21 @@ begin
       Souls::Generate.migrate_all
     when "migration"
       system "rake db:create_migration NAME=create_#{ARGV[2]}"
+    when "update"
+      Souls::Generate.update_delete class_name: ARGV[2]
+      Souls::Generate.single_migrate class_name: ARGV[2]
     else
       "SOULs!"
     end
   when "d"
     Souls::Generate.delete_all class_name: ARGV[1]
-  when "update"
-    Souls::Generate.add_delete class_name: ARGV[1]
-    Souls::Generate.single_migrate class_name: ARGV[1]
   when "db:create"
-    system "rake db:create && rake db:create RACK_ENV=test"
+    case ARGV[1]
+    when "RACK_ENV=production"
+      system "rake db:create RACK_ENV=production"
+    else
+      system "rake db:create && rake db:create RACK_ENV=test"
+    end
   when "db:migrate"
     case ARGV[1]
     when "RACK_ENV=production"

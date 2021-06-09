@@ -1,4 +1,4 @@
-[![SOULs](https://firebasestorage.googleapis.com/v0/b/el-quest.appspot.com/o/mediaLibrary%2F1605615287402_souls-ogp.jpg?alt=media&token=1115aa76-6863-469d-acc8-9815ca7fac37)](https://rubygems.org/gems/souls)
+[![SOULs](https://storage.googleapis.com/souls/souls-ogp-vertical.jpg)](https://rubygems.org/gems/souls)
 
 <p align="center">
   <a aria-label="Ruby logo" href="https://el-soul.com">
@@ -26,7 +26,7 @@ This is Cloud Based APP Framework. Easy Deployment.
 Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. 
 You can focus on business logic. No more infra problems.
 
-SOULs creates 5 types of framework.
+SOULs creates 4 types of framework.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Worker API (Ruby) - Cloud Run
