@@ -138,8 +138,8 @@ begin
     system "rubocop -a"
     system "bundle exec rspec"
   when "run"
-    system "docker build . -t souls:latest"
-    system "docker run --rm -p 3000:3000 souls:latest"
+    system "docker build . -t souls -f Dockerfile.dev"
+    system "docker run --rm --env-file .env -p 3000:3000 souls:latest"
   when "deploy"
     system "gcloud builds submit --config=cloudbuild.yml --project #{ARGV[1]}"
   else
