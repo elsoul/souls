@@ -33,7 +33,7 @@ module Souls
               context "being a staff" do
                 let(:user) { FactoryBot.create(:user, user_role: 3) }
 
-                it { is_expected.to permit_actions([:create, :update, :delete]) }
+                it { is_expected.to permit_actions([:create, :update]) }
               end
 
               context "being an administrator" do
