@@ -33,7 +33,6 @@ module Souls
         #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
           id
                   EOS
-                  break
                   else
                   new_line.write <<-EOS
     let(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(", ")}) }
@@ -44,8 +43,8 @@ module Souls
         #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
           id
                   EOS
-                  break
                   end
+break
                 end
                 _, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 case name

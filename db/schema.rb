@@ -14,30 +14,6 @@ ActiveRecord::Schema.define(version: 20_210_308_070_947) do
     t.index ["name"], name: "index_article_categories_on_name"
   end
 
-  create_table "events", force: :cascade do |t|
-    t.string "calendar_id", null: false
-    t.bigint "user_id"
-    t.string "title", default: "", null: false
-    t.integer "event_category", default: 0, null: false
-    t.text "user_ids", default: [], null: false, array: true
-    t.text "video_url"
-    t.string "place", default: "", null: false
-    t.text "description", default: "", null: false
-    t.text "img_urls", default: [], null: false, array: true
-    t.boolean "all_day", default: false, null: false
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.boolean "is_deleted", default: false, null: false
-    t.boolean "is_japanese_holiday", default: false, null: false
-    t.boolean "is_american_holiday", default: false, null: false
-    t.boolean "is_before_holiday", default: false, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_category"], name: "index_events_on_event_category"
-    t.index ["title"], name: "index_events_on_title"
-    t.index ["user_id"], name: "index_events_on_user_id"
-  end
-
   create_table "articles", force: :cascade do |t|
     t.bigint "user_id"
     t.string "title", null: false
