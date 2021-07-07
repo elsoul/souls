@@ -4,6 +4,7 @@ module Souls
       ## Generate Rspec Factory
       def rspec_factory_head class_name: "souls"
         file_path = "./spec/factories/#{class_name.pluralize}.rb"
+        FileUtils.mkdir_p "./spec/factories/" unless Dir.exist? "./spec/factories/"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             FactoryBot.define do

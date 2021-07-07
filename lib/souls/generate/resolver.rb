@@ -59,7 +59,6 @@ module Souls
         file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
         File.open(file_path, "a") do |f|
           f.write <<-EOS
-      argument :is_deleted, Boolean, required: false
       argument :start_date, String, required: false
       argument :end_date, String, required: false
     end
@@ -124,7 +123,6 @@ module Souls
         file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
         File.open(file_path, "a") do |f|
           f.write <<~EOS
-                  scope = scope.where(is_deleted: value[:is_deleted]) unless value[:is_deleted].nil?
                   scope = scope.where("created_at >= ?", value[:start_date]) if value[:start_date]
                   scope = scope.where("created_at <= ?", value[:end_date]) if value[:end_date]
                   branches << scope
@@ -146,6 +144,7 @@ module Souls
         resolver_params class_name: singularized_class_name
         resolver_after_params class_name: singularized_class_name
         resolver_before_end class_name: singularized_class_name
+        # puts "File Created!\n#{file_path}"
         resolver_end class_name: singularized_class_name
       end
     end

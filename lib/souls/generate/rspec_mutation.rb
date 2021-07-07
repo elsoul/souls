@@ -3,7 +3,7 @@ module Souls
     class << self
       ## Generate  Rspec Mutation
       def rspec_mutation_head class_name: "souls"
-        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        file_path = "./spec/mutations/base/#{class_name.singularize}_spec.rb"
         File.open(file_path, "w") do |f|
           f.write <<~EOS
             RSpec.describe \"#{class_name.camelize} Mutation テスト\" do
@@ -13,7 +13,7 @@ module Souls
       end
 
       def rspec_mutation_after_head class_name: "souls"
-        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        file_path = "./spec/mutations/base/#{class_name.singularize}_spec.rb"
         path = "./db/schema.rb"
         @on = false
         @user_exist = false
@@ -62,7 +62,7 @@ module Souls
       end
 
       def rspec_mutation_params class_name: "souls"
-        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        file_path = "./spec/mutations/base/#{class_name.singularize}_spec.rb"
         path = "./db/schema.rb"
         @on = false
         @user_exist = false
@@ -106,7 +106,7 @@ module Souls
       end
 
       def rspec_mutation_params_response class_name: "souls"
-        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        file_path = "./spec/mutations/base/#{class_name.singularize}_spec.rb"
         path = "./db/schema.rb"
         @on = false
         File.open(file_path, "a") do |new_line|
@@ -188,7 +188,7 @@ module Souls
       end
 
       def rspec_mutation_end class_name: "souls"
-        file_path = "./spec/mutations/#{class_name.singularize}_spec.rb"
+        file_path = "./spec/mutations/base/#{class_name.singularize}_spec.rb"
         path = "./db/schema.rb"
         @on = false
         File.open(file_path, "a") do |new_line|
@@ -236,7 +236,7 @@ module Souls
 
       def rspec_mutation class_name: "souls"
         singularized_class_name = class_name.singularize
-        file_path = "./spec/mutations/#{singularized_class_name}_spec.rb"
+        file_path = "./spec/mutations/base/#{singularized_class_name}_spec.rb"
         return "RspecMutation already exist! #{file_path}" if File.exist? file_path
         rspec_mutation_head class_name: singularized_class_name
         rspec_mutation_after_head class_name: singularized_class_name

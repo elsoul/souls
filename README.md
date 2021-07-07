@@ -77,7 +77,7 @@ And Create Your APP
 
 ## SOULs Document
 
-- [SOULs Document](https://elsoul.github.io/souls_doc/)
+- [SOULs Document](https://souls-doc.el-soul.com/)
 
 
 
