@@ -2,6 +2,7 @@ require_relative "souls/version"
 require "active_support/core_ext/string/inflections"
 require_relative "souls/init"
 require_relative "souls/generate"
+require_relative "souls/gcloud"
 require "json"
 require "fileutils"
 
@@ -35,6 +36,17 @@ module Souls
         system "docker ps"
       end
 
+      def run_mysql
+        system "docker run --rm -d \
+          -p 3306:3306 \
+          -v mysql-tmp:/var/lib/mysqlql/data \
+          -e MYSQL_USER=mysql \
+          -e MYSQL_PASSWORD=mysql \
+          -e MYSQL_DB=souls_test \
+          mysql:latest"
+        system "docker ps"
+      end
+
       def run_awake url
         app = Souls.configuration.app
         system "gcloud scheduler jobs create http #{app}-awake --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
@@ -47,10 +59,11 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :app, :strain
+    attr_accessor :app, :strain, :project_id
 
     def initialize
       @app = nil
+      @project_id = nil
       @strain = nil
     end
   end
