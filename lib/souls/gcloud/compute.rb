@@ -38,10 +38,9 @@ module Souls
         --project=#{project_id}"
       end
 
-      def create_sql_instance
-        project_id = Souls.configuration.project_id
-        network = Souls.configuration.app
-        system "gcloud --project=#{project_id} beta sql instances create #{network} --no-assign-ip --database-version=POSTGRES_13 --network #{network} --cpu=2 --memory=7680MB --region=asia-northeast1"
+      def create_sql_instance root_pass: "Postgre123!", zone: "asia-northeast1-b"
+        app = "#{Souls.configuration.app}-db"
+        system "gcloud sql instances create #{app} --database-version=POSTGRES_13 --cpu=2 --memory=7680MB --zone=#{zone} --root-password='#{root_pass}' --database-flags cloudsql.iam_authentication=on"
       end
     end
   end

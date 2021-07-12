@@ -43,6 +43,8 @@ begin
     end
   when "i", "infra"
     Souls.send ARGV[1]
+  when "gcloud"
+    Souls::Gcloud.send ARGV[1]
   when "-v", "--version"
     puts Souls::VERSION
   when "add"
