@@ -1,3 +1,3 @@
 module Souls
-  VERSION = "0.21.9"
+  VERSION = "0.22.0"
 end
