@@ -19,6 +19,14 @@ module Souls
         --member="serviceAccount:#{service_account}@#{project_id}.iam.gserviceaccount.com" \
         --role="#{role}"`
       end
+
+      def add_permissions service_account: "souls-app"
+        self.add_service_account_role service_account: service_account, role: "roles/cloudsql.serviceAgent"
+        self.add_service_account_role service_account: service_account, role: "roles/containerregistry.ServiceAgent"
+        self.add_service_account_role service_account: service_account, role: "roles/pubsub.serviceAgent"
+        self.add_service_account_role service_account: service_account, role: "roles/firestore.serviceAgent"
+        self.add_service_account_role service_account: service_account, role: "roles/iam.serviceAccountUser"
+      end
     end
   end
 end
