@@ -1,6 +1,12 @@
 module Souls
   module Gcloud
     class << self
+      def auth_login
+        project_id = Souls.configuration.project_id
+        system "gcloud config set project #{project_id}"
+        system "gcloud auth login"
+      end
+
       def enable_permissions
         system "gcloud services enable compute.googleapis.com"
         puts "Operating permission to compute.googleapis.com ..."
