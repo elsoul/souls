@@ -1,9 +1,7 @@
 module Souls
   module Generate
     class << self
-      ## Generate 2 Types
-      ## 1. Type
-      ## 2. Node Type
+      ## Generate Type
       def create_type_head class_name: "souls"
         file_path = "./app/graphql/types/#{class_name}_type.rb"
           File.open(file_path, "w") do |f|
