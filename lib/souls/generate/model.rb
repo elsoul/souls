@@ -13,7 +13,10 @@ module Souls
             end
           EOS
         end
+        puts "Created file! : #{file_path}"
         file_path
+      rescue StandardError => e
+        raise StandardError, e
       end
     end
   end

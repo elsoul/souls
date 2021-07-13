@@ -74,6 +74,10 @@ begin
       Souls::Generate.query class_name: ARGV[2]
     when "type"
       Souls::Generate.type class_name: ARGV[2]
+    when "edge"
+      Souls::Generate.edge class_name: ARGV[2]
+    when "connection"
+      Souls::Generate.connection class_name: ARGV[2]
     when "resolver"
       Souls::Generate.resolver class_name: ARGV[2]
     when "policy"

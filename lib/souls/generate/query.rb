@@ -20,7 +20,10 @@ module Souls
             end
           EOS
         end
+        puts "Created file! : #{file_path}"
         file_path
+      rescue StandardError => e
+        raise StandardError, e
       end
 
       def create_query class_name: "souls"
@@ -42,16 +45,19 @@ module Souls
               end
             end
           EOS
+          puts "Created file! : #{file_path}"
           file_path
+        rescue StandardError => e
+          raise StandardError, e
         end
       end
 
       def query class_name: "souls"
         singularized_class_name = class_name.singularize
-        [
-          create_query(class_name: singularized_class_name),
-          create_queries(class_name: singularized_class_name)
-        ]
+        create_query(class_name: singularized_class_name)
+        create_queries(class_name: singularized_class_name)
+      rescue StandardError => e
+        raise StandardError, e
       end
     end
   end

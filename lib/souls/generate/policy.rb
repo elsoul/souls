@@ -19,11 +19,11 @@ module Souls
               end
 
               def create?
-                staff_permissions?
+                user_permissions?
               end
 
               def update?
-                staff_permissions?
+                user_permissions?
               end
 
               def delete?
@@ -32,8 +32,8 @@ module Souls
 
               private
 
-              def staff_permissions?
-                @user.master? or @user.admin? or @user.staff?
+              def user_permissions?
+                @user.master? or @user.admin? or @user.user?
               end
 
               def admin_permissions?
@@ -42,10 +42,10 @@ module Souls
             end
           EOS
         end
+        puts "Created file! : #{file_path}"
         file_path
-      rescue StandardError => error
-        puts "method error"
-        puts error.backtrace
+      rescue StandardError => e
+        raise StandardError, e
       end
     end
   end

@@ -12,6 +12,8 @@ require_relative "./generate/rspec_policy"
 require_relative "./generate/rspec_query"
 require_relative "./generate/rspec_resolver"
 require_relative "./generate/type"
+require_relative "./generate/edge"
+require_relative "./generate/connection"
 require_relative "./generate/application"
 
 module Souls

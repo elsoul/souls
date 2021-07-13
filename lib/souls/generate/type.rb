@@ -60,7 +60,10 @@ module Souls
         create_type_head class_name: singularized_class_name
         create_type_params class_name: singularized_class_name
         create_type_end class_name: singularized_class_name
+        puts "Created file! : #{file_path}"
         file_path
+      rescue StandardError => e
+        raise StandardError, e
       end
     end
   end

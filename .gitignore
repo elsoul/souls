@@ -12,5 +12,4 @@
 /config/keyfile.json
 .env
 .irb_history
-/spec/
 /app/

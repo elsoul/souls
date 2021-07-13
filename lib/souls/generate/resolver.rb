@@ -144,8 +144,11 @@ module Souls
         resolver_params class_name: singularized_class_name
         resolver_after_params class_name: singularized_class_name
         resolver_before_end class_name: singularized_class_name
-        # puts "File Created!\n#{file_path}"
         resolver_end class_name: singularized_class_name
+        puts "Created file! : #{file_path}"
+        file_path
+      rescue StandardError => e
+        raise StandardError, e
       end
     end
   end

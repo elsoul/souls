@@ -15,36 +15,31 @@ module Souls
               let(:#{class_name.underscore}) { FactoryBot.create(:#{class_name.underscore}) }
 
               context "being a visitor" do
-                let(:user) { FactoryBot.create(:user) }
+                let(:user) { FactoryBot.create(:user, user_role: :normal) }
 
                 it { is_expected.to permit_action(:index) }
                 it { is_expected.to permit_action(:show) }
                 it { is_expected.to forbid_actions([:create, :update, :delete]) }
               end
 
-              context "being a retailer" do
-                let(:user) { FactoryBot.create(:user, user_role: 1) }
-
-                it { is_expected.to permit_action(:index) }
-                it { is_expected.to permit_action(:show) }
-                it { is_expected.to forbid_actions([:create, :update, :delete]) }
-              end
-
-              context "being a staff" do
-                let(:user) { FactoryBot.create(:user, user_role: 3) }
+              context "being a user" do
+                let(:user) { FactoryBot.create(:user, user_role: :user) }
 
                 it { is_expected.to permit_actions([:create, :update]) }
               end
 
-              context "being an administrator" do
-                let(:user) { FactoryBot.create(:user, user_role: 4) }
+              context "being an admin" do
+                let(:user) { FactoryBot.create(:user, user_role: :admin) }
 
                 it { is_expected.to permit_actions([:create, :update, :delete]) }
               end
             end
           EOS
         end
+        puts "Created file! : #{file_path}"
         file_path
+      rescue StandardError => e
+        raise StandardError, e
       end
     end
   end

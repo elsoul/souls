@@ -268,15 +268,14 @@ module Souls
         create_mutation_head class_name: singularized_class_name
         relation_params = create_mutation_params class_name: singularized_class_name
         create_mutation_after_params class_name: singularized_class_name, relation_params: relation_params
-        # puts "File Created!\n#{file_path}"
-        [
-          create_mutation_end(class_name: singularized_class_name),
-          update_mutation(class_name: singularized_class_name),
-          delete_mutation(class_name: singularized_class_name),
-          destroy_delete_mutation(class_name: singularized_class_name)
-        ]
-      rescue StandardError => error
-        puts error
+        create_mutation_end(class_name: singularized_class_name)
+        update_mutation(class_name: singularized_class_name)
+        delete_mutation(class_name: singularized_class_name)
+        destroy_delete_mutation(class_name: singularized_class_name)
+        puts "Created file! : #{file_path}"
+        file_path
+      rescue StandardError => e
+        raise StandardError, e
       end
     end
   end
