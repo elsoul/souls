@@ -103,7 +103,8 @@ begin
     when "migrate_all"
       Souls::Generate.migrate_all
     when "migration"
-      system "rake db:create_migration NAME=create_#{ARGV[2]}"
+      class_name = ARGV[2].underscore.pluralize
+      system "rake db:create_migration NAME=create_#{class_name}"
     when "update"
       Souls::Generate.update_delete class_name: ARGV[2]
       Souls::Generate.single_migrate class_name: ARGV[2]
