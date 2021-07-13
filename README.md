@@ -21,9 +21,7 @@
 
 Welcome to SOULs Framework!
 
-SOULS is a Web Application Framework based on GraphQL Relay ( Ruby )
-This is Cloud Based APP Framework. Easy Deployment.
-Microservices on Multi Cloud Platform such as Google Cloud Platform, Amazon Web Services, and Alibaba Cloud. Auto deploy with scalable condition. 
+SOULs is a Serverless Application Framework. SOULs has four strains, API, Worker, Console, Media, and can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud and Amazon Web Services
 You can focus on business logic. No more infra problems.
 
 SOULs creates 4 types of framework.

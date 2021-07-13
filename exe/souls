@@ -136,6 +136,18 @@ begin
     else
       system "rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test"
     end
+  when "db:update"
+    strain = Souls.configuration.strain
+    case strain
+    when "api"
+      other_app = Souls.configuration.worker_name
+    when "worker"
+      other_app = Souls.configuration.api_name
+    else
+      raise StandardError, "Unknown app name!"
+    end
+    system "rm -rf ../#{other_app}/db/*"
+    system "cp -r ./db/* ../#{other_app}/db/*"
   when "t", "test"
     system "rubocop -a"
     system "bundle exec rspec"

@@ -59,12 +59,14 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :app, :strain, :project_id
+    attr_accessor :app, :strain, :project_id, :worker_name, :api_name
 
     def initialize
       @app = nil
       @project_id = nil
       @strain = nil
+      @worker_name = nil
+      @api_name = nil
     end
   end
 end
