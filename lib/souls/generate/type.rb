@@ -55,30 +55,14 @@ module Souls
         file_path
       end
 
-      def node_type class_name: "souls"
-        file_path = "./app/graphql/types/#{class_name.singularize}_node_type.rb"
-        File.open(file_path, "w") do |f|
-          f.write <<~EOS
-            module Types
-              class #{class_name.camelize}NodeType < BaseObject
-                field :node, Types::#{class_name.camelize}Type, null: true
-              end
-            end
-          EOS
-        end
-        file_path
-      end
-
       def type class_name: "souls"
         singularized_class_name = class_name.singularize
-        file_path = "./app/graphql/types/#{singularized_class_name}_node_type.rb"
+        file_path = "./app/graphql/types/#{singularized_class_name}_type.rb"
         return "Type already exist! #{file_path}" if File.exist? file_path
         create_type_head class_name: singularized_class_name
         create_type_params class_name: singularized_class_name
-        [
-          create_type_end(class_name: singularized_class_name),
-          node_type(class_name: singularized_class_name)
-        ]
+        create_type_end class_name: singularized_class_name
+        file_path
       end
     end
   end
