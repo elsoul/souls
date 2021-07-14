@@ -49,7 +49,7 @@ module Souls
         souls_ver = Paint["SOULs Version: #{Souls::VERSION}", :white]
         puts souls_ver
         puts line
-        cd = Paint["Easy to Run\n$ cd #{app_name}\n$ bundle\n$ souls s\nGo To : http://localhost:3000\n\nDoc: https://souls-doc.el-soul.com", :white]
+        cd = Paint["Easy to Run\n$ cd #{app_name}\n$ bundle\n$ souls s\nGo To : http://localhost:3000\n\nDoc: https://souls.elsoul.nl", :white]
         puts cd
         puts line
       end

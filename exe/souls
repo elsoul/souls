@@ -10,7 +10,8 @@ begin
   when "new"
     STRAINS = ["api", "worker", "console", "admin", "media"]
     if ARGV[1].nil?
-      puts "you need to specify your app name \n `souls new app_name`"
+      puts Paint["you need to specify your app name", :red]
+      puts Paint["`souls new app_name`", :yellow]
       exit
     end
     first_message = Paint % [
@@ -31,13 +32,13 @@ begin
       Souls::Init.download_souls app_name: ARGV[1], repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
       Souls::Init.initial_config_init app_name: ARGV[1], strain: STRAINS[strain.to_i - 1]
     else
-      puts "Coming Soon..."
+      puts Paint["Coming Soon...", :blue]
     end
 
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
-    when "media", "admin"
+    when "media", "admin", "console"
       system "yarn dev"
     when "worker"
       system "bundle exec puma -p 3000 -e development"
@@ -65,7 +66,7 @@ begin
     puts Souls::VERSION
   when "gem:update", "gemfile:update"
     status = Paint["Checking for updates...", :yellow]
-    Whirly.start spinner: "clock", color: :false, interval: 1000, stop: "🎉" do
+    Whirly.start spinner: "clock", interval: 1000, stop: "🎉" do
       Whirly.status = status
       Souls.update_gemfile
       Whirly.status = "Done!"
@@ -185,10 +186,8 @@ begin
   when "deploy"
     system "gcloud builds submit --config=cloudbuild.yml --project #{ARGV[1]}"
   else
-    puts "Welcome to SOULs!"
+    puts Paint["Welcome to SOULs!", :green]
   end
 rescue StandardError => error
-  puts error.backtrace
-  puts "Thank you!!"
-  puts "SOULs"
+  puts Paint["Something Wrong...", :red]
 end

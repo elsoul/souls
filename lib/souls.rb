@@ -96,7 +96,11 @@ module Souls
             updated_gems << (gem[0]).to_s
             updated_gem_versions << data["version"]
             system "gem update #{gem[0]}"
-            console_log << "#{gem[0]} v#{gem[1]} →　v#{data["version"]}"
+            console_log << if gem[0] == "souls"
+                            "#{gem[0]} v#{gem[1]} →　v#{data["version"]}\n\nSOULs Doc: https://souls.elsoul.nl"
+                           else
+                            "#{gem[0]} v#{gem[1]} →　v#{data["version"]}"
+                           end
           end
         end
         {
