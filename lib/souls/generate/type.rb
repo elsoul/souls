@@ -60,7 +60,7 @@ module Souls
         create_type_head class_name: singularized_class_name
         create_type_params class_name: singularized_class_name
         create_type_end class_name: singularized_class_name
-        puts "Created file! : #{file_path}"
+        puts Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }]
         file_path
       rescue StandardError => e
         raise StandardError, e

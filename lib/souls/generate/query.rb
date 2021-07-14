@@ -20,7 +20,7 @@ module Souls
             end
           EOS
         end
-        puts "Created file! : #{file_path}"
+        puts Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }]
         file_path
       rescue StandardError => e
         raise StandardError, e
@@ -45,7 +45,7 @@ module Souls
               end
             end
           EOS
-          puts "Created file! : #{file_path}"
+          puts Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }]
           file_path
         rescue StandardError => e
           raise StandardError, e

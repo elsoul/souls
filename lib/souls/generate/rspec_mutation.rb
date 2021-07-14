@@ -243,7 +243,7 @@ module Souls
         rspec_mutation_params class_name: singularized_class_name
         rspec_mutation_params_response class_name: singularized_class_name
         rspec_mutation_end class_name: singularized_class_name
-        puts "Created file! : #{file_path}"
+        puts Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }]
         file_path
       rescue StandardError => e
         raise StandardError, e

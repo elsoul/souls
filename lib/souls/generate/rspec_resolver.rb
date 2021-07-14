@@ -183,7 +183,7 @@ module Souls
         rspec_resolver_after_head class_name: singularized_class_name
         rspec_resolver_params class_name: singularized_class_name
         rspec_resolver_end class_name: singularized_class_name
-        puts "Created file! : #{file_path}"
+        puts Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }]
         file_path
       rescue StandardError => e
         raise StandardError, e
