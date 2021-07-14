@@ -64,13 +64,18 @@ begin
     send_method = ARGV[1]
     Souls.send send_method
   when "gcloud"
-    send_method = ARGV[1]
-    Souls::Gcloud.send send_method
+    status = Paint["Running Gcloud Commands...", :yellow]
+    Whirly.start spinner: "clock", interval: 420, stop: "🎉" do
+      Whirly.status = status
+      send_method = ARGV[1]
+      Souls::Gcloud.send send_method
+      Whirly.status = "Done!"
+    end
   when "-v", "--version"
     puts Paint[Souls::VERSION, :white]
   when "gem:update", "gemfile:update"
     status = Paint["Checking for updates...", :yellow]
-    Whirly.start spinner: "clock", interval: 1000, stop: "🎉" do
+    Whirly.start spinner: "clock", interval: 420, stop: "🎉" do
       Whirly.status = status
       Souls.update_gemfile
       Whirly.status = "Done!"
