@@ -41,9 +41,9 @@ module Souls
       def run_mysql
         system "docker run --rm -d \
           -p 3306:3306 \
-          -v mysql-tmp:/var/lib/mysqlql/data \
+          -v mysql-tmp:/var/lib/mysql \
           -e MYSQL_USER=mysql \
-          -e MYSQL_PASSWORD=mysql \
+          -e MYSQL_ROOT_PASSWORD=mysql \
           -e MYSQL_DB=souls_test \
           mysql:latest"
         system "docker ps"
