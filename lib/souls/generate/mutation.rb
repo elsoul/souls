@@ -83,12 +83,10 @@ module Souls
         file_path = "./app/graphql/mutations/base/#{class_name}/create_#{class_name}.rb"
         File.open(file_path, "a") do |new_line|
           new_line.write <<~EOS
-                    #{class_name} = ::#{class_name.camelize}.new args
-                    if #{class_name}.save
-                      { #{class_name}_edge: { node: #{class_name} } }
-                    else
-                      { error: #{class_name}.errors.full_messages }
-                    end
+                    data = ::#{class_name.camelize}.new args
+                    raise(StandardError, data.errors.full_messages) unless data.save
+
+                    { #{class_name}_edge: { node: data } }
                   rescue StandardError => error
                     GraphQL::ExecutionError.new error
                   end
