@@ -7,6 +7,7 @@ require "json"
 require "fileutils"
 require "net/http"
 require "paint"
+require "whirly"
 
 module Souls
   SOULS_METHODS = [
@@ -54,6 +55,23 @@ module Souls
         system "gcloud scheduler jobs create http #{app}-awake --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
       end
 
+      def show_wait_spinner(fps = 10)
+        chars = %w[| / - \\]
+        delay = 1.0 / fps
+        iter = 0
+        spinner = Thread.new do
+          while iter
+            print chars[(iter += 1) % chars.length]
+            sleep delay
+            print "\b"
+          end
+        end
+        yield.tap do
+          iter = false
+          spinner.join
+        end
+      end
+
       def gemfile_latest_version
         file_path = "./Gemfile"
         updated_gems = []
@@ -94,21 +112,41 @@ module Souls
         tmp_file = "./tmp/Gemfile"
         new_gems = gemfile_latest_version
         logs = []
-        return "Already Up to date!" && puts("Already Up to date!") if new_gems[:gems].blank?
+        message = Paint["\nAlready Up to date!", :green]
+        return "Already Up to date!" && puts(message) if new_gems[:gems].blank?
         @i = 0
         File.open(file_path, "r") do |f|
           File.open(tmp_file, "w") do |new_line|
             f.each_line do |line|
               gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
               if new_gems[:gems].include? gem[0]
-                logs << Paint % [
-                  "#{gem[0]} %{yellow_text} → %{green_text}",
-                  :blue,
-                  {
-                    yellow_text: ["v#{gem[1]}", :yellow],
-                    green_text: ["v#{new_gems[:updated_gem_versions][@i]}", :green]
-                  }
-                ]
+                old_ver = gem[1].split(".")
+                new_ver = new_gems[:updated_gem_versions][@i].split(".")
+                if old_ver[0] < new_ver[0]
+                  logs << Paint % [
+                    "#{gem[0]} v#{gem[1]} → %{red_text}",
+                    :white,
+                    {
+                      red_text: ["v#{new_gems[:updated_gem_versions][@i]}", :red]
+                    }
+                  ]
+                elsif old_ver[1] < new_ver[1]
+                  logs << Paint % [
+                    "#{gem[0]} v#{gem[1]} → v#{new_ver[0]}.%{yellow_text}",
+                    :white,
+                    {
+                      yellow_text: ["#{new_ver[1]}.#{new_ver[2]}", :yellow]
+                    }
+                  ]
+                elsif old_ver[2] < new_ver[2]
+                  logs << Paint % [
+                    "#{gem[0]} v#{gem[1]} → v#{new_ver[0]}.#{new_ver[1]}.%{green_text}",
+                    :white,
+                    {
+                      green_text: [(new_ver[2]).to_s, :green]
+                    }
+                  ]
+                end
                 new_line.write "#{new_gems[:lines][@i]}\n"
                 @i += 1
               else

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.22.4)
+    souls (0.22.5)
 
 GEM
   remote: https://rubygems.org/
@@ -57,7 +57,7 @@ GEM
       rubocop-ast (>= 1.7.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.7.0)
+    rubocop-ast (1.8.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     steep (0.44.1)
@@ -74,6 +74,8 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.0.0)
+    whirly (0.3.0)
+      unicode-display_width (>= 1.1)
     zeitwerk (2.4.2)
 
 PLATFORMS
@@ -88,6 +90,7 @@ DEPENDENCIES
   rubocop (= 1.18.3)
   souls!
   steep (= 0.44.1)
+  whirly (= 0.3.0)
 
 BUNDLED WITH
    2.2.23

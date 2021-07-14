@@ -48,7 +48,12 @@ begin
   when "-v", "--version"
     puts Souls::VERSION
   when "gem:update", "gemfile:update"
-    Souls.update_gemfile
+    status = Paint["Checking for updates...", :yellow]
+    Whirly.start spinner: "clock", color: :false, interval: 1000, stop: "🎉" do
+      Whirly.status = status
+      Souls.update_gemfile
+      Whirly.status = "Done!"
+    end
   when "add"
     case ARGV[1]
     when "mutation"
