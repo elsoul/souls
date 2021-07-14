@@ -1,15 +1,17 @@
 #!/usr/bin/env ruby
 require "souls"
 begin
-  require "./config/souls" unless ARGV[0] == "new" || ARGV[0] == "i" || ARGV[0] == "-v"
+  require "./config/souls" unless ARGV[0] == "new" || ARGV[0] == "i" || ARGV[0] == "-v" || ARGV[0] == "deploy"
 rescue
   puts "Make sure you are at SOULs APP directory!"
 end
 begin
-  case ARGV[0]
+  souls_command = ARGV[0]
+  case souls_command
   when "new"
     STRAINS = ["api", "worker", "console", "admin", "media"]
-    if ARGV[1].nil?
+    app_name = ARGV[1]
+    if app_name.nil?
       puts Paint["you need to specify your app name", :red]
       puts Paint["`souls new app_name`", :yellow]
       exit
@@ -29,12 +31,11 @@ begin
     strain = STDIN.gets.chomp.to_i
     case strain
     when 1, 2
-      Souls::Init.download_souls app_name: ARGV[1], repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
-      Souls::Init.initial_config_init app_name: ARGV[1], strain: STRAINS[strain.to_i - 1]
+      Souls::Init.download_souls app_name: app_name, repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
+      Souls::Init.initial_config_init app_name: app_name, strain: STRAINS[strain.to_i - 1]
     else
       puts Paint["Coming Soon...", :blue]
     end
-
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
@@ -51,7 +52,8 @@ begin
     when "media", "admin"
       system "yarn dev"
     else
-      case ARGV[1]
+      rack_env = ARGV[1]
+      case rack_env
       when "RACK_ENV=production"
         system "RACK_ENV=production bundle exec irb"
       else
@@ -59,11 +61,13 @@ begin
       end
     end
   when "i", "infra"
-    Souls.send ARGV[1]
+    send_method = ARGV[1]
+    Souls.send send_method
   when "gcloud"
-    Souls::Gcloud.send ARGV[1]
+    send_method = ARGV[1]
+    Souls::Gcloud.send send_method
   when "-v", "--version"
-    puts Souls::VERSION
+    puts Paint[Souls::VERSION, :white]
   when "gem:update", "gemfile:update"
     status = Paint["Checking for updates...", :yellow]
     Whirly.start spinner: "clock", interval: 1000, stop: "🎉" do
@@ -72,7 +76,8 @@ begin
       Whirly.status = "Done!"
     end
   when "add"
-    case ARGV[1]
+    graphql_class = ARGV[1]
+    case graphql_class
     when "mutation"
       Souls::Init.add_mutation class_name: "user", file_name: "hoi"
     when "type"
@@ -84,82 +89,89 @@ begin
     when "rspec_mutation"
       Souls::Init.add_rspec_mutation class_name: "user", file_name: "hoi"
     else
-      puts "HOI!"
+      puts Paint["Wrong Argument!", :red]
     end
   when "g", "generate"
-    case ARGV[1]
+    graphql_class = ARGV[1]
+    class_name = ARGV[2]
+    case graphql_class
     when "test_dir"
       Souls::Generate.test_dir
     when "model"
-      Souls::Generate.model class_name: ARGV[2]
+      Souls::Generate.model class_name: class_name
     when "mutation"
-      Souls::Generate.mutation class_name: ARGV[2]
+      Souls::Generate.mutation class_name: class_name
     when "query"
-      Souls::Generate.query class_name: ARGV[2]
+      Souls::Generate.query class_name: class_name
     when "type"
-      Souls::Generate.type class_name: ARGV[2]
+      Souls::Generate.type class_name: class_name
     when "edge"
-      Souls::Generate.edge class_name: ARGV[2]
+      Souls::Generate.edge class_name: class_name
     when "connection"
-      Souls::Generate.connection class_name: ARGV[2]
+      Souls::Generate.connection class_name: class_name
     when "resolver"
-      Souls::Generate.resolver class_name: ARGV[2]
+      Souls::Generate.resolver class_name: class_name
     when "policy"
-      Souls::Generate.policy class_name: ARGV[2]
+      Souls::Generate.policy class_name: class_name
     when "rspec_factory"
-      Souls::Generate.rspec_factory class_name: ARGV[2]
+      Souls::Generate.rspec_factory class_name: class_name
     when "rspec_model"
-      Souls::Generate.rspec_model class_name: ARGV[2]
+      Souls::Generate.rspec_model class_name: class_name
     when "rspec_mutation"
-      Souls::Generate.rspec_mutation class_name: ARGV[2]
+      Souls::Generate.rspec_mutation class_name: class_name
     when "rspec_query"
-      Souls::Generate.rspec_query class_name: ARGV[2]
+      Souls::Generate.rspec_query class_name: class_name
     when "rspec_resolver"
-      Souls::Generate.rspec_resolver class_name: ARGV[2]
+      Souls::Generate.rspec_resolver class_name: class_name
     when "rspec_policy"
-      Souls::Generate.rspec_policy class_name: ARGV[2]
+      Souls::Generate.rspec_policy class_name: class_name
     when "node_type"
-      Souls::Generate.node_type class_name: ARGV[2]
+      Souls::Generate.node_type class_name: class_name
     when "job"
-      Souls::Generate.job class_name: ARGV[2]
+      Souls::Generate.job class_name: class_name
     when "migrate"
-      Souls::Generate.single_migrate class_name: ARGV[2]
+      Souls::Generate.single_migrate class_name: class_name
     when "migrate_all"
       Souls::Generate.migrate_all
     when "migration"
-      class_name = ARGV[2].underscore.pluralize
-      system "rake db:create_migration NAME=create_#{class_name}"
+      pluralized_class_name = class_name.underscore.pluralize
+      system "rake db:create_migration NAME=create_#{pluralized_class_name}"
     when "update"
-      Souls::Generate.update_delete class_name: ARGV[2]
-      Souls::Generate.single_migrate class_name: ARGV[2]
+      Souls::Generate.update_delete class_name: class_name
+      Souls::Generate.single_migrate class_name: class_name
     else
       "SOULs!"
     end
   when "d"
-    Souls::Generate.delete_all class_name: ARGV[1]
+    class_name = ARGV[1]
+    Souls::Generate.delete_all class_name: class_name
   when "db:create"
-    case ARGV[1]
+    rack_env = ARGV[1]
+    case rack_env
     when "RACK_ENV=production"
       system "rake db:create RACK_ENV=production"
     else
       system "rake db:create && rake db:create RACK_ENV=test"
     end
   when "db:migrate"
-    case ARGV[1]
+    rack_env = ARGV[1]
+    case rack_env
     when "RACK_ENV=production"
       system "rake db:migrate RACK_ENV=production"
     else
       system "rake db:migrate && rake db:migrate RACK_ENV=test"
     end
   when "db:seed"
-    case ARGV[1]
+    rack_env = ARGV[1]
+    case rack_env
     when "RACK_ENV=production"
       system "rake db:seed RACK_ENV=production"
     else
       system "rake db:seed"
     end
   when "db:migrate:reset"
-    case ARGV[1]
+    rack_env = ARGV[1]
+    case rack_env
     when "RACK_ENV=production"
       system "rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1"
     else
@@ -184,10 +196,11 @@ begin
     system "docker build . -t souls -f Dockerfile.dev"
     system "docker run --rm --env-file .env -p 3000:3000 souls:latest"
   when "deploy"
-    system "gcloud builds submit --config=cloudbuild.yml --project #{ARGV[1]}"
+    project_id = Souls.configuration.project_id
+    system "gcloud builds submit --config=cloudbuild.yml --project #{project_id}"
   else
     puts Paint["Welcome to SOULs!", :green]
   end
 rescue StandardError => error
-  puts Paint["Something Wrong...", :red]
+  puts Paint[error, :red]
 end
