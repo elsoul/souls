@@ -60,15 +60,21 @@ module Souls
         updated_gem_versions = []
         updated_lines = []
         console_log = []
+        from_dev = false
         File.open(file_path, "r") do |f|
           f.each_line do |line|
+            from_dev = true if line.include? "group"
             next unless line.include? "gem "
             gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
             url = URI("https://rubygems.org/api/v1/versions/#{gem[0]}/latest.json")
             res = Net::HTTP.get_response(url)
             data = JSON.parse res.body
             next if data["version"].to_s == gem[1].to_s
-            updated_lines << "gem \"#{gem[0]}\", \"#{data["version"]}\""
+            updated_lines << if from_dev
+              "  gem \"#{gem[0]}\", \"#{data["version"]}\""
+                             else
+              "gem \"#{gem[0]}\", \"#{data["version"]}\""
+                             end
             updated_gems << (gem[0]).to_s
             updated_gem_versions << data["version"]
             system "gem update #{gem[0]}"
