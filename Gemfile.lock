@@ -1,7 +1,9 @@
 PATH
   remote: .
   specs:
-    souls (0.22.6)
+    souls (0.22.7)
+      paint (= 2.2.1)
+      whirly (= 0.3.0)
 
 GEM
   remote: https://rubygems.org/
