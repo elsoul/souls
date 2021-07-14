@@ -77,7 +77,6 @@ module Souls
         updated_gems = []
         updated_gem_versions = []
         updated_lines = []
-        console_log = []
         from_dev = false
         File.open(file_path, "r") do |f|
           f.each_line do |line|
@@ -96,17 +95,11 @@ module Souls
             updated_gems << (gem[0]).to_s
             updated_gem_versions << data["version"]
             system "gem update #{gem[0]}"
-            console_log << if gem[0].to_s == "souls"
-                            "#{gem[0]} v#{gem[1]} →　v#{data["version"]}\n\nSOULs Doc: https://souls.elsoul.nl"
-                           else
-                            "#{gem[0]} v#{gem[1]} →　v#{data["version"]}"
-                           end
           end
         end
         {
           gems: updated_gems,
           lines: updated_lines,
-          console_log: console_log,
           updated_gem_versions: updated_gem_versions
         }
       end
@@ -150,6 +143,9 @@ module Souls
                       green_text: [(new_ver[2]).to_s, :green]
                     }
                   ]
+                end
+                if gem[0] == "souls"
+                  logs << Paint["\nSOULs Doc: %{cyan_text}", :white, { cyan_text: ["https://souls.elsoul.nl\n", :cyan] }]
                 end
                 new_line.write "#{new_gems[:lines][@i]}\n"
                 @i += 1
