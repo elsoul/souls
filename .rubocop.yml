@@ -13,6 +13,9 @@ Style/AsciiComments:
 Style/SymbolArray:
   Enabled: false
 
+Style/FormatStringToken:
+  Enabled: false
+
 Style/WordArray:
   Enabled: false
 
