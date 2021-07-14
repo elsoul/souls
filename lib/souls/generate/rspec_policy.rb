@@ -1,46 +1,45 @@
 module Souls
   module Generate
-    class << self
-      ## Generate Rspec Policy
-      def rspec_policy class_name: "souls"
-        dir_name = "./spec/policies"
-        FileUtils.mkdir_p dir_name unless Dir.exist? dir_name
-        file_path = "./spec/policies/#{class_name}_policy_spec.rb"
-        return "RspecPolicy already exist! #{file_path}" if File.exist? file_path
-        File.open(file_path, "w") do |new_line|
-          new_line.write <<~EOS
-            describe #{class_name.camelize}Policy do
-              subject { described_class.new(user, #{class_name.underscore}) }
+    ## Generate Rspec Policy
+    def self.rspec_policy(class_name: "souls")
+      dir_name = "./spec/policies"
+      FileUtils.mkdir_p(dir_name) unless Dir.exist?(dir_name)
+      file_path = "./spec/policies/#{class_name}_policy_spec.rb"
+      return "RspecPolicy already exist! #{file_path}" if File.exist?(file_path)
 
-              let(:#{class_name.underscore}) { FactoryBot.create(:#{class_name.underscore}) }
+      File.open(file_path, "w") do |new_line|
+        new_line.write(<<~TEXT)
+          describe #{class_name.camelize}Policy do
+            subject { described_class.new(user, #{class_name.underscore}) }
 
-              context "being a visitor" do
-                let(:user) { FactoryBot.create(:user, user_role: :normal) }
+            let(:#{class_name.underscore}) { FactoryBot.create(:#{class_name.underscore}) }
 
-                it { is_expected.to permit_action(:index) }
-                it { is_expected.to permit_action(:show) }
-                it { is_expected.to forbid_actions([:create, :update, :delete]) }
-              end
+            context "being a visitor" do
+              let(:user) { FactoryBot.create(:user, user_role: :normal) }
 
-              context "being a user" do
-                let(:user) { FactoryBot.create(:user, user_role: :user) }
-
-                it { is_expected.to permit_actions([:create, :update]) }
-              end
-
-              context "being an admin" do
-                let(:user) { FactoryBot.create(:user, user_role: :admin) }
-
-                it { is_expected.to permit_actions([:create, :update, :delete]) }
-              end
+              it { is_expected.to permit_action(:index) }
+              it { is_expected.to permit_action(:show) }
+              it { is_expected.to forbid_actions([:create, :update, :delete]) }
             end
-          EOS
-        end
-        puts Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }]
-        file_path
-      rescue StandardError => e
-        raise StandardError, e
+
+            context "being a user" do
+              let(:user) { FactoryBot.create(:user, user_role: :user) }
+
+              it { is_expected.to permit_actions([:create, :update]) }
+            end
+
+            context "being an admin" do
+              let(:user) { FactoryBot.create(:user, user_role: :admin) }
+
+              it { is_expected.to permit_actions([:create, :update, :delete]) }
+            end
+          end
+        TEXT
       end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      file_path
+    rescue StandardError => e
+      raise(StandardError, e)
     end
   end
 end

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.23.5)
+    souls (0.23.6)
       paint (= 2.2.1)
       whirly (= 0.3.0)
 

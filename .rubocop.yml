@@ -1,80 +1,31 @@
+require: rubocop-graphql
 AllCops:
+  SuggestExtensions: false
   EnabledByDefault: true
-
-Style/AndOr:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/AsciiComments:
-  Enabled: false
-
-Style/SymbolArray:
-  Enabled: false
-
-Style/FormatStringToken:
-  Enabled: false
-
-Style/WordArray:
-  Enabled: false
-
-Style/MixinGrouping:
-  Enabled: false
-
-Style/RescueStandardError:
-  Enabled: false
-
-Style/MethodCallWithArgsParentheses:
-  Enabled: false
-
-Style/DocumentationMethod:
-  Enabled: false
-
-Style/CollectionMethods:
-  PreferredMethods:
-    detect: "detect"
-    find: "detect"
-    inject: "inject"
-    reduce: "inject"
-
-Style/Documentation:
-  Enabled: false
-
-Style/DoubleNegation:
-  Enabled: false
-
-Lint/ConstantResolution:
-  Enabled: false
-
-Layout/DotPosition:
-  EnforcedStyle: trailing
-
-
-Layout/EmptyLineAfterGuardClause:
-   Enabled: false
-
-Style/EmptyElse:
-  EnforcedStyle: empty
-
-Layout/ExtraSpacing:
   Exclude:
+    - "app/**/*.rb"
     - "db/migrate/*.rb"
-    - "*.gemspec"
+    - "db/schema.rb"
+    - "spec/spec_helper.rb"
+    - "spec/**/*.rb"
+    - "lib/souls/generate/type.rb"
 
-Style/FormatString:
-  EnforcedStyle: percent
-
-Style/MissingElse:
+Style/Copyright:
+  Description: "Include a copyright notice in each file before any code."
   Enabled: false
+  VersionAdded: "0.30"
+  Notice: '^Copyright (\(c\) )?2[0-9]{3} .+'
+  AutocorrectNotice: "Copyright 2021 by ELSOUL LABO B.V."
 
-Style/StringHashKeys:
+Style/TopLevelMethodDefinition:
   Exclude:
-    - "spec/queries/*.rb"
-    - "*.gemspec"
+    - "db/seeds.rb"
+    - "spec/spec_helper.rb"
 
-Style/GuardClause:
-  MinBodyLength: 5
+Style/IpAddresses:
+  Exclude:
+    - "config.ru"
+    - "Gemfile"
 
 Style/HashSyntax:
   EnforcedStyle: ruby19
@@ -82,136 +33,120 @@ Style/HashSyntax:
     - "**/*.rake"
     - "Rakefile"
 
-
-Style/IfUnlessModifier:
-  Enabled: false
-
-Style/PreferredHashMethods:
-  EnforcedStyle: short
-
-Style/Lambda:
-  Enabled: false
-
-Style/NumericLiterals:
-  MinDigits: 7
-
-Style/PerlBackrefs:
-  AutoCorrect: false
-
-Style/RedundantSelf:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/RedundantReturn:
-  AllowMultipleReturnValues: true
-
-Style/RedundantArgument:
-  Enabled: false
-
 Style/Semicolon:
   Exclude:
     - "spec/**/*"
 
-Style/SignalException:
-  EnforcedStyle: only_raise
-
-Style/MethodDefParentheses:
-  Enabled: false
-
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/StringLiteralsInInterpolation:
+Style/ClassVars:
+  Exclude:
+  - "spec/spec_helper.rb"
+Style/StringConcatenation:
   Enabled: false
 
-Style/SingleLineBlockParams:
+Style/Documentation:
   Enabled: false
 
-Lint/UnderscorePrefixedVariableName:
+Style/DocumentationMethod:
   Enabled: false
 
-Lint/UnusedMethodArgument:
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/AsciiComments:
   Enabled: false
 
+Style/MissingElse:
+  Enabled: false
+
+Style/StringHashKeys:
+  Exclude:
+    - "spec/**/*.rb"
+
+Style/CollectionMethods:
+  Enabled: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/ClassMethodsDefinitions:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Exclude:
+    - "db/migrate/*.rb"
+
+Layout/LineLength:
+  Exclude:
+    - "lib/souls/generate/rspec_mutation.rb"
+    - "lib/souls/generate/resolver.rb"
+
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: false
+
+GraphQL/ObjectDescription:
+  Enabled: false
+
+GraphQL/FieldDescription:
+  Enabled: false
+
+GraphQL/ArgumentDescription:
+  Enabled: false
+
+GraphQL/ExtractInputType:
+  Enabled: false
+
+GraphQL/ExtractType:
+  Enabled: false
+
+GraphQL/ArgumentName:
+  Enabled: false
+
+Lint/ConstantResolution:
+  Enabled: false
+
+Lint/NumberConversion:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false
 
-Metrics/CyclomaticComplexity:
-  Max: 40
-
-Metrics/PerceivedComplexity:
+Metrics/MethodLength:
   Enabled: false
 
 Metrics/BlockLength:
   Enabled: false
 
-Layout/LineLength:
-  Enabled: false
-  
-
-Metrics/MethodLength:
+Metrics/CyclomaticComplexity:
   Enabled: false
 
-Metrics/ClassLength:
-  Enabled: false
-
-Naming/HeredocDelimiterNaming:
-   Enabled: false
-
-Naming/AccessorMethodName:
+Metrics/PerceivedComplexity:
   Enabled: false
 
 Metrics/ModuleLength:
   Enabled: false
 
-Lint/UnusedBlockArgument:
+Metrics/BlockNesting:
   Enabled: false
 
-Lint/RescueException:
+Naming/AccessorMethodName:
   Enabled: false
 
-Naming/RescuedExceptionsVariableName:
+Naming/PredicateName:
   Enabled: false
 
 Bundler/GemComment:
-  Enabled: false
-
-Style/SafeNavigation:
-  Enabled: false
-
-Lint/NumberConversion:
-  Enabled: false
-Style/ConstantVisibility:
-  Enabled: false
-Style/MutableConstant:
-  Enabled: false
-Style/Copyright:
-  Enabled: false
-Style/MultilineTernaryOperator:
-  Enabled: false
-Layout/MultilineAssignmentLayout:
-  Enabled: false
-Style/Send:
-  Enabled: false
-Style/RedundantFileExtensionInRequire:
-  Enabled: false
-Style/ClassMethodsDefinitions:
-  Enabled: false
-Style/GlobalStdStream:
-  Enabled: false
-Layout/IndentationConsistency:
-  Enabled: false
-Layout/IndentationWidth:
-  Enabled: false
-Style/DateTime:
-  Enabled: false
-Layout/HeredocIndentation:
-  Exclude: 
-    - "lib/souls/init.rb"
-Style/RaiseArgs:
-  Enabled: false
-Metrics/BlockNesting:
   Enabled: false

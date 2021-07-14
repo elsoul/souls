@@ -10,14 +10,14 @@ namespace :task do
   task :g do
     file_path = "./lib/souls/generate/"
     Souls::SOULS_METHODS.each do |f|
-      FileUtils.touch "#{file_path}#{f}.rb"
+      FileUtils.touch("#{file_path}#{f}.rb")
     end
   end
 
   task :a do
     file_path = "./spec/generate/"
     Souls::SOULS_METHODS.each do |f|
-      FileUtils.touch "#{file_path}#{f}_spec.rb"
+      FileUtils.touch("#{file_path}#{f}_spec.rb")
     end
   end
 end
