@@ -8,16 +8,32 @@ end
 begin
   case ARGV[0]
   when "new"
-    STRAINS = ["api", "worker", "media", "admin"]
+    STRAINS = ["api", "worker", "console", "admin", "media"]
     if ARGV[1].nil?
       puts "you need to specify your app name \n `souls new app_name`"
       exit
     end
-    puts "Which framework:   \n 1. SOULs GraphQL API \n 2. SOULs Worker \n 3. SOULs Media Web \n 4. SOULs Admin Web \n Enter Number: "
+    first_message = Paint % [
+      "Select Strain: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text}",
+      :white,
+      {
+        red_text: ["\n1. SOULs GraphQL API", :red],
+        yellow_text: ["\n2. SOULs Worker", :yellow],
+        green_text: ["\n3. SOULs Console Web", :green],
+        blue_text: ["\n4. SOULs Admin Web", :blue],
+        cyan_text: ["\n5. SOULs Media Web", :cyan]
+      }
+    ]
+    puts first_message
     strain = STDIN.gets.chomp.to_i
-    (1..4).include?(strain) ? puts("Generating SOULs.. \n") : raise(StandardError, "Choose Number 1..4")
-    Souls::Init.download_souls app_name: ARGV[1], repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
-    Souls::Init.initial_config_init app_name: ARGV[1], strain: STRAINS[strain.to_i - 1]
+    case strain
+    when 1, 2
+      Souls::Init.download_souls app_name: ARGV[1], repository_name: "souls_#{STRAINS[strain.to_i - 1]}"
+      Souls::Init.initial_config_init app_name: ARGV[1], strain: STRAINS[strain.to_i - 1]
+    else
+      puts "Coming Soon..."
+    end
+
   when "s", "server"
     strain = Souls.configuration.strain
     case strain

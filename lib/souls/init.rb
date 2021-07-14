@@ -29,8 +29,11 @@ module Souls
         system "tar -zxvf ./#{version}.tar.gz"
         system "mkdir #{app_name}"
         folder = version.delete "v"
-        system "cp -r #{repository_name}-#{folder}/. #{app_name}/"
-        system "rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}"
+        `cp -r #{repository_name}-#{folder}/. #{app_name}/`
+        `rm -rf #{version}.tar.gz && rm -rf #{repository_name}-#{folder}`
+        line = Paint["====================================", :yellow]
+        puts "\n"
+        puts line
         txt = <<~TEXT
              _____ ____  __  ____#{'        '}
             / ___// __ \\/ / / / /   _____
@@ -38,13 +41,17 @@ module Souls
            ___/ / /_/ / /_/ / /___(__  )#{' '}
           /____/\\____/\\____/_____/____/#{'  '}
         TEXT
-        puts txt
-        puts "=============================="
-        puts "Welcome to SOULs!"
-        puts "SOULs Version: #{Souls::VERSION}"
-        puts "=============================="
-        puts "$ cd #{app_name}"
-        puts "------------------------------"
+        message = Paint[txt, :blue]
+        puts message
+        puts line
+        welcome = Paint["Welcome to SOULs!", :white]
+        puts welcome
+        souls_ver = Paint["SOULs Version: #{Souls::VERSION}", :white]
+        puts souls_ver
+        puts line
+        cd = Paint["Easy to Run\n$ cd #{app_name}\n$ bundle\n$ souls s\nGo To : http://localhost:3000\n\nDoc: https://souls-doc.el-soul.com", :white]
+        puts cd
+        puts line
       end
     end
   end

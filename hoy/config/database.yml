@@ -1,0 +1,33 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  username: <%= ENV.fetch("DB_USER") { "" } %>
+  port: 5432
+
+development:
+  <<: *default
+  username: postgres
+  password: postgres
+  database: souls-api-dev
+  host: localhost
+  port: 5433
+
+production:
+  <<: *default
+  database: souls_api_production
+  password: <%= ENV.fetch("DB_PW") { "" } %>
+  host: <%= ENV.fetch("DB_HOST") { "" } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+
+## Use local docker postgresql13
+## `souls i run_psql` will create psql container
+
+test:
+  <<: *default
+  username: postgres
+  password: postgres
+  database: souls-api-test
+  host: localhost
+  port: 5433
+
