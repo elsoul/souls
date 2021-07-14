@@ -47,6 +47,8 @@ begin
     Souls::Gcloud.send ARGV[1]
   when "-v", "--version"
     puts Souls::VERSION
+  when "gem:update", "gemfile:update"
+    Souls.update_gemfile
   when "add"
     case ARGV[1]
     when "mutation"
