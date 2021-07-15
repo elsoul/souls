@@ -9,7 +9,7 @@ begin
   souls_command = ARGV[0]
   case souls_command
   when "new"
-    STRAINS = %w[api worker console admin media].freeze
+    STRAINS = %w[api worker console admin media doc].freeze
     app_name = ARGV[1]
     if app_name.nil?
       puts(Paint["you need to specify your app name", :red])
@@ -17,14 +17,15 @@ begin
       exit
     end
     first_message = Paint % [
-      "Select Strain: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text}",
+      "Select Strain: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text} %{magenda_text}",
       :white,
       {
         red_text: ["\n1. SOULs GraphQL API", :red],
-        yellow_text: ["\n2. SOULs Worker", :yellow],
+        yellow_text: ["\n2. SOULs Pub/Sub Worker", :yellow],
         green_text: ["\n3. SOULs Console Web", :green],
         blue_text: ["\n4. SOULs Admin Web", :blue],
-        cyan_text: ["\n5. SOULs Media Web", :cyan]
+        cyan_text: ["\n5. SOULs Media Web", :cyan],
+        magenda_text: ["\n6. SOULs Doc Web", :magenda]
       }
     ]
     puts(first_message)
@@ -39,7 +40,7 @@ begin
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
-    when "media", "admin", "console"
+    when "media", "admin", "console", "doc"
       system("yarn dev")
     when "worker"
       system("bundle exec puma -p 3000 -e development")
@@ -49,7 +50,7 @@ begin
   when "c", "console"
     strain = Souls.configuration.strain
     case strain
-    when "media", "admin"
+    when "media", "admin", "console", "doc"
       system("yarn dev")
     else
       rack_env = ARGV[1]

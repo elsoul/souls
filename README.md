@@ -21,29 +21,38 @@
 
 Welcome to SOULs Framework!
 
-SOULs is a Serverless Application Framework. SOULs has four strains, API, Worker, Console, Media, and can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud and Amazon Web Services
-You can focus on business logic. No more infra problems.
+SOULs is a Serverless Application Framework. 
+SOULs has six strains, API, Worker, Console, Admin, Media, Doc, and can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud.
+You can focus on your business logic. No more infra problems.
 
-SOULs creates 4 types of framework.
+SOULs creates 6 types of framework.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Worker API (Ruby) - Cloud Run
-3. Media Web Client - Media web client with SSG (TypeScript)
+3. Console Web Client - User Console and CMS (TypeScript)
 4. Admin Web Client - Admin Console and CMS (TypeScript)
+5. Media Web Client - Media web client with SSG (TypeScript)
+6. Doc Web Client - Doc web client with SSG (TypeScript)
 
 ## Dependency
 
 - [Google SDK](https://cloud.google.com/sdk/docs)
 - [Docker](https://www.docker.com/)
 - [Firebase CLI](https://firebase.google.com/docs/cli)
+- [Ruby](https://www.ruby-lang.org)
 
 ## Cloud Infrastructure
 
-- [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
-- [Google Traffic Director](https://cloud.google.com/traffic-director)
 - [Google Cloud Run](https://cloud.google.com/run)
+- [Google Cloud SQL](https://cloud.google.com/sql)
+- [Google Cloud Pub/Sub](https://cloud.google.com/pubsub)
+- [Google Cloud Storage](https://cloud.google.com/run)
+- [Google Cloud IAM](https://cloud.google.com/iam)
+- [Google Cloud DNS](https://cloud.google.com/dns)
+- [Google Cloud Container Registry](https://cloud.google.com/container-registry)
 - [Google Firebase](https://firebase.google.com/)
 - [Google Cloud Scheduler](https://cloud.google.com/scheduler)
+- [Github Actions](https://github.com/features/actions)
 
 ## Installation
 
@@ -67,10 +76,13 @@ And Create Your APP
 
 ### Choose SOULs Type:
 
-1. API
-2. Worker
-3. Media Web
-4. Admin Web
+Select Strain:
+1. SOULs GraphQL API
+2. SOULs Worker
+3. SOULs Console Web
+4. SOULs Admin Web
+5. SOULs Media Web
+6. SOULs Doc Web
 
 
 ## SOULs Document
@@ -81,7 +93,7 @@ And Create Your APP
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `souls t` to run the tests. You can also run `souls c` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org/gems/souls).
 
