@@ -17,7 +17,7 @@ begin
       exit
     end
     first_message = Paint % [
-      "Select Strain: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text} %{magenda_text}",
+      "Select Strain: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text} %{magenta_text}",
       :white,
       {
         red_text: ["\n1. SOULs GraphQL API", :red],
@@ -25,7 +25,7 @@ begin
         green_text: ["\n3. SOULs Console Web", :green],
         blue_text: ["\n4. SOULs Admin Web", :blue],
         cyan_text: ["\n5. SOULs Media Web", :cyan],
-        magenda_text: ["\n6. SOULs Doc Web", :magenda]
+        magenta_text: ["\n6. SOULs Doc Web", :magenta]
       }
     ]
     puts(first_message)
