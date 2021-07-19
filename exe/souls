@@ -69,7 +69,22 @@ begin
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
       send_method = ARGV[1]
-      Souls::Gcloud.public_send(send_method)
+
+      case send_method
+      when "create_pubsub_topic"
+        topic_name = ARGV[2]
+        args = { topic_name: topic_name }
+        Souls::Gcloud.public_send(send_method, args)
+      when "create_pubsub_subscription"
+        project_id = Souls.configuration.project_id
+        topic_name = ARGV[2]
+        service_account = ARGV[3]
+        endpoint = ARGV[4]
+        args = { project_id: project_id, topic_name: topic_name, service_account: service_account, endpoint: endpoint }
+        Souls::Gcloud.public_send(send_method, args)
+      else
+        Souls::Gcloud.public_send(send_method)
+      end
       Whirly.status = "Done!"
     end
   when "-v", "--version"
