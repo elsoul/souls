@@ -78,8 +78,8 @@ begin
       when "create_pubsub_subscription"
         project_id = Souls.configuration.project_id
         topic_name = ARGV[2]
-        service_account = ARGV[3]
-        endpoint = ARGV[4]
+        service_account = "#{Souls.configuration.app}@#{project_id}iam.gserviceaccount.com"
+        endpoint = Souls.configuration.endpoint
         args = { project_id: project_id, topic_name: topic_name, service_account: service_account, endpoint: endpoint }
         Souls::Gcloud.public_send(send_method, args)
       else

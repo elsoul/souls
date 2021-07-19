@@ -185,14 +185,15 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :app, :strain, :project_id, :worker_name, :api_name
+    attr_accessor :app, :strain, :project_id, :worker_repo, :api_repo, :worker_endpoint
 
     def initialize
       @app = nil
       @project_id = nil
       @strain = nil
-      @worker_name = nil
-      @api_name = nil
+      @worker_repo = nil
+      @api_repo = nil
+      @worker_endpoint = nil
     end
   end
 end
