@@ -19,10 +19,10 @@
 
 ## What's SOULs?
 
-Welcome to SOULs Framework!
+Welcome to SOULs Serverless Application Framework!
 
-SOULs is a Serverless Application Framework. 
-SOULs has six strains, API, Worker, Console, Admin, Media, Doc, and can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud.
+SOULs is a Serverless Application Framework with GraphQL. 
+SOULs has six strains, API, Worker, Console, Admin, Media, Doc, and can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud. No more routing for Backends!
 You can focus on your business logic. No more infra problems.
 
 SOULs creates 6 types of framework.
@@ -74,7 +74,7 @@ And Create Your APP
 
     $ souls new app_name
 
-### Choose SOULs Type:
+## Choose SOULs Type:
 
 Select Strain:
 1. SOULs GraphQL API
@@ -85,8 +85,37 @@ Select Strain:
 6. SOULs Doc Web
 
 
-## SOULs Document
+## Gemfile 自動更新アップデート
 
+`Gemfile`, `Gemfile.lock` を最新のバージョンに自動更新します。
+
+```
+souls gem:update
+```
+
+
+除外したい `gem` は `config/souls.rb` 内の
+`config.fixed_gems` の配列に追加します。
+
+
+```ruby
+Souls.configure do |config|
+  config.app = "souls-api"
+  config.project_id = "souls-api"
+  config.strain = "worker"
+  config.api_repo = "elsoul/souls_api"
+  config.worker_repo = "elsoul/souls_worker"
+  config.worker_endpoint = "https://worker.com"
+  config.fixed_gems = ["selenium-webdriver", "pg"]
+end
+```
+
+
+
+## SOULs Serverless Application Framework Document
+
+SOULs サーバーレスアプリケーションフレームワーク
+ドキュメントはこちらから
 - [SOULs Document](https://souls.elsoul.nl/)
 
 
