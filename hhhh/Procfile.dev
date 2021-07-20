@@ -1,0 +1,2 @@
+web: bundle exec puma -p 3000 -e development
+redis: redis-server
