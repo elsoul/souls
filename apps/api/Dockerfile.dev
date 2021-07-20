@@ -13,5 +13,5 @@ RUN gem install bundler:2.2.23
 RUN bundle
 COPY . /myapp
 
-EXPOSE 3000
+EXPOSE 4000
 CMD ["foreman", "start", "-f", "Procfile.dev"]

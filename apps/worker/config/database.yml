@@ -1,7 +1,6 @@
 default: &default
   adapter: postgresql
   encoding: utf8
-  username: <%= ENV.fetch("DB_USER") { "" } %>
   port: 5432
 
 development:
@@ -14,6 +13,7 @@ development:
 
 production:
   <<: *default
+  username: <%= ENV.fetch("DB_USER") { "" } %>
   database: souls_api_production
   password: <%= ENV.fetch("DB_PW") { "" } %>
   host: <%= ENV.fetch("DB_HOST") { "" } %>

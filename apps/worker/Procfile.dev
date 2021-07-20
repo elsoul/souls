@@ -1,1 +1,1 @@
-web: bundle exec puma -p 4200 -e development
+web: bundle exec puma -p 3000 -e development

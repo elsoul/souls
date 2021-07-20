@@ -64,24 +64,6 @@ module Souls
     )
   end
 
-  def self.show_wait_spinner(fps = 10)
-    chars = %w[| / - \\]
-    delay = 1.0 / fps
-    iter = 0
-    spinner =
-      Thread.new do
-        while iter
-          print(chars[(iter += 1) % chars.length])
-          sleep(delay)
-          print("\b")
-        end
-      end
-    yield.tap do
-      iter = false
-      spinner.join
-    end
-  end
-
   def self.gemfile_latest_version
     file_path = "./Gemfile"
     updated_gems = []

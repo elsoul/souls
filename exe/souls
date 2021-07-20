@@ -42,8 +42,6 @@ begin
     case strain
     when "media", "admin", "console", "doc"
       system("yarn dev")
-    when "worker"
-      system("bundle exec puma -p 3000 -e development")
     else
       system("foreman start -f Procfile.dev")
     end
