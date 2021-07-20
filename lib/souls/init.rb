@@ -42,7 +42,7 @@ module Souls
          ___/ / /_/ / /_/ / /___(__  )#{' '}
         /____/\\____/\\____/_____/____/#{'  '}
       TEXT
-      message = Paint[txt, :blue]
+      message = Paint[txt, :cyan]
       puts(message)
       puts(line)
       welcome = Paint["Welcome to SOULs!", :white]

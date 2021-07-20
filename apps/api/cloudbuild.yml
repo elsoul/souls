@@ -1,0 +1,32 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args:
+  - image
+  - build
+  - -t
+  - asia.gcr.io/$PROJECT_ID/$APP_NAME
+  - .
+
+- name: gcr.io/cloud-builders/docker
+  args:
+  - image
+  - push
+  - asia.gcr.io/$PROJECT_ID/$APP_NAME
+
+- name: gcr.io/cloud-builders/gcloud
+  args:
+  - run
+  - deploy
+  - $APP_NAME
+  - --image=asia.gcr.io/$PROJECT_ID/$APP_NAME
+  - --platform=managed
+  - --region=asia-northeast1
+  - --allow-unauthenticated
+  - --memory=2048Mi
+  - --concurrency=80
+  - --port=8080
+  - --set-cloudsql-instances=$APP_NAME:asia-northeast1:$APP_NAME-db
+
+timeout: 1600s
+options:
+  machineType: N1_HIGHCPU_8
