@@ -97,6 +97,7 @@ module Souls
         url = URI("https://rubygems.org/api/v1/versions/#{gem[0]}/latest.json")
         res = Net::HTTP.get_response(url)
         data = JSON.parse(res.body)
+        next if Souls.configuration.fixed_gems.include?(gem[0].to_s)
         next if data["version"].to_s == gem[1].to_s
 
         updated_lines << if from_dev
