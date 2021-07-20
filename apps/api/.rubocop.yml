@@ -1,0 +1,132 @@
+require: rubocop-graphql
+AllCops:
+  SuggestExtensions: false
+  EnabledByDefault: true
+  Exclude:
+    - "db/migrate/*.rb"
+    - "db/schema.rb"
+    - "spec/spec_helper.rb"
+
+Style/Copyright:
+  Description: "Include a copyright notice in each file before any code."
+  Enabled: false
+  VersionAdded: "0.30"
+  Notice: '^Copyright (\(c\) )?2[0-9]{3} .+'
+  AutocorrectNotice: "Copyright 2021 by ELSOUL LABO B.V."
+
+Style/TopLevelMethodDefinition:
+  Exclude:
+    - "db/seeds.rb"
+    - "spec/spec_helper.rb"
+
+Style/IpAddresses:
+  Exclude:
+    - "config.ru"
+    - "Gemfile"
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+  Exclude:
+    - "**/*.rake"
+    - "Rakefile"
+
+Style/Semicolon:
+  Exclude:
+    - "spec/**/*"
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/ClassVars:
+  Exclude:
+  - "spec/spec_helper.rb"
+Style/StringConcatenation:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/DocumentationMethod:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/MissingElse:
+  Enabled: false
+
+Style/StringHashKeys:
+  Exclude:
+    - "spec/**/*.rb"
+
+Style/CollectionMethods:
+  Enabled: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Exclude:
+    - "db/migrate/*.rb"
+
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: false
+
+GraphQL/ObjectDescription:
+  Enabled: false
+
+GraphQL/FieldDescription:
+  Enabled: false
+
+GraphQL/ArgumentDescription:
+  Enabled: false
+
+GraphQL/ExtractInputType:
+  Enabled: false
+
+GraphQL/ExtractType:
+  Enabled: false
+
+GraphQL/ArgumentName:
+  Enabled: false
+
+Lint/ConstantResolution:
+  Enabled: false
+
+Lint/NumberConversion:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
+
+Bundler/GemComment:
+  Enabled: false
