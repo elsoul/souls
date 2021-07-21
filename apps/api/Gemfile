@@ -38,12 +38,12 @@ group :development, :test do
   gem "rubocop", "1.18.3"
   gem "selenium-webdriver", "3.142.7"
   gem "solargraph", "0.42.4"
-  gem "souls", "0.24.0"
+  gem "souls", "0.24.1"
   gem "webmock", "3.13.0"
 end
 
 group :development do
-  gem "listen", "3.5.1"
+  gem "listen", "3.6.0"
   gem "rubocop-graphql", "0.9.0"
   gem "spring", "2.1.1"
   gem "spring-watcher-listen", "2.0.1"

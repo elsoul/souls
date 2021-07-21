@@ -9,21 +9,6 @@ module Souls
       data[0]["tag_name"]
     end
 
-    def self.initial_config_init(app_name: "souls", strain: "api")
-      FileUtils.touch("./#{app_name}/config/souls.rb")
-      file_path = "./#{app_name}/config/souls.rb"
-      File.open(file_path, "w") do |f|
-        f.write(<<~TEXT)
-          Souls.configure do |config|
-            config.app = "#{app_name}"
-            config.strain = "#{strain}"
-          end
-        TEXT
-      end
-    rescue StandardError => e
-      puts(e)
-    end
-
     def self.download_souls(app_name: "souls", repository_name: "souls_api ")
       version = get_version(repository_name: repository_name)
       system("curl -OL https://github.com/elsoul/#{repository_name}/archive/#{version}.tar.gz")

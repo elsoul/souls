@@ -19,6 +19,10 @@ class UserPolicy < ApplicationPolicy
     admin_permissions?
   end
 
+  def update_user_role?
+    @user.master?
+  end
+
   private
 
   def user_permissions?
@@ -27,9 +31,5 @@ class UserPolicy < ApplicationPolicy
 
   def admin_permissions?
     @user.master? or @user.admin?
-  end
-
-  def update_user_role?
-    @user.master?
   end
 end

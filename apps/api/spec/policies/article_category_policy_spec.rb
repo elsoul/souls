@@ -1,24 +1,23 @@
 describe ArticleCategoryPolicy do
-  subject { described_class.new(user, article_category) }
+  subject { described_class.new(user, article) }
 
-  let(:article_category) { FactoryBot.create(:article_category) }
+  let(:article) { FactoryBot.create(:article) }
 
-  context "being a visitor" do
+  context "being a normal" do
     let(:user) { FactoryBot.create(:user) }
 
-    it { is_expected.to(permit_action(:index)) }
-    it { is_expected.to(permit_action(:show)) }
+    it { is_expected.to(permit_actions(%i[index show])) }
     it { is_expected.to(forbid_actions(%i[create update delete])) }
   end
 
-  context "being a staff" do
-    let(:user) { FactoryBot.create(:user, roles_mask: 3) }
+  context "being a user" do
+    let(:user) { FactoryBot.create(:user, roles: :user) }
 
     it { is_expected.to(permit_actions(%i[create update])) }
   end
 
-  context "being an administrator" do
-    let(:user) { FactoryBot.create(:user, roles_mask: 4) }
+  context "being an admin" do
+    let(:user) { FactoryBot.create(:user, roles: :admin) }
 
     it { is_expected.to(permit_actions(%i[create update delete])) }
   end
