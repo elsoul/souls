@@ -10,10 +10,11 @@ RSpec.describe(Souls::Generate) do
     end
 
     it "creates model.rb file" do
+      file_dir = "./app/models/"
       file_path = "./app/models/#{class_name.singularize}.rb"
       a1 = Souls::Generate.model(class_name: class_name)
       expect(a1).to(eq(file_path))
-      FileUtils.rm(file_path)
+      FileUtils.rm_rf(file_dir)
     end
   end
 end

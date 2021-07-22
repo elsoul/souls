@@ -8,17 +8,15 @@ require "capybara/rspec"
 require "webmock/rspec"
 require "pundit/matchers"
 
-if ENV["RACK_ENV"] == "production"
-  abort("The Souls environment is running in production mode!")
-end
+abort("The Souls environment is running in production mode!") if ENV["RACK_ENV"] == "production"
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
-  puts e.to_s.strip
-  exit 1
+  puts(e.to_s.strip)
+  exit(1)
 end
 
 def app
@@ -32,21 +30,21 @@ end
 RSpec.configure do |config|
   config.order = :random
 
-  config.include Capybara::DSL
-  config.expect_with :rspec do |expectations|
+  config.include(Capybara::DSL)
+  config.expect_with(:rspec) do |expectations|
     # config.filter_run_excluding skip: true
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
   # library (such as bogus or mocha) by changing the `mock_with` option here.
-  config.mock_with :rspec do |mocks|
+  config.mock_with(:rspec) do |mocks|
     mocks.verify_partial_doubles = true
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
-  config.include FactoryBot::Syntax::Methods
-  config.include Rack::Test::Methods
+  config.include(FactoryBot::Syntax::Methods)
+  config.include(Rack::Test::Methods)
 
   config.before(:suite) do
     FactoryBot.find_definitions
@@ -59,8 +57,8 @@ RSpec.configure do |config|
   end
 
   config.append_after(:each) { |_example| DatabaseCleaner.clean }
-  config.filter_run_excluding long: true
-  config.filter_run_excluding uses_external_service: true
+  config.filter_run_excluding(long: true)
+  config.filter_run_excluding(uses_external_service: true)
 end
 
 class ActiveRecord::Base
@@ -73,7 +71,7 @@ class ActiveRecord::Base
 end
 
 ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
-def get_global_key class_name, id
+def get_global_key(class_name, id)
   Base64.strict_encode64("#{class_name}:#{id}")
 end
 
