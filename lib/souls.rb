@@ -229,7 +229,7 @@ module Souls
         File.open(new_file_path, "w") do |new_line|
           f.each_line.with_index do |line, i|
             if i == 3
-              new_line.write("    souls (#{new_version})")
+              new_line.write("    souls (#{new_version})\n")
             else
               new_line.write(line)
             end
@@ -237,7 +237,7 @@ module Souls
         end
       end
       FileUtils.rm(file_path)
-      FileUtils.mv(new_file_path(file_path))
+      FileUtils.mv(new_file_path, file_path)
     end
 
     def get_latest_version_txt(service_name: "api")
