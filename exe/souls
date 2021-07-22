@@ -95,10 +95,25 @@ begin
       Souls.update_gemfile
       Whirly.status = "Done!"
     end
-  when "update"
+  when "release"
     service_name = ARGV[1]
     permit_services = %w[api worker console admin media]
     raise(StandardError, "Wrong Service Name!") unless permit_services.include?(service_name)
+
+    # first_message = Paint % [
+    #   "Select Version: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text} %{magenta_text}",
+    #   :white,
+    #   {
+    #     red_text: ["\n1. Patch()", :green],
+    #     yellow_text: ["\n2. Minor()", :yellow],
+    #     green_text: ["\n3. Major()", :red],
+    #     blue_text: ["\n4. SOULs Admin Web", :blue],
+    #     cyan_text: ["\n5. SOULs Media Web", :cyan],
+    #     magenta_text: ["\n6. SOULs Doc Web", :magenta]
+    #   }
+    # ]
+    # puts(first_message)
+    # strain = $stdin.gets.chomp.to_i
 
     status = Paint["Saving Repo...", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
@@ -106,6 +121,8 @@ begin
       result = Paint[Souls.update_repo(service_name: service_name), :green]
       Whirly.status = result
     end
+  when "update"
+    puts(Paint["coming soon..", :green])
   when "add"
     graphql_class = ARGV[1]
     case graphql_class
@@ -234,4 +251,5 @@ begin
   end
 rescue StandardError => e
   puts(Paint[e, :red])
+  puts(e.backtrace)
 end

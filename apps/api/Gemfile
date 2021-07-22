@@ -38,7 +38,7 @@ group :development, :test do
   gem "rubocop", "1.18.3"
   gem "selenium-webdriver", "3.142.7"
   gem "solargraph", "0.42.4"
-  gem "souls", "0.24.4"
+  gem "souls", "0.24.7"
   gem "webmock", "3.13.0"
 end
 

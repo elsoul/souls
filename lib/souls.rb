@@ -169,18 +169,17 @@ module Souls
 
     def update_repo(service_name: "api")
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-      latest_gem = get_latest_version(service_name: service_name)
-      new_ver = latest_gem[:version_counter] + 1
+      new_ver = get_latest_version_txt(service_name: service_name) + 1
       bucket_url = "gs://souls-bucket/boilerplates"
       file_name = "#{service_name}-v#{new_ver}.tgz"
       release_name = "#{service_name}-latest.tgz"
 
       case current_dir_name
       when "souls"
-        system("echo 'v#{new_ver}' > apps/#{service_name}/.souls_version")
+        system("echo 'v#{new_ver}' > lib/souls/versions/.souls_#{service_name}_version")
         system("cd apps/ && tar -czf ../#{service_name}.tgz #{service_name}/ && cd ..")
       when "api", "worker", "console", "admin", "media"
-        system("echo 'v#{new_ver}' > .souls_version")
+        system("echo 'v#{new_ver}' > lib/souls/versions/.souls_#{service_name}_version")
         system("cd .. && tar -czf ../#{service_name}.tgz #{service_name}/ && cd #{service_name}")
       else
         raise(StandardError, "You are at wrong directory!")
@@ -188,8 +187,6 @@ module Souls
 
       system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{file_name}")
       system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{release_name}")
-      file_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
-      version_log(service_name: service_name, version_counter: new_ver, file_url: file_url)
       FileUtils.rm("#{service_name}.tgz")
       "#{service_name}-v#{new_ver} Succefully Stored to GCS! "
     end
@@ -200,6 +197,21 @@ module Souls
       firestore = Google::Cloud::Firestore.new(project_id: ENV["FIRESTORE_PID"])
       doc_ref = firestore.doc("#{service_name}/#{version_counter}")
       doc_ref.set({ version: version, version_counter: version_counter, file_url: file_url, created_at: time })
+    end
+
+    def get_latest_version_txt(service_name: "api")
+      current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
+      case current_dir_name
+      when "souls"
+        file_path = "./apps/#{service_name}/.souls_#{service_name}_version"
+      when "api", "worker", "console", "admin", "media"
+        file_path = ".souls_#{service_name}_version"
+      else
+        raise(StandardError, "You are at wrong directory!")
+      end
+      File.open(file_path, "r") do |f|
+        f.readlines[0].strip.gsub("v", "").to_i
+      end
     end
 
     def get_latest_version(service_name: "api")
@@ -218,6 +230,15 @@ module Souls
         end
       else
         { version_counter: 0 }
+      end
+    end
+
+    def detect_change
+      git_status = `git status`
+      if git_status.include?("On branch master\nYour branch is up to date with 'origin/master'.\n\nnothing to commit, working tree clean\n")
+        false
+      else
+        true
       end
     end
 
