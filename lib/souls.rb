@@ -9,7 +9,6 @@ require "fileutils"
 require "net/http"
 require "paint"
 require "whirly"
-require "google/cloud/firestore"
 require "tty-prompt"
 
 module Souls
@@ -234,25 +233,6 @@ module Souls
       end
       File.open(file_path, "r") do |f|
         f.readlines[0].strip.split(".").map(&:to_i)
-      end
-    end
-
-    def get_latest_version(service_name: "api")
-      firestore = Google::Cloud::Firestore.new(project_id: ENV["FIRESTORE_PID"])
-      versions = firestore.doc("#{service_name}/1")
-      if versions.get.exists?
-        versions = firestore.col(service_name.to_s)
-        query = versions.order("version_counter", "desc").limit(1)
-        query.get do |v|
-          return {
-            version_counter: v.data[:version_counter],
-            version: v.data[:version],
-            file_url: v.data[:file_url],
-            create_at: v.data[:create_at]
-          }
-        end
-      else
-        { version_counter: 0 }
       end
     end
 
