@@ -222,12 +222,11 @@ module Souls
     end
 
     def get_latest_version_txt(service_name: "api")
-      current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-      case current_dir_name
-      when "souls"
+      case service_name
+      when "gem"
         return Souls::VERSION.split(".").map(&:to_i)
       when "api", "worker", "console", "admin", "media"
-        file_path = ".../lib/souls/versions/.souls_#{service_name}_version"
+        file_path = "./lib/souls/versions/.souls_#{service_name}_version"
       else
         raise(StandardError, "You are at wrong directory!")
       end
