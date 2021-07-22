@@ -169,7 +169,7 @@ module Souls
 
     def update_repo(service_name: "api", update_kind: "patch")
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-      current_ver = Souls.get_latest_version_txt(service_name: service_name)
+      current_ver = get_latest_version_txt(service_name: service_name)
       new_ver = version_detector(current_ver: current_ver, update_kind: update_kind)
       bucket_url = "gs://souls-bucket/boilerplates"
       file_name = "#{service_name}-v#{new_ver}.tgz"
