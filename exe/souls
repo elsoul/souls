@@ -32,8 +32,9 @@ begin
     strain = $stdin.gets.chomp.to_i
     case strain
     when 1, 2
-      Souls::Init.download_souls(app_name: app_name, service_name: (STRAINS[strain.to_i - 1]).to_s)
-      Souls::Init.initial_config_init(app_name: app_name, strain: STRAINS[strain.to_i - 1])
+      service_name = (STRAINS[strain.to_i - 1]).to_s
+      Souls::Init.download_souls(app_name: app_name, service_name: service_name)
+      Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
     else
       puts(Paint["Coming Soon...", :blue])
     end

@@ -173,6 +173,7 @@ module Souls
       new_ver = latest_gem[:version_counter] + 1
       bucket_url = "gs://souls-bucket/boilerplates"
       file_name = "#{service_name}-v#{new_ver}.tgz"
+      release_name = "#{service_name}-latest.tgz"
 
       case current_dir_name
       when "souls"
@@ -186,6 +187,7 @@ module Souls
       end
 
       system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{file_name}")
+      system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{release_name}")
       file_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
       version_log(service_name: service_name, version_counter: new_ver, file_url: file_url)
       FileUtils.rm("#{service_name}.tgz")

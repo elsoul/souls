@@ -9,15 +9,15 @@ module Souls
       data[0]["tag_name"]
     end
 
-    def self.initial_config_init(app_name: "souls", strain: "api")
-      FileUtils.touch("./#{app_name}/config/souls.rb")
-      file_path = "./#{app_name}/config/souls.rb"
+    def self.initial_config_init(app_name: "souls", service_name: "api")
+      FileUtils.touch("./#{app_name}/#{service_name}/config/souls.rb")
+      file_path = "./#{app_name}/#{service_name}/config/souls.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           Souls.configure do |config|
             config.app = "#{app_name}"
             config.project_id = "souls-api"
-            config.strain = "#{strain}"
+            config.strain = "#{service_name}"
             config.worker_endpoint = "https://worker.com"
             config.fixed_gems = ["excluded_gem"]
           end
@@ -28,9 +28,9 @@ module Souls
     end
 
     def self.download_souls(app_name: "souls", service_name: "api")
-      latest_gem = Souls.get_latest_version(service_name: service_name)
-      file_name = latest_gem[:file_url].to_s.match(%r{/([^/]+)/?$})[1]
-      system("curl -OL #{latest_gem[:file_url]}")
+      file_name = "#{service_name}-latest.tgz"
+      url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
+      system("curl -OL #{url}")
       system("mkdir -p #{app_name}/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/")
       FileUtils.rm(file_name)
