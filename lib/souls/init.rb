@@ -28,7 +28,8 @@ module Souls
     end
 
     def self.download_souls(app_name: "souls", service_name: "api")
-      file_name = "#{service_name}-latest.tgz"
+      version = get_latest_version_txt(service_name: service_name).join(".")
+      file_name = "#{service_name}-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
       system("curl -OL #{url}")
       system("mkdir -p #{app_name}/#{service_name}")
@@ -56,8 +57,16 @@ module Souls
       souls_ver = Paint["SOULs Version: #{Souls::VERSION}", :white]
       puts(souls_ver)
       puts(line)
-      cd = Paint["Easy to Run\n$ cd #{app_name}/#{service_name}\n$ bundle\n$ souls s\nGo To : http://localhost:3000\n\nDoc: https://souls.elsoul.nl",
-                 :white]
+      endroll = <<~TEXT
+        Easy to Run
+        $ cd #{app_name}/#{service_name}
+        $ bundle
+        $ souls s
+        Go To : http://localhost:3000
+
+        Doc: https://souls.elsoul.nl
+      TEXT
+      cd = Paint[endroll, :white]
       puts(cd)
       puts(line)
     end
