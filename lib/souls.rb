@@ -10,6 +10,7 @@ require "net/http"
 require "paint"
 require "whirly"
 require "google/cloud/firestore"
+require "tty-prompt"
 
 module Souls
   SOULS_METHODS = %w[
@@ -167,9 +168,10 @@ module Souls
       end
     end
 
-    def update_repo(service_name: "api")
+    def update_repo(service_name: "api", update_kind: "patch")
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-      new_ver = get_latest_version_txt(service_name: service_name) + 1
+      current_ver = get_latest_version_txt(service_name: service_name)
+      new_ver = version_detector(current_ver: current_ver, update_kind: update_kind)
       bucket_url = "gs://souls-bucket/boilerplates"
       file_name = "#{service_name}-v#{new_ver}.tgz"
       release_name = "#{service_name}-latest.tgz"
@@ -191,26 +193,47 @@ module Souls
       "#{service_name}-v#{new_ver} Succefully Stored to GCS! "
     end
 
-    def version_log(service_name: "api", version_counter: 1, file_url: "")
-      version = "v#{version_counter}"
-      time = Time.now.strftime("%F-%H-%M-%S")
-      firestore = Google::Cloud::Firestore.new(project_id: ENV["FIRESTORE_PID"])
-      doc_ref = firestore.doc("#{service_name}/#{version_counter}")
-      doc_ref.set({ version: version, version_counter: version_counter, file_url: file_url, created_at: time })
+    def version_detector(current_ver: [0, 0, 1], update_kind: "patch")
+      case update_kind
+      when "patch"
+        "#{current_ver[0]}.#{current_ver[1]}.#{current_ver[2] + 1}"
+      when "minor"
+        "#{current_ver[0]}.#{current_ver[1] + 1}.0"
+      when "major"
+        "#{current_ver[0] + 1}.0.0"
+      else
+        raise(StandardError, "Wrong version!")
+      end
+    end
+
+    def overwrite_version(new_version: "0.1.1")
+      FileUtils.rm("./lib/souls/version.rb")
+      file_path = "./lib/souls/version.rb"
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
+          module Souls
+            VERSION = "#{new_version}".freeze
+            public_constant :VERSION
+          end
+        TEXT
+      end
+      true
+    rescue StandardError, e
+      raise(StandardError, e)
     end
 
     def get_latest_version_txt(service_name: "api")
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
       case current_dir_name
       when "souls"
-        file_path = "./apps/#{service_name}/.souls_#{service_name}_version"
+        file_path = "./lib/souls/versions/.souls_version"
       when "api", "worker", "console", "admin", "media"
-        file_path = ".souls_#{service_name}_version"
+        file_path = ".../lib/souls/versions/.souls_#{service_name}_version"
       else
         raise(StandardError, "You are at wrong directory!")
       end
       File.open(file_path, "r") do |f|
-        f.readlines[0].strip.gsub("v", "").to_i
+        f.readlines[0].strip.split(".").map(&:to_i)
       end
     end
 
@@ -235,11 +258,15 @@ module Souls
 
     def detect_change
       git_status = `git status`
-      if git_status.include?("On branch master\nYour branch is up to date with 'origin/master'.\n\nnothing to commit, working tree clean\n")
-        false
-      else
-        true
-      end
+      result =
+        %w[api worker].map do |service_name|
+          if git_status.include?("apps/#{service_name}/")
+            service_name
+          else
+            next
+          end
+        end
+      result.compact
     end
 
     def configure

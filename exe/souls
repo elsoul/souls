@@ -96,33 +96,32 @@ begin
       Whirly.status = "Done!"
     end
   when "release"
-    service_name = ARGV[1]
-    permit_services = %w[api worker console admin media]
-    raise(StandardError, "Wrong Service Name!") unless permit_services.include?(service_name)
-
-    # first_message = Paint % [
-    #   "Select Version: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text} %{magenta_text}",
-    #   :white,
-    #   {
-    #     red_text: ["\n1. Patch()", :green],
-    #     yellow_text: ["\n2. Minor()", :yellow],
-    #     green_text: ["\n3. Major()", :red],
-    #     blue_text: ["\n4. SOULs Admin Web", :blue],
-    #     cyan_text: ["\n5. SOULs Media Web", :cyan],
-    #     magenta_text: ["\n6. SOULs Doc Web", :magenta]
-    #   }
-    # ]
-    # puts(first_message)
-    # strain = $stdin.gets.chomp.to_i
+    current_souls_ver = Souls::VERSION.strip.split(".").map(&:to_i)
+    prompt = TTY::Prompt.new
+    choices = [
+      "1. Patch(#{Souls.version_detector(current_ver: current_souls_ver, update_kind: 'patch')})",
+      "2. Minor(#{Souls.version_detector(current_ver: current_souls_ver, update_kind: 'minor')})",
+      "3. Major(#{Souls.version_detector(current_ver: current_souls_ver, update_kind: 'major')})"
+    ]
+    choice_num = prompt.select("Select Version: ", choices)[0].to_i
+    update_kinds = %w[patch minor major]
+    update_kind = update_kinds[choice_num - 1]
+    souls_new_ver = Souls.version_detector(current_ver: current_souls_ver, update_kind: update_kind)
 
     status = Paint["Saving Repo...", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
-      result = Paint[Souls.update_repo(service_name: service_name), :green]
-      Whirly.status = result
+      %w[api worker].each do |s_name|
+        result = Paint[Souls.update_repo(service_name: s_name, update_kind: update_kind), :green]
+        Whirly.status = result
+      end
+      Souls.overwrite_version(new_version: souls_new_ver)
+      system("rake build")
+      system("rake release")
+      Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
     end
   when "update"
-    puts(Paint["coming soon..", :green])
+    puts(Paint["Coming soon..", :cyan])
   when "add"
     graphql_class = ARGV[1]
     case graphql_class
