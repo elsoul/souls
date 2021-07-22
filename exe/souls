@@ -16,23 +16,20 @@ begin
       puts(Paint["`souls new app_name`", :yellow])
       exit
     end
-    first_message = Paint % [
-      "Select Strain: %{red_text} %{yellow_text} %{green_text} %{blue_text} %{cyan_text} %{magenta_text}",
-      :white,
-      {
-        red_text: ["\n1. SOULs GraphQL API", :red],
-        yellow_text: ["\n2. SOULs Pub/Sub Worker", :yellow],
-        green_text: ["\n3. SOULs Console Web", :green],
-        blue_text: ["\n4. SOULs Admin Web", :blue],
-        cyan_text: ["\n5. SOULs Media Web", :cyan],
-        magenta_text: ["\n6. SOULs Doc Web", :magenta]
-      }
+
+    prompt = TTY::Prompt.new
+    choices = [
+      "1. SOULs GraphQL API",
+      "2. SOULs Pub/Sub Worker",
+      "3. SOULs Console Web",
+      "4. SOULs Admin Web",
+      "5. SOULs Media Web",
+      "6. SOULs Doc Web"
     ]
-    puts(first_message)
-    strain = $stdin.gets.chomp.to_i
-    case strain
+    choice_num = prompt.select(Paint["Select Strain: ", :cyan], choices)[0].to_i
+    case choice_num
     when 1, 2
-      service_name = (STRAINS[strain.to_i - 1]).to_s
+      service_name = (STRAINS[choice_num.to_i - 1]).to_s
       Souls::Init.download_souls(app_name: app_name, service_name: service_name)
       Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
     else
