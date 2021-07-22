@@ -116,7 +116,8 @@ begin
         Whirly.status = result
       end
       Souls.overwrite_version(new_version: souls_new_ver)
-      system("git add . && git commit -m 'souls update v#{souls_new_ver}'")
+      system("git add .")
+      system("git commit -m 'souls update v#{souls_new_ver}'")
       system("rake build")
       system("rake release")
       Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
