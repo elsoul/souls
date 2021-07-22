@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.24.10)
+    souls (0.24.11)
       google-cloud-firestore (= 2.6.1)
       paint (= 2.2.1)
       tty-prompt (= 0.23.1)
