@@ -25,7 +25,7 @@ Gem::Specification.new do |gem|
                         "exe/souls",
                         "README.md",
                         "CODE_OF_CONDUCT.md",
-                        "LICENSE,txt"
+                        "LICENSE.txt"
                       ]
   gem.bindir        = "exe"
   gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }
