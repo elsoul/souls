@@ -1,6 +1,6 @@
 require_relative "lib/souls/version"
 
-Gem.specification.new do |gem|
+Gem::Specification.new do |gem|
   gem.name          = "souls"
   gem.version       = Souls::VERSION
   gem.authors       = ["POPPIN-FUMI", "KishiTheMechanic", "James Neve"]
