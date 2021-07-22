@@ -28,7 +28,7 @@ module Souls
     end
 
     def self.download_souls(app_name: "souls", service_name: "api")
-      version = get_latest_version_txt(service_name: service_name).join(".")
+      version = Souls.get_latest_version_txt(service_name: service_name).join(".")
       file_name = "#{service_name}-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
       system("curl -OL #{url}")
