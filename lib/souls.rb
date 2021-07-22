@@ -245,7 +245,7 @@ module Souls
       when "gem"
         return Souls::VERSION.split(".").map(&:to_i)
       when "api", "worker", "console", "admin", "media"
-        file_path = "#{Gem.path[0]}/gems/souls-#{Souls::VERSION}/lib/souls/versions/.souls_#{service_name}_version"
+        file_path = "#{Gem.dir}/gems/souls-#{Souls::VERSION}/lib/souls/versions/.souls_#{service_name}_version"
       else
         raise(StandardError, "You are at wrong directory!")
       end
