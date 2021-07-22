@@ -226,7 +226,7 @@ module Souls
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
       case current_dir_name
       when "souls"
-        file_path = "./lib/souls/versions/.souls_version"
+        return Souls::VERSION.split(".").map(&:to_i)
       when "api", "worker", "console", "admin", "media"
         file_path = ".../lib/souls/versions/.souls_#{service_name}_version"
       else
