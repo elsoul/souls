@@ -116,13 +116,10 @@ begin
         Whirly.status = result
       end
       Souls.overwrite_version(new_version: souls_new_ver)
-      sleep(10)
       puts("before add")
       system("git add .")
-      sleep(2)
       puts("before commit")
       system("git commit -m 'souls update v#{souls_new_ver}'")
-      sleep(2)
       puts("before build")
       system("rake build")
       system("rake release")

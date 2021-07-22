@@ -216,9 +216,28 @@ module Souls
           end
         TEXT
       end
+      overwrite_gemfile_lock(new_version: new_version)
       true
     rescue StandardError, e
       raise(StandardError, e)
+    end
+
+    def overwrite_gemfile_lock(new_version: "0.1.1")
+      file_path = "Gemfile.lock"
+      new_file_path = "Gemfile.lock.tmp"
+      File.open(file_path, "r") do |f|
+        File.open(new_file_path, "w") do |new_line|
+          f.each_line.with_index do |line, i|
+            if i == 3
+              new_line.write("    souls (#{new_version})")
+            else
+              new_line.write(line)
+            end
+          end
+        end
+      end
+      FileUtils.rm(file_path)
+      FileUtils.mv(new_file_path(file_path))
     end
 
     def get_latest_version_txt(service_name: "api")
