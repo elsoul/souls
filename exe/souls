@@ -93,6 +93,8 @@ begin
       Whirly.status = "Done!"
     end
   when "release"
+    system("gem uninstall souls")
+    system("gem install souls")
     current_souls_ver = Souls::VERSION.strip.split(".").map(&:to_i)
     prompt = TTY::Prompt.new
     choices = [
