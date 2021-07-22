@@ -30,6 +30,7 @@ Gem::Specification.new do |gem|
   gem.bindir        = "exe"
   gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }
   gem.require_paths = ["lib"]
+  gem.add_runtime_dependency("google-cloud-firestore", "2.6.1")
   gem.add_runtime_dependency("paint", "2.2.1")
   gem.add_runtime_dependency("whirly", "0.3.0")
 end

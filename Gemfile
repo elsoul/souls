@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "activesupport", "6.1.4"
+gem "dotenv", "2.7.6"
 gem "paint", "2.2.1"
 gem "parser", "3.0.2.0"
 gem "rake", "13.0.6"

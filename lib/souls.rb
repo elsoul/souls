@@ -3,11 +3,13 @@ require "active_support/core_ext/string/inflections"
 require_relative "souls/init"
 require_relative "souls/generate"
 require_relative "souls/gcloud"
+require "dotenv/load"
 require "json"
 require "fileutils"
 require "net/http"
 require "paint"
 require "whirly"
+require "google/cloud/firestore"
 
 module Souls
   SOULS_METHODS = %w[
@@ -162,6 +164,58 @@ module Souls
       puts(success)
       logs.each do |line|
         puts(line)
+      end
+    end
+
+    def update_repo(service_name: "api")
+      current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
+      latest_gem = get_latest_version(service_name: service_name)
+      new_ver = latest_gem[:version_counter] + 1
+      bucket_url = "gs://souls-bucket/boilerplates"
+      file_name = "#{service_name}-v#{new_ver}.tgz"
+
+      case current_dir_name
+      when "souls"
+        system("echo 'v#{new_ver}' > apps/#{service_name}/.souls_version")
+        system("cd apps/ && tar -czf ../#{service_name}.tgz #{service_name}/ && cd ..")
+      when "api", "worker", "console", "admin", "media"
+        system("echo 'v#{new_ver}' > .souls_version")
+        system("cd .. && tar -czf ../#{service_name}.tgz #{service_name}/ && cd #{service_name}")
+      else
+        raise(StandardError, "You are at wrong directory!")
+      end
+
+      system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{file_name}")
+      file_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
+      version_log(service_name: service_name, version_counter: new_ver, file_url: file_url)
+      FileUtils.rm("#{service_name}.tgz")
+      "#{service_name}-v#{new_ver} Succefully Stored to GCS! "
+    end
+
+    def version_log(service_name: "api", version_counter: 1, file_url: "")
+      version = "v#{version_counter}"
+      time = Time.now.strftime("%F-%H-%M-%S")
+      firestore = Google::Cloud::Firestore.new(project_id: ENV["FIRESTORE_PID"])
+      doc_ref = firestore.doc("#{service_name}/#{version_counter}")
+      doc_ref.set({ version: version, version_counter: version_counter, file_url: file_url, created_at: time })
+    end
+
+    def get_latest_version(service_name: "api")
+      firestore = Google::Cloud::Firestore.new(project_id: ENV["FIRESTORE_PID"])
+      versions = firestore.doc("#{service_name}/1")
+      if versions.get.exists?
+        versions = firestore.col(service_name.to_s)
+        query = versions.order("version_counter", "desc").limit(1)
+        query.get do |v|
+          return {
+            version_counter: v.data[:version_counter],
+            version: v.data[:version],
+            file_url: v.data[:file_url],
+            create_at: v.data[:create_at]
+          }
+        end
+      else
+        { version_counter: 0 }
       end
     end
 

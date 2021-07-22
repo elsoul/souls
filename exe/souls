@@ -32,7 +32,7 @@ begin
     strain = $stdin.gets.chomp.to_i
     case strain
     when 1, 2
-      Souls::Init.download_souls(app_name: app_name, repository_name: "souls_#{STRAINS[strain.to_i - 1]}")
+      Souls::Init.download_souls(app_name: app_name, service_name: (STRAINS[strain.to_i - 1]).to_s)
       Souls::Init.initial_config_init(app_name: app_name, strain: STRAINS[strain.to_i - 1])
     else
       puts(Paint["Coming Soon...", :blue])
@@ -93,6 +93,17 @@ begin
       Whirly.status = status
       Souls.update_gemfile
       Whirly.status = "Done!"
+    end
+  when "update"
+    service_name = ARGV[1]
+    permit_services = %w[api worker console admin media]
+    raise(StandardError, "Wrong Service Name!") unless permit_services.include?(service_name)
+
+    status = Paint["Saving Repo...", :yellow]
+    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+      Whirly.status = status
+      result = Paint[Souls.update_repo(service_name: service_name), :green]
+      Whirly.status = result
     end
   when "add"
     graphql_class = ARGV[1]
