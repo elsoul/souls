@@ -1,8 +1,7 @@
 module Souls
   module Gcloud
     class << self
-      def auth_login
-        project_id = Souls.configuration.project_id
+      def auth_login(project_id: "souls-app")
         system("gcloud config set project #{project_id}")
         system("gcloud auth login")
       end
@@ -26,44 +25,10 @@ module Souls
         puts("Operating permission to run.googleapis.com")
       end
 
-      def create_network
-        return "Error: Please Set Souls.configuration" if Souls.configuration.app.nil?
-
-        network = Souls.configuration.app
-        system("gcloud compute networks create #{network}")
-      rescue StandardError => e
-        raise(StandardError, e)
-      end
-
-      def create_firewall(ip_range: "10.140.0.0/20")
-        network = Souls.configuration.app
+      
+      def create_sql_instance(instance_name: "souls-db", root_pass: "Postgre123!", zone: "asia-northeast1-b")
         system(
-          "gcloud compute firewall-rules create #{network}
-          --network #{network}
-          --allow tcp,udp,icmp
-          --source-ranges #{ip_range}"
-        )
-        system("gcloud compute firewall-rules create #{network}-ssh --network #{network} --allow tcp:22,tcp:3389,icmp")
-      end
-
-      def create_private_access
-        network = Souls.configuration.app
-        project_id = Souls.configuration.project_id
-        system(
-          "gcloud compute addresses create #{network}-my-network \
-          --global \
-          --purpose=VPC_PEERING \
-          --prefix-length=16 \
-          --description='peering range for SOULs' \
-          --network=#{network} \
-          --project=#{project_id}"
-        )
-      end
-
-      def create_sql_instance(root_pass: "Postgre123!", zone: "asia-northeast1-b")
-        app = "#{Souls.configuration.app}-db"
-        system(
-          "gcloud sql instances create #{app}
+          "gcloud sql instances create #{instance_name}
             --database-version=POSTGRES_13 --cpu=2 --memory=7680MB --zone=#{zone}
             --root-password='#{root_pass}' --database-flags cloudsql.iam_authentication=on"
         )

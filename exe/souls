@@ -61,26 +61,11 @@ begin
     send_method = ARGV[1]
     Souls.public_send(send_method)
   when "gcloud"
+    args = ARGV
     status = Paint["Running Gcloud Commands...", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
-      send_method = ARGV[1]
-
-      case send_method
-      when "create_pubsub_topic"
-        topic_name = ARGV[2]
-        args = { topic_name: topic_name }
-        Souls::Gcloud.public_send(send_method, args)
-      when "create_pubsub_subscription"
-        project_id = Souls.configuration.project_id
-        topic_name = ARGV[2]
-        service_account = "#{Souls.configuration.app}@#{project_id}iam.gserviceaccount.com"
-        endpoint = Souls.configuration.endpoint
-        args = { project_id: project_id, topic_name: topic_name, service_account: service_account, endpoint: endpoint }
-        Souls::Gcloud.public_send(send_method, args)
-      else
-        Souls::Gcloud.public_send(send_method)
-      end
+      Souls::Gcloud.return_method(args)
       Whirly.status = "Done!"
     end
   when "-v", "--version"
