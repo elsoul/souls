@@ -258,11 +258,9 @@ module Souls
       git_status = `git status`
       result =
         %w[api worker].map do |service_name|
-          if git_status.include?("apps/#{service_name}/")
-            service_name
-          else
-            next
-          end
+          next unless git_status.include?("apps/#{service_name}/")
+
+          service_name
         end
       result.compact
     end
