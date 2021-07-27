@@ -25,7 +25,6 @@ module Souls
         puts("Operating permission to run.googleapis.com")
       end
 
-      
       def create_sql_instance(instance_name: "souls-db", root_pass: "Postgre123!", zone: "asia-northeast1-b")
         system(
           "gcloud sql instances create #{instance_name}

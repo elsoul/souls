@@ -1,4 +1,3 @@
-require: rubocop-graphql
 AllCops:
   SuggestExtensions: false
   EnabledByDefault: true
@@ -93,24 +92,6 @@ Layout/LineLength:
     - "lib/souls/generate/resolver.rb"
 
 Layout/LineEndStringConcatenationIndentation:
-  Enabled: false
-
-GraphQL/ObjectDescription:
-  Enabled: false
-
-GraphQL/FieldDescription:
-  Enabled: false
-
-GraphQL/ArgumentDescription:
-  Enabled: false
-
-GraphQL/ExtractInputType:
-  Enabled: false
-
-GraphQL/ExtractType:
-  Enabled: false
-
-GraphQL/ArgumentName:
   Enabled: false
 
 Lint/ConstantResolution:
