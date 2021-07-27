@@ -178,6 +178,7 @@ module Souls
       case current_dir_name
       when "souls"
         system("echo '#{new_ver}' > lib/souls/versions/.souls_#{service_name}_version")
+        system("echo '#{new_ver}' > apps/#{service_name}/.souls_#{service_name}_version")
         system("cd apps/ && tar -czf ../#{service_name}.tgz #{service_name}/ && cd ..")
       when "api", "worker", "console", "admin", "media"
         system("echo '#{new_ver}' > lib/souls/versions/.souls_#{service_name}_version")
