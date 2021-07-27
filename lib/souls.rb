@@ -181,6 +181,7 @@ module Souls
         system("cd apps/ && tar -czf ../#{service_name}.tgz #{service_name}/ && cd ..")
       when "api", "worker", "console", "admin", "media"
         system("echo '#{new_ver}' > lib/souls/versions/.souls_#{service_name}_version")
+        system("echo '#{new_ver}' > .souls_#{service_name}_version")
         system("cd .. && tar -czf ../#{service_name}.tgz #{service_name}/ && cd #{service_name}")
       else
         raise(StandardError, "You are at wrong directory!")

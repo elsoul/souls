@@ -136,7 +136,7 @@ module Souls
     def self.resolver(class_name: "souls")
       singularized_class_name = class_name.singularize.underscore
       file_path = "./app/graphql/resolvers/#{singularized_class_name}_search.rb"
-      return "Resolver already exist! #{file_path}" if File.exist?(file_path)
+      raise(StandardError, "Resolver already exist! #{file_path}") if File.exist?(file_path)
 
       resolver_head(class_name: singularized_class_name)
       resolver_params(class_name: singularized_class_name)

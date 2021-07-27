@@ -3,6 +3,8 @@ AllCops:
   SuggestExtensions: false
   EnabledByDefault: true
   Exclude:
+    - "app/**/*.rb"
+    - "app/**/**/*.rb"
     - "Gemfile.lock"
     - "apps/**/*.rb"
     - "db/migrate/*.rb"

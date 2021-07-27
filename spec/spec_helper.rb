@@ -11,4 +11,10 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.after :all do
+    file_path = "./app"
+    
+    FileUtils.rm_rf "app" if Dir.exist? file_path
+  end
 end

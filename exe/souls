@@ -241,5 +241,4 @@ begin
   end
 rescue StandardError => e
   puts(Paint[e, :red])
-  puts(e.backtrace)
 end

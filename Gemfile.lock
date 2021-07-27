@@ -9,6 +9,11 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (6.1.4)
+      activesupport (= 6.1.4)
+    activerecord (6.1.4)
+      activemodel (= 6.1.4)
+      activesupport (= 6.1.4)
     activesupport (6.1.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
@@ -99,6 +104,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  activerecord (= 6.1.4)
   activesupport (= 6.1.4)
   dotenv (= 2.7.6)
   paint (= 2.2.1)
