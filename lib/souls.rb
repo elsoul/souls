@@ -174,6 +174,7 @@ module Souls
       bucket_url = "gs://souls-bucket/boilerplates"
       file_name = "#{service_name}-v#{new_ver}.tgz"
       release_name = "#{service_name}-latest.tgz"
+      update_backend_gemfile
 
       case current_dir_name
       when "souls"
@@ -254,6 +255,37 @@ module Souls
       File.open(file_path, "r") do |f|
         f.readlines[0].strip.split(".").map(&:to_i)
       end
+    end
+
+    def update_backend_gemfile
+      %w[api worker].each do |service_name|
+        update_service_gemfile(service_name: service_name)
+      end
+    end
+
+    def update_service_gemfile(service_name: "api")
+      file_dir = "./apps/#{service_name}"
+      file_path = "#{file_dir}/Gemfile"
+      gemfile_lock = "#{file_dir}/Gemfile.lock"
+      tmp_file = "#{file_dir}/tmp/Gemfile"
+      File.open(file_path, "r") do |f|
+        File.open(tmp_file, "w") do |new_line|
+          f.each_line do |line|
+            gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
+            if gem[0] == "souls"
+              old_ver = gem[1].split(".")
+              old_ver[2] = (old_ver[2].to_i + 1).to_s
+              new_line.write("  gem \"souls\", \"#{old_ver.join('.')}\"\n")
+            else
+              new_line.write(line)
+            end
+          end
+        end
+      end
+      FileUtils.rm(file_path)
+      FileUtils.rm(gemfile_lock) if File.exist?(gemfile_lock)
+      FileUtils.mv(tmp_file, file_path)
+      puts(Paint["\nSuccessfully Updated #{service_name} Gemfile!", :green])
     end
 
     def detect_change
