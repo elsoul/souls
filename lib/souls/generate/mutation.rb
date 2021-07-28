@@ -12,7 +12,7 @@ module Souls
           module Mutations
             module Base::#{singularized_class_name.camelize}
               class Create#{singularized_class_name.camelize} < BaseMutation
-                field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}.edge_type, null: false
+                field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}Type.edge_type, null: false
                 field :error, String, null: true
 
         TEXT
@@ -106,7 +106,7 @@ module Souls
           module Mutations
             module #{class_name.camelize}
               class Update#{class_name.camelize} < BaseMutation
-                field :#{class_name}_edge, Types::#{class_name.camelize}.edge_type, null: false
+                field :#{class_name}_edge, Types::#{class_name.camelize}Type.edge_type, null: false
 
                 argument :id, String, required: true
         TEXT

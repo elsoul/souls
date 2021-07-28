@@ -184,7 +184,7 @@ begin
     system("rm -rf ../#{other_app}/db/*")
     system("cp -r ./db/* ../#{other_app}/db/*")
   when "t", "test"
-    system("rubocop -a")
+    system("rubocop -A")
     system("bundle exec rspec")
   when "run"
     system("docker build . -t souls -f Dockerfile.dev")
