@@ -136,7 +136,7 @@ begin
       Souls::Generate.return_method(args)
       Whirly.status = done
     end
-  when "d"
+  when "d", "delete"
     class_name = ARGV[1]
     Souls::Generate.delete_all(class_name: class_name)
   when "db:create"
