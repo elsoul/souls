@@ -174,7 +174,7 @@ module Souls
       bucket_url = "gs://souls-bucket/boilerplates"
       file_name = "#{service_name}-v#{new_ver}.tgz"
       release_name = "#{service_name}-latest.tgz"
-      update_backend_gemfile
+      update_service_gemfile(service_name: service_name)
 
       case current_dir_name
       when "souls"
@@ -254,12 +254,6 @@ module Souls
       end
       File.open(file_path, "r") do |f|
         f.readlines[0].strip.split(".").map(&:to_i)
-      end
-    end
-
-    def update_backend_gemfile
-      %w[api worker].each do |service_name|
-        update_service_gemfile(service_name: service_name)
       end
     end
 
