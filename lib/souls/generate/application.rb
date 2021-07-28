@@ -121,7 +121,7 @@ module Souls
       pluralized_class_name = class_name.pluralize.underscore
       FileUtils.rm("./app/models/#{singularized_class_name}.rb")
       FileUtils.rm("./app/policies/#{singularized_class_name}_policy.rb")
-      FileUtils.rm_rf("./app/graphql/mutations/#{singularized_class_name}")
+      FileUtils.rm_rf("./app/graphql/mutations/base/#{singularized_class_name}")
       FileUtils.rm("./app/graphql/queries/#{singularized_class_name}.rb")
       FileUtils.rm("./app/graphql/queries/#{pluralized_class_name}.rb")
       FileUtils.rm("./app/graphql/resolvers/#{singularized_class_name}_search.rb")
@@ -129,14 +129,14 @@ module Souls
       FileUtils.rm("./app/graphql/types/edges/#{singularized_class_name}_edge.rb")
       FileUtils.rm("./app/graphql/types/connections/#{singularized_class_name}_connection.rb")
       FileUtils.rm("./spec/factories/#{pluralized_class_name}.rb")
-      FileUtils.rm("./spec/mutations/#{singularized_class_name}_spec.rb")
+      FileUtils.rm("./spec/mutations/base/#{singularized_class_name}_spec.rb")
       FileUtils.rm("./spec/models/#{singularized_class_name}_spec.rb")
       FileUtils.rm("./spec/queries/#{singularized_class_name}_spec.rb")
       FileUtils.rm("./spec/policies/#{singularized_class_name}_policy_spec.rb")
       FileUtils.rm("./spec/resolvers/#{singularized_class_name}_search_spec.rb")
-      puts("deleted #{class_name.camelize} CRUD!")
+      puts(Paint["deleted #{class_name.camelize} CRUD!", :yellow])
     rescue StandardError => e
-      puts(e)
+      raise(StandardError, e)
     end
 
     def self.update_delete(class_name: "souls")
@@ -154,23 +154,7 @@ module Souls
       FileUtils.rm("./spec/resolvers/#{singularized_class_name}_search_spec.rb")
       puts("deleted #{class_name.camelize} CRUD!")
     rescue StandardError => e
-      puts(e)
-    end
-
-    def self.single_migrate(class_name: "user")
-      puts("◆◆◆ Let's Auto Generate CRUD API SET ◆◆◆\n")
-      migrate(class_name: class_name)
-    end
-
-    def self.migrate_all
-      puts("◆◆◆ SOULs CRUD Assist  ◆◆◆\n")
-      get_tables.each do |class_name|
-        migrate(class_name: class_name.singularize)
-        puts("Generated #{class_name.camelize} CRUD Files\n")
-        Souls::Generate.generated_paths(class_name: class_name).each { |f| puts(f) }
-        puts("\n")
-      end
-      puts("\nAll files created from ./db/schema.rb\n\n You're all set ;)")
+      raise(StandardError, e)
     end
   end
 end

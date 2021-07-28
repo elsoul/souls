@@ -42,13 +42,17 @@ module Souls
         when "migrate"
           Souls::Generate.migrate(class_name: class_name)
         when "migrate_all"
-          Souls::Generate.migrate_all
+          puts(Paint["Let's Go SOULs AUTO CRUD Assist!\n", :cyan])
+          Souls::Generate.get_tables.each do |table|
+            Souls::Generate.migrate(class_name: table.singularize)
+            puts(Paint["Generated #{table.camelize} CRUD Files\n", :yellow])
+          end
         when "migration"
           pluralized_class_name = class_name.underscore.pluralize
           system("rake db:create_migration NAME=create_#{pluralized_class_name}")
         when "update"
           Souls::Generate.update_delete(class_name: class_name)
-          Souls::Generate.single_migrate(class_name: class_name)
+          Souls::Generate.migrate(class_name: class_name)
         else
           "SOULs!"
         end

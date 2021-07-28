@@ -12,9 +12,11 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+
   config.after :all do
-    file_path = "./app"
-    
-    FileUtils.rm_rf "app" if Dir.exist? file_path
+    file_paths = [
+      "./app"
+    ]
+    file_paths.each { |path| FileUtils.rm_rf(path) if Dir.exist?(path) }
   end
 end

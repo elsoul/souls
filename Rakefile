@@ -14,10 +14,16 @@ namespace :task do
     end
   end
 
-  task :a do
-    file_path = "./spec/generate/"
-    Souls::SOULS_METHODS.each do |f|
-      FileUtils.touch("#{file_path}#{f}_spec.rb")
-    end
+  task :clear do
+    file_paths = [
+      "./app",
+      "./spec/factories",
+      "./spec/models",
+      "./spec/mutations",
+      "./spec/queries",
+      "./spec/resolvers",
+      "./spec/policies"
+    ]
+    file_paths.each { |path| FileUtils.rm_rf(path) if Dir.exist?(path) }
   end
 end
