@@ -10,7 +10,7 @@ module Souls
       File.open(file_path, "w") do |new_line|
         new_line.write(<<~TEXT)
           module Mutations
-            module #{singularized_class_name.camelize}
+            module Base::#{singularized_class_name.camelize}
               class Create#{singularized_class_name.camelize} < BaseMutation
                 field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}.edge_type, null: false
                 field :error, String, null: true

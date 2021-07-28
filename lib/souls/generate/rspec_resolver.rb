@@ -26,31 +26,31 @@ module Souls
               if line.include?("end") || line.include?("t.index")
                 if @relation_params.empty?
                   new_line.write(<<-TEXT)
-  let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
+    let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
 
-  let(:query) do
-    %(query {
-      #{class_name.singularize.camelize(:lower)}Search(filter: {
-        isDeleted: false
-    }) {
-        edges {
-          cursor
-          node {
-            id
+    let(:query) do
+      %(query {
+        #{class_name.singularize.camelize(:lower)}Search(filter: {
+          isDeleted: false
+      }) {
+          edges {
+            cursor
+            node {
+              id
                   TEXT
                 else
                   new_line.write(<<-TEXT)
-  let!(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(', ')}) }
+    let!(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(', ')}) }
 
-  let(:query) do
-    %(query {
-      #{class_name.singularize.camelize(:lower)}Search(filter: {
-        isDeleted: false
-    }) {
-        edges {
-          cursor
-          node {
-            id
+    let(:query) do
+      %(query {
+        #{class_name.singularize.camelize(:lower)}Search(filter: {
+          isDeleted: false
+      }) {
+          edges {
+            cursor
+            node {
+              id
                   TEXT
                 end
                 break
@@ -79,35 +79,35 @@ module Souls
             if @on
               if line.include?("end") || line.include?("t.index")
                 new_line.write(<<-TEXT)
+              }
+            }
+            nodes {
+              id
+            }
+            pageInfo {
+              endCursor
+              hasNextPage
+              startCursor
+              hasPreviousPage
             }
           }
-          nodes {
-            id
-          }
-          pageInfo {
-            endCursor
-            hasNextPage
-            startCursor
-            hasPreviousPage
-          }
         }
-      }
-    )
-  end
-
-  subject(:result) do
-    SoulsApiSchema.execute(query).as_json
-  end
-
-  it "return #{class_name.camelize} Data" do
-    begin
-      a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}Search", "edges")[0]["node"]
-      raise unless a1.present?
-    rescue
-      raise StandardError, result
+      )
     end
-    expect(a1).to include(
-      "id" => be_a(String),
+
+    subject(:result) do
+      SoulsApiSchema.execute(query).as_json
+    end
+
+    it "return #{class_name.camelize} Data" do
+      begin
+        a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}Search", "edges")[0]["node"]
+        raise unless a1.present?
+      rescue
+        raise StandardError, result
+      end
+      expect(a1).to include(
+        "id" => be_a(String),
                 TEXT
                 break
               end

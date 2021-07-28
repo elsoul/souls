@@ -26,23 +26,23 @@ module Souls
               if line.include?("end") || line.include?("t.index")
                 if @relation_params.empty?
                   new_line.write(<<-TEXT)
-  let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
+    let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
 
-  let(:query) do
-    data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
-    %(query {
-      #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
-        id
+    let(:query) do
+      data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
+      %(query {
+        #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
+          id
                   TEXT
                 else
                   new_line.write(<<-TEXT)
-  let(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(', ')}) }
+    let(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(', ')}) }
 
-  let(:query) do
-    data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
-    %(query {
-      #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
-        id
+    let(:query) do
+      data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
+      %(query {
+        #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
+          id
                   TEXT
                 end
                 break
@@ -70,25 +70,25 @@ module Souls
           f.each_line.with_index do |line, _i|
             if @on
               if line.include?("end") || line.include?("t.index")
-                new_line.write(<<~TEXT)
-                                          }
-                                        }
-                                      )
-                                    end
-                  #{'                  '}
-                                    subject(:result) do
-                                      SoulsApiSchema.execute(query).as_json
-                                    end
-                  #{'                  '}
-                                    it "return #{class_name.camelize} Data" do
-                                      begin
-                                        a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}")
-                                        raise unless a1.present?
-                                      rescue
-                                        raise StandardError, result
-                                      end
-                                      expect(a1).to include(
-                                        "id" => be_a(String),
+                new_line.write(<<-TEXT)
+          }
+        }
+      )
+    end
+
+    subject(:result) do
+      SoulsApiSchema.execute(query).as_json
+    end
+
+    it "return #{class_name.camelize} Data" do
+      begin
+        a1 = result.dig("data", "#{class_name.singularize.camelize(:lower)}")
+        raise unless a1.present?
+      rescue
+        raise StandardError, result
+      end
+      expect(a1).to include(
+        "id" => be_a(String),
                 TEXT
                 break
               end
@@ -133,14 +133,14 @@ module Souls
                 case type
                 when "text", "date", "datetime"
                   if array_true
-                    new_line.write("        \"#{name.camelize(:lower)}\" => be_all(String),\n")
+                    new_line.write("       \"#{name.camelize(:lower)}\" => be_all(String),\n")
                   else
-                    new_line.write("        \"#{name.camelize(:lower)}\" => be_a(String),\n")
+                    new_line.write("       \"#{name.camelize(:lower)}\" => be_a(String),\n")
                   end
                 when "boolean"
-                  new_line.write("        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n")
+                  new_line.write("       \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n")
                 when "string", "bigint", "integer", "float"
-                  new_line.write("        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n")
+                  new_line.write("       \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n")
                 end
               end
             end
