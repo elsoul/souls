@@ -104,7 +104,7 @@ module Souls
       File.open(file_path, "w") do |new_line|
         new_line.write(<<~TEXT)
           module Mutations
-            module #{class_name.camelize}
+            module Base::#{class_name.camelize}
               class Update#{class_name.camelize} < BaseMutation
                 field :#{class_name}_edge, Types::#{class_name.camelize}Type.edge_type, null: false
 
@@ -211,7 +211,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Mutations
-            module #{class_name.camelize}
+            module Base::#{class_name.camelize}
               class Delete#{class_name.camelize} < BaseMutation
                 field :#{class_name}, Types::#{class_name.camelize}Type, null: false
                 argument :id, String, required: true
@@ -240,7 +240,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Mutations
-            module #{class_name.camelize}
+            module Base::#{class_name.camelize}
               class DestroyDelete#{class_name.camelize} < BaseMutation
                 field :#{class_name}, Types::#{class_name.camelize}Type, null: false
                 argument :id, String, required: true

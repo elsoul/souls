@@ -6,12 +6,14 @@ Gem::Specification.new do |gem|
   gem.authors       = ["POPPIN-FUMI", "KishiTheMechanic", "James Neve"]
   gem.email         = ["f.kawasaki@elsoul.nl", "s.kishi@elsoul.nl", "jamesoneve@gmail.com"]
 
-  gem.summary       = "SOULs is a Serverless Application Framework.
-  SOULs has four strains, API, Worker, Console, Media, and can be used in combination according to the purpose.
-  SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud and Amazon Web Services"
-  gem.description = "SOULs is a Serverless Application Framework.
-  SOULs has four strains, API, Worker, Console, Media, and can be used in combination according to the purpose.
-  SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud and Amazon Web Services"
+  gem.summary       = "SOULs is a Serverless Application Framework with Ruby GraphQL.
+SOULs has six strains, API, Worker, Frontend, and can be used in combination according to the purpose.
+SOULs Ruby GraphQL API / Worker and Easy to deploy to Google Cloud. No more routing for Backends!
+You can focus on your business logic."
+  gem.description = "SOULs is a Serverless Application Framework with Ruby GraphQL.
+SOULs has six strains, API, Worker, Frontend, and can be used in combination according to the purpose.
+ SOULs Ruby GraphQL API / Worker and Easy to deploy to Google Cloud. No more routing for Backends!
+You can focus on your business logic."
   gem.homepage      = "https://souls.elsoul.nl"
   gem.license       = "Apache-2.0"
   gem.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
