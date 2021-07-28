@@ -2,6 +2,8 @@ module Souls
   module Generate
     ## Generate Rspec Model
     def self.rspec_model(class_name: "souls")
+      file_dir = "./spec/models/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./spec/models/#{class_name}_spec.rb"
       return "RspecModel already exist! #{file_path}" if File.exist?(file_path)
 

@@ -54,6 +54,8 @@ module Souls
     end
 
     def self.query(class_name: "souls")
+      file_dir = "./app/graphql/queries/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       singularized_class_name = class_name.singularize
       create_query(class_name: singularized_class_name)
       create_queries(class_name: singularized_class_name)

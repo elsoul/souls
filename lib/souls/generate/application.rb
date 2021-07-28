@@ -160,10 +160,6 @@ module Souls
     def self.single_migrate(class_name: "user")
       puts("◆◆◆ Let's Auto Generate CRUD API SET ◆◆◆\n")
       migrate(class_name: class_name)
-      puts("Generated #{class_name.camelize} CRUD Files\n")
-      Souls::Generate.generated_paths(class_name: class_name).each { |f| puts(f) }
-      puts("\nAll files created from ./db/schema.rb")
-      puts("\n\n")
     end
 
     def self.migrate_all

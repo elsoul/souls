@@ -2,6 +2,8 @@ module Souls
   module Generate
     ## Generate Rspec Resolver
     def self.rspec_resolver_head(class_name: "souls")
+      file_dir = "./spec/resolvers/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./spec/resolvers/#{class_name.singularize}_search_spec.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
@@ -170,7 +172,7 @@ module Souls
 
     def self.rspec_resolver(class_name: "souls")
       singularized_class_name = class_name.singularize
-      file_path = "#{Dir.pwd}/spec/resolvers/#{singularized_class_name}_search_spec.rb"
+      file_path = "./spec/resolvers/#{singularized_class_name}_search_spec.rb"
       return "Resolver already exist! #{file_path}" if File.exist?(file_path)
 
       rspec_resolver_head(class_name: singularized_class_name)

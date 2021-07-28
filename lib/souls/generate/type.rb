@@ -3,6 +3,8 @@ module Souls
     class << self
       ## Generate Type
       def create_type_head(class_name: "souls")
+        file_dir = "./app/graphql/types/"
+        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "./app/graphql/types/#{class_name}_type.rb"
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)

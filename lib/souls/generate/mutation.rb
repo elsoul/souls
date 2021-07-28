@@ -265,6 +265,8 @@ module Souls
 
     def self.mutation(class_name: "souls")
       singularized_class_name = class_name.singularize
+      file_dir = "./app/graphql/mutations/base"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./app/graphql/mutations/base/#{singularized_class_name}/create_#{singularized_class_name}.rb"
       return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 

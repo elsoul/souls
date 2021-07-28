@@ -2,6 +2,8 @@ module Souls
   module Generate
     ## Generate  Rspec Mutation
     def self.rspec_mutation_head(class_name: "souls")
+      file_dir = "./spec/mutations/base/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./spec/mutations/base/#{class_name.singularize}_spec.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)

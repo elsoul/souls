@@ -2,6 +2,8 @@ module Souls
   module Generate
     ## Generate Rspec Query
     def self.rspec_query_head(class_name: "souls")
+      file_dir = "./spec/queries/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)

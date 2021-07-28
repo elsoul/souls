@@ -14,6 +14,16 @@ ActiveRecord::Schema.define(version: 20_210_308_070_947) do
     t.index ["name"], name: "index_article_categories_on_name"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.bigint "article_id"
+    t.string "from", null: false
+    t.text "body", default: "", null: false
+    t.boolean "is_deleted", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["article_id"], name: "index_comments_on_article_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.bigint "user_id"
     t.string "title", null: false

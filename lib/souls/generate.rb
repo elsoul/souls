@@ -15,6 +15,7 @@ require_relative "./generate/type"
 require_relative "./generate/edge"
 require_relative "./generate/connection"
 require_relative "./generate/application"
+require_relative "./generate/methods"
 
 module Souls
   module Generate
