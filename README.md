@@ -22,19 +22,16 @@
 Welcome to SOULs Serverless Application Framework!
 
 SOULs is a Serverless Application Framework with Ruby GraphQL. 
-SOULs has six strains, API, Worker, Console, Admin, Media, Doc, and can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud. No more routing for Backends!
+SOULs has 3 strains, API, Worker, and Frontend. It can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud. No more routing for Backends!
 You can focus on your business logic.
 
 ![画像](https://storage.googleapis.com/souls-bucket/imgs/souls-structure.jpg)
 
-SOULs creates 6 types of framework.
+SOULs creates 3 types of framework.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Worker API (Ruby) - Cloud Run
-3. Console Web Client - User Console and CMS (TypeScript)
-4. Admin Web Client - Admin Console and CMS (TypeScript)
-5. Media Web Client - Media web client with SSG (TypeScript)
-6. Doc Web Client - Doc web client with SSG (TypeScript)
+3. Frontend - React Application (TypeScript) - Firebase
 
 ## Dependency
 
@@ -81,10 +78,7 @@ And Create Your APP
 Select Strain:
 1. SOULs GraphQL API
 2. SOULs Worker
-3. SOULs Console Web
-4. SOULs Admin Web
-5. SOULs Media Web
-6. SOULs Doc Web
+3. SOULs Frontend Web
 
 
 ## Gemfile 自動更新アップデート
