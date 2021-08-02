@@ -18,14 +18,7 @@ begin
     end
 
     prompt = TTY::Prompt.new
-    choices = [
-      "1. SOULs GraphQL API",
-      "2. SOULs Pub/Sub Worker",
-      "3. SOULs Console Web",
-      "4. SOULs Admin Web",
-      "5. SOULs Media Web",
-      "6. SOULs Doc Web"
-    ]
+    choices = ["1. SOULs GraphQL API", "2. SOULs Pub/Sub Worker", "3. SOULs Frontend Web"]
     choice_num = prompt.select(Paint["Select Strain: ", :cyan], choices)[0].to_i
     case choice_num
     when 1, 2
