@@ -34,7 +34,7 @@ module Souls
       url = "https://storage.googleapis.com/souls-bucket/github_actions/github.tgz"
       system("curl -OL #{url}")
       FileUtils.mkdir("github")
-      system("tar -zxvf ./#{file_name} -C #{file_name}/#{app_name}")
+      system("tar -zxvf ./#{file_name} -C #{app_name}/github/")
       FileUtils.rm(file_name)
     end
 
