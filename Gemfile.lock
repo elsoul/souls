@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.26.3)
+    souls (0.26.4)
       activesupport (= 6.1.4)
       dotenv (= 2.7.6)
       paint (= 2.2.1)
