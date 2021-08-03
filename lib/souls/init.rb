@@ -29,12 +29,12 @@ module Souls
       puts(e)
     end
 
-    def self.download_github_actions
+    def self.download_github_actions(app_name: "souls-app")
       file_name = "github.tgz"
       url = "https://storage.googleapis.com/souls-bucket/github_actions/github.tgz"
       system("curl -OL #{url}")
       FileUtils.mkdir("github")
-      system("tar -zxvf ./#{file_name} -C #{file_name}/")
+      system("tar -zxvf ./#{file_name} -C #{file_name}/#{app_name}")
       FileUtils.rm(file_name)
     end
 
@@ -78,7 +78,7 @@ module Souls
         service_name = (strains[choice_num.to_i - 1]).to_s
         Souls::Init.download_souls(app_name: app_name, service_name: service_name)
         Souls::Init.mother_config_init(app_name: app_name)
-        Souls::Init.download_github_actions
+        Souls::Init.download_github_actions(app_name: app_name)
         Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
       else
         puts(Paint["Coming Soon...", :blue])
