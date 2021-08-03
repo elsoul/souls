@@ -53,6 +53,8 @@ module Souls
         when "update"
           Souls::Generate.update_delete(class_name: class_name)
           Souls::Generate.migrate(class_name: class_name)
+        when "worker"
+          Souls::Init.download_worker
         else
           "SOULs!"
         end

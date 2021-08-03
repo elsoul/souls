@@ -9,25 +9,8 @@ begin
   souls_command = ARGV[0]
   case souls_command
   when "new"
-    STRAINS = %w[api worker console admin media doc].freeze
-    app_name = ARGV[1]
-    if app_name.nil?
-      puts(Paint["you need to specify your app name", :red])
-      puts(Paint["`souls new app_name`", :yellow])
-      exit
-    end
-
-    prompt = TTY::Prompt.new
-    choices = ["1. SOULs GraphQL API", "2. SOULs Pub/Sub Worker", "3. SOULs Frontend Web"]
-    choice_num = prompt.select(Paint["Select Strain: ", :cyan], choices)[0].to_i
-    case choice_num
-    when 1, 2
-      service_name = (STRAINS[choice_num.to_i - 1]).to_s
-      Souls::Init.download_souls(app_name: app_name, service_name: service_name)
-      Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
-    else
-      puts(Paint["Coming Soon...", :blue])
-    end
+    args = ARGV
+    Souls::Init.return_method(args)
   when "s", "server"
     strain = Souls.configuration.strain
     case strain
