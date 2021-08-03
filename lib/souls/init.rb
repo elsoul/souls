@@ -74,12 +74,13 @@ module Souls
       choices = ["1. SOULs GraphQL API", "2. SOULs Pub/Sub Worker", "3. SOULs Frontend Web"]
       choice_num = prompt.select(Paint["Select Strain: ", :cyan], choices)[0].to_i
       case choice_num
-      when 1, 2
+      when 1
         service_name = (strains[choice_num.to_i - 1]).to_s
         Souls::Init.download_souls(app_name: app_name, service_name: service_name)
         Souls::Init.mother_config_init(app_name: app_name)
         Souls::Init.download_github_actions(app_name: app_name)
         Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
+        Souls::Init.souls_api_credit(app_name: app_name, service_name: service_name)
       else
         puts(Paint["Coming Soon...", :blue])
       end
@@ -93,6 +94,9 @@ module Souls
       system("mkdir -p #{app_name}/apps/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
       FileUtils.rm(file_name)
+    end
+
+    def self.souls_api_credit(app_name: "souls", service_name: "api")
       line = Paint["====================================", :yellow]
       puts("\n")
       puts(line)
