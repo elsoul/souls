@@ -29,6 +29,15 @@ module Souls
       puts(e)
     end
 
+    def self.download_github_actions
+      file_name = "github.tgz"
+      url = "https://storage.googleapis.com/souls-bucket/github_actions/github.tgz"
+      system("curl -OL #{url}")
+      FileUtils.mkdir("github")
+      system("tar -zxvf ./#{file_name} -C #{file_name}/")
+      FileUtils.rm(file_name)
+    end
+
     def self.mother_config_init(app_name: "souls-app")
       config_dir = "./#{app_name}/config"
       FileUtils.mkdir_p(config_dir) unless Dir.exist?(config_dir)

@@ -1,9 +1,12 @@
-name: Delivery
+name: Worker
 
 on:
   push:
     branches:
       - master
+    paths:
+      - "apps/worker/**"
+      - ".github/workflows/worker.yml"
 
 jobs:
   build:
@@ -56,7 +59,7 @@ jobs:
       run: gcloud auth configure-docker --quiet
     
     - name: Build Docker container
-      run: docker build . -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}
+      run: docker build -f ./apps/worker/Dockerfile ./apps/worker -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}
 
     - name: Push to Container Resistory
       run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}
