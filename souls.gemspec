@@ -32,6 +32,8 @@ You can focus on your business logic."
   gem.bindir        = "exe"
   gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }
   gem.require_paths = ["lib"]
+  gem.add_runtime_dependency("activesupport", "6.1.4")
+  gem.add_runtime_dependency("dotenv", "2.7.6")
   gem.add_runtime_dependency("paint", "2.2.1")
   gem.add_runtime_dependency("tty-prompt", "0.23.1")
   gem.add_runtime_dependency("whirly", "0.3.0")
