@@ -78,6 +78,7 @@ module Souls
         service_name = (strains[choice_num.to_i - 1]).to_s
         Souls::Init.download_souls(app_name: app_name, service_name: service_name)
         Souls::Init.mother_config_init(app_name: app_name)
+        Souls::Init.download_github_actions
         Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
       else
         puts(Paint["Coming Soon...", :blue])
