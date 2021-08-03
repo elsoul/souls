@@ -107,7 +107,7 @@ module Souls
       puts(line)
       endroll = <<~TEXT
         Easy to Run
-        $ cd #{app_name}/app/#{service_name}
+        $ cd #{app_name}/apps/#{service_name}
         $ bundle
         $ souls s
         Go To : http://localhost:4000
@@ -120,12 +120,13 @@ module Souls
     end
 
     def self.download_worker
+      current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
       version = Souls.get_latest_version_txt(service_name: "worker").join(".")
       file_name = "worker-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
       system("curl -OL #{url}")
       system("mkdir -p ./apps/worker")
-      system("tar -zxvf ./#{file_name} -C ./apps/worker")
+      system("tar -zxvf ./#{file_name} -C ./apps/")
       FileUtils.rm(file_name)
       line = Paint["====================================", :yellow]
       puts("\n")

@@ -106,7 +106,7 @@ begin
   when "g", "generate"
     args = ARGV
     status = Paint["Generating Files...", :yellow]
-    done = Paint["Generated SOULs CRUD Files☻", :yellow]
+    done = Paint["You're All Set ☻", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
       Souls::Generate.return_method(args)
