@@ -16,6 +16,41 @@ module Souls
         )
       end
 
+      def export_key_to_console
+        github_repo = Souls.configuration.github_repo || "elsoul/souls"
+        file_path = "config/keyfile.json"
+        puts(Paint["======= below（ここから）=======", :cyan])
+        text = []
+        File.open(file_path, "r") do |line|
+          line.each_line do |l|
+            text << l
+          end
+        end
+        key = text.join(",").gsub(/^,/, "").chomp!
+        puts(Paint[key, :white])
+        puts(Paint["======= above（ここまで）=======", :cyan])
+        github_secret_url = "https://github.com/#{github_repo}/#{app_name}/settings/secrets/actions"
+        souls_doc_url = "https://souls.elsoul.nl/docs/chapter2/#43-github-シークレットキーの登録"
+        txt1 = <<~TEXT
+
+          ⬆⬆⬆　Copy the service account key above　⬆⬆⬆⬆
+
+                          And
+
+          Go to %{yellow_text}
+
+          Reference: %{yellow_text2}
+        TEXT
+        puts(
+          Paint % [
+            txt1,
+            :white,
+            { yellow_text: [github_secret_url, :yellow], yellow_text2: [souls_doc_url, :yellow] }
+          ]
+        )
+        fileutils.rm(file_path)
+      end
+
       def add_service_account_role(service_account: "souls-app", project_id: "souls-app", role: "roles/firebase.admin")
         system(
           "gcloud projects add-iam-policy-binding #{project_id} \

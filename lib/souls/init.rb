@@ -93,6 +93,7 @@ module Souls
       system("curl -OL #{url}")
       system("mkdir -p #{app_name}/apps/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
+      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml #{app_name}")
       FileUtils.rm(file_name)
     end
 

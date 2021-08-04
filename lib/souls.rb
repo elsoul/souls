@@ -192,6 +192,7 @@ module Souls
 
       system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{file_name}")
       system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{release_name}")
+      system("gsutil cp .rubocop.yml #{bucket_url}/.rubocop.yml")
       FileUtils.rm("#{service_name}.tgz")
       "#{service_name}-v#{new_ver} Succefully Stored to GCS! "
     end
@@ -381,14 +382,13 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :app, :strain, :project_id, :worker_repo, :api_repo, :worker_endpoint, :fixed_gems
+    attr_accessor :app, :strain, :project_id, :github_repo, :worker_endpoint, :fixed_gems
 
     def initialize
       @app = nil
       @project_id = nil
       @strain = nil
-      @worker_repo = nil
-      @api_repo = nil
+      @github_repo = nil
       @worker_endpoint = nil
       @fixed_gems = nil
     end
