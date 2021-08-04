@@ -1,7 +1,7 @@
 module Souls
   module Release
     class << self
-      def self.return_method
+      def return_method
         system("gem install souls")
         sleep(3)
         current_souls_ver = Souls::VERSION.strip.split(".").map(&:to_i)
