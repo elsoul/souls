@@ -59,15 +59,15 @@ jobs:
       run: gcloud auth configure-docker --quiet
     
     - name: Build Docker container
-      run: docker build -f ./apps/api/Dockerfile ./apps/api -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}
+      run: docker build -f ./apps/api/Dockerfile ./apps/api -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-api
 
     - name: Push to Container Resistory
-      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}
+      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-api
 
     - name: Deploy to Cloud Run
       run: |
-          gcloud run deploy ${{ secrets.APP_NAME }} \
-            --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}} \
+          gcloud run deploy ${{ secrets.APP_NAME }}-api \
+            --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-api \
             --memory=4Gi \
             --region=asia-northeast1 \
             --allow-unauthenticated \
