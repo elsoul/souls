@@ -20,7 +20,8 @@ module Souls
             config.app = "#{app_name}"
             config.project_id = "souls-app"
             config.strain = "#{service_name}"
-            config.worker_endpoint = "https://worker.com"
+            config.github_repo = "elsoul/souls"
+            config.worker_endpoint = "https://worker.test.com"
             config.fixed_gems = ["excluded_gem"]
           end
         TEXT
@@ -49,10 +50,8 @@ module Souls
             config.app = "#{app_name}"
             config.project_id = "souls-app"
             config.strain = "mother"
-            config.api = true
-            config.worker = false
-            config.frontend = false
-            config.worker_endpoint = ""
+            config.github_repo = "elsoul/souls"
+            config.worker_endpoint = "https://worker.test.com"
             config.fixed_gems = ["excluded_gem"]
           end
         TEXT
