@@ -31,7 +31,7 @@ def create_article(user_id, article_category_id)
   "Article Created!\n #{article.to_json}" if article
 end
 
-%w[お知らせ 特集 レシピ].each do |name|
+%w[お知らせ 特集 速報].each do |name|
   puts ArticleCategory.create(name: name).to_json
 end
 
