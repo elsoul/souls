@@ -3,6 +3,7 @@ require "active_support/core_ext/string/inflections"
 require_relative "souls/init"
 require_relative "souls/generate"
 require_relative "souls/gcloud"
+require_relative "souls/release"
 require "dotenv/load"
 require "json"
 require "fileutils"
@@ -174,7 +175,6 @@ module Souls
       bucket_url = "gs://souls-bucket/boilerplates"
       file_name = "#{service_name}-v#{new_ver}.tgz"
       release_name = "#{service_name}-latest.tgz"
-      update_service_gemfile(service_name: service_name)
 
       case current_dir_name
       when "souls"
@@ -257,7 +257,7 @@ module Souls
       end
     end
 
-    def update_service_gemfile(service_name: "api")
+    def update_service_gemfile(service_name: "api", version: "0.0.1")
       file_dir = "./apps/#{service_name}"
       file_path = "#{file_dir}/Gemfile"
       gemfile_lock = "#{file_dir}/Gemfile.lock"
@@ -269,7 +269,7 @@ module Souls
             if gem[0] == "souls"
               old_ver = gem[1].split(".")
               old_ver[2] = (old_ver[2].to_i + 1).to_s
-              new_line.write("  gem \"souls\", \"#{old_ver.join('.')}\"\n")
+              new_line.write("  gem \"souls\", \"#{version}\"\n")
             else
               new_line.write(line)
             end
