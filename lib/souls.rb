@@ -282,30 +282,52 @@ module Souls
       puts(Paint["\nSuccessfully Updated #{service_name} Gemfile!", :green])
     end
 
-    def update_models(api_dir: "../api/db", worker_dir: "./db", push: false)
+    def update_models
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-      wrong_dir = %w[apps api]
-      raise(StandardError, "You are at wrong directory!Go to Worker Directory!") if wrong_dir.include?(current_dir_name)
+      permitted_dirs = %w[worker api]
+      unless permitted_dirs.include?(current_dir_name)
+        raise(StandardError, "You are at wrong directory!Go to API or Worker Directory!")
+      end
 
+      cp_dir = get_models_path(service_name: current_dir_name)
+      cp_dir.each do |path|
+        cp_and_dl_files(api_dir: path[:api], worker_dir: path[:worker])
+      end
+    end
+
+    def cp_and_dl_files(api_dir: "", worker_dir: "")
       api_file_data = file_diff(Dir["#{api_dir}/*.rb"])
       worker_file_data = file_diff(Dir["#{worker_dir}/*.rb"])
 
-      error_text =
-        "detected some changes in you #{worker_dir} dir.Please check both #{api_dir} and #{worker_dir} before update."
+      api_latest_date = Date.parse(api_file_data.max)
+      worker_latest_date = Date.parse(worker_file_data.max)
 
-      if push == true
-        raise(StandardError, error_text) if api_file_data.max > worker_file_data.max
-
+      if api_latest_date > worker_latest_date
         FileUtils.rm_rf(api_dir)
         FileUtils.mkdir(api_dir) unless Dir.exist?(api_dir)
         system("cp -r #{worker_dir}/* #{api_dir}")
       else
-        raise(StandardError, error_text) if api_file_data.max < worker_file_data.max
-
         FileUtils.rm_rf(worker_dir)
         FileUtils.mkdir(worker_dir) unless Dir.exist?(worker_dir)
         system("cp -r #{api_dir}/* #{worker_dir}")
       end
+    end
+
+    def get_models_path(service_name: "api")
+      [
+        {
+          api: "../#{service_name}/db",
+          worker: "./db"
+        },
+        {
+          api: "../#{service_name}/app/models",
+          worker: "./app/models"
+        },
+        {
+          api: "../#{service_name}/spec/factories",
+          worker: "./spec/factories"
+        }
+      ]
     end
 
     def file_diff(paths = [])
