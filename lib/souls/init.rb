@@ -135,6 +135,9 @@ module Souls
 
     def self.download_worker
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
+      wrong_dir = %w[apps api worker]
+      raise(StandardError, "You are at wrong directory!Go to Mother Directory!") if wrong_dir.include?(current_dir_name)
+
       version = Souls.get_latest_version_txt(service_name: "worker").join(".")
       file_name = "worker-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"

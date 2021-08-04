@@ -55,8 +55,54 @@ begin
     end
   when "release"
     Souls::Release.return_method
-  when "update"
-    puts(Paint["Coming soon..", :cyan])
+  when "pull:model"
+    models_dirs = [
+      {
+        api: "../api/db",
+        worker: "./db"
+      },
+      {
+        api: "../api/app/models",
+        worker: "./app/models"
+      },
+      fa{
+        api: "../api/spec/factories",
+        worker: "./spec/factories"
+      }
+    ]
+
+    status = Paint["Checking for updates...", :yellow]
+    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+      Whirly.status = status
+      models_dirs.each do |path|
+        Souls.update_models(api_dir: path[:api], worker_dirs: path[:worker])
+      end
+      Whirly.status = "Done!"
+    end
+  when "push:model"
+    models_dirs = [
+      {
+        api: "../api/db",
+        worker: "./db"
+      },
+      {
+        api: "../api/app/models",
+        worker: "./app/models"
+      },
+      fa{
+        api: "../api/spec/factories",
+        worker: "./spec/factories"
+      }
+    ]
+
+    status = Paint["Checking for updates...", :yellow]
+    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+      Whirly.status = status
+      models_dirs.each do |path|
+        Souls.update_models(api_dir: path[:api], worker_dirs: path[:worker], push: true)
+      end
+      Whirly.status = "Done!"
+    end
   when "add"
     graphql_class = ARGV[1]
     case graphql_class

@@ -282,6 +282,50 @@ module Souls
       puts(Paint["\nSuccessfully Updated #{service_name} Gemfile!", :green])
     end
 
+    def update_models(api_dir: "../api/db", worker_dir: "./db", push: false)
+      current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
+      wrong_dir = %w[apps api]
+      raise(StandardError, "You are at wrong directory!Go to Worker Directory!") if wrong_dir.include?(current_dir_name)
+
+      api_file_data = file_diff(Dir["#{api_dir}/*.rb"])
+      worker_file_data = file_diff(Dir["#{worker_dir}/*.rb"])
+
+      error_text =
+        "detected some changes in you #{worker_dir} dir.Please check both #{api_dir} and #{worker_dir} before update."
+
+      if push == true
+        raise(StandardError, error_text) if api_file_data.max > worker_file_data.max
+
+        FileUtils.rm_rf(api_dir)
+        FileUtils.mkdir(api_dir) unless Dir.exist?(api_dir)
+        system("cp -r #{worker_dir}/* #{api_dir}")
+      else
+        raise(StandardError, error_text) if api_file_data.max < worker_file_data.max
+
+        FileUtils.rm_rf(worker_dir)
+        FileUtils.mkdir(worker_dir) unless Dir.exist?(worker_dir)
+        system("cp -r #{api_dir}/* #{worker_dir}")
+      end
+    end
+
+    def file_diff(paths = [])
+      paths.map do |path|
+        stat(path)[:last_update]
+      end
+    end
+
+    def stat(path)
+      s = File::Stat.new(path)
+      last_update = s.mtime.to_s
+      last_status_change = s.ctime.to_s
+      last_access = s.atime.to_s
+      {
+        last_update: last_update,
+        last_status_change: last_status_change,
+        last_access: last_access
+      }
+    end
+
     def detect_change
       git_status = `git status`
       result =
