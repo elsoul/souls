@@ -4,6 +4,13 @@ module Souls
       def return_method(args)
         method = args[1]
         case method
+        when "get_iam_key"
+          app_name = Souls.configuration.app
+          project_id = Souls.configuration.project_id
+          Souls::Gcloud.create_service_account(service_account: app_name)
+          Souls::Gcloud.create_service_account_key(service_account: app_name, project_id: project_id)
+          Souls::Gcloud.export_key_to_console
+          Souls::Gcloud.enable_permissions
         when "auth_login"
           project_id = Souls.configuration.project_id
           Souls::Gcloud.auth_login(project_id: project_id)
