@@ -1,7 +1,6 @@
 ENV["RACK_ENV"] = "test"
 require "./app"
 require "rspec"
-# require "test/unit"
 require "rack/test"
 require "database_cleaner"
 require "capybara/rspec"

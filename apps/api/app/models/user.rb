@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
 
   roles :normal, :user, :admin, :master
-
   before_create :assign_initial_roles
 
   # Scope

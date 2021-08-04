@@ -297,36 +297,50 @@ module Souls
     end
 
     def cp_and_dl_files(api_dir: "", worker_dir: "")
-      api_file_data = file_diff(Dir["#{api_dir}/*.rb"])
-      worker_file_data = file_diff(Dir["#{worker_dir}/*.rb"])
+      if Dir["#{worker_dir}/*.rb"].blank?
 
-      api_latest_date = Date.parse(api_file_data.max)
-      worker_latest_date = Date.parse(worker_file_data.max)
+        api_latest_date = 1
+        worker_latest_date = 0
+      else
+        api_file_data = file_diff(Dir["#{api_dir}/*.rb"])
+        worker_file_data = file_diff(Dir["#{worker_dir}/*.rb"])
 
-      if api_latest_date > worker_latest_date
-        FileUtils.rm_rf(api_dir)
+        api_latest_date = Date.parse(api_file_data.max)
+        worker_latest_date = Date.parse(worker_file_data.max)
+      end
+
+      if api_latest_date < worker_latest_date
+        FileUtils.rm_rf(api_dir) if Dir.exist?(api_dir)
         FileUtils.mkdir(api_dir) unless Dir.exist?(api_dir)
         system("cp -r #{worker_dir}/* #{api_dir}")
       else
-        FileUtils.rm_rf(worker_dir)
+        FileUtils.rm_rf(worker_dir) if Dir.exist?(worker_dir)
         FileUtils.mkdir(worker_dir) unless Dir.exist?(worker_dir)
         system("cp -r #{api_dir}/* #{worker_dir}")
       end
     end
 
     def get_models_path(service_name: "api")
+      case service_name
+      when "api"
+        api_path = "."
+        worker_path = "../worker"
+      when "worker"
+        api_path = "../api"
+        worker_path = "."
+      end
       [
         {
-          api: "../#{service_name}/db",
-          worker: "./db"
+          api: "#{api_path}/db",
+          worker: "#{worker_path}/db"
         },
         {
-          api: "../#{service_name}/app/models",
-          worker: "./app/models"
+          api: "#{api_path}/app/models",
+          worker: "#{worker_path}/app/models"
         },
         {
-          api: "../#{service_name}/spec/factories",
-          worker: "./spec/factories"
+          api: "#{api_path}/spec/factories",
+          worker: "#{worker_path}/spec/factories"
         }
       ]
     end
