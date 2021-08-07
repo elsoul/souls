@@ -83,10 +83,10 @@ module Souls
       system("curl -OL #{url}")
       system("mkdir -p #{app_name}/apps/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
-      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml #{app_name}")
-      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Gemfile #{app_name}")
-      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev #{app_name}")
-      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile #{app_name}")
+      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml")
+      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Gemfile")
+      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev")
+      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
       FileUtils.rm(file_name)
     end
 

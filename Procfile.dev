@@ -1,2 +1,2 @@
 api: foreman start -f ./apps/api/Procfile.dev
-# worker: foreman start -f ./apps/worker/Procfile.dev
+worker: foreman start -f ./apps/worker/Procfile.dev
