@@ -39,7 +39,7 @@ group :development, :test do
   gem "selenium-webdriver", "3.142.7"
   gem "solargraph", "0.43.0"
   gem "souls", "0.27.7"
-  gem "webmock", "3.13.0"
+  gem "webmock", "3.14.0"
 end
 
 group :development do

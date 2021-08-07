@@ -1,5 +1,5 @@
 module SoulsHelper
-  def self.pubsub_queue(topic_name: "seino-schedule-scraper", message: "text!")
+  def self.pubsub_queue(topic_name: "send-mail-job", message: "text!")
     pubsub = Google::Cloud::Pubsub.new(project: ENV["PROJECT_ID"])
     topic = pubsub.topic(topic_name)
     topic.publish(message)

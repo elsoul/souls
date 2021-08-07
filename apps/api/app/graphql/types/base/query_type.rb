@@ -13,6 +13,5 @@ module Types
         Object.const_get(t.singularize.camelize.to_s).all.order(id: :desc)
       end
     end
-    field :me, resolver: Queries::Me
   end
 end
