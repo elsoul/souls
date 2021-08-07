@@ -12,13 +12,7 @@ begin
     args = ARGV
     Souls::Init.return_method(args)
   when "s", "server"
-    strain = Souls.configuration.strain
-    case strain
-    when "media", "admin", "console", "doc"
-      system("yarn dev")
-    else
-      system("foreman start -f Procfile.dev")
-    end
+    system("foreman start -f Procfile.dev")
   when "c", "console"
     strain = Souls.configuration.strain
     case strain
@@ -44,7 +38,7 @@ begin
       Souls::Gcloud.return_method(args)
       Whirly.status = "Done!"
     end
-  when "-v", "--version"
+  when "-v", "--version", "v", "version", "-version", "--v"
     puts(Paint[Souls::VERSION, :white])
   when "gem:update", "gemfile:update"
     status = Paint["Checking for updates...", :yellow]
@@ -56,11 +50,11 @@ begin
   when "release"
     Souls::Release.return_method
   when "model:update"
-    status = Paint["Updating Models...", :yellow]
+    status = Paint["Syncing Models...", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
       Souls.update_models
-      Whirly.status = "Done!"
+      Whirly.status = "API and Worker Both Models Synced!"
     end
   when "add"
     graphql_class = ARGV[1]
@@ -122,18 +116,6 @@ begin
     else
       system("rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test")
     end
-  when "db:update"
-    strain = Souls.configuration.strain
-    case strain
-    when "api"
-      other_app = Souls.configuration.worker_name
-    when "worker"
-      other_app = Souls.configuration.api_name
-    else
-      raise(StandardError, "Unknown app name!")
-    end
-    system("rm -rf ../#{other_app}/db/*")
-    system("cp -r ./db/* ../#{other_app}/db/*")
   when "t", "test"
     system("rubocop -A")
     system("bundle exec rspec")

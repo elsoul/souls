@@ -19,7 +19,7 @@ module Souls
           Souls.configure do |config|
             config.app = "#{app_name}"
             config.project_id = "souls-app"
-            config.strain = "#{service_name}"
+            config.strain = "#{app_name}"
             config.github_repo = "elsoul/souls"
             config.worker_endpoint = "https://worker.test.com"
             config.fixed_gems = ["excluded_gem"]
@@ -48,7 +48,7 @@ module Souls
         f.write(<<~TEXT)
           Souls.configure do |config|
             config.app = "#{app_name}"
-            config.project_id = "souls-app"
+            config.project_id = "#{app_name}"
             config.strain = "mother"
             config.github_repo = "elsoul/souls"
             config.worker_endpoint = "https://worker.test.com"
@@ -61,7 +61,6 @@ module Souls
     end
 
     def self.return_method(args)
-      strains = %w[api worker console admin media doc].freeze
       app_name = args[1]
       if app_name.nil?
         puts(Paint["you need to specify your app name", :red])
@@ -69,20 +68,12 @@ module Souls
         exit
       end
 
-      prompt = TTY::Prompt.new
-      choices = ["1. SOULs GraphQL API", "2. SOULs Pub/Sub Worker", "3. SOULs Frontend Web"]
-      choice_num = prompt.select(Paint["Select Strain: ", :cyan], choices)[0].to_i
-      case choice_num
-      when 1
-        service_name = (strains[choice_num.to_i - 1]).to_s
-        Souls::Init.download_souls(app_name: app_name, service_name: service_name)
-        Souls::Init.mother_config_init(app_name: app_name)
-        Souls::Init.download_github_actions(app_name: app_name)
-        Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
-        Souls::Init.souls_api_credit(app_name: app_name, service_name: service_name)
-      else
-        puts(Paint["Coming Soon...", :blue])
-      end
+      service_name = "api"
+      Souls::Init.download_souls(app_name: app_name, service_name: service_name)
+      Souls::Init.mother_config_init(app_name: app_name)
+      Souls::Init.download_github_actions(app_name: app_name)
+      Souls::Init.initial_config_init(app_name: app_name, service_name: service_name)
+      Souls::Init.souls_api_credit(app_name: app_name, service_name: service_name)
     end
 
     def self.download_souls(app_name: "souls", service_name: "api")
@@ -93,6 +84,9 @@ module Souls
       system("mkdir -p #{app_name}/apps/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
       system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml #{app_name}")
+      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Gemfile #{app_name}")
+      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev #{app_name}")
+      system("curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile #{app_name}")
       FileUtils.rm(file_name)
     end
 

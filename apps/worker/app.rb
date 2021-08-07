@@ -71,12 +71,12 @@ class SoulsApi < Sinatra::Base
   end
 
   get "/" do
-    message = { success: true, message: "SOULs Running!", env: ENV["RACK_ENV"] }
+    message = { success: true, message: "SOULs Worker is Running!", env: ENV["RACK_ENV"] }
     json message
   end
 
   get "/db" do
-    message = { success: true, message: "SOULs Running!", env: ENV["RACK_ENV"], db: User.first.username }
+    message = { success: true, message: "SOULs Worker is Running!", env: ENV["RACK_ENV"], db: User.first.username }
     json(message)
   rescue StandardError => e
     message = { error: e }

@@ -22,6 +22,7 @@ GEM
     diff-lcs (1.4.4)
     dotenv (2.7.6)
     ffi (1.15.3)
+    foreman (0.87.2)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     language_server-protocol (3.16.0.1)
@@ -103,6 +104,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (= 6.1.4)
   dotenv (= 2.7.6)
+  foreman (= 0.87.2)
   paint (= 2.2.1)
   parser (= 3.0.2.0)
   rake (= 13.0.6)
