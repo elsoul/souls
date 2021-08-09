@@ -12,6 +12,7 @@ AllCops:
     - "spec/spec_helper.rb"
     - "spec/**/*.rb"
     - "lib/souls/generate/type.rb"
+    - "tmp/**/*.rb"
 
 Style/Copyright:
   Description: "Include a copyright notice in each file before any code."

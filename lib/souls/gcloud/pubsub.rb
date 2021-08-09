@@ -29,14 +29,15 @@ module Souls
         endpoint: "https:://test.com"
       )
         system(
-        "gcloud pubsub subscriptions update #{topic_name}-sub \
-        --topic #{topic_name} \
-        --topic-project #{project_id} \
-        --push-auth-service-account #{service_account} \
-        --push-endpoint #{endpoint} \
-        --expiration-period never
+          "gcloud pubsub subscriptions update #{topic_name}-sub \
+          --topic #{topic_name} \
+          --topic-project #{project_id} \
+          --push-auth-service-account #{service_account} \
+          --push-endpoint #{endpoint} \
+          --expiration-period never
          "
         )
+      end
     end
   end
 end
