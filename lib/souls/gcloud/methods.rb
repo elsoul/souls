@@ -15,7 +15,10 @@ module Souls
           project_id = Souls.configuration.project_id
           Souls::Gcloud.auth_login(project_id: project_id)
         when "enable_permissions"
+          service_account = Souls.configuration.app
+          project_id = Souls.configuration.project_id
           Souls::Gcloud.enable_permissions
+          Souls::Gcloud.add_permissions(service_account: service_account, project_id: project_id)
         when "create_pubsub_topic"
           topic_name = args[2] || "send-user-mail"
           Souls::Gcloud.create_pubsub_topic(topic_name: topic_name)
