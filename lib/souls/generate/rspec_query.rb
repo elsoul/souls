@@ -23,7 +23,7 @@ module Souls
         File.open(path, "r") do |f|
           f.each_line.with_index do |line, _i|
             if @on
-              if line.include?("end") || line.include?("t.index")
+              if line.include?("t.index") || line.strip == "end"
                 if @relation_params.empty?
                   new_line.write(<<-TEXT)
     let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
@@ -69,7 +69,7 @@ module Souls
         File.open(path, "r") do |f|
           f.each_line.with_index do |line, _i|
             if @on
-              if line.include?("end") || line.include?("t.index")
+              if line.include?("t.index") || line.strip == "end"
                 new_line.write(<<-TEXT)
           }
         }
@@ -114,7 +114,7 @@ module Souls
         File.open(path, "r") do |f|
           f.each_line.with_index do |line, _i|
             if @on
-              if line.include?("end") || line.include?("t.index")
+              if line.include?("t.index") || line.strip == "end"
                 new_line.write(<<~TEXT)
                           )
                       end

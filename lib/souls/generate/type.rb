@@ -24,7 +24,7 @@ module Souls
           File.open(path, "r") do |f|
             f.each_line.with_index do |line, _i|
               if @on
-                new_line.write("\n" && break) if line.include?("end") || line.include?("t.index")
+                new_line.write("\n" && break) if line.include?("t.index") || line.strip == "end"
                 field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
                 field ||= type_check(type)
