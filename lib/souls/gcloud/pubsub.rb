@@ -22,7 +22,10 @@ module Souls
         )
       end
 
-      def update_pubsub_subscription(endpoint: "https:://test.com")
+      def update_pubsub_subscription(
+        topic_name: "send-user-mail",
+        endpoint: "https:://test.com"
+      )
         system("gcloud pubsub subscriptions update #{topic_name}-sub --push-endpoint #{endpoint} ")
       end
     end
