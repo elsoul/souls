@@ -33,7 +33,7 @@ module Souls
   class << self
     attr_accessor :configuration
 
-    def run_psql
+    def psql
       system(
         "docker run --rm -d \
           -p 5433:5432 \
@@ -46,7 +46,7 @@ module Souls
       system("docker ps")
     end
 
-    def run_mysql
+    def mysql
       system(
         "docker run --rm -d \
           -p 3306:3306 \
@@ -57,14 +57,6 @@ module Souls
           mysql:latest"
       )
       system("docker ps")
-    end
-
-    def run_awake(url)
-      app = Souls.configuration.app
-      system(
-        "gcloud scheduler jobs create http #{app}-awake
-        --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
-      )
     end
 
     def gemfile_latest_version

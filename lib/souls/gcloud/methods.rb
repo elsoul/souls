@@ -54,6 +54,12 @@ module Souls
           service_account = Souls.configuration.app
           project_id = Souls.configuration.project_id
           Souls::Gcloud.add_permissions(service_account: service_account, project_id: project_id)
+        when "run_list"
+          project_id = Souls.configuration.project_id
+          Souls::Gcloud.run_list(project_id: project_id)
+        when "run_awake"
+          app_name = Souls.configuration.app
+          Souls::Gcloud.run_awake(app_name: app_name)
         else
           raise(StandardError, "Wrong Method!")
         end

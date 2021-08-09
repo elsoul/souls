@@ -21,7 +21,7 @@ production:
 
 
 ## Use local docker postgresql13
-## `souls i run_psql` will create psql container
+## `souls i psql` will create psql container
 
 test:
   <<: *default
