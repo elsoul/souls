@@ -30,11 +30,12 @@ module Souls
         File.open(path, "r") do |f|
           f.each_line.with_index do |line, _i|
             if @on
-              break if line.include?("end") || line.include?("t.index")
+              break if line.include?("t.index") || line.strip == "end"
 
               field = "[String]" if line.include?("array: true")
               type, name = get_type_and_name(line)
               field ||= type_check(type)
+              puts(line)
               case name
               when "user_id"
                 @user_exist = true
@@ -57,21 +58,21 @@ module Souls
       file_path = "./app/graphql/resolvers/#{class_name.singularize}_search.rb"
       File.open(file_path, "a") do |f|
         f.write(<<-TEXT)
-    argument :start_date, String, required: false
-    argument :end_date, String, required: false
-  end
+      argument :start_date, String, required: false
+      argument :end_date, String, required: false
+    end
 
-  option :filter, type: #{class_name.camelize}Filter, with: :apply_filter
-  option :first, type: types.Int, with: :apply_first
-  option :skip, type: types.Int, with: :apply_skip
+    option :filter, type: #{class_name.camelize}Filter, with: :apply_filter
+    option :first, type: types.Int, with: :apply_first
+    option :skip, type: types.Int, with: :apply_skip
 
-  def apply_filter(scope, value)
-    branches = normalize_filters(value).inject { |a, b| a.or(b) }
-    scope.merge branches
-  end
+    def apply_filter(scope, value)
+      branches = normalize_filters(value).inject { |a, b| a.or(b) }
+      scope.merge branches
+    end
 
-  def normalize_filters(value, branches = [])
-    scope = ::#{class_name.camelize}.all
+    def normalize_filters(value, branches = [])
+      scope = ::#{class_name.camelize}.all
         TEXT
       end
     end
@@ -86,7 +87,7 @@ module Souls
         File.open(path, "r") do |f|
           f.each_line.with_index do |line, _i|
             if @on
-              break if line.include?("end") || line.include?("t.index")
+              break if line.include?("t.index") || line.strip == "end"
 
               type, name = get_type_and_name(line)
               if line.include?("array: true")
