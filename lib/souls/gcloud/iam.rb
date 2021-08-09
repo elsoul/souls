@@ -61,12 +61,13 @@ module Souls
 
       def add_permissions(service_account: "souls-app", project_id: "souls-app")
         roles = [
-          "roles/cloudsql.serviceAgent",
+          "roles/cloudsql.instanceUser",
           "roles/containerregistry.ServiceAgent",
           "roles/pubsub.serviceAgent",
           "roles/firestore.serviceAgent",
           "roles/iam.serviceAccountUser",
-          "roles/storage.objectAdmin"
+          "roles/storage.objectAdmin",
+          "roles/run.admin"
         ]
         roles.each do |role|
           add_service_account_role(service_account: service_account, project_id: project_id, role: role)
