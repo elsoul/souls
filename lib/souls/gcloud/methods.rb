@@ -49,7 +49,8 @@ module Souls
           Souls::Gcloud.add_service_account_role(service_account: service_account, project_id: project_id, role: role)
         when "add_permissions"
           service_account = Souls.configuration.app
-          Souls::Gcloud.add_permissions(service_account: service_account)
+          project_id = Souls.configuration.project_id
+          Souls::Gcloud.add_permissions(service_account: service_account, project_id: project_id)
         else
           raise(StandardError, "Wrong Method!")
         end
