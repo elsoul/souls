@@ -35,7 +35,6 @@ module Souls
               field = "[String]" if line.include?("array: true")
               type, name = get_type_and_name(line)
               field ||= type_check(type)
-              puts(line)
               case name
               when "user_id"
                 @user_exist = true
