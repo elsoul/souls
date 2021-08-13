@@ -24,7 +24,20 @@ begin
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
   when "worker"
-    puts(Paint["Coming Soon...", :green])
+    api_command = ARGV[1]
+    case api_command
+    when "generate", "g"
+      method_name = ARGV[2]
+      class_name = ARGV[3]
+      status = Paint["Running SOULs Generate Commands...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+        Souls::Worker::Generate.public_send(method_name, class_name: class_name)
+        Whirly.status = "Done!"
+      end
+    else
+      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
+    end
   when "new"
     args = ARGV
     Souls::Init.return_method(args)
