@@ -21,10 +21,10 @@ begin
         Whirly.status = "Done!"
       end
     else
-      Paint["Comannd doesn't exist.Check you command again!...", :red]
+      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
   when "worker"
-    Paint["Coming Soon...", :green]
+    puts(Paint["Coming Soon...", :green])
   when "new"
     args = ARGV
     Souls::Init.return_method(args)
@@ -46,7 +46,7 @@ begin
     end
   when "i", "infra", "docker"
     send_method = ARGV[1]
-    Souls::Docker.send(send_method)
+    Souls::Docker.public_send(send_method)
   when "gcloud"
     args = ARGV
     status = Paint["Running Gcloud Commands...", :yellow]
@@ -90,13 +90,12 @@ begin
       puts(Paint["Wrong Argument!", :red])
     end
   when "g", "generate"
-    args = ARGV
-    status = Paint["Generating Files...", :yellow]
-    done = Paint["You're All Set ☻", :yellow]
-    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-      Whirly.status = status
-      Souls::Api::Generate.return_method(args)
-      Whirly.status = done
+    g_command = ARGV[1]
+    case g_command
+    when "worker"
+      Souls::Init.download_worker
+    else
+      puts(Paint["Coming Soon...", :green])
     end
   when "d", "delete"
     class_name = ARGV[1]

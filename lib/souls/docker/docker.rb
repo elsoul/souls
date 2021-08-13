@@ -13,7 +13,7 @@ module Souls
         )
         system("docker ps")
       end
-  
+
       def mysql
         system(
           "docker run --rm -d \
