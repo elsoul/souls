@@ -2,11 +2,21 @@ module Souls
   module Worker
     module Generate
       class << self
+        def mailer(class_name: "mailer", option: :mailgun)
+          if option == :sendgrid
+            sendgrid_mailer(class_name: class_name)
+          else
+            mailgun_mailer(class_name: class_name)
+          end
+        end
+
+        private
+
         def mailgun_mailer(class_name: "mailer")
           file_dir = "./app/graphql/mutations/mailers/"
           FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
           file_path = "#{file_dir}#{class_name.singularize}.rb"
-          return "Mailer already exist! #{file_path}" if File.exist?(file_path)
+          raise(StandardError, "Mailer already exist! #{file_path}") if File.exist?(file_path)
 
           File.open(file_path, "w") do |f|
             f.write(<<~TEXT)
@@ -37,9 +47,9 @@ module Souls
                   end
               end
             TEXT
-            puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
-            file_path
           end
+          puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+          file_path
         end
 
         def sendgrid_mailer; end
