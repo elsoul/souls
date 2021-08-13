@@ -63,8 +63,8 @@ module Souls
         roles = [
           "roles/cloudsql.instanceUser",
           "roles/containerregistry.ServiceAgent",
-          "roles/pubsub.serviceAgent",
-          "roles/firestore.serviceAgent",
+          "roles/pubsub.serviceAdmin",
+          "roles/firestore.serviceAdmin",
           "roles/iam.serviceAccountUser",
           "roles/storage.objectAdmin",
           "roles/run.admin"
