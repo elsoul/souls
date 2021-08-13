@@ -44,9 +44,9 @@ begin
         system("bundle exec irb")
       end
     end
-  when "i", "infra"
+  when "i", "infra", "docker"
     send_method = ARGV[1]
-    Souls.public_send(send_method)
+    Souls::Docker.send(send_method)
   when "gcloud"
     args = ARGV
     status = Paint["Running Gcloud Commands...", :yellow]
