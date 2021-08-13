@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     def self.connection(class_name: "souls")
       file_dir = "./app/graphql/types/connections/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)

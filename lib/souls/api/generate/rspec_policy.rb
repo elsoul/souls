@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate Rspec Policy
     def self.rspec_policy(class_name: "souls")
       dir_name = "./spec/policies"

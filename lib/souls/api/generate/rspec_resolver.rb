@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate Rspec Resolver
     def self.rspec_resolver_head(class_name: "souls")
       file_dir = "./spec/resolvers/"

@@ -1,7 +1,7 @@
 require_relative "souls/version"
 require "active_support/core_ext/string/inflections"
 require_relative "souls/init"
-require_relative "souls/generate"
+require_relative "souls/api"
 require_relative "souls/gcloud"
 require_relative "souls/release"
 require "date"

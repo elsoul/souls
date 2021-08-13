@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate 4 Mutations - ["create", "update", "delete", "destroy_delete"]
     ## 1.Mutation - Create
     def self.create_mutation_head(class_name: "user")

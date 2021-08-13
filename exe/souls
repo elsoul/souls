@@ -1,13 +1,30 @@
 #!/usr/bin/env ruby
 require "souls"
 begin
-  require("./config/souls") unless ARGV[0] == "new" || ARGV[0] == "i" || ARGV[0] == "-v" || ARGV[0] == "deploy"
+  souls_command = ARGV[0]
+  require("./config/souls") unless ["new", "i", "-v", "deploy"].include?(souls_command)
 rescue StandardError
   puts("Make sure you are at SOULs APP directory!")
 end
 begin
-  souls_command = ARGV[0]
   case souls_command
+  when "api"
+    api_command = ARGV[1]
+    case api_command
+    when "generate", "g"
+      method_name = ARGV[2]
+      class_name = ARGV[3]
+      status = Paint["Running SOULs Generate Commands...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+        Souls::Api::Generate.public_send(method_name, class_name: class_name)
+        Whirly.status = "Done!"
+      end
+    else
+      Paint["Comannd doesn't exist.Check you command again!...", :red]
+    end
+  when "worker"
+    Paint["Coming Soon...", :green]
   when "new"
     args = ARGV
     Souls::Init.return_method(args)
@@ -78,12 +95,12 @@ begin
     done = Paint["You're All Set ☻", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
-      Souls::Generate.return_method(args)
+      Souls::Api::Generate.return_method(args)
       Whirly.status = done
     end
   when "d", "delete"
     class_name = ARGV[1]
-    Souls::Generate.delete_all(class_name: class_name)
+    Souls::Api::Generate.delete_all(class_name: class_name)
   when "db:create"
     rack_env = ARGV[1]
     case rack_env

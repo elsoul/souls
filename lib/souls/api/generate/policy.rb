@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate Policy
     def self.policy(class_name: "souls")
       dir_name = "./app/policies"

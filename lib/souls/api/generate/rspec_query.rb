@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate Rspec Query
     def self.rspec_query_head(class_name: "souls")
       file_dir = "./spec/queries/"

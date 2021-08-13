@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate Rspec Factory
     def self.rspec_factory_head(class_name: "souls")
       file_path = "./spec/factories/#{class_name.pluralize}.rb"

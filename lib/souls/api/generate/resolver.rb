@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate Resolver
     def self.resolver_head(class_name: "souls")
       FileUtils.mkdir_p("./app/graphql/resolvers") unless Dir.exist?("./app/graphql/resolvers")
@@ -90,7 +90,9 @@ module Souls
 
               type, name = get_type_and_name(line)
               if line.include?("array: true")
-                new_line.write("      scope = scope.where(\"#{name} @> ARRAY[?]::text[]\", value[:#{name}]) if value[:#{name}]\n")
+                new_line.write(
+                  "      scope = scope.where(\"#{name} @> ARRAY[?]::text[]\", value[:#{name}]) if value[:#{name}]\n"
+                )
                 next
               end
               case name
@@ -98,7 +100,9 @@ module Souls
                 @user_exist = true
               when /$*_id\z/
                 @relation_params << name
-                new_line.write("      scope = scope.where(#{name}: decode_global_key(value[:#{name}])) if value[:#{name}]\n")
+                new_line.write(
+                  "      scope = scope.where(#{name}: decode_global_key(value[:#{name}])) if value[:#{name}]\n"
+                )
               when "created_at", "updated_at"
                 next
               else

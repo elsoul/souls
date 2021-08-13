@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Common Methods
     def self.generated_paths(class_name: "user")
       singularized_class_name = class_name.singularize.underscore
@@ -114,6 +114,14 @@ module Souls
       rspec_policy(class_name: singularized_class_name)
     rescue StandardError => e
       raise(StandardError, e)
+    end
+
+    def self.migrate_all
+      puts(Paint["Let's Go SOULs AUTO CRUD Assist!\n", :cyan])
+      Souls::Api::Generate.get_tables.each do |table|
+        Souls::Api::Generate.migrate(class_name: table.singularize)
+        puts(Paint["Generated #{table.camelize} CRUD Files\n", :yellow])
+      end
     end
 
     def self.delete_all(class_name: "souls")

@@ -15,9 +15,9 @@ require_relative "./generate/type"
 require_relative "./generate/edge"
 require_relative "./generate/connection"
 require_relative "./generate/application"
-require_relative "./generate/methods"
+require_relative "./generate/migration"
 
 module Souls
-  module Generate
+  module Api::Generate
   end
 end

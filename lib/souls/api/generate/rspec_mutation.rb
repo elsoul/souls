@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate  Rspec Mutation
     def self.rspec_mutation_head(class_name: "souls")
       file_dir = "./spec/mutations/base/"
@@ -73,7 +73,9 @@ module Souls
           f.each_line.with_index do |line, _i|
             if @on
               if line.include?("t.index") || line.strip == "end"
-                new_line.write("        }) {\n            #{class_name.singularize.camelize(:lower)}Edge {\n          node {\n")
+                new_line.write(
+                  "        }) {\n            #{class_name.singularize.camelize(:lower)}Edge {\n          node {\n"
+                )
                 new_line.write("              id\n")
                 break
               end
@@ -85,17 +87,28 @@ module Souls
               when "user_id"
                 @user_exist = true
               when /$*_id\z/
-                new_line.write("          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n")
+                camel = name.singularize.camelize(:lower)
+                new_line.write(
+                  "          #{camel}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
+                )
               else
                 case type
                 when "string", "text", "date", "datetime"
+                  camel = name.singularize.camelize(:lower)
+                  camels = name.pluralize.camelize(:lower)
                   if array_true
-                    new_line.write("          #{name.pluralize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n")
+                    new_line.write(
+                      "          #{camels}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n"
+                    )
                   else
-                    new_line.write("          #{name.singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n")
+                    new_line.write(
+                      "          #{camel}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
+                    )
                   end
                 when "bigint", "integer", "float", "boolean"
-                  new_line.write("          #{name.singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{name.singularize.underscore}]}\n")
+                  new_line.write(
+                    "          #{camel}: \#{#{class_name.singularize}[:#{name.singularize.underscore}]}\n"
+                  )
                 end
               end
             end

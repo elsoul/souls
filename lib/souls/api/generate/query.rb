@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     ## Generate Query / Queries
     def self.create_queries(class_name: "souls")
       file_path = "./app/graphql/queries/#{class_name.pluralize}.rb"
