@@ -15,7 +15,7 @@ module Souls
         def mailgun_mailer(class_name: "mailer")
           file_dir = "./app/graphql/mutations/mailers/"
           FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-          file_path = "#{file_dir}#{class_name.singularize}.rb"
+          file_path = "#{file_dir}#{class_name.singularize}_mailer.rb"
           raise(StandardError, "Mailer already exist! #{file_path}") if File.exist?(file_path)
 
           File.open(file_path, "w") do |f|
@@ -28,7 +28,7 @@ module Souls
 
                     def resolve
                       # First, instantiate the Mailgun Client with your API key
-                      mg_client = Mailgun::Client.new("YOUR-API-KEY")
+                      mg_client = ::Mailgun::Client.new("YOUR-API-KEY")
 
                       # Define your message parameters
                       message_params = {
@@ -39,7 +39,7 @@ module Souls
                       }
 
                       # Send your message through the client
-                      mg_client.send_message("YOUR-sandbox.mailgun.org", message_params)
+                      mg_client.send_message("YOUR-MAILGUN-DOMAIN", message_params)
                       { response: "Job done!" }
                     rescue StandardError => e
                       GraphQL::ExecutionError.new(e.to_s)

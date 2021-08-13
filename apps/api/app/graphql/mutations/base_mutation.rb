@@ -14,12 +14,9 @@ module Mutations
       @payload
     end
 
-    def graphql_query(mutation: "SendUserMailJob", args: {})
+    def graphql_query(mutation: "newCommentMailer", args: {})
       if args.blank?
-        %(mutation { #{mutation}(input: {}) {
-            response
-          }
-        })
+        mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {}) { response } })
       else
         inputs = ""
         args.each do |key, value|
@@ -30,11 +27,16 @@ module Mutations
               "#{key.to_s.underscore.camelize(:lower)}: #{value} "
             end
         end
-        %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {#{inputs}}) {
-            response
-          }
-        })
+        mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {#{inputs}}) { response } })
       end
+      if ENV["RACK_ENV"] == "production"
+        mutation_string
+      else
+        res = Net::HTTP.post_form(URI.parse("http://localhost:3000/endpoint"), { query: mutation_string })
+        res.body
+      end
+    rescue StandardError => e
+      raise(StandardError, e)
     end
 
     def check_user_permissions(user, obj, method)

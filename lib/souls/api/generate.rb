@@ -16,6 +16,7 @@ require_relative "./generate/edge"
 require_relative "./generate/connection"
 require_relative "./generate/application"
 require_relative "./generate/migration"
+require_relative "./generate/manager"
 
 module Souls
   module Api::Generate
