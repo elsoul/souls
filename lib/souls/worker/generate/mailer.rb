@@ -2,8 +2,9 @@ module Souls
   module Worker
     module Generate
       class << self
-        def mailer(class_name: "mailer", option: :mailgun)
-          if option == :sendgrid
+        def mailer(class_name: "mailer", option: "")
+          puts(option)
+          if option.to_sym == :sendgrid
             sendgrid_mailer(class_name: class_name)
           else
             mailgun_mailer(class_name: class_name)
@@ -52,7 +53,9 @@ module Souls
           file_path
         end
 
-        def sendgrid_mailer; end
+        def sendgrid_mailer(class_name: "mailer")
+          p("Coming Soon..")
+        end
       end
     end
   end
