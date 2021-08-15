@@ -21,7 +21,6 @@ module Souls
             config.project_id = "souls-app"
             config.strain = "#{app_name}"
             config.github_repo = "elsoul/souls"
-            config.worker_endpoint = "https://worker.test.com"
             config.fixed_gems = ["excluded_gem"]
           end
         TEXT
@@ -51,7 +50,6 @@ module Souls
             config.project_id = "#{app_name}"
             config.strain = "mother"
             config.github_repo = "elsoul/souls"
-            config.worker_endpoint = "https://worker.test.com"
             config.fixed_gems = ["excluded_gem"]
           end
         TEXT
@@ -60,7 +58,7 @@ module Souls
       puts(e)
     end
 
-    def self.return_method(args)
+    def self.start(args)
       app_name = args[1]
       if app_name.nil?
         puts(Paint["you need to specify your app name", :red])

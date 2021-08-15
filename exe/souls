@@ -42,7 +42,7 @@ begin
     end
   when "new"
     args = ARGV
-    Souls::Init.return_method(args)
+    Souls::Init.start(args)
   when "s", "server"
     system("foreman start -f Procfile.dev")
   when "c", "console"
@@ -80,7 +80,7 @@ begin
       Whirly.status = "Done!"
     end
   when "release"
-    Souls::Release.return_method
+    Souls::Release.gem_release
   when "model:update"
     status = Paint["Syncing Models...", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do

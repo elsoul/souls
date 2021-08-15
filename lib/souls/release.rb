@@ -1,4 +1,4 @@
-require_relative "./release/methods"
+require_relative "./release/release"
 
 module Souls
   module Release

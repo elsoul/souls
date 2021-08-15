@@ -1,8 +1,8 @@
 require "souls"
 Souls.configure do |config|
-  config.app = "souls-api"
-  config.project_id = "souls-api"
+  config.app = "souls-app"
+  config.project_id = "souls-app"
+  config.github_repo = "elsoul/souls-app"
   config.strain = "worker"
-  config.worker_endpoint = "https://worker.com"
   config.fixed_gems = ["selenium-webdriver"]
 end
