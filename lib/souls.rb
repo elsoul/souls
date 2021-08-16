@@ -343,6 +343,37 @@ module Souls
       result.compact
     end
 
+    def get_add_migration_type(class_name: "user")
+      pluralized_class_name = class_name.pluralize
+      file_paths = Dir["db/migrate/*_add_column_to_#{pluralized_class_name}.rb"]
+      new_columns =
+        file_paths.map do |file_path|
+          get_col_name_and_type(class_name: class_name, file_path: file_path)
+        end
+      new_columns.flatten
+    end
+
+    def get_col_name_and_type(class_name: "user", file_path: "db/migrate/20210816094410_add_column_to_users.rb")
+      pluralized_class_name = class_name.pluralize
+      response = []
+      File.open(file_path) do |line|
+        line.each_line do |file_line|
+          next unless file_line.include?("add_column")
+
+          array = file_line.include?("array: true")
+          types = file_line.split(",").map(&:strip)
+          types.map { |n| n.gsub!(":", "") }
+          types[0].gsub!("add_column ", "")
+          unless types[0].to_s == pluralized_class_name
+            raise(StandardError, "Wrong class_name!Please Check your migration file!")
+          end
+
+          response << { column_name: types[1], type: types[2], array: array }
+        end
+      end
+      response
+    end
+
     def configure
       self.configuration ||= Configuration.new
       yield(configuration)

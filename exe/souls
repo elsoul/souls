@@ -21,7 +21,7 @@ begin
         Whirly.status = "Done!"
       end
     when "schema:update"
-      # update command
+      Souls::Api::Update.update_create_mutation_head
     else
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
