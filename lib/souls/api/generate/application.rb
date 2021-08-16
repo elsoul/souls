@@ -113,6 +113,7 @@ module Souls
       policy(class_name: singularized_class_name)
       rspec_policy(class_name: singularized_class_name)
     rescue StandardError => e
+      puts(e.backtrace)
       raise(StandardError, e)
     end
 

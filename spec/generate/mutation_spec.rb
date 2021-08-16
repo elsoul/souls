@@ -1,6 +1,6 @@
 RSpec.describe(Souls::Api::Generate) do
   describe "Generate Create Mutation" do
-    let(:class_name) { "article" }
+    let(:class_name) { "user" }
 
     before do
       file_dir = "./app/graphql/mutations/base/#{class_name}"

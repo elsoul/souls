@@ -20,6 +20,8 @@ begin
         Souls::Api::Generate.public_send(method_name, class_name: class_name)
         Whirly.status = "Done!"
       end
+    when "schema:update"
+      # update command
     else
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
@@ -160,5 +162,6 @@ begin
     puts(Paint["Welcome to SOULs!", :green])
   end
 rescue StandardError => e
+  puts(e.backtrace)
   puts(Paint[e, :red])
 end

@@ -1,5 +1,5 @@
 module Souls
-  module Generate
+  module Api::Generate
     class << self
       ## Generate Type
       def create_type_head(class_name: "souls")
