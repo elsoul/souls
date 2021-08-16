@@ -1,4 +1,5 @@
 require "bundler/gem_tasks"
+require "sinatra/activerecord/rake"
 require "rspec/core/rake_task"
 require "./lib/souls"
 
