@@ -332,6 +332,17 @@ module Souls
       }
     end
 
+    def check_schema(class_name: "user")
+      schema_data = get_columns_num(class_name: class_name)
+      create_migration_data = get_create_migration_type(class_name: class_name)
+      add_migration_data = get_migration_type(class_name: class_name, action: "add")
+      remove_migration_data = get_migration_type(class_name: class_name, action: "remove")
+      migration_data = create_migration_data + add_migration_data - remove_migration_data
+      return "Already Up to date!" if schema_data.size == migration_data.size
+
+      schema_data - migration_data
+    end
+
     def get_columns_num(class_name: "user")
       file_path = "./db/schema.rb"
       class_check_flag = false
@@ -351,28 +362,62 @@ module Souls
       cols
     end
 
-    def get_add_migration_type(class_name: "user")
+    def get_create_migration_type(class_name: "user")
       pluralized_class_name = class_name.pluralize
-      file_paths = Dir["db/migrate/*_add_column_to_#{pluralized_class_name}.rb"]
-      p(file_paths)
+      file_path = Dir["db/migrate/*_create_#{pluralized_class_name}.rb"][0]
+
+      class_check_flag = false
+      response = [
+        { column_name: "created_at", type: "datetime", array: false },
+        { column_name: "updated_at", type: "datetime", array: false }
+      ]
+      File.open(file_path) do |f|
+        f.each_line do |line|
+          class_check_flag = true if line.include?("create_table")
+          next unless class_check_flag == true && !line.include?("create_table")
+          return response if line.include?("t.timestamps") || line.strip == "end"
+
+          types = Souls::Api::Generate.get_type_and_name(line)
+          types.map { |n| n.gsub!(":", "") }
+          array = line.include?("array: true")
+          response << { column_name: types[1], type: types[0], array: array }
+        end
+      end
+    end
+
+    def get_migration_type(class_name: "user", action: "add")
+      pluralized_class_name = class_name.pluralize
+      file_paths = Dir["db/migrate/*_#{action}_column_to_#{pluralized_class_name}.rb"]
+
       new_columns =
         file_paths.map do |file_path|
-          get_col_name_and_type(class_name: class_name, file_path: file_path)
+          get_col_name_and_type(class_name: class_name, file_path: file_path, action: action)
         end
       new_columns.flatten
     end
 
-    def get_col_name_and_type(class_name: "user", file_path: "db/migrate/20210816094410_add_column_to_users.rb")
+    def get_last_migration_type(class_name: "user", action: "add")
+      pluralized_class_name = class_name.pluralize
+      file_paths = Dir["db/migrate/*_#{action}_column_to_#{pluralized_class_name}.rb"]
+
+      file_paths.max
+      resoponse = get_col_name_and_type(class_name: class_name, file_path: file_paths.max, action: action)
+      resoponse.flatten
+    end
+
+    def get_col_name_and_type(
+      class_name: "user", file_path: "db/migrate/20210816094410_add_column_to_users.rb", action: "add"
+    )
       pluralized_class_name = class_name.pluralize
       response = []
       File.open(file_path) do |line|
         line.each_line do |file_line|
-          next unless file_line.include?("add_column")
+          next unless file_line.include?("#{action}_column")
 
           array = file_line.include?("array: true")
           types = file_line.split(",").map(&:strip)
           types.map { |n| n.gsub!(":", "") }
-          types[0].gsub!("add_column ", "")
+          types[0].gsub!("#{action}_column ", "")
           unless types[0].to_s == pluralized_class_name
             raise(StandardError, "Wrong class_name!Please Check your migration file!")
           end
