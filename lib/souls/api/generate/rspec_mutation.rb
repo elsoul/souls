@@ -92,10 +92,10 @@ module Souls
                   "          #{camel}: \"\#{#{class_name.singularize}[:#{name.singularize.underscore}]}\"\n"
                 )
               else
+                camel = name.singularize.camelize(:lower)
+                camels = name.pluralize.camelize(:lower)
                 case type
                 when "string", "text", "date", "datetime"
-                  camel = name.singularize.camelize(:lower)
-                  camels = name.pluralize.camelize(:lower)
                   if array_true
                     new_line.write(
                       "          #{camels}: \#{#{class_name.singularize}[:#{name.pluralize.underscore}]}\n"
