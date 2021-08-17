@@ -5,7 +5,7 @@ module Souls
         def rspec_factory(class_name: "user")
           singularized_class_name = class_name.singularize.underscore
           pluralized_class_name = class_name.pluralize.underscore
-          new_cols = Souls.get_last_migration_type(class_name: singularized_class_name, action: "add")
+          new_cols = Souls.get_columns_num(class_name: singularized_class_name)
           dir_name = "./spec/factories"
           new_file_path = "tmp/create_factory.rb"
           file_path = "#{dir_name}/#{pluralized_class_name}.rb"

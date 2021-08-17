@@ -4,7 +4,7 @@ module Souls
       class << self
         def resolver(class_name: "user")
           singularized_class_name = class_name.singularize.underscore
-          new_cols = Souls.get_last_migration_type(class_name: singularized_class_name, action: "add")
+          new_cols = Souls.get_columns_num(class_name: singularized_class_name)
           dir_name = "./app/graphql/resolvers"
           new_file_path = "tmp/update_resolver.rb"
           file_path = "#{dir_name}/#{singularized_class_name}_search.rb"
