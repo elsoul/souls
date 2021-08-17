@@ -17,7 +17,7 @@ module Souls
 
                 new_cols.each do |col|
                   type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
-                  args = check_argument(class_name: class_name)
+                  args = check__mutation_argument(class_name: class_name)
                   unless args.include?(col[:column_name])
                     new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
                   end
@@ -26,8 +26,8 @@ module Souls
               end
             end
           end
-          FileUtils.rm(file_path)
-          FileUtils.mv(new_file_path, file_path)
+          # FileUtils.rm(file_path)
+          # FileUtils.mv(new_file_path, file_path)
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
 
@@ -46,7 +46,7 @@ module Souls
 
                 new_cols.each do |col|
                   type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
-                  args = check_argument(class_name: class_name, action: "update")
+                  args = check__mutation_argument(class_name: class_name, action: "update")
                   unless args.include?(col[:column_name])
                     new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
                   end
@@ -60,7 +60,7 @@ module Souls
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
 
-        def check_argument(class_name: "user", action: "create")
+        def check__mutation_argument(class_name: "user", action: "create")
           singularized_class_name = class_name.singularize.underscore
           dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
           file_path = "#{dir_name}/#{action}_#{singularized_class_name}.rb"
