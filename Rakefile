@@ -1,10 +1,8 @@
 require "bundler/gem_tasks"
-require "erb"
 require "rspec/core/rake_task"
 require "./lib/souls"
 
 RSpec::Core::RakeTask.new(:spec)
-
 
 task :default => :spec
 
