@@ -1,6 +1,9 @@
 FactoryBot.define do
   factory :user do
     uid { "MyString" }
+    member_name { "MyString" }
+    member_rank { rand(1..10) }
+    member_badges { ["MyString"] }
     username { "MyString" }
     screen_name { "MyString" }
     last_name { "MyString" }
@@ -20,9 +23,6 @@ FactoryBot.define do
     is_deleted { false }
     created_at { Time.now }
     updated_at { Time.now }
-    member_name { "MyString" }
-    member_rank { 1 }
-    member_badges { ["tag1", "tag2", "tag3"] }
     is_membership { false }
   end
 end

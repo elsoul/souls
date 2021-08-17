@@ -76,14 +76,14 @@ module Souls
 
     def self.get_test_type(type)
       {
-        bigint: 1,
+        bigint: "rand(1..10)",
         float: 4.2,
         string: '"MyString"',
         text: '"MyString"',
         datetime: "Time.now",
-        date: "Time.now",
+        date: "Time.now.strftime('%F')",
         boolean: false,
-        integer: 1
+        integer: "rand(1..10)"
       }[type.to_sym]
     end
 

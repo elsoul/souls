@@ -2,7 +2,7 @@ module Souls
   module Api
     module Update
       class << self
-        def update_create_mutation(class_name: "user")
+        def create_mutation(class_name: "user")
           singularized_class_name = class_name.singularize.underscore
           new_cols = Souls.get_last_migration_type(class_name: singularized_class_name, action: "add")
           dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
@@ -26,8 +26,8 @@ module Souls
               end
             end
           end
-          # FileUtils.rm(file_path)
-          # FileUtils.mv(new_file_path, file_path)
+          FileUtils.rm(file_path)
+          FileUtils.mv(new_file_path, file_path)
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
 
@@ -45,7 +45,8 @@ module Souls
                 next unless line.include?("argument") && !argument
 
                 new_cols.each do |col|
-                  type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
+                  type = Souls::Api::Generate.type_check(col[:type])
+                  type = "[#{type}]" if col[:array]
                   args = check__mutation_argument(class_name: class_name, action: "update")
                   unless args.include?(col[:column_name])
                     new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")

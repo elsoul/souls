@@ -2,7 +2,7 @@ module Souls
   module Api
     module Update
       class << self
-        def update_type(class_name: "user")
+        def type(class_name: "user")
           singularized_class_name = class_name.singularize.underscore
           new_cols = Souls.get_last_migration_type(class_name: singularized_class_name, action: "add")
           dir_name = "./app/graphql/types"
@@ -16,7 +16,8 @@ module Souls
                 next unless line.include?("field") && !argument
 
                 new_cols.each do |col|
-                  type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
+                  type = Souls::Api::Generate.type_check(col[:type])
+                  type = "[#{type}]" if col[:array]
                   args = check_type_argument(class_name: class_name)
                   unless args.include?(col[:column_name])
                     new_line.write("    field :#{col[:column_name]}, #{type}, null: true\n")

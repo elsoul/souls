@@ -2,7 +2,7 @@ module Souls
   module Api
     module Update
       class << self
-        def update_resolver(class_name: "user")
+        def resolver(class_name: "user")
           singularized_class_name = class_name.singularize.underscore
           new_cols = Souls.get_last_migration_type(class_name: singularized_class_name, action: "add")
           dir_name = "./app/graphql/resolvers"
@@ -18,14 +18,16 @@ module Souls
                 new_line.write(line)
                 if line.include?("argument") && !argument
                   new_cols.each do |col|
-                    type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
+                    type = Souls::Api::Generate.type_check(col[:type])
+                    type = "[#{type}]" if col[:array]
                     add_line = "      argument :#{col[:column_name]}, #{type}, required: false\n"
                     new_line.write(add_line) unless args.include?(col[:column_name])
                   end
                   argument = true
                 elsif line.include?("scope = ::") && !scope
                   new_cols.each do |col|
-                    type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
+                    type = Souls::Api::Generate.type_check(col[:type])
+                    type = "[#{type}]" if col[:array]
 
                     if type.include?("[")
                       add_line = "      scope = scope.where('#{col[:column_name]} @> ARRAY[?]::#{col[:type]}[]', value[:#{col[:column_name]}]) if value[:#{col[:column_name]}]\n"

@@ -22,8 +22,9 @@ begin
       end
     when "schema:update"
       class_name = ARGV[2]
-      Souls::Api::Update.update_create_mutation(class_name: class_name)
-      Souls::Api::Update.update_update_mutation(class_name: class_name)
+      Souls::Api::Update.create_mutation(class_name: class_name)
+      Souls::Api::Update.update_mutation(class_name: class_name)
+      Souls::Api::Update.rspec_factory(class_name: class_name)
     else
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
