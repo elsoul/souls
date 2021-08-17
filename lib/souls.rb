@@ -332,20 +332,29 @@ module Souls
       }
     end
 
-    def detect_change
-      git_status = `git status`
-      result =
-        %w[api worker].map do |service_name|
-          next unless git_status.include?("apps/#{service_name}/")
+    def get_columns_num(class_name: "user")
+      file_path = "./db/schema.rb"
+      class_check_flag = false
+      cols = []
+      File.open(file_path, "r") do |f|
+        f.each_line.with_index do |line, _i|
+          class_check_flag = true if line.include?("create_table") && line.include?(class_name)
+          if class_check_flag == true && !line.include?("create_table")
+            return cols if line.include?("t.index") || line.strip == "end"
 
-          service_name
+            types = Souls::Api::Generate.get_type_and_name(line)
+            array = line.include?("array: true")
+            cols << { column_name: types[1], type: types[0], array: array }
+          end
         end
-      result.compact
+      end
+      cols
     end
 
     def get_add_migration_type(class_name: "user")
       pluralized_class_name = class_name.pluralize
       file_paths = Dir["db/migrate/*_add_column_to_#{pluralized_class_name}.rb"]
+      p(file_paths)
       new_columns =
         file_paths.map do |file_path|
           get_col_name_and_type(class_name: class_name, file_path: file_path)
