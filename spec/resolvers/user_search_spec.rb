@@ -29,9 +29,6 @@ RSpec.describe "UserSearch Resolver テスト" do
               category
               rolesMask
               isDeleted
-              memberName
-              memberRank
-              memberBadges
               isMembership
               }
             }
@@ -80,9 +77,6 @@ RSpec.describe "UserSearch Resolver テスト" do
         "category" => be_a(String),
         "rolesMask" => be_a(Integer),
         "isDeleted" => be_in([true, false]),
-        "memberName" => be_a(String),
-        "memberRank" => be_a(Integer),
-        "memberBadge" => be_a(String),
         "isMembership" => be_in([true, false]),
       )
     end

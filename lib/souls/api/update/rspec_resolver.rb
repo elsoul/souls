@@ -2,13 +2,12 @@ module Souls
   module Api
     module Update
       class << self
-        def rspec_mutation(class_name: "user")
+        def rspec_resolver(class_name: "user")
           singularized_class_name = class_name.singularize.underscore
           new_cols = Souls.get_last_migration_type(class_name: singularized_class_name, action: "add")
-          dir_name = "./spec/mutations/base"
-          new_file_path = "tmp/rspec_mutation.rb"
-          file_path = "#{dir_name}/#{singularized_class_name}_spec.rb"
-          argument = false
+          dir_name = "./spec/resolvers"
+          new_file_path = "tmp/rspec_resolver.rb"
+          file_path = "#{dir_name}/#{singularized_class_name}_search_spec.rb"
           node_res = false
           test_res = false
           File.open(file_path) do |f|
@@ -20,28 +19,17 @@ module Souls
                 node_res = false if node_res && line.include?("}")
                 test_res = false if test_res && line.strip == ")"
 
-                if line.include?('#{') && !argument
+                if node_res && !line.include?("{")
+                  node_args = check_rspec_resolver_argument(class_name: class_name, action: "node_args")
                   new_cols.each do |col|
-                    type = Souls::Api::Generate.type_check(col[:type])
-                    if type == "String" && !col[:array]
-                      type_line = "          #{col[:column_name].singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{col[:column_name].singularize.underscore}]}\"\n"
-                    else
-                      type_line = "          #{col[:column_name].singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{col[:column_name].singularize.underscore}]}\n"
-                    end
-                    args = check_rspec_mutation_argument(class_name: class_name)
-                    new_line.write(type_line) unless args.include?(col[:column_name].singularize.underscore)
-                  end
-                  argument = true
-                elsif node_res && !line.include?("{")
-                  node_args = check_rspec_mutation_argument(class_name: class_name, action: "node_args")
-                  new_cols.each do |col|
-                    new_line.write("              #{col[:column_name]}\n") unless node_args.include?(col[:column_name])
+                    new_line.write("              #{col[:column_name].camelize}\n") unless node_args.include?(col[:column_name])
                   end
                   node_res = false
                 elsif test_res && line.include?("=> be_")
-                  test_args = check_rspec_mutation_argument(class_name: class_name, action: "test_args")
+                  test_args = check_rspec_resolver_argument(class_name: class_name, action: "test_args")
                   new_cols.each do |col|
                     type = Souls::Api::Generate.type_check(col[:type])
+                    p type
                     text =
                       case type
                       when "String"
@@ -67,10 +55,10 @@ module Souls
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
 
-        def check_rspec_mutation_argument(class_name: "user", action: "argument")
+        def check_rspec_resolver_argument(class_name: "user", action: "node_args")
           singularized_class_name = class_name.singularize.underscore
-          dir_name = "./spec/mutations/base"
-          file_path = "#{dir_name}/#{singularized_class_name}_spec.rb"
+          dir_name = "./spec/resolvers"
+          file_path = "#{dir_name}/#{singularized_class_name}_search_spec.rb"
           node_res = false
           test_res = false
           args = []

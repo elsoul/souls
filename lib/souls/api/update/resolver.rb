@@ -57,10 +57,10 @@ module Souls
                 args << if line.include?("is_deleted")
                           "is_deleted"
                         else
-                          line.to_s.match(/if value\[:(.+)\]/)[1]
+                          line.to_s.match(/if value\[:(.+)\]/)[1].underscore
                         end
               elsif action == "argument" && line.include?("argument")
-                args << line.split(",")[0].gsub("argument :", "").strip
+                args << line.split(",")[0].gsub("argument :", "").strip.underscore
               end
             end
           end

@@ -17,7 +17,7 @@ module Souls
 
                 new_cols.each do |col|
                   type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
-                  args = check__mutation_argument(class_name: class_name)
+                  args = check_mutation_argument(class_name: class_name)
                   unless args.include?(col[:column_name])
                     new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
                   end
@@ -47,7 +47,7 @@ module Souls
                 new_cols.each do |col|
                   type = Souls::Api::Generate.type_check(col[:type])
                   type = "[#{type}]" if col[:array]
-                  args = check__mutation_argument(class_name: class_name, action: "update")
+                  args = check_mutation_argument(class_name: class_name, action: "update")
                   unless args.include?(col[:column_name])
                     new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
                   end
@@ -61,14 +61,14 @@ module Souls
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
 
-        def check__mutation_argument(class_name: "user", action: "create")
+        def check_mutation_argument(class_name: "user", action: "create")
           singularized_class_name = class_name.singularize.underscore
           dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
           file_path = "#{dir_name}/#{action}_#{singularized_class_name}.rb"
           args = []
           File.open(file_path) do |f|
             f.each_line do |line|
-              args << line.split(",")[0].gsub("argument :", "").strip if line.include?("argument")
+              args << line.split(",")[0].gsub("argument :", "").strip.underscore if line.include?("argument")
             end
           end
           args

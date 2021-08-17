@@ -39,7 +39,7 @@ module Souls
           args = []
           File.open(file_path) do |f|
             f.each_line do |line|
-              args << line.split("{")[0].strip if line.include?("{")
+              args << line.split("{")[0].strip.underscore if line.include?("{")
             end
           end
           args
