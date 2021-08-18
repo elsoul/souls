@@ -74,6 +74,19 @@ module Souls
       }[type.to_sym]
     end
 
+    def self.get_type(type)
+      {
+        bigint: "Integer",
+        string: "String",
+        float: "Float",
+        text: "String",
+        datetime: "GraphQL::Types::ISO8601DateTime",
+        date: "GraphQL::Types::ISO8601DateTime",
+        boolean: "Boolean",
+        integer: "Integer"
+      }[type.to_sym]
+    end
+
     def self.get_test_type(type)
       {
         bigint: "rand(1..10)",

@@ -19,9 +19,10 @@ module Souls
                   type = Souls::Api::Generate.type_check(col[:type])
                   type = "[#{type}]" if col[:array]
                   args = check_mutation_argument(class_name: class_name)
-                  unless args.include?(col[:column_name])
-                    new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
-                  end
+                  next if args.include?(col[:column_name])
+                  next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
+
+                  new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
                 end
                 argument = true
               end
@@ -49,9 +50,10 @@ module Souls
                   type = Souls::Api::Generate.type_check(col[:type])
                   type = "[#{type}]" if col[:array]
                   args = check_mutation_argument(class_name: class_name, action: "update")
-                  unless args.include?(col[:column_name])
-                    new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
-                  end
+                  next if args.include?(col[:column_name])
+                  next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
+
+                  new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
                 end
                 argument = true
               end
