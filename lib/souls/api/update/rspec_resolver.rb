@@ -23,7 +23,7 @@ module Souls
                   node_args = check_rspec_resolver_argument(class_name: class_name, action: "node_args")
                   new_cols.each do |col|
                     unless node_args.include?(col[:column_name])
-                      new_line.write("              #{col[:column_name].camelize}\n")
+                      new_line.write("              #{col[:column_name].camelize(:lower)}\n")
                     end
                   end
                   node_res = false
@@ -43,7 +43,7 @@ module Souls
                         col[:array] ? "be_all(String)" : "be_a(String)"
                       end
                     unless test_args.include?(col[:column_name])
-                      new_line.write("          \"#{col[:column_name]}\" => #{text},\n")
+                      new_line.write("          \"#{col[:column_name].camelize(:lower)}\" => #{text},\n")
                     end
                   end
                   test_res = false

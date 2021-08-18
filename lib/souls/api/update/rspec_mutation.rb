@@ -24,7 +24,7 @@ module Souls
                   new_cols.each do |col|
                     type = Souls::Api::Generate.type_check(col[:type])
                     if type == "String" && !col[:array]
-                      type_line = "          #{col[:column_name].singularize.camelize(:lower)}: \"\#{#{class_name.singularize}[:#{col[:column_name].singularize.underscore}]}\"\n"
+                      type_line = "          #{col[:column_name].camelize(:lower)}: \"\#{#{class_name.singularize}[:#{col[:column_name].singularize.underscore}]}\"\n"
                     else
                       type_line = "          #{col[:column_name].singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{col[:column_name].singularize.underscore}]}\n"
                     end
@@ -35,7 +35,9 @@ module Souls
                 elsif node_res && !line.include?("{")
                   node_args = check_rspec_mutation_argument(class_name: class_name, action: "node_args")
                   new_cols.each do |col|
-                    new_line.write("              #{col[:column_name]}\n") unless node_args.include?(col[:column_name])
+                    unless node_args.include?(col[:column_name])
+                      new_line.write("              #{col[:column_name].camelize(:lower)}\n")
+                    end
                   end
                   node_res = false
                 elsif test_res && line.include?("=> be_")
@@ -54,7 +56,7 @@ module Souls
                         col[:array] ? "be_all(String)" : "be_a(String)"
                       end
                     unless test_args.include?(col[:column_name])
-                      new_line.write("         \"#{col[:column_name]}\" => #{text},\n")
+                      new_line.write("         \"#{col[:column_name].camelize(:lower)}\" => #{text},\n")
                     end
                   end
                   test_res = false
