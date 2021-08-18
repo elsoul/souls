@@ -54,7 +54,7 @@ module Souls
                         col[:array] ? "be_all(String)" : "be_a(String)"
                       end
                     unless test_args.include?(col[:column_name])
-                      new_line.write("          \"#{col[:column_name]}\" => #{text},\n")
+                      new_line.write("         \"#{col[:column_name]}\" => #{text},\n")
                     end
                   end
                   test_res = false

@@ -76,8 +76,8 @@ RSpec.describe "User Mutation テスト" do
       raise StandardError, result
     end
     expect(a1).to include(
-      "id" => be_a(String),
-          "created_at" => be_a(String),
+        "id" => be_a(String),
+        "created_at" => be_a(String),
           "updated_at" => be_a(String),
           "member_name" => be_a(String),
           "member_rank" => be_a(Integer),

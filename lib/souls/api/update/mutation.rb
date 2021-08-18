@@ -16,7 +16,8 @@ module Souls
                 next unless line.include?("argument") && !argument
 
                 new_cols.each do |col|
-                  type = col[:array] ? "[#{col[:type].camelize}]" : col[:type].camelize
+                  type = Souls::Api::Generate.type_check(col[:type])
+                  type = "[#{type}]" if col[:array]
                   args = check_mutation_argument(class_name: class_name)
                   unless args.include?(col[:column_name])
                     new_line.write("      argument :#{col[:column_name]}, #{type}, required: false\n")
