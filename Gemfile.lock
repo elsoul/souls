@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    souls (0.30.10)
+    souls (0.30.11)
       activesupport (= 6.1.4)
-      dotenv (= 2.7.6)
+      foreman (= 0.87.2)
       paint (= 2.2.1)
       tty-prompt (= 0.23.1)
       whirly (= 0.3.0)
@@ -25,7 +25,6 @@ GEM
     ast (2.4.2)
     concurrent-ruby (1.1.9)
     diff-lcs (1.4.4)
-    dotenv (2.7.6)
     ffi (1.15.3)
     foreman (0.87.2)
     i18n (1.8.10)
@@ -124,7 +123,6 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (= 6.1.4)
-  dotenv (= 2.7.6)
   foreman (= 0.87.2)
   paint (= 2.2.1)
   parser (= 3.0.2.0)

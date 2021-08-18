@@ -6,14 +6,8 @@ Gem::Specification.new do |gem|
   gem.authors       = ["POPPIN-FUMI", "KishiTheMechanic", "James Neve"]
   gem.email         = ["f.kawasaki@elsoul.nl", "s.kishi@elsoul.nl", "jamesoneve@gmail.com"]
 
-  gem.summary       = "SOULs is a Serverless Application Framework with Ruby GraphQL.
-SOULs has 3 strains, API, Worker, and Frontend. It can be used in combination according to the purpose.
-SOULs Ruby GraphQL API / Worker and Easy to deploy to Google Cloud. No more routing for Backends!
-You can focus on your business logic."
-  gem.description = "SOULs is a Serverless Application Framework with Ruby GraphQL.
-  SOULs has 3 strains, API, Worker, and Frontend. It can be used in combination according to the purpose.
-  SOULs Ruby GraphQL API / Worker and Easy to deploy to Google Cloud. No more routing for Backends!
-  You can focus on your business logic."
+  gem.summary       = "SOULs はサーバーレスフルスタックフレームワークです。柔軟な Ruby GraphQL API と Worker はルーティングの必要がありません。クラウド環境への自動デプロイ、CI/CD ワークフローを標準装備。開発者がビジネスロジックに集中し、楽しくコードが書けるような環境を目指しています。"
+  gem.description = "SOULs はサーバーレスフルスタックフレームワークです。柔軟な Ruby GraphQL API と Worker はルーティングの必要がありません。クラウド環境への自動デプロイ、CI/CD ワークフローを標準装備。開発者がビジネスロジックに集中し、楽しくコードが書けるような環境を目指しています。"
   gem.homepage      = "https://souls.elsoul.nl"
   gem.license       = "Apache-2.0"
   gem.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
@@ -33,7 +27,7 @@ You can focus on your business logic."
   gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }
   gem.require_paths = ["lib"]
   gem.add_runtime_dependency("activesupport", "6.1.4")
-  gem.add_runtime_dependency("dotenv", "2.7.6")
+  gem.add_runtime_dependency("foreman", "0.87.2")
   gem.add_runtime_dependency("paint", "2.2.1")
   gem.add_runtime_dependency("tty-prompt", "0.23.1")
   gem.add_runtime_dependency("whirly", "0.3.0")

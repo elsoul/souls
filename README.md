@@ -21,11 +21,17 @@
 
 Welcome to SOULs Serverless Application Framework!
 
-SOULs is a Serverless Application Framework with Ruby GraphQL. 
-SOULs has 3 strains, API, Worker, and Frontend. It can be used in combination according to the purpose. SOULs Backend GraphQL Ruby & Frontend Relay are Scalable and Easy to deploy to Google Cloud. No more routing for Backends!
-You can focus on your business logic.
+SOULs はサーバーレスフルスタックフレームワークです。柔軟な Ruby GraphQL API と Worker はルーティングの必要がありません。
+クラウド環境への自動デプロイ、CI/CD ワークフローを標準装備。開発者がビジネスロジックに集中し、楽しくコードが書けるような環境を目指しています。
+
+SOULs バックエンドには `API` と `Worker` の 2 つのタイプがあります。
+`API` は主にデータをフロントエンドへ提供します。`Worker` は主に `タスク` の処理を行います
 
 ![画像](https://storage.googleapis.com/souls-bucket/imgs/souls-structure.jpg)
+
+現在のバージョンでは SOULs `API` と `Worker` を Github Actions を使って Google Cloud Run へそれぞれデプロイします。
+
+SOULs フレームワークでは [Monorepo](https://en.wikipedia.org/wiki/Monorepo) によって一つのパッケージでアプリケーションを管理します。
 
 SOULs creates 3 types of framework.
 
@@ -72,13 +78,11 @@ Or install it yourself as:
 And Create Your APP
 
     $ souls new app_name
+    $ cd apps/api/app_name
+    $ bundle
+    $ souls s
 
-## Choose SOULs Type:
 
-Select Strain:
-1. SOULs GraphQL API
-2. SOULs Worker
-3. SOULs Frontend Web
 
 
 ## Gemfile 自動更新アップデート
@@ -99,7 +103,7 @@ Souls.configure do |config|
   config.app = "souls-api"
   config.project_id = "souls-api"
   config.strain = "api"
-  config.worker_endpoint = "https://worker.com"
+  config.github_repo = "elsoul/souls"
   config.fixed_gems = ["selenium-webdriver", "pg"]
 end
 ```
