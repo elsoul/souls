@@ -6,12 +6,6 @@ RSpec.describe "User Mutation テスト" do
     %(mutation {
       createUser(input: {
           uid: "#{user[:uid]}"
-          createdAt: "#{user[:created_at]}"
-          updatedAt: "#{user[:updated_at]}"
-          memberName: "#{user[:member_name]}"
-          memberRank: #{user[:member_rank]}
-          memberBadge: #{user[:member_badge]}
-          isMembership: #{user[:is_membership]}
           username: "#{user[:username]}"
           screenName: "#{user[:screen_name]}"
           lastName: "#{user[:last_name]}"
@@ -29,16 +23,14 @@ RSpec.describe "User Mutation テスト" do
           category: "#{user[:category]}"
           rolesMask: #{user[:roles_mask]}
           isDeleted: #{user[:is_deleted]}
+          memberName: "#{user[:member_name]}"
+          memberRank: #{user[:member_rank]}
+          memberBadges: #{user[:member_badges]}
+          isMembership: #{user[:is_membership]}
         }) {
             userEdge {
           node {
               id
-              created_at
-              updated_at
-              member_name
-              member_rank
-              member_badges
-              is_membership
               uid
               username
               screenName
@@ -57,6 +49,10 @@ RSpec.describe "User Mutation テスト" do
               category
               rolesMask
               isDeleted
+              memberName
+              memberRank
+              memberBadges
+              isMembership
             }
           }
         }
@@ -76,13 +72,7 @@ RSpec.describe "User Mutation テスト" do
       raise StandardError, result
     end
     expect(a1).to include(
-        "id" => be_a(String),
-        "created_at" => be_a(String),
-          "updated_at" => be_a(String),
-          "member_name" => be_a(String),
-          "member_rank" => be_a(Integer),
-          "member_badges" => be_all(String),
-          "is_membership" => be_in([true, false]),
+      "id" => be_a(String),
         "uid" => be_a(String),
         "username" => be_a(String),
         "screenName" => be_a(String),
@@ -101,6 +91,10 @@ RSpec.describe "User Mutation テスト" do
         "category" => be_a(String),
         "rolesMask" => be_a(Integer),
         "isDeleted" => be_in([true, false]),
+        "memberName" => be_a(String),
+        "memberRank" => be_a(Integer),
+        "memberBadges" => be_all(String),
+        "isMembership" => be_in([true, false]),
         )
     end
   end

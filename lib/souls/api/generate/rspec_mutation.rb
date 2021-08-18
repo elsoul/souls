@@ -230,9 +230,17 @@ module Souls
                     new_line.write("        \"#{name.singularize.camelize(:lower)}\" => be_a(String),\n")
                   end
                 when "boolean"
-                  new_line.write("        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n")
+                  if array_true
+                    new_line.write("        \"#{name.pluralize.camelize(:lower)}\" => be_all([true, false]),\n")
+                  else
+                    new_line.write("        \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n")
+                  end
                 when "string", "bigint", "integer", "float"
-                  new_line.write("        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n")
+                  if array_true
+                    new_line.write("        \"#{name.pluralize.camelize(:lower)}\" => be_all(#{field}),\n")
+                  else
+                    new_line.write("        \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n")
+                  end
                 end
               end
             end

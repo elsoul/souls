@@ -11,11 +11,6 @@ RSpec.describe "UserSearch Resolver テスト" do
             cursor
             node {
               id
-              CreatedAt
-              UpdatedAt
-              MemberName
-              MemberRank
-              MemberBadges
               uid
               username
               screenName
@@ -34,6 +29,9 @@ RSpec.describe "UserSearch Resolver テスト" do
               category
               rolesMask
               isDeleted
+              memberName
+              memberRank
+              memberBadges
               isMembership
               }
             }
@@ -64,11 +62,6 @@ RSpec.describe "UserSearch Resolver テスト" do
       end
       expect(a1).to include(
         "id" => be_a(String),
-          "created_at" => be_a(String),
-          "updated_at" => be_a(String),
-          "member_name" => be_a(String),
-          "member_rank" => be_a(Integer),
-          "member_badges" => be_all(String),
         "uid" => be_a(String),
         "username" => be_a(String),
         "screenName" => be_a(String),
@@ -87,6 +80,9 @@ RSpec.describe "UserSearch Resolver テスト" do
         "category" => be_a(String),
         "rolesMask" => be_a(Integer),
         "isDeleted" => be_in([true, false]),
+        "memberName" => be_a(String),
+        "memberRank" => be_a(Integer),
+        "memberBadges" => be_all(String),
         "isMembership" => be_in([true, false]),
       )
     end
