@@ -6,6 +6,12 @@ RSpec.describe "User Mutation テスト" do
     %(mutation {
       createUser(input: {
           uid: "#{user[:uid]}"
+          createdAt: "#{user[:created_at]}"
+          updatedAt: "#{user[:updated_at]}"
+          memberName: "#{user[:member_name]}"
+          memberRank: #{user[:member_rank]}
+          memberBadge: #{user[:member_badge]}
+          isMembership: #{user[:is_membership]}
           username: "#{user[:username]}"
           screenName: "#{user[:screen_name]}"
           lastName: "#{user[:last_name]}"
@@ -27,6 +33,12 @@ RSpec.describe "User Mutation テスト" do
             userEdge {
           node {
               id
+              created_at
+              updated_at
+              member_name
+              member_rank
+              member_badges
+              is_membership
               uid
               username
               screenName
@@ -65,6 +77,12 @@ RSpec.describe "User Mutation テスト" do
     end
     expect(a1).to include(
       "id" => be_a(String),
+          "created_at" => be_a(String),
+          "updated_at" => be_a(String),
+          "member_name" => be_a(String),
+          "member_rank" => be_a(Integer),
+          "member_badges" => be_all(String),
+          "is_membership" => be_in([true, false]),
         "uid" => be_a(String),
         "username" => be_a(String),
         "screenName" => be_a(String),

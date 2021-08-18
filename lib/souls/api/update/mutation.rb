@@ -31,7 +31,7 @@ module Souls
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
 
-        def update_update_mutation(class_name: "user")
+        def update_mutation(class_name: "user")
           singularized_class_name = class_name.singularize.underscore
           new_cols = Souls.get_columns_num(class_name: singularized_class_name)
           dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"

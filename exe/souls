@@ -21,12 +21,17 @@ begin
         Whirly.status = "Done!"
       end
     when "schema:update"
-      class_name = ARGV[1]
-      Souls::Api::Update.create_mutation(class_name: class_name)
-      Souls::Api::Update.update_mutation(class_name: class_name)
-      Souls::Api::Update.rspec_factory(class_name: class_name)
-      Souls::Api::Update.rspec_mutation(class_name: class_name)
-      Souls::Api::Update.rspec_resolver(class_name: class_name)
+      class_name = ARGV[2]
+      status = Paint["Running SOULs Update Commands...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+        Souls::Api::Update.create_mutation(class_name: class_name)
+        Souls::Api::Update.update_mutation(class_name: class_name)
+        Souls::Api::Update.rspec_factory(class_name: class_name)
+        Souls::Api::Update.rspec_mutation(class_name: class_name)
+        Souls::Api::Update.rspec_resolver(class_name: class_name)
+        Whirly.status = "Done!"
+      end
     else
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end

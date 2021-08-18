@@ -22,14 +22,15 @@ module Souls
                 if node_res && !line.include?("{")
                   node_args = check_rspec_resolver_argument(class_name: class_name, action: "node_args")
                   new_cols.each do |col|
-                    new_line.write("              #{col[:column_name].camelize}\n") unless node_args.include?(col[:column_name])
+                    unless node_args.include?(col[:column_name])
+                      new_line.write("              #{col[:column_name].camelize}\n")
+                    end
                   end
                   node_res = false
                 elsif test_res && line.include?("=> be_")
                   test_args = check_rspec_resolver_argument(class_name: class_name, action: "test_args")
                   new_cols.each do |col|
                     type = Souls::Api::Generate.type_check(col[:type])
-                    p type
                     text =
                       case type
                       when "String"
