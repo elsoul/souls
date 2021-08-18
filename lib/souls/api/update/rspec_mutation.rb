@@ -23,11 +23,12 @@ module Souls
                 if line.include?('#{') && !argument
                   new_cols.each do |col|
                     type = Souls::Api::Generate.type_check(col[:type])
-                    if type == "String" && !col[:array]
-                      type_line = "          #{col[:column_name].camelize(:lower)}: \"\#{#{class_name.singularize}[:#{col[:column_name].singularize.underscore}]}\"\n"
-                    else
-                      type_line = "          #{col[:column_name].singularize.camelize(:lower)}: \#{#{class_name.singularize}[:#{col[:column_name].singularize.underscore}]}\n"
-                    end
+                    type_line =
+                      if type == "String" && !col[:array]
+                        "          #{col[:column_name].camelize(:lower)}: \"\#{#{class_name}[:#{col[:column_name].underscore}]}\"\n"
+                      else
+                        "          #{col[:column_name].camelize(:lower)}: \#{#{class_name}[:#{col[:column_name].underscore}]}\n"
+                      end
                     args = check_rspec_mutation_argument(class_name: class_name)
                     new_line.write(type_line) unless args.include?(col[:column_name].singularize.underscore)
                   end
