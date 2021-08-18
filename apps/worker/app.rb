@@ -38,7 +38,7 @@ ActiveRecord::Base.default_timezone = :local
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{Dir.pwd}/app/models")
 loader.push_dir("#{Dir.pwd}/app/utils")
-loader.push_dir("#{Dir.pwd}/app/engines")
+loader.push_dir("#{Dir.pwd}/app/models/engines")
 
 loader.collapse("#{__dir__}/app/types")
 loader.collapse("#{__dir__}/app/mutations")
@@ -94,7 +94,6 @@ class SoulsApi < Sinatra::Base
     result = SoulsApiSchema.execute(query.to_s)
     json(result)
   rescue StandardError => e
-    NotificationEngine.send_slack_error(e.backtrace)
     message = { error: e.backtrace }
     json(message)
   end

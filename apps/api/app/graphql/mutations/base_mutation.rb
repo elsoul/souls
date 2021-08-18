@@ -14,6 +14,12 @@ module Mutations
       @payload
     end
 
+    def pubsub_queue(topic_name: "send-mail-job", message: "text!")
+      pubsub = Google::Cloud::Pubsub.new(project: ENV["PROJECT_ID"])
+      topic = pubsub.topic(topic_name)
+      topic.publish(message)
+    end
+
     def graphql_query(mutation: "newCommentMailer", args: {})
       if args.blank?
         mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {}) { response } })
