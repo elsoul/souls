@@ -24,6 +24,7 @@ module Souls
                   new_cols.each do |col|
                     type = Souls::Api::Generate.type_check(col[:type])
                     next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
+
                     type_line =
                       if type == "String" && !col[:array]
                         "          #{col[:column_name].camelize(:lower)}: \"\#{#{class_name}[:#{col[:column_name].underscore}]}\"\n"
@@ -31,7 +32,7 @@ module Souls
                         "          #{col[:column_name].camelize(:lower)}: \#{#{class_name}[:#{col[:column_name].underscore}]}\n"
                       end
                     args = check_rspec_mutation_argument(class_name: class_name)
-                    new_line.write(type_line) unless args.include?(col[:column_name].singularize.underscore)
+                    new_line.write(type_line) unless args.include?(col[:column_name].underscore)
                   end
                   argument = true
                 elsif node_res && !line.include?("{")
