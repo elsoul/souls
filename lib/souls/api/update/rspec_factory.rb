@@ -17,6 +17,8 @@ module Souls
                 next unless line.include?("{") && !argument
 
                 new_cols.each do |col|
+                  next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
+
                   type = Souls::Api::Generate.get_test_type(col[:type])
                   type = "[#{type}]" if col[:array]
                   args = check_factory_argument(class_name: class_name)

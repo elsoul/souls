@@ -23,6 +23,7 @@ module Souls
                 if line.include?('#{') && !argument
                   new_cols.each do |col|
                     type = Souls::Api::Generate.type_check(col[:type])
+                    next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
                     type_line =
                       if type == "String" && !col[:array]
                         "          #{col[:column_name].camelize(:lower)}: \"\#{#{class_name}[:#{col[:column_name].underscore}]}\"\n"
