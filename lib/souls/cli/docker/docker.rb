@@ -26,6 +26,18 @@ module Souls
         )
         system("docker ps")
       end
+
+      def run
+        current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
+        port =
+          if current_dir_name == "api"
+            "4000:4000"
+          else
+            "3000:3000"
+          end
+        system("docker build . -t souls-app -f Dockerfile.dev")
+        system("docker run --name souls-app --rm --env-file .env -p #{port} souls-app:latest")
+      end
     end
   end
 end

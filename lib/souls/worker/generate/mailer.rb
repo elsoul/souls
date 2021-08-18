@@ -3,7 +3,6 @@ module Souls
     module Generate
       class << self
         def mailer(class_name: "mailer", option: "")
-          puts(option)
           if option.to_sym == :sendgrid
             sendgrid_mailer(class_name: class_name)
           else
@@ -51,10 +50,6 @@ module Souls
           end
           puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
           file_path
-        end
-
-        def sendgrid_mailer(class_name: "mailer")
-          p("Coming Soon..")
         end
       end
     end

@@ -33,8 +33,6 @@ module Souls
                     type = Souls::Api::Generate.type_check(col[:type])
                     text =
                       case type
-                      when "String"
-                        col[:array] ? "be_all(String)" : "be_a(String)"
                       when "Integer", "Float"
                         col[:array] ? "be_all(Integer)" : "be_a(Integer)"
                       when "Boolean"

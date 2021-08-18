@@ -20,7 +20,7 @@ begin
         Souls::Api::Generate.public_send(method_name, class_name: class_name)
         Whirly.status = "Done!"
       end
-    when "schema:update"
+    when "update"
       class_name = ARGV[2]
       status = Paint["Running SOULs Update Commands...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
@@ -34,6 +34,9 @@ begin
         Souls::Api::Update.rspec_resolver(class_name: class_name)
         Whirly.status = "Done!"
       end
+    when "d", "delete"
+      class_name = ARGV[2]
+      Souls::Api::Generate.delete_all(class_name: class_name)
     else
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
@@ -73,7 +76,7 @@ begin
         system("bundle exec irb")
       end
     end
-  when "i", "infra", "docker"
+  when "docker"
     send_method = ARGV[1]
     Souls::Docker.public_send(send_method)
   when "gcloud"
@@ -86,49 +89,42 @@ begin
     end
   when "-v", "--version", "v", "version", "-version", "--v"
     puts(Paint[Souls::VERSION, :white])
-  when "gem:update", "gemfile:update"
-    status = Paint["Checking for updates...", :yellow]
-    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-      Whirly.status = status
-      Souls.update_gemfile
-      Whirly.status = "Done!"
+  when "upgrade"
+    method_command = ARGV[1]
+    case method_command
+    when "gemfile", "gem"
+      status = Paint["Checking for updates...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+        Souls.update_gemfile
+        Whirly.status = "Done!"
+      end
+    else
+      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
   when "release"
     Souls::Release.gem_release
-  when "model:update"
-    status = Paint["Syncing Models...", :yellow]
-    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-      Whirly.status = status
-      Souls.update_models
-      Whirly.status = "API and Worker Both Models Synced!"
-    end
-  when "add"
-    graphql_class = ARGV[1]
-    case graphql_class
-    when "mutation"
-      Souls::Init.add_mutation(class_name: "user", file_name: "hoi")
-    when "type"
-      Souls::Init.add_type(class_name: "user", file_name: "hoi")
-    when "connection"
-      Souls::Init.add_connection(class_name: "user", file_name: "hoi")
-    when "edge"
-      Souls::Init.add_edge(class_name: "user", file_name: "hoi")
-    when "rspec_mutation"
-      Souls::Init.add_rspec_mutation(class_name: "user", file_name: "hoi")
+  when "sync"
+    target = ARGV[1]
+    case target
+    when "model", "m"
+      status = Paint["Syncing Models...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+        Souls::Sync.model
+        Whirly.status = "API and Worker Both Models Synced!"
+      end
     else
-      puts(Paint["Wrong Argument!", :red])
+      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
-  when "g", "generate"
-    g_command = ARGV[1]
-    case g_command
+  when "create"
+    service_name = ARGV[1]
+    case service_name
     when "worker"
       Souls::Init.download_worker
     else
       puts(Paint["Coming Soon...", :green])
     end
-  when "d", "delete"
-    class_name = ARGV[1]
-    Souls::Api::Generate.delete_all(class_name: class_name)
   when "db:create"
     rack_env = ARGV[1]
     case rack_env
@@ -164,9 +160,6 @@ begin
   when "t", "test"
     system("rubocop -A")
     system("bundle exec rspec")
-  when "run"
-    system("docker build . -t souls -f Dockerfile.dev")
-    system("docker run --rm --env-file .env -p 3000:3000 souls:latest")
   when "deploy"
     project_id = Souls.configuration.project_id
     system("gcloud builds submit --config=cloudbuild.yml --project #{project_id}")

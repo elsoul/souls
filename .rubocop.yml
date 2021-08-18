@@ -94,6 +94,9 @@ Layout/LineLength:
   Exclude:
     - "lib/souls/generate/rspec_mutation.rb"
     - "lib/souls/generate/resolver.rb"
+    - "lib/souls/api/update/resolver.rb"
+    - "lib/souls/api/update/mutation.rb"
+    - "lib/souls/api/update/rspec_mutation.rb"
 
 Layout/LineEndStringConcatenationIndentation:
   Enabled: false

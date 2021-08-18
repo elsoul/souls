@@ -49,8 +49,6 @@ module Souls
                     type = Souls::Api::Generate.type_check(col[:type])
                     text =
                       case type
-                      when "String"
-                        col[:array] ? "be_all(String)" : "be_a(String)"
                       when "Integer", "Float"
                         col[:array] ? "be_all(Integer)" : "be_a(Integer)"
                       when "Boolean"
@@ -59,7 +57,7 @@ module Souls
                         col[:array] ? "be_all(String)" : "be_a(String)"
                       end
                     unless test_args.include?(col[:column_name])
-                      new_line.write("         \"#{col[:column_name].camelize(:lower)}\" => #{text},\n")
+                      new_line.write("        \"#{col[:column_name].camelize(:lower)}\" => #{text},\n")
                     end
                   end
                   test_res = false

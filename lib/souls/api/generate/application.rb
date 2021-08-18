@@ -109,7 +109,7 @@ module Souls
       false
     end
 
-    def self.migrate(class_name: "souls")
+    def self.scaffold(class_name: "souls")
       singularized_class_name = class_name.singularize
       model(class_name: singularized_class_name)
       type(class_name: singularized_class_name)
@@ -130,10 +130,10 @@ module Souls
       raise(StandardError, e)
     end
 
-    def self.migrate_all
+    def self.scaffold_all
       puts(Paint["Let's Go SOULs AUTO CRUD Assist!\n", :cyan])
       Souls::Api::Generate.get_tables.each do |table|
-        Souls::Api::Generate.migrate(class_name: table.singularize)
+        Souls::Api::Generate.scaffold(class_name: table.singularize)
         puts(Paint["Generated #{table.camelize} CRUD Files\n", :yellow])
       end
     end
@@ -157,24 +157,6 @@ module Souls
       FileUtils.rm("./spec/policies/#{singularized_class_name}_policy_spec.rb")
       FileUtils.rm("./spec/resolvers/#{singularized_class_name}_search_spec.rb")
       puts(Paint["deleted #{class_name.camelize} CRUD!", :yellow])
-    rescue StandardError => e
-      raise(StandardError, e)
-    end
-
-    def self.update_delete(class_name: "souls")
-      singularized_class_name = class_name.singularize.underscore
-      pluralized_class_name = class_name.pluralize.underscore
-      FileUtils.rm_rf("./app/graphql/mutations/#{singularized_class_name}")
-      FileUtils.rm("./app/graphql/queries/#{singularized_class_name}.rb")
-      FileUtils.rm("./app/graphql/queries/#{pluralized_class_name}.rb")
-      FileUtils.rm("./app/graphql/resolvers/#{singularized_class_name}_search.rb")
-      FileUtils.rm("./app/graphql/types/#{singularized_class_name}_type.rb")
-      FileUtils.rm("./app/graphql/types/edges/#{singularized_class_name}_edge.rb")
-      FileUtils.rm("./app/graphql/types/connections/#{singularized_class_name}_connection.rb")
-      FileUtils.rm("./spec/mutations/#{singularized_class_name}_spec.rb")
-      FileUtils.rm("./spec/queries/#{singularized_class_name}_spec.rb")
-      FileUtils.rm("./spec/resolvers/#{singularized_class_name}_search_spec.rb")
-      puts("deleted #{class_name.camelize} CRUD!")
     rescue StandardError => e
       raise(StandardError, e)
     end
