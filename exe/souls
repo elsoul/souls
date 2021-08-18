@@ -21,7 +21,7 @@ begin
         Whirly.status = "Done!"
       end
     when "schema:update"
-      class_name = ARGV[2]
+      class_name = ARGV[1]
       Souls::Api::Update.create_mutation(class_name: class_name)
       Souls::Api::Update.update_mutation(class_name: class_name)
       Souls::Api::Update.rspec_factory(class_name: class_name)
