@@ -16,6 +16,24 @@ module Souls
 
       private
 
+      def file_diff(paths = [])
+        paths.map do |path|
+          stat(path)[:last_update]
+        end
+      end
+
+      def stat(path)
+        s = File::Stat.new(path)
+        last_update = s.mtime.to_s
+        last_status_change = s.ctime.to_s
+        last_access = s.atime.to_s
+        {
+          last_update: last_update,
+          last_status_change: last_status_change,
+          last_access: last_access
+        }
+      end
+
       def cp_and_dl_files(api_dir: "", worker_dir: "")
         if Dir["#{worker_dir}/*.rb"].blank?
 

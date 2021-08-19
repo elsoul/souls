@@ -96,7 +96,7 @@ begin
       status = Paint["Checking for updates...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
-        Souls.update_gemfile
+        Souls::Upgrade.update_gemfile
         Whirly.status = "Done!"
       end
     else
