@@ -105,8 +105,8 @@ begin
         ARGV.each { |n| n.include?(":") ? keys << n.gsub(":", "").to_sym : key_strings << n }
         raise(StandardError, "wrong arguments!") unless keys.size == key_strings.size
 
-        params = keys.zip(key_strings).to_h
-        Object.const_get("Souls::Gcloud::#{module_name.camelize}").public_send(method_name.to_sym, **params)
+        args = keys.zip(key_strings).to_h
+        Object.const_get("Souls::Gcloud::#{module_name.camelize}").public_send(method_name.to_sym, **args)
       end
       Whirly.status = "Done!"
     end
