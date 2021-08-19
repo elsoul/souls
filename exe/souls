@@ -2,7 +2,7 @@
 require "souls"
 begin
   souls_command = ARGV[0]
-  require("./config/souls") unless ["new", "i", "-v", "deploy"].include?(souls_command)
+  require("./config/souls") unless ["new", "docker", "-v", "deploy"].include?(souls_command)
 rescue StandardError
   puts("Make sure you are at SOULs APP directory!")
 end
