@@ -1,0 +1,6 @@
+require_relative "./mutation"
+require_relative "./resolver"
+require_relative "./type"
+require_relative "./rspec_factory"
+require_relative "./rspec_mutation"
+require_relative "./rspec_resolver"

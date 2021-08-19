@@ -17,8 +17,8 @@ RSpec.describe(Souls) do
       expect(File.exist?(path)).to(eq(true))
     end
 
-    it "has user, article and article_category tables" do
-      expect(Souls::Api::Generate.get_tables).to(eq(%w[article_categories comments articles users]))
+    it "has user tables" do
+      expect(Souls::Api::Generate.get_tables).to(eq(%w[users]))
     end
   end
 end

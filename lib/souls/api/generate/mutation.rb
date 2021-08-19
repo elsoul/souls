@@ -20,7 +20,7 @@ module Souls
       file_path
     end
 
-    def self.create_mutation_params(class_name: "souls")
+    def self.create_mutation_params(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/create_#{class_name}.rb"
       path = "./db/schema.rb"
       @on = false
@@ -67,7 +67,7 @@ module Souls
       @relation_params
     end
 
-    def self.create_mutation_after_params(class_name: "article", relation_params: [])
+    def self.create_mutation_after_params(class_name: "user", relation_params: [])
       return false if relation_params.empty?
 
       file_path = "./app/graphql/mutations/base/#{class_name}/create_#{class_name}.rb"
@@ -79,7 +79,7 @@ module Souls
       true
     end
 
-    def self.create_mutation_end(class_name: "souls")
+    def self.create_mutation_end(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/create_#{class_name}.rb"
       File.open(file_path, "a") do |new_line|
         new_line.write(<<~TEXT)
@@ -99,7 +99,7 @@ module Souls
     end
 
     ## 2.Mutation - Update
-    def self.update_mutation_head(class_name: "souls")
+    def self.update_mutation_head(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/update_#{class_name}.rb"
       File.open(file_path, "w") do |new_line|
         new_line.write(<<~TEXT)
@@ -114,7 +114,7 @@ module Souls
       file_path
     end
 
-    def self.update_mutation_params(class_name: "souls")
+    def self.update_mutation_params(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/update_#{class_name}.rb"
       path = "./db/schema.rb"
       @on = false
@@ -175,7 +175,7 @@ module Souls
       true
     end
 
-    def self.update_mutation_end(class_name: "souls")
+    def self.update_mutation_end(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/update_#{class_name}.rb"
       File.open(file_path, "a") do |new_line|
         new_line.write(<<~TEXT)
@@ -193,7 +193,7 @@ module Souls
       file_path
     end
 
-    def self.update_mutation(class_name: "souls")
+    def self.update_mutation(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/update_#{class_name}.rb"
       return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 
@@ -204,7 +204,7 @@ module Souls
     end
 
     # 3. Mutation - Delete
-    def self.delete_mutation(class_name: "souls")
+    def self.delete_mutation(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/delete_#{class_name}.rb"
       return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 
@@ -233,7 +233,7 @@ module Souls
     end
 
     # 4. Mutation - Destroy Delete
-    def self.destroy_delete_mutation(class_name: "souls")
+    def self.destroy_delete_mutation(class_name: "user")
       file_path = "./app/graphql/mutations/base/#{class_name}/destroy_delete_#{class_name}.rb"
       return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 
@@ -263,7 +263,7 @@ module Souls
       puts(e)
     end
 
-    def self.mutation(class_name: "souls")
+    def self.mutation(class_name: "user")
       singularized_class_name = class_name.singularize
       file_dir = "./app/graphql/mutations/base"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)

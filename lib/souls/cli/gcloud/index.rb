@@ -1,3 +1,8 @@
+require_relative "./iam/index"
+require_relative "./pubsub/index"
+require_relative "./run/index"
+require_relative "./sql/index"
+
 module Souls
   module Gcloud
     class << self
@@ -24,6 +29,17 @@ module Souls
         system("gcloud services enable run.googleapis.com")
         puts("Operating permission to run.googleapis.com")
       end
+    end
+    module Iam
+    end
+
+    module Pubsub
+    end
+
+    module Run
+    end
+
+    module Sql
     end
   end
 end
