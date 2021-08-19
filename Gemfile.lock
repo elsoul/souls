@@ -1,12 +1,12 @@
 PATH
   remote: .
   specs:
-    souls (0.32.5)
-      activesupport (= 6.1.4)
-      foreman (= 0.87.2)
-      paint (= 2.2.1)
-      tty-prompt (= 0.23.1)
-      whirly (= 0.3.0)
+    souls (0.32.6)
+      activesupport (>= 6.1.4)
+      foreman (>= 0.87.2)
+      paint (>= 2.2.1)
+      tty-prompt (>= 0.23.1)
+      whirly (>= 0.3.0)
 
 GEM
   remote: https://rubygems.org/
