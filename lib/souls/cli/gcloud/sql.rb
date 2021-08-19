@@ -1,8 +1,8 @@
-require_relative "./run/run"
+require_relative "./sql/sql"
 
 module Souls
   module Gcloud
-    module Run
+    module Sql
     end
   end
 end

@@ -80,11 +80,34 @@ begin
     send_method = ARGV[1]
     Souls::Docker.public_send(send_method)
   when "gcloud"
-    args = ARGV
+    command = ARGV[1]
     status = Paint["Running Gcloud Commands...", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
-      Souls::Gcloud.return_method(args)
+      case command
+      when "get_iam_key"
+        app_name = Souls.configuration.app
+        project_id = Souls.configuration.project_id
+        Souls::Gcloud::Iam.create_service_account(service_account: app_name)
+        Souls::Gcloud::Iam.create_service_account_key(service_account: app_name, project_id: project_id)
+        Souls::Gcloud::Iam.export_key_to_console
+        Souls::Gcloud.enable_permissions
+        Souls::Gcloud::Iam.add_permissions(service_account: app_name, project_id: project_id)
+      when "auth_login"
+        project_id = Souls.configuration.project_id
+        Souls::Gcloud.auth_login(project_id: project_id)
+      else
+        module_name = ARGV[1]
+        method_name = ARGV[2]
+        ARGV.shift(3)
+        key_strings = []
+        keys = []
+        ARGV.each { |n| n.include?(":") ? keys << n.gsub(":", "").to_sym : key_strings << n }
+        raise(StandardError, "wrong arguments!") unless keys.size == key_strings.size
+
+        params = keys.zip(key_strings).to_h
+        Object.const_get("Souls::Gcloud::#{module_name.camelize}").public_send(method_name.to_sym, **params)
+      end
       Whirly.status = "Done!"
     end
   when "-v", "--version", "v", "version", "-version", "--v"
