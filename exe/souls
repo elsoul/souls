@@ -90,9 +90,9 @@ begin
         project_id = Souls.configuration.project_id
         Souls::Gcloud::Iam.create_service_account(service_account: app_name)
         Souls::Gcloud::Iam.create_service_account_key(service_account: app_name, project_id: project_id)
-        Souls::Gcloud::Iam.export_key_to_console
         Souls::Gcloud.enable_permissions
         Souls::Gcloud::Iam.add_permissions(service_account: app_name, project_id: project_id)
+        Souls::Gcloud::Iam.export_key_to_console
       when "auth_login"
         project_id = Souls.configuration.project_id
         Souls::Gcloud.auth_login(project_id: project_id)
