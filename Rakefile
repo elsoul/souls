@@ -6,6 +6,15 @@ RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
 
+namespace :upload do
+  task :github do
+    file_name = "./github.tgz"
+    system("tar -czf #{file_name} github/")
+    system("gsutil cp #{file_name} gs://souls-bucket/github_actions/")
+    FileUtils.rm(file_name.to_s)
+  end
+end
+
 namespace :task do
   task :g do
     file_path = "./lib/souls/generate/"

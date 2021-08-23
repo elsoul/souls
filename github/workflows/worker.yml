@@ -84,3 +84,4 @@ jobs:
             --set-env-vars="TZ=${{ secrets.TZ }}" \
             --set-env-vars="SLACK=${{ secrets.SLACK }}" \
             --set-env-vars="SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}" \
+            --set-env-vars="PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}"
