@@ -94,6 +94,8 @@ begin
         Souls::Gcloud.enable_permissions
         Souls::Gcloud::Iam.add_permissions(service_account: app_name, project_id: project_id)
         Souls::Gcloud::Iam.export_key_to_console
+      when "auth_login"
+        Souls::Gcloud.auth_login
       else
         module_name = ARGV[1]
         method_name = ARGV[2]
