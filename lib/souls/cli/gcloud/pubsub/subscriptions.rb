@@ -4,10 +4,12 @@ module Souls
       class << self
         def create_subscription(
           topic_name: "send-user-mail",
-          project_id: "souls-app",
-          service_account: "souls-app",
+          project_id: "",
+          service_account: "",
           endpoint: "https:://test.com"
         )
+          service_account = Souls.configuration.app if service_account.blank?
+          project_id = Souls.configuration.project_id if project_id.blank?
           system(
             "gcloud pubsub subscriptions create #{topic_name}-sub \
             --topic #{topic_name} \

@@ -6,7 +6,8 @@ require_relative "./sql/index"
 module Souls
   module Gcloud
     class << self
-      def auth_login(project_id: "souls-app")
+      def auth_login(project_id: "")
+        project_id = Souls.configuration.project_id if project_id.blank?
         system("gcloud config set project #{project_id}")
         system("gcloud auth login")
       end
