@@ -103,7 +103,9 @@ begin
         ARGV.shift(3)
         key_strings = []
         keys = []
-        ARGV.each { |n| n.include?(":") ? keys << n.gsub(":", "").to_sym : key_strings << n }
+        ARGV.each_with_index do |n, _i|
+          n.include?(":") && even.odd? ? keys << n.gsub(":", "").to_sym : key_strings << n
+        end
         raise(StandardError, "wrong arguments!") unless keys.size == key_strings.size
 
         args = keys.zip(key_strings).to_h
