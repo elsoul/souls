@@ -49,15 +49,15 @@ module Souls
 
         if api_latest_date < worker_latest_date
           FileUtils.rm_rf(api_dir) if Dir.exist?(api_dir)
-          FileUtils.mkdir_p(api_dir) unless Dir.exist?(api_dir)
+          FileUtils.mkdir(api_dir) unless Dir.exist?(api_dir)
           system("cp -r #{worker_dir}/* #{api_dir}")
         else
           FileUtils.rm_rf(worker_dir) if Dir.exist?(worker_dir)
-          FileUtils.mkdir_p(worker_dir) unless Dir.exist?(worker_dir)
+          FileUtils.mkdir(worker_dir) unless Dir.exist?(worker_dir)
           system("cp -r #{api_dir}/* #{worker_dir}")
         end
       rescue StandardError => e
-        puts(e.backtrace)
+        puts(Paint["`souls api g scaffold $model` at `api` dir first!", :red])
       end
 
       def get_models_path(service_name: "api")

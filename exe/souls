@@ -138,7 +138,7 @@ begin
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
         Souls::Sync.model
-        Whirly.status = "API and Worker Both Models Synced!"
+        Whirly.status = Paint["API and Worker Both Models Synced!", :green]
       end
     else
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
