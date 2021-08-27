@@ -9,6 +9,29 @@ module Souls
       data[0]["tag_name"]
     end
 
+    def self.generate_cd
+      shell = `echo $SHELL`.strip
+      rc =
+        if shell.include?("zsh")
+          "zshrc"
+        else
+          "bash"
+        end
+      system("echo 'alias api=\'cd apps/api\'' >> ~/.#{rc}")
+      system("echo 'alias mother=\'...\'' >> ~/.#{rc}")
+      system("echo 'alias worker=\'cd apps/worker\'' >> ~/.#{rc}")
+      puts(Paint["run `source ~/.#{rc}` to reflect your .#{rc}", :yellow])
+      puts(Paint["You can move to mother/api/worker just type", :green])
+      puts(Paint["\nmother\n", :white])
+      puts(
+        Paint["to go back to mother dir from api/worker\n\nYou can also go to api/worker from mother dir by typing",
+              :green]
+      )
+      puts(Paint["\napi\n", :white])
+      puts(Paint["or\n", :green])
+      puts(Paint["worker", :white])
+    end
+
     def self.initial_config_init(app_name: "souls", service_name: "api")
       config_dir = "./#{app_name}/apps/#{service_name}/config"
       FileUtils.mkdir_p(config_dir) unless Dir.exist?(config_dir)
