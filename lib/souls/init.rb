@@ -136,6 +136,7 @@ module Souls
       system("curl -OL #{url}")
       system("mkdir -p ./apps/worker")
       system("tar -zxvf ./#{file_name} -C ./apps/")
+      system("cp ./apps/api/config/database.yml ./apps/worker/config/")
       FileUtils.rm(file_name)
       line = Paint["====================================", :yellow]
       puts("\n")
@@ -163,7 +164,7 @@ module Souls
         Easy to Run
         $ cd ./apps/worker
         $ bundle
-        $ souls model:update
+        $ souls sync model
         $ souls s
         Go To : http://localhost:3000
 

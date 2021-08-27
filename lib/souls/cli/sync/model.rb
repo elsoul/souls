@@ -50,19 +50,11 @@ module Souls
         if api_latest_date < worker_latest_date
           FileUtils.rm_rf(api_dir) if Dir.exist?(api_dir)
           FileUtils.mkdir(api_dir) unless Dir.exist?(api_dir)
-          if api_dir.include?("database.yml")
-            system("cp #{worker_dir} #{api_dir}")
-          else
-            system("cp -r #{worker_dir}/* #{api_dir}")
-          end
+          system("cp -r #{worker_dir}/* #{api_dir}")
         else
           FileUtils.rm_rf(worker_dir) if Dir.exist?(worker_dir)
           FileUtils.mkdir(worker_dir) unless Dir.exist?(worker_dir)
-          if api_dir.include?("database.yml")
-            system("cp #{api_dir} #{worker_dir}")
-          else
-            system("cp -r #{api_dir}/* #{worker_dir}")
-          end
+          system("cp -r #{api_dir}/* #{worker_dir}")
         end
       end
 
@@ -87,10 +79,6 @@ module Souls
           {
             api: "#{api_path}/spec/factories",
             worker: "#{worker_path}/spec/factories"
-          },
-          {
-            api: "#{api_path}/config/database.yml",
-            worker: "#{worker_path}/config/database.yml"
           }
         ]
       end
