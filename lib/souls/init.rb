@@ -17,7 +17,7 @@ module Souls
         else
           "bash"
         end
-      system("echo 'alias api=\'cd apps/api\'' >> ~/.#{rc}")
+      system("echo '\nalias api=\'cd apps/api\'' >> ~/.#{rc}")
       system("echo 'alias mother=\'...\'' >> ~/.#{rc}")
       system("echo 'alias worker=\'cd apps/worker\'' >> ~/.#{rc}")
       puts(Paint["run `source ~/.#{rc}` to reflect your .#{rc}", :yellow])
@@ -72,7 +72,6 @@ module Souls
             config.app = "#{app_name}"
             config.project_id = "#{app_name}"
             config.strain = "mother"
-            config.github_repo = "elsoul/souls"
             config.fixed_gems = ["excluded_gem"]
           end
         TEXT

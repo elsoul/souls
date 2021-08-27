@@ -18,7 +18,6 @@ module Souls
         end
 
         def export_key_to_console
-          github_repo = Souls.configuration.github_repo || "elsoul/souls"
           file_path = "config/keyfile.json"
           puts(Paint["======= below（ここから）=======", :cyan])
           text = []
@@ -28,9 +27,10 @@ module Souls
             end
           end
           key = text.join(",").gsub(/^,/, "").chomp!
+          github_repo = `git remote show origin -n | grep 'Fetch URL:' | awk '{print $3}'`.strip
           puts(Paint[key, :white])
           puts(Paint["======= above（ここまで）=======", :cyan])
-          github_secret_url = "https://github.com/#{github_repo}/settings/secrets/actions"
+          github_secret_url = "#{github_repo}/settings/secrets/actions"
           souls_doc_url = "https://souls.elsoul.nl/docs/tutorial/zero-to-deploy/#43-github-シークレットキーの登録"
           txt1 = <<~TEXT
 
