@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.32.15)
+    souls (0.32.16)
       activesupport (>= 6.1.4)
       foreman (>= 0.87.2)
       paint (>= 2.2.1)
