@@ -36,7 +36,7 @@ SOULs フレームワークでは [Monorepo](https://en.wikipedia.org/wiki/Monor
 SOULs creates 3 types of framework.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
-2. Worker - Google Pub/Sub Worker API (Ruby) - Cloud Run
+2. Worker - Google Pub/Sub Messaging Worker API (Ruby) - Cloud Run
 3. Frontend - React Application (TypeScript) - Firebase
 
 ## Dependency
@@ -53,7 +53,6 @@ SOULs creates 3 types of framework.
 - [Google Cloud Pub/Sub](https://cloud.google.com/pubsub)
 - [Google Cloud Storage](https://cloud.google.com/run)
 - [Google Cloud IAM](https://cloud.google.com/iam)
-- [Google Cloud DNS](https://cloud.google.com/dns)
 - [Google Cloud Container Registry](https://cloud.google.com/container-registry)
 - [Google Firebase](https://firebase.google.com/)
 - [Google Cloud Scheduler](https://cloud.google.com/scheduler)
@@ -90,7 +89,7 @@ And Create Your APP
 `Gemfile`, `Gemfile.lock` を最新のバージョンに自動更新します。
 
 ```
-souls gem:update
+souls upgrade gemfile
 ```
 
 
@@ -103,7 +102,6 @@ Souls.configure do |config|
   config.app = "souls-api"
   config.project_id = "souls-api"
   config.strain = "api"
-  config.github_repo = "elsoul/souls"
   config.fixed_gems = ["selenium-webdriver", "pg"]
 end
 ```

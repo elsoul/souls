@@ -60,6 +60,8 @@ begin
   when "new"
     args = ARGV
     Souls::Init.start(args)
+  when "bashrc", "zshrc"
+    Souls::Init.generate_cd
   when "s", "server"
     system("foreman start -f Procfile.dev")
   when "c", "console"
