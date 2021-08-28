@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.33.5)
+    souls (0.33.4)
       activesupport (>= 6.1.4)
       foreman (>= 0.87.2)
       paint (>= 2.2.1)
@@ -30,7 +30,7 @@ GEM
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     language_server-protocol (3.16.0.1)
-    listen (3.6.0)
+    listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     minitest (5.14.4)
@@ -50,7 +50,7 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rbs (1.3.3)
+    rbs (1.5.1)
     regexp_parser (2.1.1)
     rexml (3.2.5)
     rspec (3.10.0)
@@ -75,7 +75,7 @@ GEM
       rubocop-ast (>= 1.9.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.10.0)
+    rubocop-ast (1.11.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
@@ -118,7 +118,6 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
-  x86_64-darwin-20
   x86_64-linux
 
 DEPENDENCIES
@@ -136,4 +135,4 @@ DEPENDENCIES
   whirly (= 0.3.0)
 
 BUNDLED WITH
-   2.2.25
+   2.2.26
