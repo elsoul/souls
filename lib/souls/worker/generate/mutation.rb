@@ -18,7 +18,7 @@ module Souls
                   def resolve
                     # Define Job Here
 
-                    { response: "Job queued!" }
+                    { response: "Job done!" }
                   rescue StandardError => e
                     GraphQL::ExecutionError.new(e.to_s)
                   end
