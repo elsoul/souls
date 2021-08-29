@@ -1,19 +1,31 @@
 module Souls
   module Api::Generate
-    def self.manager(class_name: "souls")
+    def self.manager(class_name: "user", mutation: "user_login")
+      p(mutation)
       singularized_class_name = class_name.underscore.singularize
       file_dir = "./app/graphql/mutations/managers/#{singularized_class_name}_manager"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-      file_path = "#{file_dir}/#{singularized_class_name}.rb"
+      file_path = "#{file_dir}/#{mutation}.rb"
+      raise(StandardError, "Already Exist!") if File.exist?(file_path)
+
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          class Types::#{singularized_class_name.camelize}Edge < module Mutations
-            module Mailers
-              class #{singularized_class_name.camelize}Mailer < BaseMutation
-                description "Mail を送信します。"
+          module Mutations
+            module Managers::#{singularized_class_name.camelize}Manager
+              class #{mutation.underscore.camelize} < BaseMutation
+                description "#{mutation} description"
+                ## Edit `argument` and `field`
+                argument :argment, String, required: true
+
                 field :response, String, null: false
 
-            node_type(Types::#{singularized_class_name.camelize}Type)
+                def resolve(**args)
+                  # Define Here
+                rescue StandardError => e
+                  GraphQL::ExecutionError.new(e.to_s)
+                end
+              end
+            end
           end
         TEXT
       end

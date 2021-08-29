@@ -14,10 +14,12 @@ begin
     when "generate", "g"
       method_name = ARGV[2]
       class_name = ARGV[3]
+      args = { class_name: class_name }
+      args[:mutation] = ARGV[4] if ARGV.size > 4
       status = Paint["Running SOULs Generate Commands...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
-        Souls::Api::Generate.public_send(method_name, class_name: class_name)
+        Souls::Api::Generate.public_send(method_name, **args)
         Whirly.status = "Done!"
       end
     when "update"
