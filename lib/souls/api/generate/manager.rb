@@ -1,7 +1,6 @@
 module Souls
   module Api::Generate
     def self.manager(class_name: "user", mutation: "user_login")
-      p(mutation)
       singularized_class_name = class_name.underscore.singularize
       file_dir = "./app/graphql/mutations/managers/#{singularized_class_name}_manager"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
