@@ -28,7 +28,7 @@ module Souls
           end
           key = text.join(",").gsub(/^,/, "").chomp!
           github_repo = `git remote show origin -n | grep 'Fetch URL:' | awk '{print $3}'`.strip
-          github_repo = "https://github.com/#{github_repo.match(/\:(.+).git/)[1]}" if github_repo.include?("git@github")
+          github_repo = "https://github.com/#{github_repo.match(/:(.+).git/)[1]}" if github_repo.include?("git@github")
           puts(Paint[key, :white])
           puts(Paint["======= above（ここまで）=======", :cyan])
           github_secret_url = "#{github_repo}/settings/secrets/actions"
@@ -53,7 +53,9 @@ module Souls
           FileUtils.rm(file_path)
         end
 
-        def add_service_account_role(service_account: "souls-app", project_id: "souls-app", role: "roles/firebase.admin")
+        def add_service_account_role(
+          service_account: "souls-app", project_id: "souls-app", role: "roles/firebase.admin"
+        )
           system(
             "gcloud projects add-iam-policy-binding #{project_id} \
           --member='serviceAccount:#{service_account}@#{project_id}.iam.gserviceaccount.com' \

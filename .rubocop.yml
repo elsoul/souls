@@ -21,6 +21,9 @@ Style/Copyright:
   Notice: '^Copyright (\(c\) )?2[0-9]{3} .+'
   AutocorrectNotice: "Copyright 2021 by ELSOUL LABO B.V."
 
+Style/DisableCopsWithinSourceCodeDirective:
+  Enabled: false
+
 Style/TopLevelMethodDefinition:
   Exclude:
     - "db/seeds.rb"
