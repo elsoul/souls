@@ -41,9 +41,8 @@ module Souls
         f.write(<<~TEXT)
           Souls.configure do |config|
             config.app = "#{app_name}"
-            config.project_id = "souls-app"
-            config.strain = "#{app_name}"
-            config.github_repo = "elsoul/souls"
+            config.project_id = "#{app_name}-project"
+            config.strain = "api"
             config.fixed_gems = ["excluded_gem"]
           end
         TEXT
@@ -70,7 +69,7 @@ module Souls
         f.write(<<~TEXT)
           Souls.configure do |config|
             config.app = "#{app_name}"
-            config.project_id = "#{app_name}"
+            config.project_id = "#{app_name}-project"
             config.strain = "mother"
             config.fixed_gems = ["excluded_gem"]
           end
