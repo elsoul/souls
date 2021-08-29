@@ -67,8 +67,8 @@ module Souls
             "roles/pubsub.editor",
             "roles/datastore.user",
             "roles/iam.serviceAccountUser",
-            "roles/storage.objectAdmin",
-            "roles/run.admin"
+            "roles/run.admin",
+            "roles/storage.admin"
           ]
           roles.each do |role|
             add_service_account_role(service_account: service_account, project_id: project_id, role: role)
