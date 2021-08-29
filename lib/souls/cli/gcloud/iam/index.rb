@@ -70,8 +70,7 @@ module Souls
             "roles/iam.serviceAccountUser",
             "roles/run.admin",
             "roles/storage.admin",
-            "roles/storage.objectAdmin",
-            "roles/iam.serviceAccounts.actAs"
+            "roles/storage.objectAdmin"
           ]
           roles.each do |role|
             add_service_account_role(service_account: service_account, project_id: project_id, role: role)
