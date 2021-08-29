@@ -43,8 +43,8 @@ module Souls
           api_file_data = file_diff(Dir["#{api_dir}/*.rb"])
           worker_file_data = file_diff(Dir["#{worker_dir}/*.rb"])
 
-          api_latest_date = Time.parse(api_file_data.max)
-          worker_latest_date = Time.parse(worker_file_data.max)
+          api_latest_date = DateTime.parse(api_file_data.max)
+          worker_latest_date = DateTime.parse(worker_file_data.max)
         end
 
         if api_latest_date < worker_latest_date
