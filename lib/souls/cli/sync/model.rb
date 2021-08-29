@@ -57,7 +57,7 @@ module Souls
           system("cp -r #{api_dir}/* #{worker_dir}")
         end
       rescue StandardError => e
-        puts(Paint["`souls api g scaffold $model` at `api` dir first!", :red])
+        puts(Paint[e, :red])
       end
 
       def get_models_path(service_name: "api")
