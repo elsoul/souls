@@ -5,6 +5,20 @@ module Souls
         def create_migration(class_name: "user")
           pluralized_class_name = class_name.underscore.pluralize
           system("rake db:create_migration NAME=create_#{pluralized_class_name}")
+          file_path = Dir["db/migrate/*create_#{pluralized_class_name}.rb"].first
+          File.open(file_path, "w") do |f|
+            f.write(<<~TEXT)
+              class Create#{pluralized_class_name.camelize} < ActiveRecord::Migration[6.1]
+                def change
+                  create_table :#{pluralized_class_name} do |t|
+
+                    t.boolean :is_deleted, null: false, default: false
+                    t.timestamps
+                  end
+                end
+              end
+            TEXT
+          end
         end
 
         def add_column(class_name: "user")

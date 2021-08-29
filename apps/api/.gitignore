@@ -31,3 +31,4 @@
 dump.rdb
 /imgs/
 /db/schema.rb
+Gemfile.lock
