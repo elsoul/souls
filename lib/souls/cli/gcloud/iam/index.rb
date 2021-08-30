@@ -28,10 +28,11 @@ module Souls
           end
           key = text.join(",").gsub(/^,/, "").chomp!
           github_repo = `git remote show origin -n | grep 'Fetch URL:' | awk '{print $3}'`.strip
+          github_repo = "https://github.com/#{github_repo.match(/:(.+).git/)[1]}" if github_repo.include?("git@github")
           puts(Paint[key, :white])
           puts(Paint["======= above（ここまで）=======", :cyan])
           github_secret_url = "#{github_repo}/settings/secrets/actions"
-          souls_doc_url = "https://souls.elsoul.nl/docs/tutorial/zero-to-deploy/#43-github-シークレットキーの登録"
+          souls_doc_url = "https://souls.elsoul.nl/docs/tutorial/zero-to-deploy/#github-シークレットキーの登録"
           txt1 = <<~TEXT
 
             ⬆⬆⬆　Copy the service account key above　⬆⬆⬆⬆
@@ -52,7 +53,9 @@ module Souls
           FileUtils.rm(file_path)
         end
 
-        def add_service_account_role(service_account: "souls-app", project_id: "souls-app", role: "roles/firebase.admin")
+        def add_service_account_role(
+          service_account: "souls-app", project_id: "souls-app", role: "roles/firebase.admin"
+        )
           system(
             "gcloud projects add-iam-policy-binding #{project_id} \
           --member='serviceAccount:#{service_account}@#{project_id}.iam.gserviceaccount.com' \
@@ -67,8 +70,9 @@ module Souls
             "roles/pubsub.editor",
             "roles/datastore.user",
             "roles/iam.serviceAccountUser",
-            "roles/storage.objectAdmin",
-            "roles/run.admin"
+            "roles/run.admin",
+            "roles/storage.admin",
+            "roles/storage.objectAdmin"
           ]
           roles.each do |role|
             add_service_account_role(service_account: service_account, project_id: project_id, role: role)

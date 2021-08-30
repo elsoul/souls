@@ -68,7 +68,7 @@ jobs:
     - name: Deploy to Cloud Run
       run: |
           gcloud run deploy ${{ secrets.APP_NAME }}-api \
-            --service-account=${{ secrets.GCP_PROJECT_ID }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
+            --service-account=${{ secrets.APP_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
             --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-api \
             --memory=4Gi \
             --region=asia-northeast1 \

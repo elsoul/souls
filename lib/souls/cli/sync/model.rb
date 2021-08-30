@@ -42,9 +42,10 @@ module Souls
         else
           api_file_data = file_diff(Dir["#{api_dir}/*.rb"])
           worker_file_data = file_diff(Dir["#{worker_dir}/*.rb"])
-
-          api_latest_date = Time.parse(api_file_data.max)
-          worker_latest_date = Time.parse(worker_file_data.max)
+          # rubocop:disable Style/DateTime
+          api_latest_date = DateTime.parse(api_file_data.max)
+          worker_latest_date = DateTime.parse(worker_file_data.max)
+          # rubocop:enable Style/DateTime
         end
 
         if api_latest_date < worker_latest_date
@@ -57,7 +58,7 @@ module Souls
           system("cp -r #{api_dir}/* #{worker_dir}")
         end
       rescue StandardError => e
-        puts(Paint["`souls api g scaffold $model` at `api` dir first!", :red])
+        puts(Paint[e, :red])
       end
 
       def get_models_path(service_name: "api")

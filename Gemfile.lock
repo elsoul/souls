@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (0.35.1)
+    souls (0.35.0)
       activesupport (>= 6.1.4)
       foreman (>= 0.87.2)
       paint (>= 2.2.1)
@@ -118,6 +118,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+  x86_64-darwin-20
   x86_64-linux
 
 DEPENDENCIES
