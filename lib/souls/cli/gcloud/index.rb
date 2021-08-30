@@ -2,6 +2,7 @@ require_relative "./iam/index"
 require_relative "./pubsub/index"
 require_relative "./run/index"
 require_relative "./sql/index"
+require_relative "./compute/index"
 
 module Souls
   module Gcloud
