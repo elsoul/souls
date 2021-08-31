@@ -30,6 +30,8 @@ module Souls
         puts("Operating permission to containerregistry.googleapis.com")
         system("gcloud services enable run.googleapis.com")
         puts("Operating permission to run.googleapis.com")
+        system("gcloud services enable vpcaccess.googleapis.com")
+        puts("Operating permission to vpcaccess.googleapis.com")
       end
     end
     module Iam

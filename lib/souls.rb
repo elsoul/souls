@@ -246,7 +246,7 @@ module Souls
   end
 
   class Configuration
-    attr_accessor :app, :strain, :project_id, :github_repo, :worker_endpoint, :fixed_gems
+    attr_accessor :app, :strain, :project_id, :github_repo, :worker_endpoint, :fixed_gems, :workers
 
     def initialize
       @app = nil
@@ -255,6 +255,7 @@ module Souls
       @github_repo = nil
       @worker_endpoint = nil
       @fixed_gems = nil
+      @workers = nil
     end
   end
 end

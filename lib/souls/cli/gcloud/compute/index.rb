@@ -44,11 +44,10 @@ module Souls
 
         def create_connector(app_name: "", region: "asia-northeast1")
           app_name = Souls.configuration.app if app_name.blank?
-          project_id = Souls.configuration.app if project_id.blank?
           system(
             "gcloud compute networks vpc-access connectors create #{app_name}-connector \
               --region=#{region} \
-              --subnet-project=#{project_id} \
+              --subnet-project=#{app_name} \
               --subnet=#{app_name}-subnet"
           )
         end

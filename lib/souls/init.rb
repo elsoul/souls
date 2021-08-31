@@ -44,6 +44,7 @@ module Souls
             config.project_id = "#{app_name}-project"
             config.strain = "api"
             config.fixed_gems = ["excluded_gem"]
+            config.workers = []
           end
         TEXT
       end
@@ -72,6 +73,7 @@ module Souls
             config.project_id = "#{app_name}-project"
             config.strain = "mother"
             config.fixed_gems = ["excluded_gem"]
+            config.workers = []
           end
         TEXT
       end

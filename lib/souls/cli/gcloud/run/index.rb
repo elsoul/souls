@@ -14,6 +14,10 @@ module Souls
           project_id = Souls.configuration.project_id if project_id.blank?
           system("gcloud run services list --project #{project_id}")
         end
+
+        def get_endpoint(worker_name: "")
+          system("gcloud run services list | grep #{worker_name} | awk '{print $4}'")
+        end
       end
     end
   end
