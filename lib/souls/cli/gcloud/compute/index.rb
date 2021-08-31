@@ -2,6 +2,16 @@ module Souls
   module Gcloud
     module Compute
       class << self
+        def setup_vpc_nat(app_name: "", region: "asia-northeast1", range: "10.124.0.0/28")
+          create_network(app_name: app_name)
+          create_firewall_tcp(app_name: app_name, range: range)
+          create_firewall_ssh(app_name: app_name, range: range)
+          create_subnet(app_name: app_name, region: region, range: range)
+          create_connector(app_name: app_name, region: region)
+          create_external_ip(app_name: app_name, region: region)
+          create_nat(app_name: app_name, region: region)
+        end
+
         def create_network(app_name: "")
           app_name = Souls.configuration.app if app_name.blank?
           system("gcloud compute networks create #{app_name}")
@@ -26,7 +36,7 @@ module Souls
         def create_subnet(app_name: "", region: "asia-northeast1", range: "10.124.0.0/28")
           app_name = Souls.configuration.app if app_name.blank?
           system(
-            "gcloud compute networks subnets create #{app_name}-subnet
+            "gcloud compute networks subnets create #{app_name}-subnet \
             --range=#{range} --network=#{app_name} --region=#{region}"
           )
         end
