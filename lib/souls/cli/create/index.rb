@@ -175,7 +175,7 @@ end
       end
 
       def souls_config_init(worker_name: "mailer")
-        app_name = Souls.configuration.app_name
+        app_name = Souls.configuration.app
         project_id = Souls.configuration.project_id
         config_dir = "apps/#{worker_name}/config"
         FileUtils.mkdir_p(config_dir) unless Dir.exist?(config_dir)
