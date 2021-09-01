@@ -151,7 +151,8 @@ begin
     service_name = ARGV[1]
     case service_name
     when "worker"
-      Souls::Init.download_worker
+      worker_name = ARGV[2]
+      Souls::Create.workflow(worker_name: worker_name)
     else
       puts(Paint["Coming Soon...", :green])
     end
