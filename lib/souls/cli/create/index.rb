@@ -10,6 +10,7 @@ module Souls
         workflow(worker_name: worker_name)
         procfile(worker_name: worker_name, port: port)
         mother_procfile(worker_name: worker_name)
+        souls_config_init(worker_name: worker_name)
       end
 
       def procfile(worker_name: "mailer", port: 3000)
@@ -171,6 +172,28 @@ end
         file_path
       rescue StandardError => e
         raise(StandardError, e)
+      end
+
+      def souls_config_init(worker_name: "mailer")
+        app_name = Souls.configuration.app_name
+        project_id = Souls.configuration.project_id
+        config_dir = "apps/#{worker_name}/config"
+        FileUtils.mkdir_p(config_dir) unless Dir.exist?(config_dir)
+        FileUtils.touch("#{config_dir}/souls.rb")
+        file_path = "#{config_dir}/souls.rb"
+        File.open(file_path, "w") do |f|
+          f.write(<<~TEXT)
+            Souls.configure do |config|
+              config.app = "#{app_name}"
+              config.project_id = "#{project_id}"
+              config.strain = "worker"
+              config.fixed_gems = ["excluded_gem"]
+              config.workers = []
+            end
+          TEXT
+        end
+      rescue StandardError => e
+        puts(e)
       end
 
       def download_worker(worker_name: "mailer")
