@@ -1,5 +1,7 @@
 class SoulsApiSchema < GraphQL::Schema
   default_max_page_size 100
+  max_complexity 100
+  max_depth 10
   mutation(Types::MutationType)
   query(Types::QueryType)
   use GraphQL::Batch
