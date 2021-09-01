@@ -31,13 +31,13 @@ module Souls
         workers = Souls.configuration.workers
         port = 3000 + workers.size
         file_path = strain == "mother" ? "config/souls.rb" : "apps/api/config/souls.rb"
-        new_file_path = "tmp/souls.rb"
+        new_file_path = "souls.rb"
         worker_switch = false
         File.open(new_file_path, "w") do |new_line|
           File.open(file_path, "r") do |f|
             f.each_line do |line|
               worker_switch = true if line.include?("config.workers")
-              break if line.strip == "end"
+              next if line.strip == "end"
 
               new_line.write(line) unless worker_switch
 
@@ -53,7 +53,7 @@ module Souls
     },
                 TEXT
               end
-              worker_switch = false
+              break
             end
           end
           new_line.write(<<-TEXT)
