@@ -147,55 +147,5 @@ module Souls
       puts(cd)
       puts(line)
     end
-
-    def self.download_worker
-      current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-      wrong_dir = %w[apps api worker]
-      raise(StandardError, "You are at wrong directory!Go to Mother Directory!") if wrong_dir.include?(current_dir_name)
-
-      version = Souls.get_latest_version_txt(service_name: "worker").join(".")
-      file_name = "worker-v#{version}.tgz"
-      url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
-      system("curl -OL #{url}")
-      system("mkdir -p ./apps/worker")
-      system("tar -zxvf ./#{file_name} -C ./apps/")
-      system("cp ./apps/api/config/database.yml ./apps/worker/config/")
-      FileUtils.rm(file_name)
-      line = Paint["====================================", :yellow]
-      puts("\n")
-      puts(line)
-      txt2 = <<~TEXT
-           _____ ____  __  ____#{'        '}
-          / ___// __ \\/ / / / /   %{red1}
-          \\__ \\/ / / / / / / /   %{red2}
-         ___/ / /_/ / /_/ / /___%{red3}#{' '}
-        /____/\\____/\\____/_____%{red4}#{'  '}
-      TEXT
-      red1 = ["_____", :red]
-      red2 = ["/ ___/", :red]
-      red3 = ["(__  )", :red]
-      red4 = ["/____/", :red]
-      ms = Paint % [txt2, :cyan, { red1: red1, red2: red2, red3: red3, red4: red4 }]
-      puts(ms)
-      puts(line)
-      welcome = Paint["SOULs Worker Activated!", :white]
-      puts(welcome)
-      souls_ver = Paint["SOULs Version: #{Souls::VERSION}", :white]
-      puts(souls_ver)
-      puts(line)
-      endroll = <<~TEXT
-        Easy to Run
-        $ cd ./apps/worker
-        $ bundle
-        $ souls sync model
-        $ souls s
-        Go To : http://localhost:3000
-
-        Doc: https://souls.elsoul.nl
-      TEXT
-      cd = Paint[endroll, :white]
-      puts(cd)
-      puts(line)
-    end
   end
 end

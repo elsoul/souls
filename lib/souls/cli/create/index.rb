@@ -1,8 +1,73 @@
 module Souls
   module Create
     class << self
-      def procfile
+      def worker(worker_name: "mailer")
         workers = Souls.configuration.workers
+        port = 3000 + workers.size
+        download_worker(worker_name: worker_name)
+        souls_conf_update(worker_name: worker_name)
+        souls_conf_update(worker_name: worker_name, strain: "api")
+        workflow(worker_name: worker_name)
+        procfile(worker_name: worker_name, port: port)
+        mother_procfile(worker_name: worker_name)
+      end
+
+      def procfile(worker_name: "mailer", port: 3000)
+        file_dir = "apps/#{worker_name}"
+        file_path = "#{file_dir}/Procfile.dev"
+        File.open(file_path, "w") do |f|
+          f.write("web: bundle exec puma -p #{port} -e development")
+        end
+      end
+
+      def mother_procfile(worker_name: "mailer")
+        file_path = "Procfile.dev"
+        File.open(file_path, "a") do |f|
+          f.write("\n#{worker_name}: foreman start -f ./apps/#{worker_name}/Procfile")
+        end
+      end
+
+      def souls_conf_update(worker_name: "", strain: "mother")
+        workers = Souls.configuration.workers
+        port = 3000 + workers.size
+        file_path = strain == "mother" ? "config/souls.rb" : "apps/api/config/souls.rb"
+        new_file_path = "tmp/souls.rb"
+        worker_switch = false
+        File.open(new_file_path, "w") do |new_line|
+          File.open(file_path, "r") do |f|
+            f.each_line do |line|
+              worker_switch = true if line.include?("config.workers")
+              break if line.strip == "end"
+
+              new_line.write(line) unless worker_switch
+
+              next unless worker_switch
+
+              new_line.write("  config.workers = [\n")
+              workers.each do |worker|
+                new_line.write(<<-TEXT)
+    {
+      name: "#{worker[:name]}",
+      endpoint: "#{worker[:endpoint]}",
+      port: #{worker[:port]}
+    },
+                TEXT
+              end
+              worker_switch = false
+            end
+          end
+          new_line.write(<<-TEXT)
+    {
+      name: "#{worker_name}",
+      endpoint: "",
+      port: #{port}
+    }
+  ]
+end
+          TEXT
+        end
+        FileUtils.rm(file_path)
+        FileUtils.mv(new_file_path, file_path)
       end
 
       def workflow(worker_name: "")
@@ -106,6 +171,25 @@ module Souls
         file_path
       rescue StandardError => e
         raise(StandardError, e)
+      end
+
+      def download_worker(worker_name: "mailer")
+        raise(StandardError, "Can't use `worker` for worker. Change Name.") if worker_name == "worker"
+
+        current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
+        wrong_dir = %w[apps api worker]
+        if wrong_dir.include?(current_dir_name)
+          raise(StandardError, "You are at wrong directory!Go to Mother Directory!")
+        end
+
+        version = Souls.get_latest_version_txt(service_name: "worker").join(".")
+        file_name = "worker-v#{version}.tgz"
+        url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
+        system("curl -OL #{url}")
+        system("tar -zxvf ./#{file_name} -C ./apps/")
+        system("mv apps/worker apps/#{worker_name}")
+        system("cp ./apps/api/config/database.yml ./apps/#{worker_name}/config/")
+        FileUtils.rm(file_name)
       end
     end
   end

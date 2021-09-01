@@ -152,7 +152,7 @@ begin
     case service_name
     when "worker"
       worker_name = ARGV[2]
-      Souls::Create.workflow(worker_name: worker_name)
+      Souls::Create.worker(worker_name: worker_name)
     else
       puts(Paint["Coming Soon...", :green])
     end

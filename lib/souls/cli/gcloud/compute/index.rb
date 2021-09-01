@@ -73,7 +73,7 @@ module Souls
           system("gcloud compute network list")
         end
 
-        def nat_credit(app_name: "", worker_name: "mailer")
+        def nat_credit(app_name: "")
           app_name = Souls.configuration.app if app_name.blank?
           line = Paint["====================================", :yellow]
           puts("\n")

@@ -93,6 +93,10 @@ Layout/ExtraSpacing:
   Exclude:
     - "db/migrate/*.rb"
 
+Layout/HeredocIndentation:
+  Exclude:
+    - "lib/souls/cli/create/index.rb"
+
 Layout/LineLength:
   Exclude:
     - "lib/souls/generate/rspec_mutation.rb"
