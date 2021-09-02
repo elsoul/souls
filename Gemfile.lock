@@ -46,6 +46,8 @@ GEM
       ruby2_keywords (~> 0.0.1)
     nokogiri (1.12.4-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.4-x86_64-linux)
+      racc (~> 1.4)
     paint (2.2.1)
     parallel (1.20.1)
     parser (3.0.2.0)
@@ -149,6 +151,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   activesupport (= 6.1.4)

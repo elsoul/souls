@@ -2,6 +2,9 @@ module Souls
   module Create
     class << self
       def worker(worker_name: "mailer")
+        file_dir = "apps/#{worker_name}"
+        raise(StandardError, "Same Worker Already Exist!") if Dir.exist?(file_dir)
+
         workers = Souls.configuration.workers
         port = 3000 + workers.size
         download_worker(worker_name: worker_name)

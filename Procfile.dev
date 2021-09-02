@@ -1,1 +1,7 @@
 web: bundle exec puma -p 3000 -e development
+scraper1: foreman start -f ./apps/scraper1/Procfile
+scraper2: foreman start -f ./apps/scraper2/Procfile
+scraper3: foreman start -f ./apps/scraper3/Procfile
+mail1: foreman start -f ./apps/mail1/Procfile
+mail2: foreman start -f ./apps/mail2/Procfile
+mail3: foreman start -f ./apps/mail3/Procfile

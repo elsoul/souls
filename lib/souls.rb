@@ -9,6 +9,7 @@ require "whirly"
 require "tty-prompt"
 
 module Souls
+  extend Souls::Utils
   SOULS_METHODS = %w[
     model
     query
