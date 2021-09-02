@@ -11,7 +11,8 @@ module Souls
       private
 
       def cp_and_dl_files(dir: "db")
-        worker_paths = Souls.configuration.workers.map { |n| n[:name] }
+        require("#{Souls.get_mother_path}/config/souls")
+        worker_paths = Souls.configuration.workers
         worker_paths.each do |path|
           cp_path = "./apps/api/#{dir}"
           old_path = "./apps/#{path}/#{dir}"
