@@ -16,8 +16,8 @@ module Souls
         worker_paths.each do |path|
           cp_path = "./apps/api/#{dir}"
           old_path = "./apps/#{path}/#{dir}"
-          FileUtils.rm_rf(old_path) if Dir.exist?(old_path)
-          FileUtils.mkdir(old_path) unless Dir.exist?(old_path)
+          system("rm -rf #{old_path}", chdir: Souls.get_mother_path)
+          system("mkdir -p #{old_path}", chdir: Souls.get_mother_path)
           system("cp -r #{cp_path}/* #{old_path}", chdir: Souls.get_mother_path)
         end
       end
