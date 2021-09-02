@@ -105,9 +105,9 @@ module Souls
 
             Edit  `.github/workflow/worker.yml`
 
-            Add these 2 options in `- name: Deploy to Cloud Run` step
-            --vpc-connector=#{app_name}-connector \
-            --vpc-egress=all \
+            Add these 2 options in \n`- name: Deploy to Cloud Run` step
+            \n--vpc-connector=#{app_name}-connector \
+            \n--vpc-egress=all \
 
           TEXT
           cd = Paint[endroll, :white]
