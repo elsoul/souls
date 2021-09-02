@@ -3,11 +3,5 @@ Souls.configure do |config|
   config.project_id = "souls-app"
   config.strain = "api"
   config.fixed_gems = [""]
-  config.workers = [
-    {
-      name: "mailer",
-      endpoint: "",
-      port: 3000
-    }
-  ]
+  config.workers = []
 end
