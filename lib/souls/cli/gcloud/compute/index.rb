@@ -8,6 +8,7 @@ module Souls
           create_firewall_ssh(app_name: app_name)
           create_subnet(app_name: app_name, region: region, range: range)
           create_connector(app_name: app_name, region: region)
+          create_router(app_name: app_name, region: region)
           create_external_ip(app_name: app_name, region: region)
           create_nat(app_name: app_name, region: region)
           nat_credit(app_name: app_name)
@@ -53,6 +54,11 @@ module Souls
           )
         end
 
+        def create_router(app_name: "", region: "asia-northeast1")
+          app_name = Souls.configuration.app if app_name.blank?
+          system("gcloud compute routers create #{app_name}-router --network=#{app_name} --region=#{region}")
+        end
+
         def create_external_ip(app_name: "", region: "asia-northeast1")
           app_name = Souls.configuration.app if app_name.blank?
           system("gcloud compute addresses create #{app_name}-worker-ip --region=#{region}")
@@ -62,7 +68,7 @@ module Souls
           app_name = Souls.configuration.app if app_name.blank?
           system(
             "gcloud compute routers nats create #{app_name}-worker-nat \
-                  --router=#{app_name}-connector \
+                  --router=#{app_name}-router \
                   --region=#{region} \
                   --nat-custom-subnet-ip-ranges=#{app_name}-subnet \
                   --nat-external-ip-pool=#{app_name}-worker-ip"
@@ -100,8 +106,8 @@ module Souls
             Edit  `.github/workflow/worker.yml`
 
             Add these 2 options in `- name: Deploy to Cloud Run` step
-            \n--vpc-connector=#{app_name}-connector \
-            \n--vpc-egress=all \
+            --vpc-connector=#{app_name}-connector \
+            --vpc-egress=all \
 
           TEXT
           cd = Paint[endroll, :white]
