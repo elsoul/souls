@@ -62,7 +62,7 @@ module Souls
           app_name = Souls.configuration.app if app_name.blank?
           system(
             "gcloud compute routers nats create #{app_name}-worker-nat \
-                  --router=#{app_name}-router \
+                  --router=#{app_name}-connector \
                   --region=#{region} \
                   --nat-custom-subnet-ip-ranges=#{app_name}-subnet \
                   --nat-external-ip-pool=#{app_name}-worker-ip"
@@ -100,8 +100,8 @@ module Souls
             Edit  `.github/workflow/worker.yml`
 
             Add these 2 options in `- name: Deploy to Cloud Run` step
-            --vpc-connector=#{app_name}-connector \
-            --vpc-egress=all \
+            \n--vpc-connector=#{app_name}-connector \
+            \n--vpc-egress=all \
 
           TEXT
           cd = Paint[endroll, :white]
