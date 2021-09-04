@@ -23,7 +23,10 @@ module Souls
         end
 
         workers.each do |key, value|
-          create_topic(topic_id: key) if value == 1
+          if value == 1
+            create_topic(topic_id: key)
+            create_push_subscription(topic_id: key)
+          end
           delete_topic(topic_id: key) if value == -1
         end
         workers
@@ -40,6 +43,24 @@ module Souls
         topic = pubsub.topic(topic_id)
         topic.delete
         puts("Topic #{topic_id} deleted.")
+      end
+
+      def create_push_subscription(topic_id: "mailer")
+        require("#{Souls.get_mother_path}/config/souls")
+        worker_name = topic_id.split("_")[0]
+
+        subscription_id = "#{topic_id}-sub"
+        endpoint = ""
+        worker_paths = Souls.configuration.workers
+        worker_paths.each do |worker|
+          endpoint = worker[:endpoint] if worker[:name] == worker_name
+        end
+
+        pubsub = Google::Cloud::Pubsub.new
+
+        topic = pubsub.topic(topic_id)
+        topic.subscribe(subscription_id, endpoint: endpoint)
+        puts("Push subscription #{subscription_id} created.")
       end
 
       def get_workers
