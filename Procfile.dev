@@ -1,2 +1,1 @@
 web: bundle exec puma -p 3000 -e development
-scraper1: foreman start -f ./apps/scraper1/Procfile
