@@ -35,14 +35,20 @@ module Mutations
         end
         mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {#{inputs}}) { response } })
       end
-      if ENV["RACK_ENV"] == "production"
-        mutation_string
-      else
-        res = Net::HTTP.post_form(URI.parse("http://localhost:3000/endpoint"), { query: mutation_string })
-        res.body
-      end
+      mutation_string
     rescue StandardError => e
       raise(StandardError, e)
+    end
+
+    def send_post(worker_name: "", mutation_string: "")
+      port = get_worker(worker_name: worker_name)[0].port
+      res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}/endpoint"), { query: mutation_string })
+      res.body
+    end
+
+    def get_worker(worker_name: "")
+      workers = Souls.configuration.workers
+      workers.filter { |n| n[:name] == worker_name }
     end
 
     def check_user_permissions(user, obj, method)

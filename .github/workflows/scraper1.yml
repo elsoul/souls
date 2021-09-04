@@ -1,12 +1,12 @@
-name: Worker
+name: Scraper1
 
 on:
   push:
     branches:
       - master
     paths:
-      - "apps/worker/**"
-      - ".github/workflows/worker.yml"
+      - "apps/scraper1/**"
+      - ".github/workflows/scraper1.yml"
 
 jobs:
   build:
@@ -38,7 +38,7 @@ jobs:
         RACK_ENV: test
       run: |
         sudo apt-get -yqq install libpq-dev
-        cd apps/worker
+        cd apps/scraper1
         gem install bundler
         bundle install --jobs 4 --retry 3
         bundle exec rake db:create RACK_ENV=test
@@ -55,21 +55,21 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
-    
+
     - name: Configure Docker
       run: gcloud auth configure-docker --quiet
-    
+
     - name: Build Docker container
-      run: docker build -f ./apps/worker/Dockerfile ./apps/worker -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-worker
+      run: docker build -f ./apps/scraper1/Dockerfile ./apps/scraper1 -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-scraper1
 
     - name: Push to Container Resistory
-      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-worker
+      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-scraper1
 
     - name: Deploy to Cloud Run
       run: |
-          gcloud run deploy ${{ secrets.APP_NAME }}-worker \
+          gcloud run deploy ${{ secrets.APP_NAME }}-scraper1 \
             --service-account=${{ secrets.APP_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
-            --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-worker \
+            --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-scraper1 \
             --memory=4Gi \
             --region=asia-northeast1 \
             --allow-unauthenticated \

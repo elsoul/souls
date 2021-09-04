@@ -142,7 +142,14 @@ begin
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
         Souls::Sync.model
-        Whirly.status = Paint["API and Worker Both Models Synced!", :green]
+        Whirly.status = Paint["API and Workers Models Synced!", :green]
+      end
+    when "pubsub"
+      status = Paint["Syncing PubSub...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+        Souls::Sync.pubsub
+        Whirly.status = Paint["Workers and Google Cloud PubSub Synced!", :green]
       end
     else
       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
