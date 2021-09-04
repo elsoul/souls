@@ -1,2 +1,1 @@
 web: bundle exec puma -p 3000 -e development
-mailer: foreman start -f ./apps/mailer/Procfile
