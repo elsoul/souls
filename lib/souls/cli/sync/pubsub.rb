@@ -12,7 +12,6 @@ module Souls
         pubsub = Google::Cloud::Pubsub.new
         topics = pubsub.topics
 
-        puts("Topics in project:")
         topic_names =
           topics.map do |topic|
             topic.name.gsub("projects/#{project_id}/topics/", "")
