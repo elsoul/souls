@@ -2,7 +2,7 @@ module Souls
   module Gcloud
     module Run
       class << self
-        def awake(app_name: "souls-app", url: "")
+        def awake(app_name: "", url: "")
           app_name = Souls.configuration.app if app_name.blank?
           system(
             "gcloud scheduler jobs create http #{app_name}-awake
