@@ -139,7 +139,7 @@ begin
     status = Paint["Syncing Files...", :yellow]
     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
       Whirly.status = status
-      Souls::Sync..public_send(method_name)
+      Souls::Sync.public_send(method_name)
       Whirly.status = Paint["Synced!", :green]
     end
   when "create"
