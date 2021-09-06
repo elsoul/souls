@@ -23,11 +23,12 @@ module Souls
 
               new_line.write("  config.workers = [\n")
               workers.each do |worker|
-                endpoint = Souls::Gcloud::Run.get_endpoint(worker_name: worker[:name])
+                base_url = Souls::Gcloud::Run.get_endpoint(worker_name: worker[:name])
+                endpoint = Souls.configuration.endpoint
                 new_line.write(<<-TEXT)
     {
       name: "#{worker[:name]}",
-      endpoint: "#{endpoint}/endpoint",
+      endpoint: "#{base_url.strip}/#{endpoint}",
       port: #{worker[:port]}
     },
                 TEXT
@@ -35,9 +36,9 @@ module Souls
               break
             end
           end
-          new_line.write(<<-TEXT)
-  ]
-end
+          new_line.write(<<~TEXT)
+              ]
+            end
           TEXT
         end
       end
