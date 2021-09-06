@@ -5,13 +5,13 @@ module Souls
         def mutation(class_name: "csv_export")
           file_dir = "./app/graphql/mutations/"
           FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-          file_path = "#{file_dir}#{class_name.singularize}_job.rb"
+          file_path = "#{file_dir}#{class_name.singularize}.rb"
           raise(StandardError, "Mailer already exist! #{file_path}") if File.exist?(file_path)
 
           File.open(file_path, "w") do |f|
             f.write(<<~TEXT)
               module Mutations
-                class #{class_name.camelize}Job < BaseMutation
+                class #{class_name.camelize} < BaseMutation
                   description "Job Description"
                   field :response, String, null: false
 
