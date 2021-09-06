@@ -26,6 +26,8 @@ require "sendgrid-ruby"
 require "search_object"
 require "search_object/plugin/graphql"
 require "graphql/batch"
+require "souls"
+require "./config/souls"
 
 ENV["RACK_ENV"] ||= "development"
 Dir["./config/*.rb"].each { |f| require f unless f.include?("souls.rb") }
@@ -54,6 +56,7 @@ loader.setup
 class SoulsApi < Sinatra::Base
   include Pundit
   include SoulsHelper
+
   ::Logger.class_eval { alias_method :write, :<< }
   access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)), "log", "access.log")
   access_logger = ::Logger.new(access_log)
@@ -62,6 +65,7 @@ class SoulsApi < Sinatra::Base
 
   use Rack::JSONBodyParser
   register Sinatra::ActiveRecordExtension
+  endpoint = Souls.configuration.endpoint
 
   configure :production, :development do
     set :logger, Logger.new($stdout)
@@ -88,7 +92,7 @@ class SoulsApi < Sinatra::Base
     json(message)
   end
 
-  post "/endpoint" do
+  post endpoint do
     token = request.env["HTTP_AUTHORIZATION"].split("Bearer ")[1] if request.env["HTTP_AUTHORIZATION"]
 
     user = token ? login_auth(token: token) : nil

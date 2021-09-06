@@ -26,6 +26,8 @@ require "sendgrid-ruby"
 require "search_object"
 require "search_object/plugin/graphql"
 require "graphql/batch"
+require "souls"
+require "./config/souls"
 
 ENV["RACK_ENV"] ||= "development"
 Dir["./config/*.rb"].each { |f| require f unless f.include?("souls.rb") }
@@ -57,6 +59,7 @@ class SoulsApi < Sinatra::Base
 
   use Rack::JSONBodyParser
   register Sinatra::ActiveRecordExtension
+  endpoint = Souls.configuration.endpoint
 
   configure :production, :development do
     set :logger, Logger.new($stdout)
@@ -83,7 +86,7 @@ class SoulsApi < Sinatra::Base
     json(message)
   end
 
-  post "/endpoint" do
+  post endpoint do
     query =
       if ENV["RACK_ENV"] == "production"
         Base64.decode64(params["message"]["data"]).force_encoding("UTF-8")

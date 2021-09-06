@@ -3,7 +3,8 @@ require "rack/cors"
 require "graphql_playground"
 
 map "/playground" do
-  use GraphQLPlayground, endpoint: "/endpoint"
+  endpoint = Souls.configuration.endpoint
+  use GraphQLPlayground, endpoint: endpoint
 end
 
 run SoulsApi
