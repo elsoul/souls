@@ -16,7 +16,7 @@ module Souls
         end
 
         def get_endpoint(worker_name: "")
-          system("gcloud run services list | grep #{worker_name} | awk '{print $4}'")
+          `gcloud run services list | grep #{worker_name} | awk '{print $4}'`
         end
       end
     end

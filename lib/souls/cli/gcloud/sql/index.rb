@@ -11,7 +11,7 @@ module Souls
           )
         end
 
-        def pathch_instance(instance_name: "")
+        def patch_instance(instance_name: "")
           app_name = Souls.configuration.app
           instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
           project_id = Souls.configuration.project_id
