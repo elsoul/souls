@@ -49,7 +49,7 @@ module Souls
         require("#{Souls.get_mother_path}/config/souls")
         worker_name = topic_id.split("_")[0]
 
-        subscription_id = "#{topic_id}-sub"
+        subscription_id = "#{topic_id}_sub"
         endpoint = ""
         worker_paths = Souls.configuration.workers
         worker_paths.each do |worker|
