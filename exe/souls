@@ -135,24 +135,12 @@ begin
   when "release"
     Souls::Release.gem_release
   when "sync"
-    target = ARGV[1]
-    case target
-    when "model", "m"
-      status = Paint["Syncing Models...", :yellow]
-      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-        Whirly.status = status
-        Souls::Sync.model
-        Whirly.status = Paint["API and Workers Models Synced!", :green]
-      end
-    when "pubsub"
-      status = Paint["Syncing PubSub...", :yellow]
-      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-        Whirly.status = status
-        Souls::Sync.pubsub
-        Whirly.status = Paint["Workers and Google Cloud PubSub Synced!", :green]
-      end
-    else
-      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
+    method_name = ARGV[1]
+    status = Paint["Syncing Files...", :yellow]
+    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+      Whirly.status = status
+      Souls::Sync.public_send(method_name)
+      Whirly.status = Paint["Synced!", :green]
     end
   when "create"
     service_name = ARGV[1]

@@ -10,6 +10,18 @@ module Souls
               --root-password='#{root_pass}' --database-flags cloudsql.iam_authentication=on"
           )
         end
+
+        def pathch_instance(instance_name: "")
+          app_name = Souls.configuration.app
+          instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
+          project_id = Souls.configuration.project_id
+          system(
+            "gcloud beta sql instances patch #{instance_name} \
+              --project=#{project_id} \
+              --network=#{app_name} \
+              --no-assign-ip"
+          )
+        end
       end
     end
   end
