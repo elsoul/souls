@@ -24,10 +24,10 @@ module Souls
 
         workers.each do |key, value|
           if value == 1
-            create_topic(topic_id: key)
-            create_push_subscription(topic_id: key)
+            create_topic(topic_id: key.to_s)
+            create_push_subscription(topic_id: key.to_s)
           end
-          delete_topic(topic_id: key) if value == -1
+          delete_topic(topic_id: key.to_s) if value == -1
         end
         workers
       end
