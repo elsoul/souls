@@ -189,6 +189,7 @@ end
             Souls.configure do |config|
               config.app = "#{app_name}"
               config.project_id = "#{project_id}"
+              config.endpoint = "/endpoint"
               config.strain = "worker"
               config.fixed_gems = ["excluded_gem"]
               config.workers = []

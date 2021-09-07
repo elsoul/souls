@@ -42,6 +42,7 @@ module Souls
           Souls.configure do |config|
             config.app = "#{app_name}"
             config.project_id = "#{app_name}-project"
+            config.endpoint = "/endpoint"
             config.strain = "api"
             config.fixed_gems = ["excluded_gem"]
             config.workers = []
@@ -71,6 +72,7 @@ module Souls
           Souls.configure do |config|
             config.app = "#{app_name}"
             config.project_id = "#{app_name}-project"
+            config.endpoint = "/endpoint"
             config.strain = "mother"
             config.fixed_gems = ["excluded_gem"]
             config.workers = []
