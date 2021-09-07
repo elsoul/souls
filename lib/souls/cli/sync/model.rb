@@ -19,6 +19,8 @@ module Souls
           system("rm -rf #{old_path}", chdir: Souls.get_mother_path)
           system("mkdir -p #{old_path}", chdir: Souls.get_mother_path)
           system("cp -r #{cp_path}/* #{old_path}", chdir: Souls.get_mother_path)
+        rescue StandardError
+          # Do nothing
         end
       end
     end
