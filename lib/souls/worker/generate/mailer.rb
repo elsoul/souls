@@ -43,6 +43,7 @@ module Souls
                   rescue StandardError => e
                     GraphQL::ExecutionError.new(e.to_s)
                   end
+                end
               end
             TEXT
           end
