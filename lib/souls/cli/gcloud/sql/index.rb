@@ -15,7 +15,13 @@ module Souls
           app_name = Souls.configuration.app
           instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
           project_id = Souls.configuration.project_id
-          system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --network=#{app_name}")
+          system(
+            "
+            gcloud beta sql instances patch #{instance_name} \
+            --project=#{project_id} \
+            --network=#{app_name} \
+            --no-assign-ip"
+          )
         end
 
         def assign_ip(instance_name: "", ip: "")
