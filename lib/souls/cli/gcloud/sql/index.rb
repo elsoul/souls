@@ -11,16 +11,39 @@ module Souls
           )
         end
 
-        def patch_instance(instance_name: "")
+        def setup_private_ip(instance_name: "")
           app_name = Souls.configuration.app
           instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
           project_id = Souls.configuration.project_id
+          create_ip_range
+          create_vpc_connector
+          system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --network=#{app_name}")
+        end
+
+        def create_ip_range
+          app_name = Souls.configuration.app
           system(
             "
-            gcloud beta sql instances patch #{instance_name} \
-            --project=#{project_id} \
-            --network=#{app_name} \
-            --no-assign-ip"
+            gcloud compute addresses create #{app_name}-ip-range \
+              --global \
+              --purpose=VPC_PEERING \
+              --prefix-length=16 \
+              --description='peering range for SOULs' \
+              --network=#{app_name} \
+              --project=#{app_name}"
+          )
+        end
+
+        def create_vpc_connector
+          app_name = Souls.configuration.app
+          system(
+            "
+            gcloud services vpc-peerings connect \
+              --service=servicenetworking.googleapis.com \
+              --ranges=#{app_name}-ip-range \
+              --network=#{app_name} \
+              --project=#{app_name}
+            "
           )
         end
 
