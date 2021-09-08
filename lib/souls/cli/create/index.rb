@@ -30,7 +30,7 @@ module Souls
       def mother_procfile(worker_name: "mailer")
         file_path = "Procfile.dev"
         File.open(file_path, "a") do |f|
-          f.write("\n#{worker_name}: foreman start -f ./apps/#{worker_name}/Procfile")
+          f.write("\n#{worker_name}: foreman start -f ./apps/#{worker_name}/Procfile.dev")
         end
       end
 
