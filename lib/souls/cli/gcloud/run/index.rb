@@ -12,7 +12,7 @@ module Souls
 
         def list(project_id: "")
           project_id = Souls.configuration.project_id if project_id.blank?
-          system("gcloud run services list --project #{project_id}")
+          system("gcloud run services list --project #{project_id} --platform managed")
         end
 
         def get_endpoint(worker_name: "")
