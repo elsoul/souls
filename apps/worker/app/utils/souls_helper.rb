@@ -1,13 +1,4 @@
 module SoulsHelper
-  def check_user_permissions(user, obj, method)
-    raise(StandardError, "Invalid or Missing Token") unless user
-
-    policy_class = obj.class.name + "Policy"
-    policy_clazz = policy_class.constantize.new(user, obj)
-    permission = policy_clazz.public_send(method)
-    raise(Pundit::NotAuthorizedError, "permission error!") unless permission
-  end
-
   def self.export_csv(model_name)
     singularized_name = model_name.singularize.underscore
     return "Please Set column names in Constants !" unless Constants.public_send("#{singularized_name}_columns").size
@@ -91,12 +82,6 @@ module SoulsHelper
       options.add_argument("-headless") if ENV["RACK_ENV"] == "production"
       Selenium::WebDriver.for(:chrome, options: options)
     end
-  end
-
-  def self.pubsub_queue(topic_name: "seino-schedule-scraper", message: "text!")
-    pubsub = Google::Cloud::Pubsub.new(project: ENV["PROJECT_ID"])
-    topic = pubsub.topic(topic_name)
-    topic.publish(message)
   end
 
   def self.get_tables
