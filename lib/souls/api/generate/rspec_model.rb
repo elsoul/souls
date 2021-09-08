@@ -1,7 +1,7 @@
 module Souls
   module Api::Generate
     ## Generate Rspec Model
-    def self.rspec_model(class_name: "souls")
+    def self.rspec_model(class_name: "user")
       file_dir = "./spec/models/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./spec/models/#{class_name}_spec.rb"

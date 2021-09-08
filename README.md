@@ -33,11 +33,10 @@ SOULs バックエンドには `API` と `Worker` の 2 つのタイプがあり
 
 SOULs フレームワークでは [Monorepo](https://en.wikipedia.org/wiki/Monorepo) によって一つのパッケージでアプリケーションを管理します。
 
-SOULs creates 3 types of framework.
+SOULs creates 2 types of framework.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Messaging Worker API (Ruby) - Cloud Run
-3. Frontend - React Application (TypeScript) - Firebase
 
 ## Dependency
 
@@ -56,6 +55,8 @@ SOULs creates 3 types of framework.
 - [Google Cloud Container Registry](https://cloud.google.com/container-registry)
 - [Google Firebase](https://firebase.google.com/)
 - [Google Cloud Scheduler](https://cloud.google.com/scheduler)
+- [Google Cloud VPC](https://cloud.google.com/vpc)
+- [Google Cloud Nat](https://cloud.google.com/nat)
 - [Github Actions](https://github.com/features/actions)
 
 ## Installation
@@ -101,8 +102,10 @@ souls upgrade gemfile
 Souls.configure do |config|
   config.app = "souls-api"
   config.project_id = "souls-api"
+  config.endpoint = "/endpoint"
   config.strain = "api"
   config.fixed_gems = ["selenium-webdriver", "pg"]
+  config.workers = []
 end
 ```
 

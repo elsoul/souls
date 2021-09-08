@@ -2,7 +2,7 @@ module Souls
   module Api::Generate
     class << self
       ## Generate Type
-      def create_type_head(class_name: "souls")
+      def create_type_head(class_name: "user")
         file_dir = "./app/graphql/types/"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "./app/graphql/types/#{class_name}_type.rb"
@@ -16,7 +16,7 @@ module Souls
         end
       end
 
-      def create_type_params(class_name: "souls")
+      def create_type_params(class_name: "user")
         file_path = "./app/graphql/types/#{class_name}_type.rb"
         path = "./db/schema.rb"
         @on = false
@@ -52,7 +52,7 @@ module Souls
         end
       end
 
-      def create_type_end(class_name: "souls")
+      def create_type_end(class_name: "user")
         file_path = "./app/graphql/types/#{class_name}_type.rb"
         File.open(file_path, "a") do |f|
           f.write(<<~TEXT)
@@ -63,7 +63,7 @@ module Souls
         file_path
       end
 
-      def type(class_name: "souls")
+      def type(class_name: "user")
         singularized_class_name = class_name.singularize
         file_path = "./app/graphql/types/#{singularized_class_name}_type.rb"
         return "Type already exist! #{file_path}" if File.exist?(file_path)

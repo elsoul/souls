@@ -1,7 +1,7 @@
 module Souls
   module Api::Generate
     ## Generate Rspec Policy
-    def self.rspec_policy(class_name: "souls")
+    def self.rspec_policy(class_name: "user")
       dir_name = "./spec/policies"
       FileUtils.mkdir_p(dir_name) unless Dir.exist?(dir_name)
       file_path = "./spec/policies/#{class_name}_policy_spec.rb"

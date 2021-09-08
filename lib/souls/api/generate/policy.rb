@@ -1,7 +1,7 @@
 module Souls
   module Api::Generate
     ## Generate Policy
-    def self.policy(class_name: "souls")
+    def self.policy(class_name: "user")
       dir_name = "./app/policies"
       FileUtils.mkdir_p(dir_name) unless Dir.exist?(dir_name)
       file_path = "#{dir_name}/#{class_name.singularize}_policy.rb"
