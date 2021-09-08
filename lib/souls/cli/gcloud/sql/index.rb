@@ -20,9 +20,10 @@ module Souls
           system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --network=#{app_name}")
         end
 
-        def assign_ip
+        def assign_ip(instance_name: "")
           current_ip = `curl inet-ip.info`
           project_id = Souls.configuration.project_id
+          instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
           system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --assign-ip=#{current_ip}")
         end
       end
