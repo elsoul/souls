@@ -77,6 +77,22 @@ module SoulsHelper
     raise(StandardError, e)
   end
 
+  def self.get_selenium_driver(mode = :chrome)
+    case mode
+    when :firefox_remote_capabilities
+      firefox_capabilities = Selenium::WebDriver::Remote::Capabilities.firefox
+      Selenium::WebDriver.for(:remote, url: "http://hub:4444/wd/hub", desired_capabilities: firefox_capabilities)
+    when :firefox
+      Selenium::WebDriver.for(:firefox)
+    else
+      options = Selenium::WebDriver::Chrome::Options.new
+      options.add_argument("--disable-popup-blocking")
+      options.add_argument("--disable-translate")
+      options.add_argument("-headless") if ENV["RACK_ENV"] == "production"
+      Selenium::WebDriver.for(:chrome, options: options)
+    end
+  end
+
   def self.pubsub_queue(topic_name: "seino-schedule-scraper", message: "text!")
     pubsub = Google::Cloud::Pubsub.new(project: ENV["PROJECT_ID"])
     topic = pubsub.topic(topic_name)
