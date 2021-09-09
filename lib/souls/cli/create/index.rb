@@ -206,18 +206,12 @@ end
       def download_worker(worker_name: "mailer")
         raise(StandardError, "Can't use `worker` for worker. Change Name.") if worker_name == "worker"
 
-        current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-        wrong_dir = %w[apps api worker]
-        if wrong_dir.include?(current_dir_name)
-          raise(StandardError, "You are at wrong directory!Go to Mother Directory!")
-        end
-
         version = Souls.get_latest_version_txt(service_name: "worker").join(".")
         file_name = "worker-v#{version}.tgz"
         url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
         system("curl -OL #{url}")
-        system("tar -zxvf ./#{file_name} -C ./apps/")
-        system("mv apps/worker apps/#{worker_name}")
+        system("tar -zxvf ./#{file_name}")
+        system("mv ./worker apps/#{worker_name}")
         system("cp ./apps/api/config/database.yml ./apps/#{worker_name}/config/")
         FileUtils.rm(file_name)
       end
