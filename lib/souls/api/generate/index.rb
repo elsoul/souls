@@ -15,3 +15,13 @@ require_relative "./connection"
 require_relative "./application"
 require_relative "./migration"
 require_relative "./manager"
+
+# require_paths = []
+# Dir["lib/souls/api/generate/*"].map do |n|
+#   next if n.include?("index.rb")
+
+#   require_paths << n.split("/").last.gsub(".rb", "")
+# end
+# require_paths.each do |path|
+#   require_relative "./#{path}"
+# end

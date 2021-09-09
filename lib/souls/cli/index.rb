@@ -1,26 +1,15 @@
-require_relative "./create/index"
-require_relative "./docker/index"
-require_relative "./gcloud/index"
-require_relative "./release/index"
-require_relative "./sync/index"
-require_relative "./upgrade/index"
+require "active_support/core_ext/string/inflections"
 
-module Souls
-  module Create
-  end
+require_paths = []
+modules =
+  Dir["lib/souls/cli/*"].map do |n|
+    next if n.include?("index.rb")
 
-  module Docker
+    require_paths << n.split("/").last
+    n.split("/").last.camelize
   end
-
-  module Gcloud
-  end
-
-  module Release
-  end
-
-  module Sync
-  end
-
-  module Upgrade
-  end
+modules.compact!
+require_paths.each_with_index do |path, i|
+  require_relative "./#{path}/index"
+  Object.const_get("Souls::#{modules[i]}")
 end
