@@ -11,6 +11,10 @@ module Souls
           )
         end
 
+        def list
+          system("gcloud sql instances list")
+        end
+
         def setup_private_ip(instance_name: "")
           app_name = Souls.configuration.app
           instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?

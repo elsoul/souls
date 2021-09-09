@@ -21,6 +21,10 @@ module Souls
           )
         end
 
+        def subscription_list
+          system("gcloud pubsub subscriptions list")
+        end
+
         def update_subscription(
           topic_name: "send-user-mail",
           endpoint: "https:://test.com"
