@@ -204,8 +204,6 @@ end
       end
 
       def download_worker(worker_name: "mailer")
-        raise(StandardError, "Can't use `worker` for worker. Change Name.") if worker_name == "worker"
-
         version = Souls.get_latest_version_txt(service_name: "worker").join(".")
         file_name = "worker-v#{version}.tgz"
         url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"

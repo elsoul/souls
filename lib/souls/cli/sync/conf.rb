@@ -24,16 +24,26 @@ module Souls
                 next unless worker_switch
 
                 new_line.write("  config.workers = [\n")
-                workers.each do |worker|
+                workers.each_with_index do |worker, i|
                   base_url = Souls::Gcloud::Run.get_endpoint(worker_name: worker[:name])
                   endpoint = Souls.configuration.endpoint
-                  new_line.write(<<-TEXT)
-      {
-        name: "#{worker[:name]}",
-        endpoint: "#{base_url.strip}#{endpoint}",
-        port: #{worker[:port]}
-      },
-                  TEXT
+                  if (i + 1) == workers.size
+                    new_line.write(<<-TEXT)
+    {
+      name: "#{worker[:name]}",
+      endpoint: "#{base_url.strip}#{endpoint}",
+      port: #{worker[:port]}
+    }
+                    TEXT
+                  else
+                    new_line.write(<<-TEXT)
+    {
+      name: "#{worker[:name]}",
+      endpoint: "#{base_url.strip}#{endpoint}",
+      port: #{worker[:port]}
+    },
+                    TEXT
+                  end
                 end
                 break
               end

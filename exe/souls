@@ -10,37 +10,39 @@ begin
   case souls_command
   when "api"
     api_command = ARGV[1]
-    case api_command
-    when "generate", "g"
-      method_name = ARGV[2]
-      class_name = ARGV[3]
-      args = { class_name: class_name }
-      args[:mutation] = ARGV[4] if ARGV.size > 4
-      status = Paint["Running SOULs Generate Commands...", :yellow]
-      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-        Whirly.status = status
-        Souls::Api::Generate.public_send(method_name, **args)
-        Whirly.status = "Done!"
+    Dir.chdir(Souls.get_api_path.to_s) do
+      case api_command
+      when "generate", "g"
+        method_name = ARGV[2]
+        class_name = ARGV[3]
+        args = { class_name: class_name }
+        args[:mutation] = ARGV[4] if ARGV.size > 4
+        status = Paint["Running SOULs Generate Commands...", :yellow]
+        Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+          Whirly.status = status
+          Souls::Api::Generate.public_send(method_name, **args)
+          Whirly.status = "Done!"
+        end
+      when "update"
+        class_name = ARGV[2]
+        status = Paint["Running SOULs Update Commands...", :yellow]
+        Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+          Whirly.status = status
+          Souls::Api::Update.create_mutation(class_name: class_name)
+          Souls::Api::Update.update_mutation(class_name: class_name)
+          Souls::Api::Update.resolver(class_name: class_name)
+          Souls::Api::Update.type(class_name: class_name)
+          Souls::Api::Update.rspec_factory(class_name: class_name)
+          Souls::Api::Update.rspec_mutation(class_name: class_name)
+          Souls::Api::Update.rspec_resolver(class_name: class_name)
+          Whirly.status = "Done!"
+        end
+      when "d", "delete"
+        class_name = ARGV[2]
+        Souls::Api::Generate.delete_all(class_name: class_name)
+      else
+        puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
       end
-    when "update"
-      class_name = ARGV[2]
-      status = Paint["Running SOULs Update Commands...", :yellow]
-      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-        Whirly.status = status
-        Souls::Api::Update.create_mutation(class_name: class_name)
-        Souls::Api::Update.update_mutation(class_name: class_name)
-        Souls::Api::Update.resolver(class_name: class_name)
-        Souls::Api::Update.type(class_name: class_name)
-        Souls::Api::Update.rspec_factory(class_name: class_name)
-        Souls::Api::Update.rspec_mutation(class_name: class_name)
-        Souls::Api::Update.rspec_resolver(class_name: class_name)
-        Whirly.status = "Done!"
-      end
-    when "d", "delete"
-      class_name = ARGV[2]
-      Souls::Api::Generate.delete_all(class_name: class_name)
-    else
-      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
     end
   when "worker"
     api_command = ARGV[1]
