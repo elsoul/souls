@@ -102,6 +102,7 @@ souls upgrade gemfile
 Souls.configure do |config|
   config.app = "souls-api"
   config.project_id = "souls-api"
+  config.region = "asia-northeast1"
   config.endpoint = "/endpoint"
   config.strain = "api"
   config.fixed_gems = ["selenium-webdriver", "pg"]

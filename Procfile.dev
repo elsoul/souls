@@ -1,1 +1,1 @@
-web: bundle exec puma -p 3000 -e development
+api: foreman start -f ./apps/api/Procfile
