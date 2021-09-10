@@ -23,7 +23,7 @@ module Souls
         file_dir = "apps/#{worker_name}"
         file_path = "#{file_dir}/Procfile.dev"
         File.open(file_path, "w") do |f|
-          f.write("web: bundle exec puma -p #{port} -e development")
+          f.write("#{worker_name}: bundle exec puma -p #{port} -e development")
         end
       end
 
@@ -192,9 +192,10 @@ end
             Souls.configure do |config|
               config.app = "#{app_name}"
               config.project_id = "#{project_id}"
+              config.region = "asia-northeast1"
               config.endpoint = "/endpoint"
               config.strain = "worker"
-              config.fixed_gems = ["excluded_gem"]
+              config.fixed_gems = ["spring"]
               config.workers = []
             end
           TEXT

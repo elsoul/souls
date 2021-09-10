@@ -42,10 +42,11 @@ module Souls
           f.write(<<~TEXT)
             Souls.configure do |config|
               config.app = "#{app_name}"
-              config.project_id = "#{app_name}-project"
+              config.project_id = "#{app_name}"
+              config.region = "asia-northeast1"
               config.endpoint = "/endpoint"
               config.strain = "api"
-              config.fixed_gems = ["excluded_gem"]
+              config.fixed_gems = ["spring"]
               config.workers = []
             end
           TEXT
@@ -72,10 +73,11 @@ module Souls
           f.write(<<~TEXT)
             Souls.configure do |config|
               config.app = "#{app_name}"
-              config.project_id = "#{app_name}-project"
+              config.project_id = "#{app_name}"
+              config.region = "asia-northeast1"
               config.endpoint = "/endpoint"
               config.strain = "mother"
-              config.fixed_gems = ["excluded_gem"]
+              config.fixed_gems = ["spring"]
               config.workers = []
             end
           TEXT

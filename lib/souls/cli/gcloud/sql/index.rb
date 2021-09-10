@@ -2,8 +2,10 @@ module Souls
   module Gcloud
     module Sql
       class << self
-        def create_instance(instance_name: "", root_pass: "Postgre123!", zone: "asia-northeast1-b")
+        def create_instance(root_pass: "PassWord")
           instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
+          region = Souls.configuration.region
+          zone = "#{region}-b"
           system(
             "gcloud sql instances create #{instance_name} \
               --database-version=POSTGRES_13 --cpu=2 --memory=7680MB --zone=#{zone} \
