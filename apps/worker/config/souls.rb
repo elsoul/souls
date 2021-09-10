@@ -4,5 +4,5 @@ Souls.configure do |config|
   config.project_id = "souls-app"
   config.endpoint = "/endpoint"
   config.strain = "worker"
-  config.fixed_gems = ["selenium-webdriver"]
+  config.fixed_gems = ["spring"]
 end

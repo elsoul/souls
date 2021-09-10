@@ -18,7 +18,7 @@ module Souls
                 new_line.write(line)
                 if line.include?("argument") && !argument
                   new_cols.each do |col|
-                    type = Souls::Api::Generate.type_check(col[:type])
+                    type = Souls.type_check(col[:type])
                     type = "[#{type}]" if col[:array]
                     add_line = "      argument :#{col[:column_name]}, #{type}, required: false\n"
                     new_line.write(add_line) unless args.include?(col[:column_name])
@@ -26,7 +26,7 @@ module Souls
                   argument = true
                 elsif line.include?("scope = ::") && !scope
                   new_cols.each do |col|
-                    type = Souls::Api::Generate.type_check(col[:type])
+                    type = Souls.type_check(col[:type])
                     type = "[#{type}]" if col[:array]
 
                     if type.include?("[")

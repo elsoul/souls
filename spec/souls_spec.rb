@@ -18,7 +18,7 @@ RSpec.describe(Souls) do
     end
 
     it "has user tables" do
-      expect(Souls::Api::Generate.get_tables).to(eq(%w[users]))
+      expect(Souls.get_tables).to(eq(%w[users]))
     end
   end
 end

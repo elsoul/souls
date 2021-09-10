@@ -3,6 +3,6 @@ Souls.configure do |config|
   config.project_id = "souls-app"
   config.endpoint = "/endpoint"
   config.strain = "api"
-  config.fixed_gems = [""]
+  config.fixed_gems = ["spring"]
   config.workers = []
 end

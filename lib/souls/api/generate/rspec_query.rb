@@ -56,7 +56,7 @@ module Souls
                   new_line.write("    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n")
                 end
               end
-              @on = true if table_check(line: line, class_name: class_name)
+              @on = true if Souls.table_check(line: line, class_name: class_name)
             end
           end
         end
@@ -101,7 +101,7 @@ module Souls
                   new_line.write("          #{name.camelize(:lower)}\n")
                 end
               end
-              @on = true if table_check(line: line, class_name: class_name)
+              @on = true if Souls.table_check(line: line, class_name: class_name)
             end
           end
         end
@@ -125,7 +125,7 @@ module Souls
                   break
                 end
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                field ||= type_check(type)
+                field ||= Souls.type_check(type)
                 array_true = line.include?("array: true")
                 case name
                 when "user_id", "created_at", "updated_at", /$*_id\z/
@@ -145,7 +145,7 @@ module Souls
                   end
                 end
               end
-              @on = true if table_check(line: line, class_name: class_name)
+              @on = true if Souls.table_check(line: line, class_name: class_name)
             end
           end
         end

@@ -16,7 +16,7 @@ module Souls
                 next unless line.include?("argument") && !argument
 
                 new_cols.each do |col|
-                  type = Souls::Api::Generate.type_check(col[:type])
+                  type = Souls.type_check(col[:type])
                   type = "[#{type}]" if col[:array]
                   args = check_mutation_argument(class_name: class_name)
                   next if args.include?(col[:column_name])
@@ -47,7 +47,7 @@ module Souls
                 next unless line.include?("argument") && !argument
 
                 new_cols.each do |col|
-                  type = Souls::Api::Generate.type_check(col[:type])
+                  type = Souls.type_check(col[:type])
                   type = "[#{type}]" if col[:array]
                   args = check_mutation_argument(class_name: class_name, action: "update")
                   next if args.include?(col[:column_name])

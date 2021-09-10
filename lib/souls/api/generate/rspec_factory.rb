@@ -24,7 +24,7 @@ module Souls
                 new_line.write("\n" && break) if line.include?("t.index") || line.strip == "end"
                 field = '["tag1", "tag2", "tag3"]' if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                field ||= get_test_type(type)
+                field ||= Souls.get_test_type(type)
                 if type == "bigint" && name.include?("_id")
                   id_name = name.gsub("_id", "")
                   new_line.write("    association :#{id_name}, factory: :#{id_name}\n")
@@ -32,7 +32,7 @@ module Souls
                   new_line.write("    #{name} { #{field} }\n")
                 end
               end
-              @on = true if table_check(line: line, class_name: class_name)
+              @on = true if Souls.table_check(line: line, class_name: class_name)
             end
           end
         end

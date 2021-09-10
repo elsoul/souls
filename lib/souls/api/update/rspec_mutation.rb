@@ -22,7 +22,7 @@ module Souls
 
                 if line.include?('#{') && !argument
                   new_cols.each do |col|
-                    type = Souls::Api::Generate.type_check(col[:type])
+                    type = Souls.type_check(col[:type])
                     next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
                     type_line =
@@ -46,7 +46,7 @@ module Souls
                 elsif test_res && line.include?("=> be_")
                   test_args = check_rspec_mutation_argument(class_name: class_name, action: "test_args")
                   new_cols.each do |col|
-                    type = Souls::Api::Generate.type_check(col[:type])
+                    type = Souls.type_check(col[:type])
                     text =
                       case type
                       when "Integer", "Float"

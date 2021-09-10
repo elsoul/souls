@@ -3,6 +3,6 @@ Souls.configure do |config|
   config.project_id = "yamate-office"
   config.endpoint = "/endpoint"
   config.strain = "mother"
-  config.fixed_gems = [""]
+  config.fixed_gems = ["spring"]
   config.workers = []
 end

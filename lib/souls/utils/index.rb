@@ -8,6 +8,69 @@ module Souls
       FileUtils.pwd.split(Souls.configuration.app)[0] + Souls.configuration.app + "/apps/api"
     end
 
+    def type_check(type)
+      {
+        bigint: "Integer",
+        string: "String",
+        float: "Float",
+        text: "String",
+        datetime: "String",
+        date: "String",
+        boolean: "Boolean",
+        integer: "Integer"
+      }[type.to_sym]
+    end
+
+    def get_type_and_name(line)
+      line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
+    end
+
+    def get_type(type)
+      {
+        bigint: "Integer",
+        string: "String",
+        float: "Float",
+        text: "String",
+        datetime: "GraphQL::Types::ISO8601DateTime",
+        date: "GraphQL::Types::ISO8601DateTime",
+        boolean: "Boolean",
+        integer: "Integer"
+      }[type.to_sym]
+    end
+
+    def get_test_type(type)
+      {
+        bigint: "rand(1..10)",
+        float: 4.2,
+        string: '"MyString"',
+        text: '"MyString"',
+        datetime: "Time.now",
+        date: "Time.now.strftime('%F')",
+        boolean: false,
+        integer: "rand(1..10)"
+      }[type.to_sym]
+    end
+
+    def get_tables
+      path = "./db/schema.rb"
+      tables = []
+      File.open(path, "r") do |f|
+        f.each_line.with_index do |line, _i|
+          tables << line.split("\"")[1] if line.include?("create_table")
+        end
+      end
+      tables
+    end
+
+    def table_check(line: "", class_name: "")
+      if line.include?("create_table") && (line.split[1].gsub("\"", "").gsub(",", "") == class_name.pluralize.to_s)
+
+        return true
+      end
+
+      false
+    end
+
     def version_detector(current_ver: [0, 0, 1], update_kind: "patch")
       case update_kind
       when "patch"
@@ -45,7 +108,7 @@ module Souls
           if class_check_flag == true && !line.include?("create_table")
             return cols if line.include?("t.index") || line.strip == "end"
 
-            types = Souls::Api::Generate.get_type_and_name(line)
+            types = Souls.get_type_and_name(line)
             array = line.include?("array: true")
             cols << { column_name: types[1], type: types[0], array: array }
           end
@@ -69,7 +132,7 @@ module Souls
           next unless class_check_flag == true && !line.include?("create_table")
           return response if line.include?("t.timestamps") || line.strip == "end"
 
-          types = Souls::Api::Generate.get_type_and_name(line)
+          types = Souls.get_type_and_name(line)
           types.map { |n| n.gsub!(":", "") }
           array = line.include?("array: true")
           response << { column_name: types[1], type: types[0], array: array }

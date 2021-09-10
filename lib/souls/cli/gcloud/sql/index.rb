@@ -15,12 +15,16 @@ module Souls
           system("gcloud sql instances list")
         end
 
-        def setup_private_ip(instance_name: "")
-          app_name = Souls.configuration.app
-          instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
-          project_id = Souls.configuration.project_id
+        def setup_private_ip
           create_ip_range
           create_vpc_connector
+          assign_network
+        end
+
+        def assign_network
+          app_name = Souls.configuration.app
+          instance_name = "#{Souls.configuration.app}-db"
+          project_id = Souls.configuration.project_id
           system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --network=#{app_name}")
         end
 

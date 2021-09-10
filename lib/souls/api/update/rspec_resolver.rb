@@ -30,7 +30,7 @@ module Souls
                 elsif test_res && line.include?("=> be_")
                   test_args = check_rspec_resolver_argument(class_name: class_name, action: "test_args")
                   new_cols.each do |col|
-                    type = Souls::Api::Generate.type_check(col[:type])
+                    type = Souls.type_check(col[:type])
                     text =
                       case type
                       when "Integer", "Float"

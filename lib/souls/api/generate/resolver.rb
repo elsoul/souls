@@ -34,8 +34,8 @@ module Souls
                 break if line.include?("t.index") || line.strip == "end"
 
                 field = "[String]" if line.include?("array: true")
-                type, name = get_type_and_name(line)
-                field ||= type_check(type)
+                type, name = Souls.get_type_and_name(line)
+                field ||= Souls.type_check(type)
                 case name
                 when "user_id"
                   @user_exist = true
@@ -48,7 +48,7 @@ module Souls
                   new_line.write("      argument :#{name}, #{field}, required: false\n")
                 end
               end
-              @on = true if table_check(line: line, class_name: class_name)
+              @on = true if Souls.table_check(line: line, class_name: class_name)
             end
           end
         end
@@ -89,7 +89,7 @@ module Souls
               if @on
                 break if line.include?("t.index") || line.strip == "end"
 
-                type, name = get_type_and_name(line)
+                type, name = Souls.get_type_and_name(line)
                 if line.include?("array: true")
                   new_line.write(
                     "      scope = scope.where(\"#{name} @> ARRAY[?]::text[]\", value[:#{name}]) if value[:#{name}]\n"
@@ -115,7 +115,7 @@ module Souls
                   end
                 end
               end
-              @on = true if table_check(line: line, class_name: class_name)
+              @on = true if Souls.table_check(line: line, class_name: class_name)
             end
           end
         end

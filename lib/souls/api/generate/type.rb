@@ -27,7 +27,7 @@ module Souls
                 new_line.write("\n" && break) if line.include?("t.index") || line.strip == "end"
                 field = "[String]" if line.include?("array: true")
                 type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-                field ||= type_check(type)
+                field ||= Souls.type_check(type)
                 case name
                 when /$*_id\z/
                   new_line.write(
@@ -43,7 +43,7 @@ module Souls
                   new_line.write("    field :#{name}, #{field}, null: true\n")
                 end
               end
-              if table_check(line: line, class_name: class_name)
+              if Souls.table_check(line: line, class_name: class_name)
                 @on = true
                 new_line.write("    global_id_field :id\n")
               end
