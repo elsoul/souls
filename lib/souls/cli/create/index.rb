@@ -1,69 +1,72 @@
 module Souls
-  module Create
-    class << self
-      def worker(worker_name: "mailer")
-        require("#{Souls.get_mother_path}/config/souls")
-        Dir.chdir(Souls.get_mother_path.to_s) do
-          file_dir = "apps/#{worker_name}"
-          raise(StandardError, "Same Worker Already Exist!") if Dir.exist?(file_dir)
+  class Create < Thor
+    desc "worker", "Create SOULs Worker"
+    method_option :name, aliases: "--name", desc: "Worker Name", required: true
+    def worker
+      require("#{Souls.get_mother_path}/config/souls")
+      Dir.chdir(Souls.get_mother_path.to_s) do
+        file_dir = "apps/#{options[:name]}"
+        raise(StandardError, "Same Worker Already Exist!") if Dir.exist?(file_dir)
 
-          workers = Souls.configuration.workers
-          port = 3000 + workers.size
-          download_worker(worker_name: worker_name)
-          souls_conf_update(worker_name: worker_name)
-          souls_conf_update(worker_name: worker_name, strain: "api")
-          workflow(worker_name: worker_name)
-          procfile(worker_name: worker_name, port: port)
-          mother_procfile(worker_name: worker_name)
-          souls_config_init(worker_name: worker_name)
-        end
-      end
-
-      def procfile(worker_name: "mailer", port: 3000)
-        file_dir = "apps/#{worker_name}"
-        file_path = "#{file_dir}/Procfile.dev"
-        File.open(file_path, "w") do |f|
-          f.write("#{worker_name}: bundle exec puma -p #{port} -e development")
-        end
-      end
-
-      def mother_procfile(worker_name: "mailer")
-        file_path = "Procfile.dev"
-        File.open(file_path, "a") do |f|
-          f.write("\n#{worker_name}: foreman start -f ./apps/#{worker_name}/Procfile.dev")
-        end
-      end
-
-      def souls_conf_update(worker_name: "", strain: "mother")
         workers = Souls.configuration.workers
         port = 3000 + workers.size
-        file_path = strain == "mother" ? "config/souls.rb" : "apps/api/config/souls.rb"
-        new_file_path = "souls.rb"
-        worker_switch = false
-        File.open(new_file_path, "w") do |new_line|
-          File.open(file_path, "r") do |f|
-            f.each_line do |line|
-              worker_switch = true if line.include?("config.workers")
-              next if line.strip == "end"
+        download_worker(worker_name: options[:worker_name])
+        souls_conf_update(worker_name: options[:worker_name])
+        souls_conf_update(worker_name: options[:worker_name], strain: "api")
+        workflow(worker_name: options[:worker_name])
+        procfile(worker_name: options[:worker_name], port: port)
+        mother_procfile(worker_name: options[:worker_name])
+        souls_config_init(worker_name: options[:worker_name])
+      end
+    end
 
-              new_line.write(line) unless worker_switch
+    private
 
-              next unless worker_switch
+    def procfile(worker_name: "mailer", port: 3000)
+      file_dir = "apps/#{worker_name}"
+      file_path = "#{file_dir}/Procfile.dev"
+      File.open(file_path, "w") do |f|
+        f.write("#{worker_name}: bundle exec puma -p #{port} -e development")
+      end
+    end
 
-              new_line.write("  config.workers = [\n")
-              workers.each do |worker|
-                new_line.write(<<-TEXT)
+    def mother_procfile(worker_name: "mailer")
+      file_path = "Procfile.dev"
+      File.open(file_path, "a") do |f|
+        f.write("\n#{worker_name}: foreman start -f ./apps/#{worker_name}/Procfile.dev")
+      end
+    end
+
+    def souls_conf_update(worker_name: "", strain: "mother")
+      workers = Souls.configuration.workers
+      port = 3000 + workers.size
+      file_path = strain == "mother" ? "config/souls.rb" : "apps/api/config/souls.rb"
+      new_file_path = "souls.rb"
+      worker_switch = false
+      File.open(new_file_path, "w") do |new_line|
+        File.open(file_path, "r") do |f|
+          f.each_line do |line|
+            worker_switch = true if line.include?("config.workers")
+            next if line.strip == "end"
+
+            new_line.write(line) unless worker_switch
+
+            next unless worker_switch
+
+            new_line.write("  config.workers = [\n")
+            workers.each do |worker|
+              new_line.write(<<-TEXT)
     {
       name: "#{worker[:name]}",
       endpoint: "#{worker[:endpoint]}",
       port: #{worker[:port]}
     },
-                TEXT
-              end
-              break
+              TEXT
             end
+            break
           end
-          new_line.write(<<-TEXT)
+        end
+        new_line.write(<<-TEXT)
     {
       name: "#{worker_name}",
       endpoint: "",
@@ -71,20 +74,20 @@ module Souls
     }
   ]
 end
-          TEXT
-        end
-        FileUtils.rm(file_path)
-        FileUtils.mv(new_file_path, file_path)
+        TEXT
       end
+      FileUtils.rm(file_path)
+      FileUtils.mv(new_file_path, file_path)
+    end
 
-      def workflow(worker_name: "")
-        file_dir = ".github/workflows"
-        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-        file_path = "#{file_dir}/#{worker_name}.yml"
-        worker_name = worker_name.underscore
-        worker_name_camelize = worker_name.camelize
-        File.open(file_path, "w") do |f|
-          f.write(<<~TEXT)
+    def workflow(worker_name: "")
+      file_dir = ".github/workflows"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+      file_path = "#{file_dir}/#{worker_name}.yml"
+      worker_name = worker_name.underscore
+      worker_name_camelize = worker_name.camelize
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
             name: #{worker_name_camelize}
 
             on:
@@ -172,23 +175,23 @@ end
                         --set-env-vars="SLACK=${{ secrets.SLACK }}" \\
                         --set-env-vars="SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}" \\
                         --set-env-vars="PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}"
-          TEXT
-        end
-        puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
-        file_path
-      rescue StandardError => e
-        raise(StandardError, e)
+        TEXT
       end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      file_path
+    rescue StandardError => e
+      raise(StandardError, e)
+    end
 
-      def souls_config_init(worker_name: "mailer")
-        app_name = Souls.configuration.app
-        project_id = Souls.configuration.project_id
-        config_dir = "apps/#{worker_name}/config"
-        FileUtils.mkdir_p(config_dir) unless Dir.exist?(config_dir)
-        FileUtils.touch("#{config_dir}/souls.rb")
-        file_path = "#{config_dir}/souls.rb"
-        File.open(file_path, "w") do |f|
-          f.write(<<~TEXT)
+    def souls_config_init(worker_name: "mailer")
+      app_name = Souls.configuration.app
+      project_id = Souls.configuration.project_id
+      config_dir = "apps/#{worker_name}/config"
+      FileUtils.mkdir_p(config_dir) unless Dir.exist?(config_dir)
+      FileUtils.touch("#{config_dir}/souls.rb")
+      file_path = "#{config_dir}/souls.rb"
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
             Souls.configure do |config|
               config.app = "#{app_name}"
               config.project_id = "#{project_id}"
@@ -198,22 +201,21 @@ end
               config.fixed_gems = ["spring"]
               config.workers = []
             end
-          TEXT
-        end
-      rescue StandardError => e
-        puts(e)
+        TEXT
       end
+    rescue StandardError => e
+      puts(e)
+    end
 
-      def download_worker(worker_name: "mailer")
-        version = Souls.get_latest_version_txt(service_name: "worker").join(".")
-        file_name = "worker-v#{version}.tgz"
-        url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
-        system("curl -OL #{url}")
-        system("tar -zxvf ./#{file_name}")
-        system("mv ./worker apps/#{worker_name}")
-        system("cp ./apps/api/config/database.yml ./apps/#{worker_name}/config/")
-        FileUtils.rm(file_name)
-      end
+    def download_worker(worker_name: "mailer")
+      version = Souls.get_latest_version_txt(service_name: "worker").join(".")
+      file_name = "worker-v#{version}.tgz"
+      url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
+      system("curl -OL #{url}")
+      system("tar -zxvf ./#{file_name}")
+      system("mv ./worker apps/#{worker_name}")
+      system("cp ./apps/api/config/database.yml ./apps/#{worker_name}/config/")
+      FileUtils.rm(file_name)
     end
   end
 end
