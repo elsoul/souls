@@ -1,4 +1,3 @@
-require "thor"
 require_relative "./console/index"
 require_relative "./create/index"
 require_relative "./docker/index"

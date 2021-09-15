@@ -1,8 +1,10 @@
 require "souls"
-require "thor"
 
 module Souls
   class CLI < Thor
+    desc "api [COMMAND]", "souls api Commands"
+    subcommand "api", Api
+
     desc "gcloud [COMMAND]", "souls gcloud Commands"
     subcommand "gcloud", Gcloud
 

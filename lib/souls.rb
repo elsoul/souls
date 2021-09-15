@@ -8,6 +8,7 @@ require "net/http"
 require "paint"
 require "whirly"
 require "tty-prompt"
+require "thor"
 
 module Souls
   extend Souls::Utils
