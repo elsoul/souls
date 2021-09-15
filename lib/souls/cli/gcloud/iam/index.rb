@@ -1,83 +1,96 @@
 module Souls
-  module Gcloud
-    module Iam
-      class << self
-        def create_service_account(service_account: "souls-app")
-          system(
-            "gcloud iam service-accounts create #{service_account} \
+  class Iam < Thor
+    desc "setup_key", "Create Google Cloud IAM Service Account Key And Set All Permissions"
+    def setup_key
+      Souls::Gcloud.new.auth_login
+      create_service_account
+      create_service_account_key
+      Souls::Gcloud.new.enable_permissions
+      add_permissions
+      export_key_to_console
+    end
+
+    private
+
+    desc "create_service_account", "Create Google Cloud IAM Service Account"
+    def create_service_account
+      app_name = Souls.configuration.app
+      system(
+        "gcloud iam service-accounts create #{app_name} \
           --description='Souls Service Account' \
-          --display-name=#{service_account}"
-          )
+          --display-name=#{app_name}"
+      )
+    end
+
+    desc "create_service_account_key", "Create Google Cloud Service Account Key"
+    def create_service_account_key
+      app_name = Souls.configuration.app
+      project_id = Souls.configuration.project_id
+      system(
+        "gcloud iam service-accounts keys create ./config/keyfile.json \
+            --iam-account #{app_name}@#{project_id}.iam.gserviceaccount.com"
+      )
+    end
+
+    def export_key_to_console
+      file_path = "config/keyfile.json"
+      puts(Paint["======= below（ここから）=======", :cyan])
+      text = []
+      File.open(file_path, "r") do |line|
+        line.each_line do |l|
+          text << l
         end
+      end
+      key = text.join(",").gsub(/^,/, "").chomp!
+      github_repo = `git remote show origin -n | grep 'Fetch URL:' | awk '{print $3}'`.strip
+      github_repo = "https://github.com/#{github_repo.match(/:(.+).git/)[1]}" if github_repo.include?("git@github")
+      puts(Paint[key, :white])
+      puts(Paint["======= above（ここまで）=======", :cyan])
+      github_secret_url = "#{github_repo}/settings/secrets/actions"
+      souls_doc_url = "https://souls.elsoul.nl/docs/tutorial/zero-to-deploy/#github-シークレットキーの登録"
+      txt1 = <<~TEXT
 
-        def create_service_account_key(service_account: "souls-app", project_id: "souls-app")
-          system(
-            "gcloud iam service-accounts keys create ./config/keyfile.json \
-            --iam-account #{service_account}@#{project_id}.iam.gserviceaccount.com"
-          )
-        end
+        ⬆⬆⬆　Copy the service account key above　⬆⬆⬆⬆
 
-        def export_key_to_console
-          file_path = "config/keyfile.json"
-          puts(Paint["======= below（ここから）=======", :cyan])
-          text = []
-          File.open(file_path, "r") do |line|
-            line.each_line do |l|
-              text << l
-            end
-          end
-          key = text.join(",").gsub(/^,/, "").chomp!
-          github_repo = `git remote show origin -n | grep 'Fetch URL:' | awk '{print $3}'`.strip
-          github_repo = "https://github.com/#{github_repo.match(/:(.+).git/)[1]}" if github_repo.include?("git@github")
-          puts(Paint[key, :white])
-          puts(Paint["======= above（ここまで）=======", :cyan])
-          github_secret_url = "#{github_repo}/settings/secrets/actions"
-          souls_doc_url = "https://souls.elsoul.nl/docs/tutorial/zero-to-deploy/#github-シークレットキーの登録"
-          txt1 = <<~TEXT
+                        And
 
-            ⬆⬆⬆　Copy the service account key above　⬆⬆⬆⬆
+        Go to %{yellow_text}
 
-                            And
+        Reference: %{yellow_text2}
+      TEXT
+      puts(
+        Paint % [
+          txt1,
+          :white,
+          { yellow_text: [github_secret_url, :yellow], yellow_text2: [souls_doc_url, :yellow] }
+        ]
+      )
+      FileUtils.rm(file_path)
+    end
 
-            Go to %{yellow_text}
-
-            Reference: %{yellow_text2}
-          TEXT
-          puts(
-            Paint % [
-              txt1,
-              :white,
-              { yellow_text: [github_secret_url, :yellow], yellow_text2: [souls_doc_url, :yellow] }
-            ]
-          )
-          FileUtils.rm(file_path)
-        end
-
-        def add_service_account_role(
-          service_account: "souls-app", project_id: "souls-app", role: "roles/firebase.admin"
-        )
-          system(
-            "gcloud projects add-iam-policy-binding #{project_id} \
-          --member='serviceAccount:#{service_account}@#{project_id}.iam.gserviceaccount.com' \
+    def add_service_account_role(role: "roles/firebase.admin")
+      app_name = Souls.configuration.app
+      project_id = Souls.configuration.project_id
+      system(
+        "gcloud projects add-iam-policy-binding #{project_id} \
+          --member='serviceAccount:#{app_name}@#{project_id}.iam.gserviceaccount.com' \
           --role=#{role}"
-          )
-        end
+      )
+    end
 
-        def add_permissions(service_account: "souls-app", project_id: "souls-app")
-          roles = [
-            "roles/cloudsql.editor",
-            "roles/containerregistry.ServiceAgent",
-            "roles/pubsub.editor",
-            "roles/datastore.user",
-            "roles/iam.serviceAccountUser",
-            "roles/run.admin",
-            "roles/storage.admin",
-            "roles/storage.objectAdmin"
-          ]
-          roles.each do |role|
-            add_service_account_role(service_account: service_account, project_id: project_id, role: role)
-          end
-        end
+    def add_permissions
+      roles = [
+        "roles/cloudsql.editor",
+        "roles/containerregistry.ServiceAgent",
+        "roles/pubsub.editor",
+        "roles/datastore.user",
+        "roles/iam.serviceAccountUser",
+        "roles/run.admin",
+        "roles/storage.admin",
+        "roles/storage.objectAdmin"
+      ]
+      roles.each do |role|
+        add_service_account_role(role: role)
       end
     end
   end

@@ -1,15 +1,17 @@
 module Souls
-  module Gcloud
-    module Pubsub
-      class << self
-        def create_topic(topic_name: "send-user-mail")
-          system("gcloud pubsub topics create #{topic_name}")
-        end
+  class Pubsub < Thor
+    desc "create_topic", "Create Google Cloud Pubsub Topic"
+    method_option :topic_name,
+                  default: "send-user-mailer",
+                  aliases: "--topic_name",
+                  desc: "Google Cloud Pubsub Topic Name"
+    def create_topic
+      system("gcloud pubsub topics create #{options[:topic_name]}")
+    end
 
-        def topic_list
-          system("gcloud pubsub topics list")
-        end
-      end
+    desc "topic_list", "Show Google Cloud Topic List"
+    def topic_list
+      system("gcloud pubsub topics list")
     end
   end
 end

@@ -1,3 +1,4 @@
+require "thor"
 require_relative "./create/index"
 require_relative "./docker/index"
 require_relative "./gcloud/index"
@@ -10,11 +11,8 @@ module Souls
   module Create
   end
 
-  module Docker
-  end
-
-  module Gcloud
-  end
+  # module Gcloud
+  # end
 
   module Init
   end

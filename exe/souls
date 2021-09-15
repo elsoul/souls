@@ -1,208 +1,210 @@
 #!/usr/bin/env ruby
 require "souls"
-begin
-  souls_command = ARGV[0]
-  require("./config/souls") unless ["new", "docker", "-v", "deploy"].include?(souls_command)
-rescue StandardError
-  puts("Make sure you are at SOULs APP directory!")
-end
-begin
-  case souls_command
-  when "api"
-    api_command = ARGV[1]
-    Dir.chdir(Souls.get_api_path.to_s) do
-      case api_command
-      when "generate", "g"
-        method_name = ARGV[2]
-        class_name = ARGV[3]
-        args = { class_name: class_name }
-        args[:mutation] = ARGV[4] if ARGV.size > 4
-        status = Paint["Running SOULs Generate Commands...", :yellow]
-        Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-          Whirly.status = status
-          Souls::Api::Generate.public_send(method_name, **args)
-          Whirly.status = "Done!"
-        end
-      when "update"
-        class_name = ARGV[2]
-        status = Paint["Running SOULs Update Commands...", :yellow]
-        Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-          Whirly.status = status
-          Souls::Api::Update.create_mutation(class_name: class_name)
-          Souls::Api::Update.update_mutation(class_name: class_name)
-          Souls::Api::Update.resolver(class_name: class_name)
-          Souls::Api::Update.type(class_name: class_name)
-          Souls::Api::Update.rspec_factory(class_name: class_name)
-          Souls::Api::Update.rspec_mutation(class_name: class_name)
-          Souls::Api::Update.rspec_resolver(class_name: class_name)
-          Whirly.status = "Done!"
-        end
-      when "d", "delete"
-        class_name = ARGV[2]
-        Souls::Api::Generate.delete_all(class_name: class_name)
-      else
-        puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
-      end
-    end
-  when "worker"
-    api_command = ARGV[1]
-    case api_command
-    when "generate", "g"
-      method_name = ARGV[2]
-      class_name = ARGV[3]
-      args = { class_name: class_name }
-      args[:option] = ARGV[4] if ARGV.size > 4
-      status = Paint["Running SOULs Generate Commands...", :yellow]
-      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-        Whirly.status = status
-        Souls::Worker::Generate.public_send(method_name, **args)
-        Whirly.status = "Done!"
-      end
-    else
-      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
-    end
-  when "new"
-    args = ARGV
-    Souls::Init.start(args)
-  when "bashrc", "zshrc"
-    Souls::Init.generate_cd
-  when "s", "server"
-    all = ARGV[1]
-    case all
-    when "all"
-      Dir.chdir(Souls.get_mother_path.to_s) do
-        system("foreman start -f Procfile.dev")
-      end
-    else
-      system("foreman start -f Procfile.dev")
-    end
-  when "c", "console"
-    strain = Souls.configuration.strain
-    case strain
-    when "media", "admin", "console", "doc"
-      system("yarn dev")
-    else
-      rack_env = ARGV[1]
-      case rack_env
-      when "RACK_ENV=production"
-        system("RACK_ENV=production bundle exec irb")
-      else
-        system("bundle exec irb")
-      end
-    end
-  when "docker"
-    send_method = ARGV[1]
-    Souls::Docker.public_send(send_method)
-  when "gcloud"
-    command = ARGV[1]
-    status = Paint["Running Gcloud Commands...", :yellow]
-    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-      Whirly.status = status
-      case command
-      when "get_iam_key"
-        app_name = Souls.configuration.app
-        project_id = Souls.configuration.project_id
-        Souls::Gcloud.auth_login(project_id: project_id)
-        Souls::Gcloud::Iam.create_service_account(service_account: app_name)
-        Souls::Gcloud::Iam.create_service_account_key(service_account: app_name, project_id: project_id)
-        Souls::Gcloud.enable_permissions
-        Souls::Gcloud::Iam.add_permissions(service_account: app_name, project_id: project_id)
-        Souls::Gcloud::Iam.export_key_to_console
-      when "auth_login"
-        project_id = Souls.configuration.project_id
-        Souls::Gcloud.auth_login(project_id: project_id)
-      else
-        module_name = ARGV[1]
-        method_name = ARGV[2]
-        ARGV.shift(3)
-        key_strings = []
-        keys = []
-        ARGV.each_with_index do |n, i|
-          n.include?(":") && i.even? ? keys << n.gsub(":", "").to_sym : key_strings << n
-        end
-        raise(StandardError, "wrong arguments!") unless keys.size == key_strings.size
+require "thor"
+Souls::CLI.start
+# begin
+#   souls_command = ARGV[0]
+#   require("./config/souls") unless ["new", "docker", "-v", "deploy"].include?(souls_command)
+# rescue StandardError
+#   puts("Make sure you are at SOULs APP directory!")
+# end
+# begin
+#   case souls_command
+#   when "api"
+#     api_command = ARGV[1]
+#     Dir.chdir(Souls.get_api_path.to_s) do
+#       case api_command
+#       when "generate", "g"
+#         method_name = ARGV[2]
+#         class_name = ARGV[3]
+#         args = { class_name: class_name }
+#         args[:mutation] = ARGV[4] if ARGV.size > 4
+#         status = Paint["Running SOULs Generate Commands...", :yellow]
+#         Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+#           Whirly.status = status
+#           Souls::Api::Generate.public_send(method_name, **args)
+#           Whirly.status = "Done!"
+#         end
+#       when "update"
+#         class_name = ARGV[2]
+#         status = Paint["Running SOULs Update Commands...", :yellow]
+#         Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+#           Whirly.status = status
+#           Souls::Api::Update.create_mutation(class_name: class_name)
+#           Souls::Api::Update.update_mutation(class_name: class_name)
+#           Souls::Api::Update.resolver(class_name: class_name)
+#           Souls::Api::Update.type(class_name: class_name)
+#           Souls::Api::Update.rspec_factory(class_name: class_name)
+#           Souls::Api::Update.rspec_mutation(class_name: class_name)
+#           Souls::Api::Update.rspec_resolver(class_name: class_name)
+#           Whirly.status = "Done!"
+#         end
+#       when "d", "delete"
+#         class_name = ARGV[2]
+#         Souls::Api::Generate.delete_all(class_name: class_name)
+#       else
+#         puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
+#       end
+#     end
+#   when "worker"
+#     api_command = ARGV[1]
+#     case api_command
+#     when "generate", "g"
+#       method_name = ARGV[2]
+#       class_name = ARGV[3]
+#       args = { class_name: class_name }
+#       args[:option] = ARGV[4] if ARGV.size > 4
+#       status = Paint["Running SOULs Generate Commands...", :yellow]
+#       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+#         Whirly.status = status
+#         Souls::Worker::Generate.public_send(method_name, **args)
+#         Whirly.status = "Done!"
+#       end
+#     else
+#       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
+#     end
+#   when "new"
+#     args = ARGV
+#     Souls::Init.start(args)
+#   when "bashrc", "zshrc"
+#     Souls::Init.generate_cd
+#   when "s", "server"
+#     all = ARGV[1]
+#     case all
+#     when "all"
+#       Dir.chdir(Souls.get_mother_path.to_s) do
+#         system("foreman start -f Procfile.dev")
+#       end
+#     else
+#       system("foreman start -f Procfile.dev")
+#     end
+#   when "c", "console"
+#     strain = Souls.configuration.strain
+#     case strain
+#     when "media", "admin", "console", "doc"
+#       system("yarn dev")
+#     else
+#       rack_env = ARGV[1]
+#       case rack_env
+#       when "RACK_ENV=production"
+#         system("RACK_ENV=production bundle exec irb")
+#       else
+#         system("bundle exec irb")
+#       end
+#     end
+#   when "docker"
+#     send_method = ARGV[1]
+#     Souls::Docker.public_send(send_method)
+#   when "gcloud"
+#     command = ARGV[1]
+#     status = Paint["Running Gcloud Commands...", :yellow]
+#     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+#       Whirly.status = status
+#       case command
+#       when "get_iam_key"
+#         app_name = Souls.configuration.app
+#         project_id = Souls.configuration.project_id
+#         Souls::Gcloud.auth_login(project_id: project_id)
+#         Souls::Gcloud::Iam.create_service_account(service_account: app_name)
+#         Souls::Gcloud::Iam.create_service_account_key(service_account: app_name, project_id: project_id)
+#         Souls::Gcloud.enable_permissions
+#         Souls::Gcloud::Iam.add_permissions(service_account: app_name, project_id: project_id)
+#         Souls::Gcloud::Iam.export_key_to_console
+#       when "auth_login"
+#         project_id = Souls.configuration.project_id
+#         Souls::Gcloud.auth_login(project_id: project_id)
+#       else
+#         module_name = ARGV[1]
+#         method_name = ARGV[2]
+#         ARGV.shift(3)
+#         key_strings = []
+#         keys = []
+#         ARGV.each_with_index do |n, i|
+#           n.include?(":") && i.even? ? keys << n.gsub(":", "").to_sym : key_strings << n
+#         end
+#         raise(StandardError, "wrong arguments!") unless keys.size == key_strings.size
 
-        args = keys.zip(key_strings).to_h
-        Object.const_get("Souls::Gcloud::#{module_name.camelize}").public_send(method_name.to_sym, **args)
-      end
-      Whirly.status = "Done!"
-    end
-  when "-v", "--version", "v", "version", "-version", "--v"
-    puts(Paint[Souls::VERSION, :white])
-  when "upgrade"
-    method_command = ARGV[1]
-    case method_command
-    when "gemfile", "gem"
-      status = Paint["Checking for updates...", :yellow]
-      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-        Whirly.status = status
-        Souls::Upgrade.update_gemfile
-        Whirly.status = "Done!"
-      end
-    else
-      puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
-    end
-  when "release"
-    Souls::Release.gem_release
-  when "sync"
-    method_name = ARGV[1]
-    status = Paint["Syncing Files...", :yellow]
-    Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-      Whirly.status = status
-      Souls::Sync.public_send(method_name)
-      Whirly.status = Paint["Synced!", :green]
-    end
-  when "create"
-    service_name = ARGV[1]
-    case service_name
-    when "worker"
-      worker_name = ARGV[2]
-      Souls::Create.worker(worker_name: worker_name)
-    else
-      puts(Paint["Coming Soon...", :green])
-    end
-  when "db:create"
-    rack_env = ARGV[1]
-    case rack_env
-    when "RACK_ENV=production"
-      system("rake db:create RACK_ENV=production")
-    else
-      system("rake db:create && rake db:create RACK_ENV=test")
-    end
-  when "db:migrate"
-    rack_env = ARGV[1]
-    case rack_env
-    when "RACK_ENV=production"
-      system("rake db:migrate RACK_ENV=production")
-    else
-      system("rake db:migrate && rake db:migrate RACK_ENV=test")
-    end
-  when "db:seed"
-    rack_env = ARGV[1]
-    case rack_env
-    when "RACK_ENV=production"
-      system("rake db:seed RACK_ENV=production")
-    else
-      system("rake db:seed")
-    end
-  when "db:migrate:reset"
-    rack_env = ARGV[1]
-    case rack_env
-    when "RACK_ENV=production"
-      system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
-    else
-      system("rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test")
-    end
-  when "t", "test"
-    system("rubocop -A")
-    system("bundle exec rspec")
-  when "deploy"
-    project_id = Souls.configuration.project_id
-    system("gcloud builds submit --config=cloudbuild.yml --project #{project_id}")
-  else
-    puts(Paint["Welcome to SOULs!", :green])
-  end
-rescue StandardError => e
-  puts(e.backtrace)
-  puts(Paint[e, :red])
-end
+#         args = keys.zip(key_strings).to_h
+#         Object.const_get("Souls::Gcloud::#{module_name.camelize}").public_send(method_name.to_sym, **args)
+#       end
+#       Whirly.status = "Done!"
+#     end
+#   when "-v", "--version", "v", "version", "-version", "--v"
+#     puts(Paint[Souls::VERSION, :white])
+#   when "upgrade"
+#     method_command = ARGV[1]
+#     case method_command
+#     when "gemfile", "gem"
+#       status = Paint["Checking for updates...", :yellow]
+#       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+#         Whirly.status = status
+#         Souls::Upgrade.update_gemfile
+#         Whirly.status = "Done!"
+#       end
+#     else
+#       puts(Paint["Comannd doesn't exist.Check you command again!...", :red])
+#     end
+#   when "release"
+#     Souls::Release.gem_release
+#   when "sync"
+#     method_name = ARGV[1]
+#     status = Paint["Syncing Files...", :yellow]
+#     Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+#       Whirly.status = status
+#       Souls::Sync.public_send(method_name)
+#       Whirly.status = Paint["Synced!", :green]
+#     end
+#   when "create"
+#     service_name = ARGV[1]
+#     case service_name
+#     when "worker"
+#       worker_name = ARGV[2]
+#       Souls::Create.worker(worker_name: worker_name)
+#     else
+#       puts(Paint["Coming Soon...", :green])
+#     end
+#   when "db:create"
+#     rack_env = ARGV[1]
+#     case rack_env
+#     when "RACK_ENV=production"
+#       system("rake db:create RACK_ENV=production")
+#     else
+#       system("rake db:create && rake db:create RACK_ENV=test")
+#     end
+#   when "db:migrate"
+#     rack_env = ARGV[1]
+#     case rack_env
+#     when "RACK_ENV=production"
+#       system("rake db:migrate RACK_ENV=production")
+#     else
+#       system("rake db:migrate && rake db:migrate RACK_ENV=test")
+#     end
+#   when "db:seed"
+#     rack_env = ARGV[1]
+#     case rack_env
+#     when "RACK_ENV=production"
+#       system("rake db:seed RACK_ENV=production")
+#     else
+#       system("rake db:seed")
+#     end
+#   when "db:migrate:reset"
+#     rack_env = ARGV[1]
+#     case rack_env
+#     when "RACK_ENV=production"
+#       system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
+#     else
+#       system("rake db:migrate:reset && rake db:migrate:reset RACK_ENV=test")
+#     end
+#   when "t", "test"
+#     system("rubocop -A")
+#     system("bundle exec rspec")
+#   when "deploy"
+#     project_id = Souls.configuration.project_id
+#     system("gcloud builds submit --config=cloudbuild.yml --project #{project_id}")
+#   else
+#     puts(Paint["Welcome to SOULs!", :green])
+#   end
+# rescue StandardError => e
+#   puts(e.backtrace)
+#   puts(Paint[e, :red])
+# end

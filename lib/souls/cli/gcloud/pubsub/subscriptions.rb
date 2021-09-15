@@ -1,37 +1,44 @@
 module Souls
-  module Gcloud
-    module Pubsub
-      class << self
-        def create_subscription(
-          topic_name: "send-user-mail",
-          project_id: "",
-          service_account: "",
-          endpoint: "https:://test.com"
-        )
-          project_id = Souls.configuration.project_id if project_id.blank?
-          service_account = "#{Souls.configuration.app}@#{project_id}.iam.gserviceaccount.com" if service_account.blank?
-          system(
-            "gcloud pubsub subscriptions create #{topic_name}-sub \
-            --topic #{topic_name} \
+  class Pubsub < Thor
+    desc "create_subscription", "Create Google Cloud PubSub Subscription"
+    method_option :topic_name,
+                  default: "send-user-mailer",
+                  aliases: "--topic_name",
+                  desc: "Google Cloud Pubsub Topic Name"
+    method_option :endpoint,
+                  default: "https:://test.com",
+                  aliases: "--endpoint",
+                  desc: "Google Cloud Pubsub Push Subscription Endpoint"
+    def create_subscription
+      project_id = Souls.configuration.project_id
+      service_account = "#{Souls.configuration.app}@#{project_id}.iam.gserviceaccount.com"
+      system(
+        "gcloud pubsub subscriptions create #{options[:topic_name]}-sub \
+            --topic #{options[:topic_name]} \
             --topic-project #{project_id} \
             --push-auth-service-account #{service_account} \
-            --push-endpoint #{endpoint} \
+            --push-endpoint #{options[:endpoint]} \
             --expiration-period never
             "
-          )
-        end
+      )
+    end
 
-        def subscription_list
-          system("gcloud pubsub subscriptions list")
-        end
+    desc "subscription_list", "Show Google Cloud Pubsub Subscription List"
+    def subscription_list
+      system("gcloud pubsub subscriptions list")
+    end
 
-        def update_subscription(
-          topic_name: "send-user-mail",
-          endpoint: "https:://test.com"
-        )
-          system("gcloud pubsub subscriptions update #{topic_name}-sub --push-endpoint #{endpoint} ")
-        end
-      end
+    desc "update_subscription", "Update Google Cloud Pubsub Subscription Endpoint"
+    method_option :topic_name,
+                  default: "send-user-mailer",
+                  aliases: "--topic_name",
+                  desc: "Google Cloud Pubsub Topic Name"
+    method_option :endpoint,
+                  default: "https:://test.com",
+                  aliases: "--endpoint",
+                  desc: "Google Cloud Pubsub Push Subscription Endpoint"
+    def update_subscription(topic_name: "send-user-mail", endpoint: "https:://test.com")
+      system("gcloud pubsub subscriptions update #{options[:topic_name]}-sub --push-endpoint #{options[:endpoint]} ")
     end
   end
 end

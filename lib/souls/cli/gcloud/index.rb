@@ -5,45 +5,42 @@ require_relative "./sql/index"
 require_relative "./compute/index"
 
 module Souls
-  module Gcloud
-    class << self
-      def auth_login(project_id: "")
-        project_id = Souls.configuration.project_id if project_id.blank?
-        system("gcloud config set project #{project_id}")
-        system("gcloud auth login")
-      end
+  class Gcloud < Thor
+    desc "iam [COMMAND]", "souls gcloud iam Commands"
+    subcommand "iam", Iam
 
-      def enable_permissions
-        system("gcloud services enable compute.googleapis.com")
-        puts("Operating permission to compute.googleapis.com ...")
-        system("gcloud services enable iam.googleapis.com")
-        puts("Operating permission to iam.googleapis.com ...")
-        system("gcloud services enable dns.googleapis.com")
-        puts("Operating permission to dns.googleapis.com ...")
-        system("gcloud services enable sqladmin.googleapis.com")
-        puts("Operating permission to sqladmin.googleapis.com ...")
-        system("gcloud services enable sql-component.googleapis.com")
-        puts("Operating permission to sql-component.googleapis.com ...")
-        system("gcloud services enable servicenetworking.googleapis.com")
-        puts("Operating permission to servicenetworking.googleapis.com ...")
-        system("gcloud services enable containerregistry.googleapis.com")
-        puts("Operating permission to containerregistry.googleapis.com")
-        system("gcloud services enable run.googleapis.com")
-        puts("Operating permission to run.googleapis.com")
-        system("gcloud services enable vpcaccess.googleapis.com")
-        puts("Operating permission to vpcaccess.googleapis.com")
-      end
-    end
-    module Iam
+    desc "pubsub [COMMAND]", "souls gcloud pubsub Commands"
+    subcommand "pubsub", Pubsub
+
+    desc "sql [COMMAND]", "souls gcloud sql Commands"
+    subcommand "sql", Sql
+
+    desc "compute [COMMAND]", "souls gcloud compute Commands"
+    subcommand "compute", Compute
+
+    desc "run [COMMAND]", "souls gcloud run Commands"
+    subcommand "cloud_run", CloudRun
+
+    map run: "cloud_run"
+
+    desc "auth_login", "gcloud config set and gcloud auth login"
+    def auth_login
+      project_id = Souls.configuration.project_id
+      system("gcloud config set project #{project_id}")
+      system("gcloud auth login")
     end
 
-    module Pubsub
-    end
-
-    module Run
-    end
-
-    module Sql
+    desc "enable_permissions", "Enable Google Cloud APIs for SOULs Framework"
+    def enable_permissions
+      system("gcloud services enable compute.googleapis.com")
+      system("gcloud services enable iam.googleapis.com")
+      system("gcloud services enable dns.googleapis.com")
+      system("gcloud services enable sqladmin.googleapis.com")
+      system("gcloud services enable sql-component.googleapis.com")
+      system("gcloud services enable servicenetworking.googleapis.com")
+      system("gcloud services enable containerregistry.googleapis.com")
+      system("gcloud services enable run.googleapis.com")
+      system("gcloud services enable vpcaccess.googleapis.com")
     end
   end
 end

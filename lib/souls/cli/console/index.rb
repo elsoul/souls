@@ -1,4 +1,6 @@
 module Souls
-  module Console
+  class Souls < Thor
+    module Console
+    end
   end
 end
