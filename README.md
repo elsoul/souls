@@ -82,6 +82,9 @@ And Create Your APP
     $ bundle
     $ souls s
 
+Check your GraphQL PlayGround
+
+(localhost:4000/playground)[localhost:4000/playground]
 
 
 
@@ -105,7 +108,7 @@ Souls.configure do |config|
   config.region = "asia-northeast1"
   config.endpoint = "/endpoint"
   config.strain = "api"
-  config.fixed_gems = ["selenium-webdriver", "pg"]
+  config.fixed_gems = ["selenium-webdriver"]
   config.workers = []
 end
 ```
