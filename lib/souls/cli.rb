@@ -14,7 +14,13 @@ module Souls
     desc "create [COMMAND]", "souls create worker $worker_name"
     subcommand "create", Create
 
-    map s: :hey
+    desc "db [COMMAND]", "souls db"
+    subcommand "db", Db
+
+    # rubocop:disable Style/StringHashKeys
+    map "c" => :console
+    map "s" => :server
+    # rubocop:enable Style/StringHashKeys
 
     desc "hey", "test task"
     def hey

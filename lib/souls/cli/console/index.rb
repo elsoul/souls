@@ -1,8 +1,8 @@
 module Souls
   class CLI < Thor
-    desc "c", "Run IRB Console"
+    desc "console", "Run IRB Console"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
-    def c
+    def console
       case options[:env]
       when "production"
         system("RACK_ENV=production bundle exec irb")
