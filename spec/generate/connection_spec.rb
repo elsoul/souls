@@ -1,4 +1,4 @@
-RSpec.describe(Souls::Api::Generate) do
+RSpec.describe(Souls::Generate) do
   describe "Generate Connection" do
     let(:class_name) { "user" }
 
@@ -12,7 +12,7 @@ RSpec.describe(Souls::Api::Generate) do
     it "creates edge.rb file" do
       file_dir = "./app/graphql/types/connections/"
       file_path = "./app/graphql/types/connections/#{class_name.singularize}_connection.rb"
-      a1 = Souls::Api::Generate.connection(class_name: class_name)
+      a1 = Souls::Generate.new.connection(class_name)
       expect(a1).to(eq(file_path))
       FileUtils.rm_rf(file_dir)
     end

@@ -1,4 +1,4 @@
-RSpec.describe(Souls::Api::Generate) do
+RSpec.describe(Souls::Generate) do
   describe "Generate Model" do
     let(:class_name) { "user" }
 
@@ -12,7 +12,7 @@ RSpec.describe(Souls::Api::Generate) do
     it "creates model.rb file" do
       file_dir = "./app/models/"
       file_path = "./app/models/#{class_name.singularize}.rb"
-      a1 = Souls::Api::Generate.model(class_name: class_name)
+      a1 = Souls::Generate.new.model(class_name)
       expect(a1).to(eq(file_path))
       FileUtils.rm_rf(file_dir)
     end

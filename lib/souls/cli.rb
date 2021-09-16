@@ -1,9 +1,26 @@
 require "souls"
 
+# module Souls
+#   module API
+#     class Generate < Thor
+#       desc "hey", "p hey"
+#       def hey
+#         p("hey")
+#       end
+
+#       desc "scaffold [COMMAND]", "Scaffold"
+#       namespace :generate
+#       def scaffold
+#         p("scaffold")
+#       end
+#     end
+#   end
+# end
+
 module Souls
   class CLI < Thor
     desc "api [COMMAND]", "souls api Commands"
-    subcommand "api", Api
+    subcommand "api", API
 
     desc "gcloud [COMMAND]", "souls gcloud Commands"
     subcommand "gcloud", Gcloud
@@ -36,7 +53,14 @@ module Souls
     map "db:create" => :db_create
     map "db:migrate:reset" => :mirgate_reset
     map "db:seed" => :seed
+    map ["-v", "--v", "--version", "-version"] => :version
     # rubocop:enable Style/StringHashKeys
+
+    desc "version", "SOULs Version"
+    def version
+      puts(Souls::VERSION)
+    end
+
     def self.exit_on_failure?
       false
     end
