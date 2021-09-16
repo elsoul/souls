@@ -6,6 +6,9 @@ module Souls
       cp_dir.each do |dir|
         cp_and_dl_files(dir: dir)
       end
+      puts(Paint % ["Synced! : %{white_text}", :green, { white_text: [cp_dir.to_s, :white] }])
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
 
     private

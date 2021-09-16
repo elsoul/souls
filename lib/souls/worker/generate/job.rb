@@ -1,13 +1,8 @@
 module Souls
   class Generate < Thor
     desc "job [CLASS_NAME]", "Generate Job File in Worker"
-    method_option mailer: :boolean, aliases: "--mailer", default: false, desc: "Generate Mailer Template"
     def job(class_name)
-      if options[:mailer]
-        mailer(class_name)
-      else
-        create_mutation(class_name: class_name)
-      end
+      create_mutation(class_name: class_name)
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end

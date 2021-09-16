@@ -4,6 +4,15 @@ module Souls
     def conf
       update_conf
       update_conf(strain: "api")
+      puts(
+        Paint % [
+          "Synced! : %{white_text}",
+          :green,
+          { white_text: ["`config/souls.rb`, `apps/api/config/souls.rb`", :white] }
+        ]
+      )
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
 
     private
