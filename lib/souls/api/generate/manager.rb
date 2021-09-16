@@ -1,18 +1,20 @@
 module Souls
-  module Api::Generate
-    def self.manager(class_name: "user", mutation: "user_login")
+  class Generate < Thor
+    desc "manager [MANAGER_NAME]", "Generate GraphQL Mutation Template"
+    method_option :mutation, aliases: "--mutation", required: true, desc: "Mutation File Name"
+    def manager(class_name)
       singularized_class_name = class_name.underscore.singularize
       file_dir = "./app/graphql/mutations/managers/#{singularized_class_name}_manager"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-      file_path = "#{file_dir}/#{mutation}.rb"
+      file_path = "#{file_dir}/#{options[:mutation]}.rb"
       raise(StandardError, "Already Exist!") if File.exist?(file_path)
 
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Mutations
             module Managers::#{singularized_class_name.camelize}Manager
-              class #{mutation.underscore.camelize} < BaseMutation
-                description "#{mutation} description"
+              class #{options[:mutation].underscore.camelize} < BaseMutation
+                description "#{options[:mutation]} description"
                 ## Edit `argument` and `field`
                 argument :argment, String, required: true
 
@@ -30,8 +32,8 @@ module Souls
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue StandardError => e
-      raise(StandardError, e)
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

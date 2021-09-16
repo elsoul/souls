@@ -1,7 +1,7 @@
 module Souls
-  module Api::Generate
-    ## Generate Policy
-    def self.policy(class_name: "user")
+  class Generate < Thor
+    desc "policy [CLASS_NAME]", "Generate Policy File Template"
+    def policy(class_name: "user")
       dir_name = "./app/policies"
       FileUtils.mkdir_p(dir_name) unless Dir.exist?(dir_name)
       file_path = "#{dir_name}/#{class_name.singularize}_policy.rb"
@@ -44,8 +44,8 @@ module Souls
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue StandardError => e
-      raise(StandardError, e)
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

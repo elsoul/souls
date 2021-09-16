@@ -1,6 +1,7 @@
 module Souls
-  module Api::Generate
-    def self.connection(class_name: "user")
+  class Generate < Thor
+    desc "connection [CLASS_NAME]", "Generate GraphQL Connection from schema.rb"
+    def connection(class_name)
       file_dir = "./app/graphql/types/connections/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       singularized_class_name = class_name.underscore.singularize
@@ -14,8 +15,8 @@ module Souls
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue StandardError => e
-      raise(StandardError, e)
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

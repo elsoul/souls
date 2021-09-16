@@ -1,7 +1,7 @@
 module Souls
-  module Api::Generate
-    ## Generate Rspec Model
-    def self.rspec_model(class_name: "user")
+  class Generate < Thor
+    desc "rspec_model [CLASS_NAME]", "Generate Rspec Model Test from schema.rb"
+    def rspec_model(class_name)
       file_dir = "./spec/models/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./spec/models/#{class_name}_spec.rb"
@@ -20,8 +20,8 @@ module Souls
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue StandardError => e
-      raise(StandardError, e)
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

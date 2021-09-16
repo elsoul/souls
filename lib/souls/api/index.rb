@@ -5,6 +5,9 @@ module Souls
     desc "generate [COMMAND]", "souls api generate Commands"
     subcommand "generate", Generate
 
+    desc "update [COMMAND]", "souls api update Commands"
+    subcommand "update", Generate
+
     # rubocop:disable Style/StringHashKeys
     map "g" => :generate
     # rubocop:enable Style/StringHashKeys

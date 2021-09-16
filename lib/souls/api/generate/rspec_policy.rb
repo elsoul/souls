@@ -1,7 +1,7 @@
 module Souls
-  module Api::Generate
-    ## Generate Rspec Policy
-    def self.rspec_policy(class_name: "user")
+  class Generate < Thor
+    desc "rspec_policy [CLASS_NAME]", "Generate Rspec Policy Test from schema.rb"
+    def rspec_policy(class_name)
       dir_name = "./spec/policies"
       FileUtils.mkdir_p(dir_name) unless Dir.exist?(dir_name)
       file_path = "./spec/policies/#{class_name}_policy_spec.rb"
@@ -38,8 +38,8 @@ module Souls
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue StandardError => e
-      raise(StandardError, e)
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

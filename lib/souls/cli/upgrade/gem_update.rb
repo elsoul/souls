@@ -53,36 +53,36 @@ module Souls
                 old_ver = gem[1].split(".")
                 new_ver = new_gems[:updated_gem_versions][@i].split(".")
                 if old_ver[0] < new_ver[0]
-                  logs << Paint % [
+                  logs << (Paint % [
                     "#{gem[0]} v#{gem[1]} → %{red_text}",
                     :white,
                     {
                       red_text: ["v#{new_gems[:updated_gem_versions][@i]}", :red]
                     }
-                  ]
+                  ])
                 elsif old_ver[1] < new_ver[1]
-                  logs << Paint % [
+                  logs << (Paint % [
                     "#{gem[0]} v#{gem[1]} → v#{new_ver[0]}.%{yellow_text}",
                     :white,
                     {
                       yellow_text: ["#{new_ver[1]}.#{new_ver[2]}", :yellow]
                     }
-                  ]
+                  ])
                 elsif old_ver[2] < new_ver[2]
-                  logs << Paint % [
+                  logs << (Paint % [
                     "#{gem[0]} v#{gem[1]} → v#{new_ver[0]}.#{new_ver[1]}.%{green_text}",
                     :white,
                     {
                       green_text: [(new_ver[2]).to_s, :green]
                     }
-                  ]
+                  ])
                 end
                 if gem[0] == "souls"
-                  logs << Paint % [
+                  logs << (Paint % [
                     "\nSOULs Doc: %{cyan_text}",
                     :white,
                     { cyan_text: ["https://souls.elsoul.nl\n", :cyan] }
-                  ]
+                  ])
                 end
                 new_line.write("#{new_gems[:lines][@i]}\n")
                 @i += 1

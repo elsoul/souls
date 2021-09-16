@@ -1,7 +1,7 @@
 module Souls
   class Generate < Thor
-    desc "edge", "Generate GraphQL Edge from schema.rb"
-    def edge(class_name: "user")
+    desc "edge [CLASS_NAME]", "Generate GraphQL Edge from schema.rb"
+    def edge(class_name)
       file_dir = "./app/graphql/types/edges"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       singularized_class_name = class_name.underscore.singularize
@@ -15,8 +15,8 @@ module Souls
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue StandardError => e
-      raise(StandardError, e)
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end
