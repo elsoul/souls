@@ -2,7 +2,8 @@
 require "souls"
 require "thor"
 begin
-  require("./config/souls")
+  souls_command = ARGV[0]
+  require("./config/souls") unless ["new", "docker", "-v", "deploy"].include?(souls_command)
 rescue StandardError
   raise(StandardError, "No confif! Please make `./config/souls.rb` File!")
 end
