@@ -53,12 +53,19 @@ module Souls
     map "db:create" => :db_create
     map "db:migrate:reset" => :mirgate_reset
     map "db:seed" => :seed
+    map "t" => :test
     map ["-v", "--v", "--version", "-version"] => :version
     # rubocop:enable Style/StringHashKeys
 
     desc "version", "SOULs Version"
     def version
       puts(Souls::VERSION)
+    end
+
+    desc "test", "Run Rspec & Rubocop"
+    def test
+      system("rubocop -A")
+      system("bundle exec rspec")
     end
 
     def self.exit_on_failure?
