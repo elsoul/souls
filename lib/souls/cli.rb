@@ -25,6 +25,7 @@ module Souls
     # rubocop:disable Style/StringHashKeys
     map "c" => :console
     map "s" => :server
+    map "db:migrate:reset" => :migrate_reset
     map "db:migrate" => :migrate
     map "db:create_migration" => :create_migration
     map "db:add_column" => :add_column
@@ -33,7 +34,6 @@ module Souls
     map "db:remove_column" => :remove_column
     map "db:drop_table" => :drop_table
     map "db:create" => :db_create
-    map "db:reset" => :mirgate_reset
     map "db:seed" => :seed
     map "t" => :test
     map ["-v", "--v", "--version", "-version"] => :version
