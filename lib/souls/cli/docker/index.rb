@@ -12,6 +12,8 @@ module Souls
           postgres:13-alpine"
       )
       system("docker ps")
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
 
     desc "mysql", "Run MySQL Docker Container"
@@ -26,6 +28,8 @@ module Souls
           mysql:latest"
       )
       system("docker ps")
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

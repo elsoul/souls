@@ -28,6 +28,8 @@ module Souls
       project_id = Souls.configuration.project_id
       system("gcloud config set project #{project_id}")
       system("gcloud auth login")
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
 
     desc "enable_permissions", "Enable Google Cloud APIs for SOULs Framework"
@@ -41,6 +43,8 @@ module Souls
       system("gcloud services enable containerregistry.googleapis.com")
       system("gcloud services enable run.googleapis.com")
       system("gcloud services enable vpcaccess.googleapis.com")
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

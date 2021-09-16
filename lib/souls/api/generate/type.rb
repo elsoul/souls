@@ -1,7 +1,6 @@
 module Souls
   class Generate < Thor
-
-    desc "type [CLASS_NAME]", "Generate GraphQL Type Template"
+    desc "type [CLASS_NAME]", "Generate GraphQL Type from schema.rb"
     def type(class_name)
       singularized_class_name = class_name.singularize
       file_path = "./app/graphql/types/#{singularized_class_name}_type.rb"

@@ -9,6 +9,8 @@ module Souls
       else
         system("bundle exec irb")
       end
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
   end
 end

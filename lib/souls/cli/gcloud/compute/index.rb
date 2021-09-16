@@ -12,6 +12,8 @@ module Souls
       create_external_ip
       create_nat
       nat_credit
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
 
     private

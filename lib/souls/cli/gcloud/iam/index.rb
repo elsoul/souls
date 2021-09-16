@@ -8,6 +8,8 @@ module Souls
       Souls::Gcloud.new.enable_permissions
       add_permissions
       export_key_to_console
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
 
     private
