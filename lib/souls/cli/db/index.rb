@@ -45,15 +45,14 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:reset", "Reset Database"
+    desc "db:migrate:reset", "Reset Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def migrate_reset
       case options[:env]
       when "production"
         system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
-      when "development"
+      else
         system("rake db:migrate:reset")
-      when "test"
         system("rake db:migrate:reset RACK_ENV=test")
       end
     rescue Thor::Error => e
