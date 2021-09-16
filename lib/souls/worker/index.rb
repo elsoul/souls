@@ -1,6 +1,8 @@
 require_relative "./generate/index"
 
 module Souls
-  module Worker::Generate
+  class Worker < Thor
+    desc "generate [COMMAND]", "souls worker generate Commands"
+    subcommand "generate", Generate
   end
 end

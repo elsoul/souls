@@ -1,1 +1,1 @@
-require_relative "./gem_update"
+require_relative "./gemfile"

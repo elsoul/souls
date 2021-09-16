@@ -15,10 +15,4 @@ module Souls
 
   module Release
   end
-
-  module Sync
-  end
-
-  module Upgrade
-  end
 end

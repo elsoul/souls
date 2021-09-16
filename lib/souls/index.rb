@@ -6,6 +6,4 @@ require_relative "./worker/index"
 require_relative "./utils/index"
 
 module Souls
-  module Worker
-  end
 end
