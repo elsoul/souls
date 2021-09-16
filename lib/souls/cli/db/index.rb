@@ -1,6 +1,6 @@
 module Souls
   class CLI < Thor
-    desc "db:migrate [CLASS_NAME]", "Migrate Database"
+    desc "db:migrate", "Migrate Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def migrate
       case options[:env]
@@ -15,7 +15,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:create [CLASS_NAME]", "Create Database"
+    desc "db:create", "Create Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def db_create
       case options[:env]
@@ -30,7 +30,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:seed [CLASS_NAME]", "Insert Seed Data"
+    desc "db:seed", "Insert Seed Data"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def seed
       case options[:env]
@@ -45,7 +45,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:migrate:reset [CLASS_NAME]", "Reset Database"
+    desc "db:reset", "Reset Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def migrate_reset
       case options[:env]
