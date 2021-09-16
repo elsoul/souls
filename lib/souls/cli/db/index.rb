@@ -6,9 +6,8 @@ module Souls
       case options[:env]
       when "production"
         system("rake db:migrate RACK_ENV=production")
-      when "development"
+      else
         system("rake db:migrate")
-      when "test"
         system("rake db:migrate RACK_ENV=test")
       end
     rescue Thor::Error => e
@@ -21,9 +20,8 @@ module Souls
       case options[:env]
       when "production"
         system("rake db:create RACK_ENV=production")
-      when "development"
+      else
         system("rake db:create")
-      when "test"
         system("rake db:create RACK_ENV=test")
       end
     rescue Thor::Error => e
@@ -36,9 +34,8 @@ module Souls
       case options[:env]
       when "production"
         system("rake db:seed RACK_ENV=production")
-      when "development"
+      else
         system("rake db:seed")
-      when "test"
         system("rake db:seed RACK_ENV=test")
       end
     rescue Thor::Error => e
