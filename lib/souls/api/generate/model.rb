@@ -1,7 +1,7 @@
 module Souls
   class Generate < Thor
     desc "model [CLASS_NAME]", "Generate Model Template"
-    def model(class_name: "user")
+    def model(class_name)
       file_dir = "./app/models/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}#{class_name.singularize}.rb"

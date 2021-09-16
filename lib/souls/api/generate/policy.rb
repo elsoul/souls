@@ -1,7 +1,7 @@
 module Souls
   class Generate < Thor
     desc "policy [CLASS_NAME]", "Generate Policy File Template"
-    def policy(class_name: "user")
+    def policy(class_name)
       dir_name = "./app/policies"
       FileUtils.mkdir_p(dir_name) unless Dir.exist?(dir_name)
       file_path = "#{dir_name}/#{class_name.singularize}_policy.rb"

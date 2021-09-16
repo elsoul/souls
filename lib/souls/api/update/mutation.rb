@@ -35,7 +35,7 @@ module Souls
     end
 
     desc "update_mutation [CLASS_NAME]", "Update GraphQL Type from schema.rb"
-    def update_mutation(class_name: "user")
+    def update_mutation(class_name)
       singularized_class_name = class_name.singularize.underscore
       new_cols = Souls.get_columns_num(class_name: singularized_class_name)
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"

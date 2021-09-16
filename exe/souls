@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 require "souls"
 require "thor"
+begin
+  require("./config/souls")
+rescue StandardError
+  raise(StandardError, "No confif! Please make `./config/souls.rb` File!")
+end
+
 Souls::CLI.start
 # begin
 #   souls_command = ARGV[0]

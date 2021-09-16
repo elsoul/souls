@@ -41,7 +41,7 @@ module Souls
                   default: "https:://test.com",
                   aliases: "--endpoint",
                   desc: "Google Cloud Pubsub Push Subscription Endpoint"
-    def update_subscription(topic_name: "send-user-mail", endpoint: "https:://test.com")
+    def update_subscription
       system("gcloud pubsub subscriptions update #{options[:topic_name]}-sub --push-endpoint #{options[:endpoint]} ")
     rescue Thor::Error => e
       raise(Thor::Error, e)

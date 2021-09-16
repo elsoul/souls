@@ -1,1 +1,2 @@
 api: foreman start -f ./apps/api/Procfile
+test: foreman start -f ./apps/test/Procfile.dev

@@ -10,9 +10,4 @@ require_relative "./upgrade/index"
 require_relative "./server/index"
 
 module Souls
-  module Init
-  end
-
-  module Release
-  end
 end
