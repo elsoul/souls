@@ -2,6 +2,17 @@ module Souls
   class Upgrade < Thor
     desc "gemfile", "Update Gemfile/Gemfile.lock Version"
     def gemfile
+      status = Paint["Checking Latest Gems...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+        update_gem
+        Whirly.status = "Done!"
+      end
+    end
+
+    private
+
+    def update_gem
       file_path = "./Gemfile"
       tmp_file = "./tmp/Gemfile"
       new_gems = gemfile_latest_version
@@ -67,8 +78,6 @@ module Souls
         puts(line)
       end
     end
-
-    private
 
     def gemfile_latest_version
       file_path = "./Gemfile"
