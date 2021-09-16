@@ -1,22 +1,4 @@
 require "souls"
-
-# module Souls
-#   module API
-#     class Generate < Thor
-#       desc "hey", "p hey"
-#       def hey
-#         p("hey")
-#       end
-
-#       desc "scaffold [COMMAND]", "Scaffold"
-#       namespace :generate
-#       def scaffold
-#         p("scaffold")
-#       end
-#     end
-#   end
-# end
-
 module Souls
   class CLI < Thor
     desc "api [COMMAND]", "souls api Commands"
