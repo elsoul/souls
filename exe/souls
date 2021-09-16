@@ -12,7 +12,9 @@ begin
     "api",
     "create",
     "gcloud",
-    "worker"
+    "worker",
+    "",
+    nil
   ].include?(souls_command)
 rescue StandardError
   raise(StandardError, "No confif! Please make `./config/souls.rb` File!")

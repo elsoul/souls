@@ -1,25 +1,25 @@
 require "souls"
 module Souls
   class CLI < Thor
-    desc "api [COMMAND]", "souls api Commands"
+    desc "api [COMMAND]", "SOULs API Commands"
     subcommand "api", API
 
-    desc "gcloud [COMMAND]", "souls gcloud Commands"
+    desc "gcloud [COMMAND]", "SOULs Gcloud Commands"
     subcommand "gcloud", Gcloud
 
-    desc "docker [COMMAND]", "souls docker Commands"
+    desc "docker [COMMAND]", "SOULs Docker Commands"
     subcommand "docker", Docker
 
-    desc "create [COMMAND]", "souls create worker $worker_name"
+    desc "create [COMMAND]", "SOULs Create Worker"
     subcommand "create", Create
 
-    desc "sync", "souls sync Commands"
+    desc "sync", " SOULs Sync Commands"
     subcommand "sync", Sync
 
-    desc "upgrade", "souls upgrade Commands"
+    desc "upgrade", "SOULs Upgrade Commands"
     subcommand "upgrade", Upgrade
 
-    desc "worker [COMMAND]", "souls worker Commands"
+    desc "worker [COMMAND]", "SOULs Worker Commands"
     subcommand "worker", Worker
 
     # rubocop:disable Style/StringHashKeys
