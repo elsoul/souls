@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/KishiTheMechanic/thor.git
+  revision: 7fb3cf2afcdf3f9664822dbc44c183c756edbcc3
+  specs:
+    thor (1.1.0)
+
 PATH
   remote: .
   specs:
@@ -208,7 +214,6 @@ GEM
       terminal-table (>= 2, < 4)
     terminal-table (3.0.1)
       unicode-display_width (>= 1.1.1, < 3)
-    thor (1.1.0)
     tilt (2.0.10)
     tty-color (0.6.0)
     tty-cursor (0.7.1)
@@ -246,7 +251,7 @@ DEPENDENCIES
   solargraph (= 0.43.0)
   souls!
   steep (= 0.44.1)
-  thor (= 1.1.0)
+  thor!
   tty-prompt (= 0.23.1)
   whirly (= 0.3.0)
 

@@ -14,6 +14,6 @@ gem "rubocop", "1.19.0"
 gem "sinatra-activerecord", "2.0.23"
 gem "solargraph", "0.43.0", group: :development
 gem "steep", "0.44.1"
-gem "thor", "1.1.0"
+gem "thor", git: "https://github.com/KishiTheMechanic/thor.git"
 gem "tty-prompt", "0.23.1"
 gem "whirly", "0.3.0"
