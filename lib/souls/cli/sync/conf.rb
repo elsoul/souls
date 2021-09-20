@@ -36,7 +36,7 @@ module Souls
 
               new_line.write("  config.workers = [\n")
               workers.each_with_index do |worker, i|
-                base_url = Souls::Gcloud::Run.new.get_endpoint(worker_name: worker[:name])
+                base_url = Souls::CloudRun.new.get_endpoint(worker_name: worker[:name])
                 endpoint = Souls.configuration.endpoint
                 if (i + 1) == workers.size
                   new_line.write(<<-TEXT)
