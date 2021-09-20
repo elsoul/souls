@@ -1,4 +1,4 @@
-[![SOULs](https://storage.googleapis.com/souls/souls-ogp-vertical.jpg)](https://rubygems.org/gems/souls)
+[![SOULs](https://souls.elsoul.nl/ogp.jpg)](https://souls.elsoul.nl)
 
 <p align="center">
   <a aria-label="Ruby logo" href="https://el-soul.com">
@@ -27,7 +27,7 @@ SOULs はサーバーレスフルスタックフレームワークです。柔�
 SOULs バックエンドには `API` と `Worker` の 2 つのタイプがあります。
 `API` は主にデータをフロントエンドへ提供します。`Worker` は主に `タスク` の処理を行います
 
-![画像](https://storage.googleapis.com/souls-bucket/imgs/souls-structure.jpg)
+![画像](https://souls.elsoul.nl/imgs/docs/SOULs.jpg)
 
 現在のバージョンでは SOULs `API` と `Worker` を Github Actions を使って Google Cloud Run へそれぞれデプロイします。
 
@@ -86,8 +86,6 @@ Check your GraphQL PlayGround
 
 (localhost:4000/playground)[localhost:4000/playground]
 
-
-
 ## Gemfile 自動更新アップデート
 
 `Gemfile`, `Gemfile.lock` を最新のバージョンに自動更新します。
@@ -96,10 +94,8 @@ Check your GraphQL PlayGround
 souls upgrade gemfile
 ```
 
-
 除外したい `gem` は `config/souls.rb` 内の
 `config.fixed_gems` の配列に追加します。
-
 
 ```ruby
 Souls.configure do |config|
@@ -113,15 +109,12 @@ Souls.configure do |config|
 end
 ```
 
-
-
 ## SOULs Serverless Application Framework Document
 
 SOULs サーバーレスアプリケーションフレームワーク
 ドキュメントはこちらから
+
 - [SOULs Document](https://souls.elsoul.nl/)
-
-
 
 ## Development
 
