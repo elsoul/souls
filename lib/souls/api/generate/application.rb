@@ -17,6 +17,7 @@ module Souls
       mutation(singularized_class_name)
       policy(singularized_class_name)
       rspec_policy(singularized_class_name)
+      true
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
@@ -25,15 +26,16 @@ module Souls
     def scaffold_all
       puts(Paint["Let's Go SOULs AUTO CRUD Assist!\n", :cyan])
       Souls.get_tables.each do |table|
-        Souls::Api::Generate.scaffold(class_name: table.singularize)
+        Souls::Generate.new.scaffold(table.singularize)
         puts(Paint["Generated #{table.camelize} CRUD Files\n", :yellow])
       end
+      true
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
 
     desc "delete_all  [CLASS_NAME]", "Generate Scaffold All Tables from schema.rb"
-    def delete_all(class_name: "user")
+    def delete_all(class_name)
       singularized_class_name = class_name.singularize.underscore
       pluralized_class_name = class_name.pluralize.underscore
       FileUtils.rm("./app/models/#{singularized_class_name}.rb")

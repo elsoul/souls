@@ -1,5 +1,7 @@
 require "bundler/setup"
 require "souls"
+require "bundler/gem_tasks"
+require "rspec/core/rake_task"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
