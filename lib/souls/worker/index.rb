@@ -5,6 +5,6 @@ module Souls
     desc "generate [COMMAND]", "souls worker generate Commands"
     subcommand "generate", Generate
 
-    map "g" => :generate
+    map g: :generate
   end
 end

@@ -8,6 +8,6 @@ module Souls
     desc "update [COMMAND]", "souls api update Commands"
     subcommand "update", Update
 
-    map "g" => :generate
+    map g: :generate
   end
 end

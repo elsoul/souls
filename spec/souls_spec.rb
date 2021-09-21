@@ -18,7 +18,7 @@ RSpec.describe(Souls) do
     end
 
     it "has user tables" do
-      expect(Souls.get_tables).to(eq(%w[users]))
+      expect(Souls.get_tables).to(eq(["article_categories", "articles", "comments", "users"]))
     end
   end
 end
