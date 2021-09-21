@@ -1,2 +1,6 @@
 module Souls
+  class Generate
+    @desc: String
+    def edge: (String class_name) -> String
+  end
 end

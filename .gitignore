@@ -14,3 +14,4 @@
 .irb_history
 /app/
 /db/
+/vendor/rbs/gem_rbs_collection
