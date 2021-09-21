@@ -15,7 +15,7 @@ RSpec.describe(Souls::Generate) do
       file_path = "#{file_dir}#{file_name}.rb"
       a1 = Souls::Generate.new.invoke(:rspec_mutation, ["user"], {})
       expect(a1).to(eq(file_path))
-      FileUtils.rm_rf(file_dir)
+      FileUtils.rm_rf("./spec/mutations")
     end
   end
 end

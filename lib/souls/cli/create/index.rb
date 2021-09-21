@@ -18,6 +18,7 @@ module Souls
         mother_procfile(worker_name: options[:name])
         souls_config_init(worker_name: options[:name])
       end
+      true
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end

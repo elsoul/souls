@@ -14,7 +14,7 @@ RSpec.describe(Souls::Generate) do
       file_path = "#{file_dir}create_#{class_name.singularize}.rb"
       a1 = Souls::Generate.new.mutation(class_name)
       expect(a1).to(eq(file_path))
-      FileUtils.rm_rf(file_dir)
+      FileUtils.rm_rf("./app/graphql/mutations")
     end
   end
 end
