@@ -2,6 +2,7 @@ module Souls
   class Sync < Thor
     desc "conf", "Sync config/souls.rb Endpoint with Google Cloud Run"
     def conf
+      Souls::Gcloud.new.config_set
       update_conf
       update_conf(strain: "api")
       puts(

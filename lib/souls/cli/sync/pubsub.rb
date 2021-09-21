@@ -2,6 +2,7 @@ module Souls
   class Sync < Thor
     desc "pubsub", "Sync Worker Jobs & Google Cloud Pubsub Subscriptions"
     def pubsub
+      Souls::Gcloud.new.config_set
       get_topics(workers: get_workers)
       puts(Paint["All Jobs Synced with PubSub Subscription!", :green])
     rescue Thor::Error => e

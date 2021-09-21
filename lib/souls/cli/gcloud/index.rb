@@ -32,6 +32,12 @@ module Souls
       raise(Thor::Error, e)
     end
 
+    desc "config_set", "gcloud config set"
+    def config_set
+      project_id = Souls.configuration.project_id
+      system("gcloud config set project #{project_id}")
+    end
+
     desc "enable_permissions", "Enable Google Cloud APIs for SOULs Framework"
     def enable_permissions
       system("gcloud services enable compute.googleapis.com")

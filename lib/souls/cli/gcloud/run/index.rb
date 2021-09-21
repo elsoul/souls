@@ -13,8 +13,8 @@ module Souls
     end
 
     desc "list", "Show Google Cloud Run List"
-    def list(project_id: "")
-      project_id = Souls.configuration.project_id if project_id.blank?
+    def list
+      project_id = Souls.configuration.project_id
       system("gcloud run services list --project #{project_id} --platform managed")
     rescue Thor::Error => e
       raise(Thor::Error, e)
@@ -22,8 +22,9 @@ module Souls
 
     desc "get_endpoint", "Show Worker's Endpoint"
     def get_endpoint(worker_name: "")
-      project_id = Souls.configuration.project_id if project_id.blank?
-      `gcloud run services list  --project #{project_id} --platform managed | grep #{worker_name} | awk '{print $4}'`
+      app_name = Souls.configuration.app
+      project_id = Souls.configuration.project_id
+      `gcloud run services list  --project #{project_id} --platform managed | grep #{app_name}-souls-#{worker_name} | awk '{print $4}'`
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
