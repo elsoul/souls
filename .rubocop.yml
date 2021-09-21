@@ -123,6 +123,12 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Enabled: false
 
+Metrics/ClassLength:
+  Exclude:
+    - "lib/souls/api/generate/*.rb"
+    - "lib/souls/cli/*/*.rb"
+    - "lib/souls/cli/gcloud/*/*.rb"
+
 Metrics/BlockLength:
   Enabled: false
 
