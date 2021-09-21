@@ -10,6 +10,7 @@ module Souls
         system("rake db:migrate")
         system("rake db:migrate RACK_ENV=test")
       end
+      true
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end

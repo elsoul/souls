@@ -1,5 +1,1 @@
 api: foreman start -f ./apps/api/Procfile
-test: foreman start -f ./apps/test/Procfile.dev
-scraper: foreman start -f ./apps/scraper/Procfile.dev
-scraper: foreman start -f ./apps/scraper/Procfile.dev
-scraper: foreman start -f ./apps/scraper/Procfile.dev
