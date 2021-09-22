@@ -22,9 +22,9 @@ module Souls
           topic.name.gsub("projects/#{project_id}/topics/", "")
         end
 
-      topic_names.select { |n| n.include?("souls_#{app_name}_") }
+      souls_topics = topic_names.select { |n| n.include?("souls_#{app_name}_") }
 
-      topic_names.each do |name|
+      souls_topics.each do |name|
         value = workers[name.to_sym] || 0
         workers[name.to_sym] = value - 1
       end
