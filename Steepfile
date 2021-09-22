@@ -18,6 +18,8 @@ target :app do
   library "actionview"
   library "activerecord"
   library "railties"
+  library "fileutils"
+  library "graphql"
   signature "rbs"
 
   # check 'app'

@@ -22,7 +22,7 @@ module Souls
           topic.name.gsub("projects/#{project_id}/topics/", "")
         end
 
-      topic_names.select { |n| n.include?("#{app_name}_souls_") }
+      topic_names.select { |n| n.include?("souls_#{app_name}_") }
 
       topic_names.each do |name|
         value = workers[name.to_sym] || 0
@@ -42,7 +42,7 @@ module Souls
     def create_topic(topic_id: "mailer")
       app_name = Souls.configuration.app
       pubsub = Google::Cloud::Pubsub.new
-      topic_name = "#{app_name}_souls_#{topic_id}"
+      topic_name = "souls_#{app_name}_#{topic_id}"
       topic = pubsub.create_topic(topic_name.to_s)
       puts("Topic #{topic.name} created.")
     end
@@ -50,7 +50,7 @@ module Souls
     def delete_topic(topic_id: "mailer")
       app_name = Souls.configuration.app
       pubsub = Google::Cloud::Pubsub.new
-      topic_name = "#{app_name}_souls_#{topic_id}"
+      topic_name = "souls_#{app_name}_#{topic_id}"
       topic = pubsub.topic(topic_name.to_s)
       topic.delete
       puts("Topic #{topic_name} deleted.")
@@ -60,7 +60,7 @@ module Souls
       require("#{Souls.get_mother_path}/config/souls")
       worker_name = topic_id.split("_")[0]
       app_name = Souls.configuration.app
-      topic_name = "#{app_name}_souls_#{topic_id}"
+      topic_name = "souls_#{app_name}_#{topic_id}"
 
       subscription_id = "#{topic_name}_sub"
       endpoint = ""

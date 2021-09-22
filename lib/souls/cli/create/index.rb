@@ -160,7 +160,7 @@ end
 
                 - name: Deploy to Cloud Run
                   run: |
-                      gcloud run deploy ${{ secrets.APP_NAME }}-souls-#{worker_name} \\
+                      gcloud run deploy souls-${{ secrets.APP_NAME }}-#{worker_name} \\
                         --service-account=${{ secrets.APP_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \\
                         --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-#{worker_name} \\
                         --memory=4Gi \\
