@@ -58,9 +58,9 @@ module Souls
 
     def create_push_subscription(topic_id: "mailer")
       require("#{Souls.get_mother_path}/config/souls")
-      worker_name = topic_id.split("_")[0]
       app_name = Souls.configuration.app
       topic_name = "souls_#{app_name}_#{topic_id}"
+      worker_name = topic_id.split("_")[0]
 
       subscription_id = "#{topic_name}_sub"
       endpoint = ""
@@ -71,7 +71,7 @@ module Souls
 
       pubsub = Google::Cloud::Pubsub.new
 
-      topic = pubsub.topic(topic_id)
+      topic = pubsub.topic(topic_name)
       sub = topic.subscribe(subscription_id, endpoint: endpoint, deadline: 20)
       sub.expires_in = nil
       puts("Push subscription #{subscription_id} created.")
