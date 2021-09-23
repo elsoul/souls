@@ -7,7 +7,8 @@ module Souls
 
     desc "update [COMMAND]", "souls api update Commands"
     subcommand "update", Update
-
-    map g: :generate
+    # rubocop:disable Style/StringHashKeys
+    map "g" => :generate
+    # rubocop:enable Style/StringHashKeys
   end
 end
