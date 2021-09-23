@@ -13,6 +13,8 @@ AllCops:
     - "spec/**/*.rb"
     - "lib/souls/api/generate/type.rb"
     - "tmp/**/*.rb"
+    - "vandor"
+
 
 Style/Copyright:
   Description: "Include a copyright notice in each file before any code."
