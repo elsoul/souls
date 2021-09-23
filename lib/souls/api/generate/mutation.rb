@@ -55,13 +55,13 @@ module Souls
                 if @user_exist
                   new_line.write(<<-TEXT)
 
-      def resolve **args
+      def resolve args
         args[:user_id] = context[:user].id
                   TEXT
                 else
                   new_line.write(<<-TEXT)
 
-      def resolve **args
+      def resolve args
                   TEXT
                 end
                 break
@@ -109,7 +109,7 @@ module Souls
 
                   { #{class_name}_edge: { node: data } }
                 rescue StandardError => error
-                  GraphQL::ExecutionError.new error
+                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
@@ -149,14 +149,14 @@ module Souls
                 if @user_exist
                   new_line.write(<<-TEXT)
 
-      def resolve **args
+      def resolve args
         args[:user_id] = context[:user].id
         _, args[:id] = SoulsApiSchema.from_global_id(args[:id])
                   TEXT
                 else
                   new_line.write(<<-TEXT)
 
-      def resolve **args
+      def resolve args
         _, args[:id] = SoulsApiSchema.from_global_id(args[:id])
                   TEXT
                 end
@@ -204,7 +204,7 @@ module Souls
                   #{class_name}.update args
                   { #{class_name}_edge: { node: ::#{class_name.camelize}.find(args[:id]) } }
                 rescue StandardError => error
-                  GraphQL::ExecutionError.new error
+                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
@@ -237,13 +237,13 @@ module Souls
                 field :#{class_name}, Types::#{class_name.camelize}Type, null: false
                 argument :id, String, required: true
 
-                def resolve **args
+                def resolve args
                   _, data_id = SoulsApiSchema.from_global_id args[:id]
                   #{class_name} = ::#{class_name.camelize}.find data_id
                   #{class_name}.update(is_deleted: true)
                   { #{class_name}: ::#{class_name.camelize}.find(data_id) }
                 rescue StandardError => error
-                  GraphQL::ExecutionError.new error
+                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
@@ -266,13 +266,13 @@ module Souls
                 field :#{class_name}, Types::#{class_name.camelize}Type, null: false
                 argument :id, String, required: true
 
-                def resolve **args
+                def resolve args
                   _, data_id = SoulsApiSchema.from_global_id args[:id]
                   #{class_name} = ::#{class_name.camelize}.find data_id
                   #{class_name}.destroy
                   { #{class_name}: #{class_name} }
                 rescue StandardError => error
-                  GraphQL::ExecutionError.new error
+                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end

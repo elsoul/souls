@@ -20,7 +20,7 @@ module Souls
 
                 field :response, String, null: false
 
-                def resolve(**args)
+                def resolve(args)
                   # Define Here
                 rescue StandardError => e
                   GraphQL::ExecutionError.new(e.to_s)

@@ -26,7 +26,7 @@ module Souls
               def resolve
                 ::#{class_name.camelize}.all
               rescue StandardError => error
-                GraphQL::ExecutionError.new error
+                GraphQL::ExecutionError.new(error.message)
               end
             end
           end
@@ -49,11 +49,11 @@ module Souls
               type Types::#{class_name.camelize}Type, null: false
               argument :id, String, required: true
 
-              def resolve **args
+              def resolve args
                 _, data_id = SoulsApiSchema.from_global_id args[:id]
                 ::#{class_name.camelize}.find(data_id)
               rescue StandardError => error
-                GraphQL::ExecutionError.new error
+                GraphQL::ExecutionError.new(error.message)
               end
             end
           end
