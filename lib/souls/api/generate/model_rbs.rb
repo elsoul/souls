@@ -1,18 +1,17 @@
 module Souls
   class Generate < Thor
-    desc "connection_rbs [CLASS_NAME]", "Generate GraphQL Connection RBS from schema.rb"
-    def connection_rbs(class_name)
+    desc "model_rbs [CLASS_NAME]", "Generate GraphQL Model RBS from schema.rb"
+    def model_rbs(class_name)
       file_path = ""
       Dir.chdir(Souls.get_mother_path.to_s) do
-        file_dir = "./sig/api/app/graphql/types/connections/"
+        file_dir = "./sig/api/app/graphql/types/models/"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         singularized_class_name = class_name.underscore.singularize
-        file_path = "#{file_dir}#{singularized_class_name}_connection_rbs.rbs"
+        file_path = "#{file_dir}#{singularized_class_name}_model_rbs.rbs"
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             module Types
-              class #{singularized_class_name.camelize}Connection < Types::BaseConnection
-                def edge_type: (*untyped) -> untyped
+              class #{singularized_class_name.camelize} < ActiveRecord::Base
               end
             end
           TEXT

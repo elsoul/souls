@@ -1,0 +1,8 @@
+module Types
+  class UserEdge < BaseObject
+    def self.implements: (*untyped) -> untyped
+    def self.global_id_field: (*untyped) -> untyped
+    def self.field: (*untyped) -> untyped
+    def self.connection_type: ()-> untyped
+  end
+end
