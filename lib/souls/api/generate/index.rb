@@ -1,6 +1,7 @@
 require_relative "./model"
 require_relative "./model_rbs"
 require_relative "./mutation"
+require_relative "./mutation_rbs"
 require_relative "./policy"
 require_relative "./query"
 require_relative "./resolver"

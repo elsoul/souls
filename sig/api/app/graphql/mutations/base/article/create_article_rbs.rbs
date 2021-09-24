@@ -1,0 +1,49 @@
+class Boolean
+end
+module Mutations
+  module Base
+    module Article
+      class CreateArticle < BaseMutation
+        String: String
+        Boolean: Boolean
+        Integer: Integer
+        def resolve:  ({
+                          user_id: Integer?,
+                          title: String?,
+                          body: String?,
+                          thumnail_url: String?,
+                          public_date: String?,
+                          article_category_id: Integer?,
+                          is_public: bool?,
+                          just_created: bool?,
+                          slag: String?,
+                          tags: [String]?,
+                          is_deleted: bool?,
+                          created_at: String?,
+                          updated_at: String?
+                      }) -> ({ :article_edge => { :node => String } } | ::GraphQL::ExecutionError)
+
+        def self.argument: (:user_id, Integer, required: false ) -> Integer
+                         | (:title, String, required: false ) -> String
+                         | (:body, String, required: false ) -> String
+                         | (:thumnail_url, String, required: false ) -> String
+                         | (:public_date, String, required: false ) -> String
+                         | (:article_category_id, Integer, required: false ) -> Integer
+                         | (:is_public, Boolean, required: false ) -> bool
+                         | (:just_created, Boolean, required: false ) -> bool
+                         | (:slag, String, required: false ) -> String
+                         | (:tags, [String], required: false ) -> String
+                         | (:is_deleted, Boolean, required: false ) -> bool
+                         | (:created_at, String, required: false ) -> String
+                         | (:updated_at, String, required: false ) -> String
+
+        def self.field: (*untyped) -> String
+        attr_accessor context: {user:{
+          id: Integer,
+          username: String,
+          email: String
+        }}
+      end
+    end
+  end
+end
