@@ -48,7 +48,6 @@ module Souls
 
         File.open(file_path, "a") do |f|
           f.write(<<~TEXT)
-                end
               end
             end
             module Types
