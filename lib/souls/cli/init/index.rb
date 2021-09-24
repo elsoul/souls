@@ -160,9 +160,12 @@ module Souls
       puts(line)
       endroll = <<~TEXT
         Easy to Run
-        $ cd #{app_name}/apps/#{service_name}
+        $ cd #{app_name}
         $ bundle
-        $ souls s
+        $ git init
+        $ souls add_submodule
+        $ souls check
+        $ cd apps/api && souls s
         Go To : http://localhost:4000
 
         Doc: https://souls.elsoul.nl
