@@ -44,15 +44,17 @@ module Souls
       puts(Souls::VERSION)
     end
 
-    desc "test", "Run (Rspec & steep check & Rubocop)"
+    desc "test", "Run Rspec & Rubocop"
     def test
       system("rubocop -A")
-      system("steep check")
       system("bundle exec rspec")
     end
 
-    desc "test_all", "Run Rspec & Rubocop"
+    desc "test_all", "Run (Rspec & steep check & Rubocop)"
     def test_all
+      Dir.chdir(Souls.get_mother_path.to_s) do
+        system("steep check")
+      end
       system("rubocop -A")
       system("bundle exec rspec")
     end
