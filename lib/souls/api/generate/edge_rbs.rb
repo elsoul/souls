@@ -7,7 +7,7 @@ module Souls
         file_dir = "./sig/api/app/graphql/types/edges/"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         singularized_class_name = class_name.underscore.singularize
-        file_path = "#{file_dir}#{singularized_class_name}_edge_rbs.rbs"
+        file_path = "#{file_dir}#{singularized_class_name}_edge.rbs"
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             module Types
