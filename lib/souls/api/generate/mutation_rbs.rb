@@ -21,7 +21,7 @@ module Souls
         file_path = "#{file_dir}/create_#{class_name}_rbs.rbs"
         raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-        params = Souls.get_relation_params(class_name: class_name)
+        params = Souls.get_relation_params(class_name: class_name, col: "mutation")
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             class Boolean
@@ -94,7 +94,7 @@ module Souls
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/update_#{class_name}_rbs.rbs"
-        params = Souls.get_relation_params(class_name: class_name)
+        params = Souls.get_relation_params(class_name: class_name, col: "mutation")
         params[:params] << { column_name: "id", type: "string", array: false }
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)

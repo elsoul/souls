@@ -111,8 +111,13 @@ module Souls
       end
     end
 
-    def get_relation_params(class_name: "user")
-      cols = get_columns_num(class_name: class_name)
+    def get_relation_params(class_name: "user", col: "")
+      cols =
+        if col == "mutation"
+          get_columns_num_no_timestamp(class_name: class_name)
+        else
+          get_columns_num(class_name: class_name)
+        end
       relation_params = cols.select { |col| col[:column_name].match?(/_id$/) }
       user_check =
         relation_params.map do |param|
@@ -136,6 +141,29 @@ module Souls
             types = Souls.get_type_and_name(line)
             array = line.include?("array: true")
             cols << { column_name: types[1], type: types[0], array: array }
+          end
+        end
+      end
+      cols
+    end
+
+    def get_columns_num_no_timestamp(class_name: "user")
+      pluralized_class_name = class_name.pluralize
+      file_path = "./db/schema.rb"
+      class_check_flag = false
+      cols = []
+      File.open(file_path, "r") do |f|
+        f.each_line.with_index do |line, _i|
+          class_check_flag = true if line.include?("create_table") && line.include?(pluralized_class_name)
+          if class_check_flag == true && !line.include?("create_table")
+            return cols if line.include?("t.index") || line.strip == "end"
+
+            types = Souls.get_type_and_name(line)
+            array = line.include?("array: true")
+            cols << { column_name: types[1], type: types[0], array: array } unless %w[
+              created_at
+              updated_at
+            ].include?(types[1])
           end
         end
       end
