@@ -10,7 +10,7 @@ module Souls
         file_path = "#{file_dir}/#{singularized_class_name}_search.rbs"
         raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-        params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
+        params = Souls.get_relation_params(class_name: singularized_class_name)
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             class Base

@@ -84,7 +84,7 @@ And Create Your APP
 
 Check your GraphQL PlayGround
 
-(localhost:4000/playground)[localhost:4000/playground]
+[localhost:4000/playground](localhost:4000/playground)
 
 ## Gemfile 自動更新アップデート
 
