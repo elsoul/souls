@@ -56,7 +56,8 @@ module Souls
                   new_line.write(<<-TEXT)
 
       def resolve args
-        args[:user_id] = context[:user].id
+        params = args.dup
+        params[:user_id] = context[:user][:id]
                   TEXT
                 else
                   new_line.write(<<-TEXT)
@@ -150,14 +151,15 @@ module Souls
                   new_line.write(<<-TEXT)
 
       def resolve args
-        args[:user_id] = context[:user].id
-        _, args[:id] = SoulsApiSchema.from_global_id(args[:id])
+        params = args.dup
+        params[:user_id] = context[:user][:id]
+        _, params[:id] = SoulsApiSchema.from_global_id(args[:id])
                   TEXT
                 else
                   new_line.write(<<-TEXT)
 
       def resolve args
-        _, args[:id] = SoulsApiSchema.from_global_id(args[:id])
+        _, params[:id] = SoulsApiSchema.from_global_id(args[:id])
                   TEXT
                 end
                 break
@@ -190,7 +192,7 @@ module Souls
       file_path = "./app/graphql/mutations/base/#{class_name}/update_#{class_name}.rb"
       relation_params.each do |params_name|
         File.open(file_path, "a") do |new_line|
-          new_line.write("        _, args[:#{params_name}] = SoulsApiSchema.from_global_id(args[:#{params_name}])\n")
+          new_line.write("        _, params[:#{params_name}] = SoulsApiSchema.from_global_id(args[:#{params_name}])\n")
         end
       end
       true
@@ -200,9 +202,9 @@ module Souls
       file_path = "./app/graphql/mutations/base/#{class_name}/update_#{class_name}.rb"
       File.open(file_path, "a") do |new_line|
         new_line.write(<<~TEXT)
-                  #{class_name} = ::#{class_name.camelize}.find args[:id]
-                  #{class_name}.update args
-                  { #{class_name}_edge: { node: ::#{class_name.camelize}.find(args[:id]) } }
+                  #{class_name} = ::#{class_name.camelize}.find params[:id]
+                  #{class_name}.update params
+                  { #{class_name}_edge: { node: ::#{class_name.camelize}.find(params[:id]) } }
                 rescue StandardError => error
                   GraphQL::ExecutionError.new(error.message)
                 end

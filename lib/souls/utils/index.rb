@@ -98,13 +98,25 @@ module Souls
       end
     end
 
+    def get_relation_params(class_name: "user")
+      cols = get_columns_num(class_name: class_name)
+      relation_params = cols.select { |col| col[:column_name].match?(/_id$/) }
+      user_check =
+        relation_params.map do |param|
+          param[:column_name] == "user_id"
+        end
+      user_exist = user_check.include?(true)
+      { user_exist: user_exist, params: cols, relation_params: relation_params }
+    end
+
     def get_columns_num(class_name: "user")
+      pluralized_class_name = class_name.pluralize
       file_path = "./db/schema.rb"
       class_check_flag = false
       cols = []
       File.open(file_path, "r") do |f|
         f.each_line.with_index do |line, _i|
-          class_check_flag = true if line.include?("create_table") && line.include?(class_name)
+          class_check_flag = true if line.include?("create_table") && line.include?(pluralized_class_name)
           if class_check_flag == true && !line.include?("create_table")
             return cols if line.include?("t.index") || line.strip == "end"
 
