@@ -16,6 +16,16 @@ module Souls
       souls_api_credit(app_name: app_name, service_name: service_name)
     end
 
+    desc "init", "Run git submodule add RBS collection"
+    def init
+      system("git submodule add https://github.com/ruby/gem_rbs_collection.git vendor/rbs/gem_rbs_collection")
+    end
+
+    desc "update_submodule", "Run git submodule update --init RBS collection"
+    def update_submodule
+      system("git submodule update --init https://github.com/ruby/gem_rbs_collection.git vendor/rbs/gem_rbs_collection")
+    end
+
     private
 
     def get_version(repository_name: "souls_api")
@@ -110,10 +120,17 @@ module Souls
       system("curl -OL #{url}")
       system("mkdir -p #{app_name}/apps/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
+
+      file_name = "sig.tgz"
+      url = "https://storage.googleapis.com/souls-bucket/boilerplates/sig/#{file_name}"
+      system("curl -OL #{url}")
+      system("tar -zxvf ./#{file_name} -C #{app_name}")
+
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Gemfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
+      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
       FileUtils.rm(file_name)
     end
 

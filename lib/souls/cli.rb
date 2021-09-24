@@ -44,10 +44,22 @@ module Souls
       puts(Souls::VERSION)
     end
 
-    desc "test", "Run Rspec & Rubocop"
+    desc "test", "Run (Rspec & steep check & Rubocop)"
     def test
       system("rubocop -A")
+      system("steep check")
       system("bundle exec rspec")
+    end
+
+    desc "test_all", "Run Rspec & Rubocop"
+    def test_all
+      system("rubocop -A")
+      system("bundle exec rspec")
+    end
+
+    desc "check", "Run steep check"
+    def check
+      system("steep check")
     end
 
     def self.exit_on_failure?

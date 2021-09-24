@@ -18,14 +18,14 @@ namespace :upload do
 
   task :sig do
     file_name = "./init_files/sig.tgz"
-    system("tar -czf #{file_name} sig/")
+    system("tar -czf #{file_name} init_files/sig/")
     system("gsutil cp #{file_name} gs://souls-bucket/boilerplates/sig/")
     FileUtils.rm(file_name.to_s)
   end
 
   task :init_files do
-    Rake::Task["upload:github"]
-    Rake::Task["upload:sig"]
+    Rake::Task["upload:github"].invoke
+    Rake::Task["upload:sig"].invoke
     files = Dir["init_files/*"].reject { |n| ["init_files/github", "init_files/sig"].include?(n) }
     files << ".rubocop.yml"
     files.each do |file|
