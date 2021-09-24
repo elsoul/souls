@@ -11,9 +11,11 @@ module Types
 
     managers =
       Dir["./app/graphql/mutations/managers/*_manager/*.rb"].map do |file|
+        dir_name = file.scan(%r{managers/(.+?)_manager}).flatten[0]
+        file_name = file.scan(%r{/([^/]+)/?$}).flatten[0].gsub(".rb", "")
         {
-          class: file.match(%r{managers/(.+?)_manager})[1],
-          name: file.match(%r{/([^/]+)/?$})[1].gsub(".rb", "")
+          class: dir_name,
+          name: file_name
         }
       end
     managers.each do |file|
