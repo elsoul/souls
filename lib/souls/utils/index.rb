@@ -112,19 +112,22 @@ module Souls
     end
 
     def get_relation_params(class_name: "user", col: "")
-      cols =
-        if col == "mutation"
-          get_columns_num_no_timestamp(class_name: class_name)
-        else
-          get_columns_num(class_name: class_name)
-        end
-      relation_params = cols.select { |col| col[:column_name].match?(/_id$/) }
-      user_check =
-        relation_params.map do |param|
-          param[:column_name] == "user_id"
-        end
-      user_exist = user_check.include?(true)
-      { user_exist: user_exist, params: cols, relation_params: relation_params }
+      require("#{Souls.get_api_path}/config/souls")
+      Dir.chdir(Souls.get_api_path.to_s) do
+        cols =
+          if col == "mutation"
+            get_columns_num_no_timestamp(class_name: class_name)
+          else
+            get_columns_num(class_name: class_name)
+          end
+        relation_params = cols.select { |col| col[:column_name].match?(/_id$/) }
+        user_check =
+          relation_params.map do |param|
+            param[:column_name] == "user_id"
+          end
+        user_exist = user_check.include?(true)
+        return { user_exist: user_exist, params: cols, relation_params: relation_params }
+      end
     end
 
     def get_columns_num(class_name: "user")
