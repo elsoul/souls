@@ -9,10 +9,12 @@ module Souls
         raise(StandardError, "Same Worker Already Exist!") if Dir.exist?(file_dir)
 
         workers = Souls.configuration.workers
+        app = Souls.configuration.app
         port = 3000 + workers.size
+        souls_worker_name = "souls-#{app}-#{options[:name]}"
         download_worker(worker_name: options[:name])
-        souls_conf_update(worker_name: options[:name])
-        souls_conf_update(worker_name: options[:name], strain: "api")
+        souls_conf_update(worker_name: souls_worker_name)
+        souls_conf_update(worker_name: souls_worker_name, strain: "api")
         workflow(worker_name: options[:name])
         procfile(worker_name: options[:name], port: port)
         mother_procfile(worker_name: options[:name])

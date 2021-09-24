@@ -34,6 +34,7 @@ module Souls
 
     desc "config_set", "gcloud config set"
     def config_set
+      require("#{Souls.get_api_path}/config/souls")
       project_id = Souls.configuration.project_id
       system("gcloud config set project #{project_id}")
     end
