@@ -132,6 +132,8 @@ module Souls
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
+      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/gitignore")
+      system("cd #{app_name} && mv gitignore .gitignore")
       FileUtils.rm(sig_name)
     end
 
@@ -162,7 +164,6 @@ module Souls
         Easy to Run
         $ cd #{app_name}
         $ bundle
-        $ git init
         $ souls add_submodule
         $ souls check
         $ cd apps/api && souls s

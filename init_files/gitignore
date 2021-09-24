@@ -1,0 +1,15 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# rspec failure tracking
+.rspec_status
+/config/keyfile.json
+.env
+.irb_history
+/vendor/rbs/gem_rbs_collection/
