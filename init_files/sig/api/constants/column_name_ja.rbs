@@ -1,0 +1,3 @@
+module Constants
+  def self.user_columns: -> nil
+end

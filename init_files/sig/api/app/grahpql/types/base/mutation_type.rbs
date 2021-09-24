@@ -1,0 +1,5 @@
+module Types
+  class MutationType
+    def self.field: (*untyped) -> untyped
+  end
+end

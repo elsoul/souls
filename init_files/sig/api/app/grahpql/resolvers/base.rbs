@@ -1,0 +1,16 @@
+class String
+  def Int: (*untyped) -> Integer
+end
+module Resolvers
+  class Base
+    # def decode_global_key: (untyped id) -> untyped
+    # def apply_first: (untyped scope, untyped value) -> untyped
+    # def apply_skip: (untyped scope, untyped value) -> untyped
+  end
+end
+module Types
+  class BaseInputObject
+  end
+end
+class Boolean
+end

@@ -74,7 +74,7 @@ module Souls
 
     def download_github_actions(app_name: "souls-app")
       file_name = "github.tgz"
-      url = "https://storage.googleapis.com/souls-bucket/github_actions/github.tgz"
+      url = "https://storage.googleapis.com/souls-bucket/boilerplates/github.tgz"
       system("curl -OL #{url}")
       FileUtils.mkdir_p("#{app_name}/github")
       system("tar -zxvf ./#{file_name} -C #{app_name}/")

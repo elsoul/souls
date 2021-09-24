@@ -10,10 +10,27 @@ task :default => :spec
 
 namespace :upload do
   task :github do
-    file_name = "./github.tgz"
-    system("tar -czf #{file_name} github/")
-    system("gsutil cp #{file_name} gs://souls-bucket/github_actions/")
+    file_name = "./init_files/github.tgz"
+    system("tar -czf #{file_name} init_files/github/")
+    system("gsutil cp #{file_name} gs://souls-bucket/boilerplates/github_actions/")
     FileUtils.rm(file_name.to_s)
+  end
+
+  task :sig do
+    file_name = "./init_files/sig.tgz"
+    system("tar -czf #{file_name} sig/")
+    system("gsutil cp #{file_name} gs://souls-bucket/boilerplates/sig/")
+    FileUtils.rm(file_name.to_s)
+  end
+
+  task :init_files do
+    Rake::Task["upload:github"]
+    Rake::Task["upload:sig"]
+    files = Dir["init_files/*"].reject { |n| ["init_files/github", "init_files/sig"].include?(n) }
+    files << ".rubocop.yml"
+    files.each do |file|
+      system("gsutil cp #{file} gs://souls-bucket/boilerplates/")
+    end
   end
 end
 

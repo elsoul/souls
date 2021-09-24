@@ -1,0 +1,13 @@
+class ApplicationPolicy
+  attr_reader user: untyped
+  attr_reader record: untyped
+  def initialize: (untyped user, untyped record) -> void
+  def index?: -> true
+  def show?: -> untyped
+  def create?: -> true
+  def new?: -> true
+  def update?: -> true
+  def edit?: -> true
+  def destroy?: -> untyped
+  def scope: -> untyped
+end

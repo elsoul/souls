@@ -222,5 +222,43 @@ end
       system("cp ./apps/api/config/database.yml ./apps/#{worker_name}/config/")
       FileUtils.rm(file_name)
     end
+
+    def souls_worker_credit(worker_name: "mailer")
+      line = Paint["====================================", :yellow]
+      puts("\n")
+      puts(line)
+      txt2 = <<~TEXT
+           _____ ____  __  ____#{'        '}
+          / ___// __ \\/ / / / /   %{red1}
+          \\__ \\/ / / / / / / /   %{red2}
+         ___/ / /_/ / /_/ / /___%{red3}#{' '}
+        /____/\\____/\\____/_____%{red4}#{'  '}
+      TEXT
+      red1 = ["_____", :red]
+      red2 = ["/ ___/", :red]
+      red3 = ["(__  )", :red]
+      red4 = ["/____/", :red]
+      ms = Paint % [txt2, :cyan, { red1: red1, red2: red2, red3: red3, red4: red4 }]
+      puts(ms)
+      puts(line)
+      welcome = Paint["SOULs Worker is Ready!", :white]
+      puts(welcome)
+      souls_ver = Paint["SOULs Version: #{Souls::VERSION}", :white]
+      puts(souls_ver)
+      puts(line)
+      endroll = <<~TEXT
+        Easy to Run
+        $ cd apps/#{worker_name}
+        $ bundle
+        $ souls sync model
+        $ souls s
+        Go To : http://localhost:3000
+
+        Doc: https://souls.elsoul.nl
+      TEXT
+      cd = Paint[endroll, :white]
+      puts(cd)
+      puts(line)
+    end
   end
 end

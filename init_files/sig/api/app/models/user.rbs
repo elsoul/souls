@@ -1,0 +1,8 @@
+class User < ActiveRecord::Base
+  VALID_EMAIL_REGEX: Regexp
+  def assign_initial_roles: -> Array[Symbol]
+  def self.roles: (:normal, :user, :admin, :master) -> untyped
+  def self.default_scope: (*untyped) -> untyped
+  def self.order: (created_at: :desc) -> untyped
+  def roles: (*untyped) -> untyped
+end

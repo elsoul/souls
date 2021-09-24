@@ -1,0 +1,45 @@
+module Types
+  String: String
+  Boolean: Boolean
+  Integer: Integer
+  class GraphQL
+    class Schema
+      class Argument
+      end
+      class Union
+      end
+      class Scalar
+      end
+      class Object
+      end
+      class InputObject
+      end
+      class Field
+      end
+      class Enum
+      end
+    end
+  end
+  class BaseArgument < GraphQL::Schema::Argument
+    def self.argument_class: (*untyped) -> untyped
+  end
+  class BaseUnion < GraphQL::Schema::Union
+  end
+  class BaseScalar < GraphQL::Schema::Scalar
+  end
+  class BaseObject < GraphQL::Schema::Object
+    def self.field_class: (*untyped) -> untyped
+    def self.connection_type_class: (*untyped) -> untyped
+  end
+  module BaseInterface
+    def self.field_class: (*untyped) -> untyped
+  end
+  class BaseInputObject  < GraphQL::Schema::InputObject
+    def self.argument_class: (*untyped) -> untyped
+  end
+  class BaseField < GraphQL::Schema::Field
+    def self.argument_class: (*untyped) -> untyped
+  end
+  class BaseEnum < GraphQL::Schema::Enum
+  end
+end
