@@ -12,9 +12,9 @@ module Souls
           f.write(<<~TEXT)
             module Types
               class #{singularized_class_name.camelize}Edge < BaseObject
-                def self.implements: (*untyped) -> untyped
+                def self.edge_type: (*untyped) -> untyped
+                def self.node_type: (*untyped) -> untyped
                 def self.global_id_field: (*untyped) -> untyped
-                def self.field: (*untyped) -> untyped
                 def self.connection_type: ()-> untyped
               end
             end

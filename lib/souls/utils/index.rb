@@ -112,7 +112,6 @@ module Souls
     end
 
     def get_relation_params(class_name: "user", col: "")
-      require("#{Souls.get_api_path}/config/souls")
       Dir.chdir(Souls.get_api_path.to_s) do
         cols =
           if col == "mutation"

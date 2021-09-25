@@ -1,5 +1,0 @@
-module Types
-  class UserConnection < Types::BaseConnection
-    def edge_type: (*untyped) -> untyped
-  end
-end
