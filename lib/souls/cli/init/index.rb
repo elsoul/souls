@@ -114,6 +114,34 @@ module Souls
       puts(e)
     end
 
+    def get_latest_gem(app_name)
+      file_path = "./#{app_name}/Gemfile"
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
+          source "https://rubygems.org"
+
+          gem "activesupport", "6.1.4.1"
+          gem "foreman", "0.87.2"
+          gem "google-cloud-pubsub", "2.8.1"
+          gem "paint", "2.2.1"
+          gem "parser", "3.0.2.0"
+          gem "pg", "1.2.3"
+          gem "rake", "13.0.6"
+          gem "rspec", "3.10.0"
+          gem "rubocop", "1.21.0"
+          gem "sinatra-activerecord", "2.0.23"
+          gem "solargraph", "0.43.2"
+          gem "souls", "#{Souls::VERSION}"
+          gem "steep", "0.46.0"
+          gem "thor", "1.1.0"
+          gem "tty-prompt", "0.23.1"
+          gem "whirly", "0.3.0"
+        TEXT
+      end
+    rescue StandardError => e
+      puts(e)
+    end
+
     def download_souls(app_name: "souls", service_name: "api")
       version = Souls.get_latest_version_txt(service_name: service_name).join(".")
       file_name = "#{service_name}-v#{version}.tgz"
@@ -129,7 +157,7 @@ module Souls
       system("tar -zxvf ./#{sig_name} -C #{app_name}")
 
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml")
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Gemfile")
+      get_latest_gem(app_name)
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
