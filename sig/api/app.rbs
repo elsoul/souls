@@ -15,9 +15,43 @@ class SoulsApi
   def self.error: (*untyped) {(*untyped) -> untyped} -> untyped
   def self.post: (*untyped) {(*untyped) -> untyped} -> untyped
 end
+
 class User
   def self.first: (*untyped) -> untyped
 end
 class StandardError
   def self.to_json: (*untyped) -> untyped
+end
+ENV: String
+
+module Souls
+  def self.configuration: -> untyped
+end
+
+module YAML
+  def self.safe_load: (*untyped) -> untyped
+end
+
+module Zeitwerk
+  class Loader
+    def push_dir: (String) -> untyped
+    def collapse: (String) -> untyped
+    def setup: () -> void
+  end
+end
+
+class Sinatra
+  class Base
+  end
+  module ActiveRecordExtension
+  end
+end
+
+module Pundit
+  def self.policy_scope!: (Hash[Symbol, untyped] user, Hash[Symbol, untyped] record) -> untyped
+end
+
+module Rack
+  module JSONBodyParser
+  end
 end

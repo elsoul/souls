@@ -27,5 +27,5 @@ target :app do
   check "apps/api/app"
   check "apps/api/db"
   check "apps/api/constants"
-  check "apps/api/app/app.rb"
+  check "apps/api/app.rb"
 end
