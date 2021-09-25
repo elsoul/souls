@@ -14,7 +14,7 @@ module Souls
 
     def update_gem
       file_path = "./Gemfile"
-      tmp_file = "./tmp/Gemfile"
+      tmp_file = "./config/Gemfile"
       new_gems = gemfile_latest_version
       logs = []
       message = Paint["\nAlready Up to date!", :green]
@@ -70,7 +70,7 @@ module Souls
       end
       FileUtils.rm("./Gemfile")
       FileUtils.rm("./Gemfile.lock")
-      FileUtils.mv("./tmp/Gemfile", "./Gemfile")
+      FileUtils.mv("./config/Gemfile", "./Gemfile")
       system("bundle update")
       success = Paint["\n\nSuccessfully Updated These Gems!\n", :green]
       puts(success)
