@@ -19,6 +19,8 @@ module Souls
         procfile(worker_name: options[:name], port: port)
         mother_procfile(worker_name: options[:name])
         souls_config_init(worker_name: options[:name])
+        steepfile(worker_name: options[:name])
+        souls_worker_credit(worker_name: options[:name])
       end
       true
     rescue Thor::Error => e
@@ -26,6 +28,26 @@ module Souls
     end
 
     private
+
+    def steepfile(worker_name: "mailer")
+      file_path = "./Steepfile"
+      new_file_path = "config/Steepfile"
+      File.open(new_file_path, "w") do |new_line|
+        File.open(file_path, "r") do |f|
+          f.each_line do |line|
+            case line.strip.to_s
+            when "end"
+              ["app", "db", "constants", "app.rb"].each do |path|
+                new_line.write("  check \"apps/#{worker_name}/#{path}\"\n")
+              end
+              new_line.write("end\n")
+            else
+              new_line.write(line)
+            end
+          end
+        end
+      end
+    end
 
     def procfile(worker_name: "mailer", port: 3000)
       file_dir = "apps/#{worker_name}"
