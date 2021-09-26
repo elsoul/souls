@@ -102,7 +102,11 @@ module Souls
               module Base
                 module #{class_name.camelize}
                   class Update#{class_name.camelize} < BaseMutation
+                    String: String
+                    Boolean: Boolean
+                    Integer: Integer
                     def resolve:  ({
+                                    id: String,
           TEXT
         end
         File.open(file_path, "a") do |f|

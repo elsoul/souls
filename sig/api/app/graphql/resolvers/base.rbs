@@ -3,14 +3,18 @@ class String
 end
 module Resolvers
   class Base
-    # def decode_global_key: (untyped id) -> untyped
-    # def apply_first: (untyped scope, untyped value) -> untyped
-    # def apply_skip: (untyped scope, untyped value) -> untyped
-  end
-end
-module Types
-  class BaseInputObject
+    def self.scope: () {(untyped) -> nil } -> untyped
+    def self.type: (untyped, null: false) -> untyped
+    def self.types: () -> untyped
+    def self.description: (String) -> untyped
+    def self.option: (untyped, type: untyped, with: Symbol) -> untyped
+    def normalize_filters: (untyped value, ?Array[untyped] branches) -> Array[untyped]
   end
 end
 class Boolean
+end
+module Types
+  class BaseInputObject
+    def self.argument: (untyped, untyped, untyped) -> untyped
+  end
 end
