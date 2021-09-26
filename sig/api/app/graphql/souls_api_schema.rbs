@@ -7,5 +7,5 @@ class SoulsApiSchema < GraphQL::Schema
   def self.from_global_id: (String | nil) -> (String | nil)
   def self.id_from_object: (untyped object, untyped _type_definition, untyped _query_ctx) -> untyped
   def self.object_from_id: (untyped id, untyped _query_ctx) -> untyped
-  def self.execute: (untyped, variables: untyped, context: untyped) -> untyped
+  def self.execute: (*untyped) -> untyped
 end

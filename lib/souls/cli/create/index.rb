@@ -20,6 +20,7 @@ module Souls
         mother_procfile(worker_name: options[:name])
         souls_config_init(worker_name: options[:name])
         steepfile(worker_name: options[:name])
+        souls_helper_rbs(worker_name: options[:name])
         souls_worker_credit(worker_name: options[:name])
       end
       true
@@ -232,6 +233,47 @@ end
       end
     rescue StandardError => e
       puts(e)
+    end
+
+    def souls_helper_rbs(worker_name: "mailer")
+      file_dir = "./sig/#{worker_name}/app/utils/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+      file_path = "#{file_dir}/souls_helper.rbs"
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
+          module SoulsHelper
+            def self.export_csv: (untyped model_name) -> (String? | StandardError )
+            def self.export_model_to_csv: (untyped model_name) -> (untyped | StandardError )
+            def self.upload_to_gcs: (String file_path, String upload_path) -> untyped
+            def self.get_selenium_driver: (?:chrome mode) -> untyped
+          end
+          module CSV
+            def self.open: (*untyped){(untyped) -> nil} -> untyped
+          end
+          module Selenium
+            module WebDriver
+              def self.for: (*untyped) -> untyped
+              module Chrome
+                module Options
+                  def self.new: ()-> untyped
+                end
+              end
+              module Remote
+                module Capabilities
+                  def self.firefox: ()-> untyped
+                end
+              end
+            end
+          end
+          module Google
+            module Cloud
+              module Storage
+                def self.new: ()-> untyped
+              end
+            end
+          end
+        TEXT
+      end
     end
 
     def download_worker(worker_name: "mailer")

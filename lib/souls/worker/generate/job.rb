@@ -8,6 +8,7 @@ module Souls
       else
         create_mutation(class_name: class_name)
       end
+      Souls::Generate.new.invoke(:job_rbs, [class_name], {})
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
