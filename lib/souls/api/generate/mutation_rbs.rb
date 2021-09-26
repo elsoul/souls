@@ -131,10 +131,11 @@ module Souls
             type = Souls.type_check(param[:type])
             rbs_type = Souls.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
+            required = param[:column_name] == "id" ? "required: true" : "required: false"
             if i.zero?
-              f.write("        def self.argument: (:#{param[:column_name]}, #{type}, required: false ) -> #{rbs_type}\n")
+              f.write("        def self.argument: (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
             else
-              f.write("                         | (:#{param[:column_name]}, #{type}, required: false ) -> #{rbs_type}\n")
+              f.write("                         | (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
             end
           end
         end

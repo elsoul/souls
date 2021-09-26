@@ -21,13 +21,13 @@ module Souls
         end
         File.open(file_path, "a") do |f|
           params[:params].each_with_index do |param, i|
-            type = Souls.rbs_type_check(param[:type])
+            type = Souls.type_check(param[:type])
             type = "[#{type}]" if param[:array]
             rbs_type = Souls.rbs_type_check(param[:type])
             if i.zero?
-              f.write("    def self.field: (:#{param[:column_name]}, #{type}, null: false) -> #{rbs_type}\n")
+              f.write("    def self.field: (:#{param[:column_name]}, #{type}, null: true) -> #{rbs_type}\n")
             else
-              f.write("                  | (:#{param[:column_name]}, #{type}, null: false) -> #{rbs_type}\n")
+              f.write("                  | (:#{param[:column_name]}, #{type}, null: true) -> #{rbs_type}\n")
             end
           end
         end

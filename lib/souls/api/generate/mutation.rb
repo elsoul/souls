@@ -159,6 +159,7 @@ module Souls
                   new_line.write(<<-TEXT)
 
       def resolve args
+        params = args.dup
         _, params[:id] = SoulsApiSchema.from_global_id(args[:id])
                   TEXT
                 end

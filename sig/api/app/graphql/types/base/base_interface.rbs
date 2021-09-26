@@ -1,0 +1,5 @@
+module Types
+  module BaseInterface
+    def self.field_class: (*untyped) -> untyped
+  end
+end
