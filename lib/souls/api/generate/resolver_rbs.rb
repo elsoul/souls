@@ -34,6 +34,7 @@ module Souls
                 Boolean: Boolean
                 Integer: Integer
               end
+            end
           TEXT
         end
       end

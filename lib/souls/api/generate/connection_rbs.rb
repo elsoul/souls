@@ -12,7 +12,7 @@ module Souls
           f.write(<<~TEXT)
             module Types
               class #{singularized_class_name.camelize}Connection < Types::BaseConnection
-                def edge_type: (*untyped) -> untyped
+                def self.edge_type: (*untyped) -> untyped
               end
             end
           TEXT
