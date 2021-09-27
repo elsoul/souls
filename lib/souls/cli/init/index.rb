@@ -165,6 +165,7 @@ module Souls
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/gitignore")
       system("cd #{app_name} && mv gitignore .gitignore")
       system("cd #{app_name} && bundle")
+      system("cd #{app_name}/apps/api && bundle")
       FileUtils.rm(sig_name)
     end
 
@@ -195,7 +196,8 @@ module Souls
         Easy to Run
         $ cd #{app_name}
         $ souls check
-        $ cd apps/api && souls s
+        $ cd apps/api
+        $ souls s
         Go To : http://localhost:4000
 
         Doc: https://souls.elsoul.nl
