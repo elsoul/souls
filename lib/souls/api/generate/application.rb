@@ -1,6 +1,7 @@
 module Souls
   class Generate < Thor
     desc "scaffold [CLASS_NAME]", "Generate Scaffold from schema.rb"
+    method_option :mutation, type: :boolean, aliases: "--rbs", desc: "Mutation File Name"
     def scaffold(class_name)
       singularized_class_name = class_name.singularize
       model(singularized_class_name)
