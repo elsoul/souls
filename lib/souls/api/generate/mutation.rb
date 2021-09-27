@@ -96,9 +96,11 @@ module Souls
       return false if relation_params.empty?
 
       file_path = "./app/graphql/mutations/base/#{class_name}/create_#{class_name}.rb"
-      relation_params.each do |params_name|
-        File.open(file_path, "a") do |new_line|
-          new_line.write("        _, args[:#{params_name}] = SoulsApiSchema.from_global_id(args[:#{params_name}])\n")
+
+      File.open(file_path, "a") do |new_line|
+        relation_params.each_with_index do |params_name, i|
+          new_line.write("        params = args.dup\n") if @user_exist && i.zero?
+          new_line.write("        _, params[:#{params_name}] = SoulsApiSchema.from_global_id(args[:#{params_name}])\n")
         end
       end
       true
