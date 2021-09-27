@@ -14,9 +14,6 @@ module Souls
           f.write(<<~TEXT)
             class Base
             end
-            module SearchObject
-              def self.module: (Symbol) -> untyped
-            end
             class #{singularized_class_name.camelize}Search < Base
               include SearchObject
               def self.scope: () ?{ () -> nil } -> [Hash[Symbol, untyped]]

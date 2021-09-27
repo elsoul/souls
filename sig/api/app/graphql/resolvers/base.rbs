@@ -1,6 +1,9 @@
 class String
   def Int: (*untyped) -> Integer
 end
+module SearchObject
+  def self.module: (Symbol) -> untyped
+end
 module Resolvers
   class Base
     def self.scope: () {(untyped) -> nil } -> untyped
