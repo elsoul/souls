@@ -14,7 +14,7 @@ module Souls
             module Mutations
               module Managers
                 module #{singularized_class_name.camelize}Manager
-                  class #{singularized_class_name.camelize}Login
+                  class #{options[:mutation].singularize.camelize}
                     def self.description: (String)-> untyped
                     def self.argument: (untyped, untyped, untyped)-> untyped
                     def self.field: (untyped, untyped, untyped)-> untyped
