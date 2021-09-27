@@ -10,9 +10,7 @@ module Souls
         file_path = "#{file_dir}#{singularized_class_name}_model.rbs"
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
-            module Types
-              class #{singularized_class_name.camelize} < ActiveRecord::Base
-              end
+            class #{singularized_class_name.camelize} < ActiveRecord::Base
             end
           TEXT
         end
