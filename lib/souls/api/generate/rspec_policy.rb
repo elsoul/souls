@@ -15,7 +15,7 @@ module Souls
             let(:#{class_name.underscore}) { FactoryBot.create(:#{class_name.underscore}) }
 
             context "being a visitor" do
-              let(:user) { FactoryBot.create(:user, user_role: :normal) }
+              let(:user) { FactoryBot.create(:user, roles: :normal) }
 
               it { is_expected.to permit_action(:index) }
               it { is_expected.to permit_action(:show) }
@@ -23,13 +23,13 @@ module Souls
             end
 
             context "being a user" do
-              let(:user) { FactoryBot.create(:user, user_role: :user) }
+              let(:user) { FactoryBot.create(:user, roles: :user) }
 
               it { is_expected.to permit_actions([:create, :update]) }
             end
 
             context "being an admin" do
-              let(:user) { FactoryBot.create(:user, user_role: :admin) }
+              let(:user) { FactoryBot.create(:user, roles: :admin) }
 
               it { is_expected.to permit_actions([:create, :update, :delete]) }
             end
