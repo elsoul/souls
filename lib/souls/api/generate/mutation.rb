@@ -55,14 +55,17 @@ module Souls
                 if @user_exist
                   new_line.write(<<-TEXT)
 
-      def resolve args
+      def resolve(args)
         params = args.dup
         params[:user_id] = context[:user][:id]
+        data = ::#{class_name.camelize}.new(args)
                   TEXT
                 else
                   new_line.write(<<-TEXT)
 
-      def resolve args
+      def resolve(args)
+        params = args.dup
+        data = ::#{class_name.camelize}.new(args)
                   TEXT
                 end
                 break
@@ -105,7 +108,6 @@ module Souls
       file_path = "./app/graphql/mutations/base/#{class_name}/create_#{class_name}.rb"
       File.open(file_path, "a") do |new_line|
         new_line.write(<<~TEXT)
-                  data = ::#{class_name.camelize}.new args
                   raise(StandardError, data.errors.full_messages) unless data.save
 
                   { #{class_name}_edge: { node: data } }
