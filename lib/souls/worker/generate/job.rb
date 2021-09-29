@@ -6,7 +6,7 @@ module Souls
       if options[:mailer]
         mailgun_mailer(class_name: class_name)
       else
-        create_mutation(class_name: class_name)
+        create_job_mutation(class_name: class_name)
       end
       Souls::Generate.new.invoke(:job_rbs, [class_name], {})
     rescue Thor::Error => e
@@ -15,7 +15,7 @@ module Souls
 
     private
 
-    def create_mutation(class_name: "send-mailer")
+    def create_job_mutation(class_name: "send-mailer")
       file_dir = "./app/graphql/mutations/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}#{class_name.singularize}.rb"

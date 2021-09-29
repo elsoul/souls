@@ -16,14 +16,15 @@ module Souls
               class #{options[:mutation].underscore.camelize} < BaseMutation
                 description "#{options[:mutation]} description"
                 ## Edit `argument` and `field`
-                argument :argment, String, required: true
+                argument :argument, String, required: true
 
                 field :response, String, null: false
 
                 def resolve(args)
                   # Define Here
+                  { response: "success!" }
                 rescue StandardError => e
-                  GraphQL::ExecutionError.new(e.to_s)
+                  GraphQL::ExecutionError.new(e.message)
                 end
               end
             end
