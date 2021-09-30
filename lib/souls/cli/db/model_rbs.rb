@@ -1,5 +1,5 @@
 module Souls
-  class Generate < Thor
+  class DB < Thor
     desc "model_rbs [CLASS_NAME]", "Generate GraphQL Model RBS from schema.rb"
     def model_rbs(class_name)
       file_path = ""

@@ -1,5 +1,5 @@
 module Souls
-  class Generate < Thor
+  class DB < Thor
     desc "model [CLASS_NAME]", "Generate Model Template"
     def model(class_name)
       file_dir = "./app/models/"

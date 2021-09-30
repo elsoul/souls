@@ -1,5 +1,5 @@
 module Souls
-  class Generate < Thor
+  class DB < Thor
     desc "rspec_model [CLASS_NAME]", "Generate Rspec Model Test from schema.rb"
     def rspec_model(class_name)
       file_dir = "./spec/models/"
