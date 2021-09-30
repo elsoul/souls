@@ -9,6 +9,7 @@ module Souls
         create_job_mutation(class_name: class_name)
       end
       Souls::Generate.new.invoke(:job_rbs, [class_name], {})
+      Souls::Generate.new.invoke(:rspec_job, [class_name], {})
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
