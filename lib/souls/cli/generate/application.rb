@@ -5,9 +5,9 @@ module Souls
     def scaffold(class_name)
       singularized_class_name = class_name.singularize
       if options[:rbs]
-        run_scaffold(class_name: singularized_class_name)
-      else
         run_rbs_scaffold(class_name: singularized_class_name)
+      else
+        run_scaffold(class_name: singularized_class_name)
       end
       true
     rescue Thor::Error => e
