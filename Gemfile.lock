@@ -75,24 +75,20 @@ GEM
       google-cloud-errors (~> 1.0)
       grpc-google-iam-v1 (>= 0.6.10, < 2.a)
     google-protobuf (3.18.0-universal-darwin)
-    google-protobuf (3.18.0-x86_64-linux)
     googleapis-common-protos (1.3.12)
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
       grpc (~> 1.27)
     googleapis-common-protos-types (1.2.0)
       google-protobuf (~> 3.14)
-    googleauth (0.17.1)
+    googleauth (1.0.0)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
-      signet (~> 0.15)
+      signet (>= 0.16, < 2.a)
     grpc (1.40.0-universal-darwin)
-      google-protobuf (~> 3.15)
-      googleapis-common-protos-types (~> 1.0)
-    grpc (1.40.0-x86_64-linux)
       google-protobuf (~> 3.15)
       googleapis-common-protos-types (~> 1.0)
     grpc-google-iam-v1 (1.0.0)
@@ -117,9 +113,7 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    nokogiri (1.12.4-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.12.4-x86_64-linux)
+    nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
     os (1.1.1)
     paint (2.2.1)
@@ -157,16 +151,16 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
-    rubocop (1.21.0)
+    rubocop (1.22.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 1.9.1, < 2.0)
+      rubocop-ast (>= 1.12.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.11.0)
+    rubocop-ast (1.12.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
@@ -183,7 +177,7 @@ GEM
     sinatra-activerecord (2.0.23)
       activerecord (>= 4.1)
       sinatra (>= 1.0)
-    solargraph (0.43.2)
+    solargraph (0.44.0)
       backport (~> 1.2)
       benchmark
       bundler (>= 1.17.2)
@@ -232,7 +226,6 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
-  x86_64-linux
 
 DEPENDENCIES
   activesupport (= 6.1.4.1)
@@ -243,9 +236,9 @@ DEPENDENCIES
   pg (= 1.2.3)
   rake (= 13.0.6)
   rspec (= 3.10.0)
-  rubocop (= 1.21.0)
+  rubocop (= 1.22.0)
   sinatra-activerecord (= 2.0.23)
-  solargraph (= 0.43.2)
+  solargraph (= 0.44.0)
   souls!
   steep (= 0.46.0)
   thor (= 1.1.0)
@@ -253,4 +246,4 @@ DEPENDENCIES
   whirly (= 0.3.0)
 
 BUNDLED WITH
-   2.2.27
+   2.2.28

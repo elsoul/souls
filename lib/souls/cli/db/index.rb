@@ -1,6 +1,6 @@
 module Souls
-  class CLI < Thor
-    desc "db:migrate", "Migrate Database"
+  class DB < Thor
+    desc "migrate", "Migrate Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def migrate
       case options[:env]
@@ -15,9 +15,9 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:create", "Create Database"
+    desc "create", "Create Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
-    def db_create
+    def create
       case options[:env]
       when "production"
         system("rake db:create RACK_ENV=production")
@@ -29,7 +29,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:seed", "Insert Seed Data"
+    desc "seed", "Insert Seed Data"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def seed
       case options[:env]
@@ -43,7 +43,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:migrate:reset", "Reset Database"
+    desc "migrate_reset", "Reset Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
     def migrate_reset
       case options[:env]
@@ -57,7 +57,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:create_migration [CLASS_NAME]", "Create ActiveRecord Migration File"
+    desc "create_migration [CLASS_NAME]", "Create ActiveRecord Migration File"
     def create_migration(class_name)
       pluralized_class_name = class_name.underscore.pluralize
       system("rake db:create_migration NAME=create_#{pluralized_class_name}")
@@ -79,7 +79,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:add_column [CLASS_NAME]", "Create ActiveRecord Migration File"
+    desc "add_column [CLASS_NAME]", "Create ActiveRecord Migration File"
     def add_column(class_name)
       pluralized_class_name = class_name.underscore.pluralize
       system("rake db:create_migration NAME=add_column_to_#{pluralized_class_name}")
@@ -87,7 +87,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:rename_column [CLASS_NAME]", "Create ActiveRecord Migration File"
+    desc "rename_column [CLASS_NAME]", "Create ActiveRecord Migration File"
     def rename_column(class_name)
       pluralized_class_name = class_name.underscore.pluralize
       system("rake db:create_migration NAME=rename_column_to_#{pluralized_class_name}")
@@ -95,7 +95,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:change_column [CLASS_NAME]", "Create ActiveRecord Migration File"
+    desc "change_column [CLASS_NAME]", "Create ActiveRecord Migration File"
     def change_column(class_name)
       pluralized_class_name = class_name.underscore.pluralize
       system("rake db:create_migration NAME=change_column_to_#{pluralized_class_name}")
@@ -103,7 +103,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:remove_column [CLASS_NAME]", "Create ActiveRecord Migration File"
+    desc "remove_column [CLASS_NAME]", "Create ActiveRecord Migration File"
     def remove_column(class_name)
       pluralized_class_name = class_name.underscore.pluralize
       system("rake db:create_migration NAME=remove_column_to_#{pluralized_class_name}")
@@ -111,7 +111,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "db:drop_table [CLASS_NAME]", "Create ActiveRecord Migration File"
+    desc "drop_table [CLASS_NAME]", "Create ActiveRecord Migration File"
     def drop_table(class_name)
       pluralized_class_name = class_name.underscore.pluralize
       system("rake db:create_migration NAME=drop_table_to_#{pluralized_class_name}")

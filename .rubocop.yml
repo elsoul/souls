@@ -13,7 +13,7 @@ AllCops:
     - "spec/**/*.rb"
     - "lib/souls/api/generate/type.rb"
     - "tmp/**/*.rb"
-    - "vandor"
+    - "vandor/**/*"
 
 
 Style/Copyright:

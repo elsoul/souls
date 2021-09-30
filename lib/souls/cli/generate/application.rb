@@ -1,36 +1,5 @@
 module Souls
   class Generate < Thor
-    desc "scaffold [CLASS_NAME]", "Generate Scaffold from schema.rb"
-    method_option :mutation, type: :boolean, aliases: "--rbs", desc: "Mutation File Name"
-    def scaffold(class_name)
-      singularized_class_name = class_name.singularize
-      model(singularized_class_name)
-      model_rbs(singularized_class_name)
-      type(singularized_class_name)
-      type_rbs(singularized_class_name)
-      query(singularized_class_name)
-      query_rbs(singularized_class_name)
-      mutation(singularized_class_name)
-      mutation_rbs(singularized_class_name)
-      policy(singularized_class_name)
-      policy_rbs(singularized_class_name)
-      edge(singularized_class_name)
-      edge_rbs(singularized_class_name)
-      connection(singularized_class_name)
-      connection_rbs(singularized_class_name)
-      resolver(singularized_class_name)
-      resolver_rbs(singularized_class_name)
-      rspec_factory(singularized_class_name)
-      rspec_model(singularized_class_name)
-      rspec_mutation(singularized_class_name)
-      rspec_query(singularized_class_name)
-      rspec_resolver(singularized_class_name)
-      rspec_policy(singularized_class_name)
-      true
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
-    end
-
     desc "scaffold_all", "Generate Scaffold All Tables from schema.rb"
     def scaffold_all
       puts(Paint["Let's Go SOULs AUTO CRUD Assist!\n", :cyan])
