@@ -58,8 +58,6 @@ module Souls
     private
 
     def run_scaffold(class_name: "user")
-      model(class_name: class_name)
-      model_rbs(class_name: class_name)
       type(class_name: class_name)
       type_rbs(class_name: class_name)
       query(class_name: class_name)
@@ -75,7 +73,6 @@ module Souls
       resolver(class_name: class_name)
       resolver_rbs(class_name: class_name)
       rspec_factory(class_name: class_name)
-      rspec_model(class_name: class_name)
       rspec_mutation(class_name: class_name)
       rspec_query(class_name: class_name)
       rspec_resolver(class_name: class_name)
@@ -83,7 +80,6 @@ module Souls
     end
 
     def run_rbs_scaffold(class_name: "user")
-      model_rbs(class_name: class_name)
       type_rbs(class_name: class_name)
       query_rbs(class_name: class_name)
       mutation_rbs(class_name: class_name)
