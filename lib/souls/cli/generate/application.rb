@@ -20,11 +20,10 @@ module Souls
       puts(Paint["Let's Go SOULs AUTO CRUD Assist!\n", :cyan])
       Souls.get_tables.each do |table|
         if options[:rbs]
-          Souls::Generate.new.invoke(:scaffold_all, [table.singularize], { rbs: options[:rbs] })
+          Souls::Generate.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
         else
-          Souls::Generate.new.invoke(:scaffold_all, [table.singularize], {})
+          Souls::Generate.new.invoke(:scaffold, [table.singularize], {})
         end
-        puts(Paint["Generated #{table.camelize} CRUD Files\n", :yellow])
       end
       true
     rescue Thor::Error => e
