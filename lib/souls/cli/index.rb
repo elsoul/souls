@@ -1,4 +1,6 @@
 require_relative "./console/index"
+require_relative "./generate/index"
+require_relative "./update/index"
 require_relative "./create/index"
 require_relative "./db/index"
 require_relative "./docker/index"
