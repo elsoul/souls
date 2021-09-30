@@ -25,7 +25,7 @@ Welcome to SOULs Serverless Application Framework!
 - Maximize development efficiency with CI / CD standard schema-driven Scaffold
 - Achieve global scale with lower management costs
 
-![画像](https://souls.elsoul.nl/imgs/docs/SOULs.jpg)
+![画像](https://souls.elsoul.nl/imgs/docs/SOULs-architecture.jpg)
 
 
 SOULs creates 2 types of framework.
