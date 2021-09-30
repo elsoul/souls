@@ -21,17 +21,12 @@
 
 Welcome to SOULs Serverless Application Framework!
 
-SOULs はサーバーレスフルスタックフレームワークです。柔軟な Ruby GraphQL API と Worker はルーティングの必要がありません。
-クラウド環境への自動デプロイ、CI/CD ワークフローを標準装備。開発者がビジネスロジックに集中し、楽しくコードが書けるような環境を目指しています。
-
-SOULs バックエンドには `API` と `Worker` の 2 つのタイプがあります。
-`API` は主にデータをフロントエンドへ提供します。`Worker` は主に `タスク` の処理を行います
+- Focus on business logic in serverless environment
+- Maximize development efficiency with CI / CD standard schema-driven Scaffold
+- Achieve global scale with lower management costs
 
 ![画像](https://souls.elsoul.nl/imgs/docs/SOULs.jpg)
 
-現在のバージョンでは SOULs `API` と `Worker` を Github Actions を使って Google Cloud Run へそれぞれデプロイします。
-
-SOULs フレームワークでは [Monorepo](https://en.wikipedia.org/wiki/Monorepo) によって一つのパッケージでアプリケーションを管理します。
 
 SOULs creates 2 types of framework.
 
@@ -79,40 +74,14 @@ And Create Your APP
 
     $ souls new app_name
     $ cd apps/api/app_name
-    $ bundle
     $ souls s
 
 Check your GraphQL PlayGround
 
 [localhost:4000/playground](localhost:4000/playground)
 
-## Gemfile 自動更新アップデート
-
-`Gemfile`, `Gemfile.lock` を最新のバージョンに自動更新します。
-
-```
-souls upgrade gemfile
-```
-
-除外したい `gem` は `config/souls.rb` 内の
-`config.fixed_gems` の配列に追加します。
-
-```ruby
-Souls.configure do |config|
-  config.app = "souls-api"
-  config.project_id = "souls-api"
-  config.region = "asia-northeast1"
-  config.endpoint = "/endpoint"
-  config.strain = "api"
-  config.fixed_gems = ["selenium-webdriver"]
-  config.workers = []
-end
-```
 
 ## SOULs Serverless Application Framework Document
-
-SOULs サーバーレスアプリケーションフレームワーク
-ドキュメントはこちらから
 
 - [SOULs Document](https://souls.elsoul.nl/)
 

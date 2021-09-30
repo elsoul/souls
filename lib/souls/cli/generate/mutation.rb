@@ -37,7 +37,7 @@ module Souls
                 class Create#{singularized_class_name.camelize} < BaseMutation
                   field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}Type.edge_type, null: false
                   field :error, String, null: true
-            #{'      '}
+
                   def resolve(args)
           TEXT
         end

@@ -6,10 +6,14 @@ Gem::Specification.new do |gem|
   gem.authors       = ["POPPIN-FUMI", "KishiTheMechanic", "James Neve"]
   gem.email         = ["f.kawasaki@elsoul.nl", "s.kishi@elsoul.nl", "jamesoneve@gmail.com"]
 
-  gem.summary       = "SOULs はサーバーレスフルスタックフレームワークです。柔軟な Ruby GraphQL API と Worker はルーティングの必要がありません。
-  クラウド環境への自動デプロイ、CI/CD ワークフローを標準装備。開発者がビジネスロジックに集中し、楽しくコードが書けるような環境を目指しています。"
-  gem.description = "SOULs はサーバーレスフルスタックフレームワークです。柔軟な Ruby GraphQL API と Worker はルーティングの必要がありません。
-  クラウド環境への自動デプロイ、CI/CD ワークフローを標準装備。開発者がビジネスロジックに集中し、楽しくコードが書けるような環境を目指しています。"
+  gem.summary       = "Welcome to SOULs Serverless Application Framework!
+\n- Focus on business logic in serverless environment
+\n- Maximize development efficiency with CI / CD standard schema-driven Scaffold
+\n- Achieve global scale with lower management costs"
+  gem.description = "Welcome to SOULs Serverless Application Framework!
+\n- Focus on business logic in serverless environment
+\n- Maximize development efficiency with CI / CD standard schema-driven Scaffold
+\n- Achieve global scale with lower management costs"
   gem.homepage      = "https://souls.elsoul.nl"
   gem.license       = "Apache-2.0"
   gem.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
