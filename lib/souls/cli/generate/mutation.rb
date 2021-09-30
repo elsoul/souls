@@ -23,7 +23,7 @@ module Souls
     def create_mutation(class_name: "user")
       file_path = ""
       singularized_class_name = class_name.singularize.underscore
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(Souls.get_api_path.to_s) do
         file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/create_#{singularized_class_name}.rb"
