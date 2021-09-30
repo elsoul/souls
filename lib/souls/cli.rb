@@ -22,7 +22,7 @@ module Souls
     desc "sync", " SOULs Sync Commands"
     subcommand "sync", Sync
 
-    desc "upgrade gemfile", "SOULs Upgrade Gemfile & Gemfile.lock"
+    desc "upgrade [COMMAND]", "SOULs Upgrade Commands"
     subcommand "upgrade", Upgrade
 
     # rubocop:disable Style/StringHashKeys
