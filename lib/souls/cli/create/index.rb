@@ -121,7 +121,7 @@ end
             on:
               push:
                 branches:
-                  - master
+                  - main
                 paths:
                   - "apps/#{worker_name}/**"
                   - ".github/workflows/#{worker_name}.yml"
