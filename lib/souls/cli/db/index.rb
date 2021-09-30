@@ -75,7 +75,7 @@ module Souls
           end
         TEXT
       end
-      Souls::DB.new.invoke(:create_migration, [pluralized_class_name], {})
+      Souls::DB.new.invoke(:create_migration_rbs, [pluralized_class_name], {})
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
