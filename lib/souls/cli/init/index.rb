@@ -18,16 +18,6 @@ module Souls
       souls_api_credit(app_name: app_name, service_name: service_name)
     end
 
-    desc "add_submodule", "Run git submodule add RBS collection"
-    def add_submodule
-      system("git submodule add https://github.com/ruby/gem_rbs_collection.git vendor/rbs/gem_rbs_collection")
-    end
-
-    desc "update_submodule", "Run git submodule update --init RBS collection"
-    def update_submodule
-      system("git submodule update --init https://github.com/ruby/gem_rbs_collection.git vendor/rbs/gem_rbs_collection")
-    end
-
     private
 
     def get_version(repository_name: "souls_api")

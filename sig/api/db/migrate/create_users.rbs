@@ -1,5 +1,0 @@
-class CreateUsers
-  def change: () -> untyped
-  def create_table: (:users) { (untyped) -> untyped } -> untyped
-  def add_index: (:users, *untyped) -> untyped
-end
