@@ -1,3 +1,4 @@
+require_relative "./create_migration_rbs"
 module Souls
   class DB < Thor
     desc "migrate", "Migrate Database"
