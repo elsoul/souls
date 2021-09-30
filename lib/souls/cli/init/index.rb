@@ -14,7 +14,7 @@ module Souls
       download_github_actions(app_name: app_name)
       initial_config_init(app_name: app_name, service_name: service_name)
       system("cd #{app_name} && souls add_submodule")
-      system("cd #{app_name} && git init")
+      system("cd #{app_name} && git init --initial-branch=main")
       souls_api_credit(app_name: app_name, service_name: service_name)
     end
 
