@@ -3,17 +3,18 @@ module Souls
     desc "mutation [CLASS_NAME]", "Generate GraphQL Mutation from schema.rb"
     def mutation(class_name)
       singularized_class_name = class_name.singularize
-      file_dir = "./app/graphql/mutations/base"
-      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-      file_path = "./app/graphql/mutations/base/#{singularized_class_name}/create_#{singularized_class_name}.rb"
-      return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 
-      create_mutation(class_name: singularized_class_name)
-      update_mutation(class_name: singularized_class_name)
-      delete_mutation(class_name: singularized_class_name)
-      destroy_delete_mutation(class_name: singularized_class_name)
-      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
-      file_path
+      Dir.chdir(Souls.get_api_path.to_s) do
+        file_dir = "./app/graphql/mutations/base"
+        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+        file_path = "./app/graphql/mutations/base/#{singularized_class_name}/create_#{singularized_class_name}.rb"
+        return "Mutation already exist! #{file_path}" if File.exist?(file_path)
+
+        create_mutation(class_name: singularized_class_name)
+        update_mutation(class_name: singularized_class_name)
+        delete_mutation(class_name: singularized_class_name)
+        destroy_delete_mutation(class_name: singularized_class_name)
+      end
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
@@ -21,64 +22,77 @@ module Souls
     private
 
     def create_mutation(class_name: "user")
-      file_path = ""
       singularized_class_name = class_name.singularize.underscore
-      Dir.chdir(Souls.get_api_path.to_s) do
-        file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
-        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-        file_path = "#{file_dir}/create_#{singularized_class_name}.rb"
-        raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
+      file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+      file_path = "#{file_dir}/create_#{singularized_class_name}.rb"
+      raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-        params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
-        File.open(file_path, "w") do |f|
-          f.write(<<~TEXT)
-            module Mutations
-              module Base::#{singularized_class_name.camelize}
-                class Create#{singularized_class_name.camelize} < BaseMutation
-                  field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}Type.edge_type, null: false
-                  field :error, String, null: true
+      params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
+          module Mutations
+            module Base::#{singularized_class_name.camelize}
+              class Create#{singularized_class_name.camelize} < BaseMutation
+                field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}Type.edge_type, null: false
+                field :error, String, null: true
 
-                  def resolve(args)
-          TEXT
-        end
-        File.open(file_path, "a") do |f|
-          if params[:relation_params]
-            f.write("        user_id = context[:user][:id]\n") if params[:user_exist]
-            params[:relation_params].each_with_index do |col, _i|
-              next if col[:column_name] == "user_id"
+        TEXT
+      end
 
-              f.write("        #{col[:column_name]} = SoulsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
-            end
-            relation_params =
-              params[:relation_params].map do |n|
-                ", #{n[:column_name]}: #{n[:column_name]}"
-              end
-            f.write("        new_record = { **args #{relation_params.compact.join} }\n")
-            f.write("        data = ::#{singularized_class_name.camelize}.new(new_record)\n")
+      File.open(file_path, "a") do |f|
+        params[:params].each_with_index do |param, i|
+          type = Souls.rbs_type_check(param[:type])
+          type = "[#{type}]" if param[:array]
+          if i == params[:params].size - 1
+            f.write("      argument :#{param[:column_name]}, #{type}, null: true\n\n")
+            f.write("      def resolve(args)\n")
           else
-            f.write("        data = ::#{singularized_class_name.camelize}.new(args)\n")
+            f.write("      argument :#{param[:column_name]}, #{type}, null: true\n")
           end
         end
-        File.open(file_path, "a") do |new_line|
-          new_line.write(<<~TEXT)
-                    raise(StandardError, data.errors.full_messages) unless data.save
+      end
 
-                    { #{singularized_class_name}_edge: { node: data } }
-                  rescue StandardError => error
-                    GraphQL::ExecutionError.new(error.message)
-                  end
+      File.open(file_path, "a") do |f|
+        if params[:relation_params]
+          f.write("        user_id = context[:user][:id]\n") if params[:user_exist]
+          params[:relation_params].each_with_index do |col, _i|
+            next if col[:column_name] == "user_id"
+
+            f.write("        #{col[:column_name]} = SoulsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
+          end
+          relation_params =
+            params[:relation_params].map do |n|
+              ", #{n[:column_name]}: #{n[:column_name]}"
+            end
+          f.write("        new_record = { **args #{relation_params.compact.join} }\n")
+          f.write("        data = ::#{singularized_class_name.camelize}.new(new_record)\n")
+        else
+          f.write("        data = ::#{singularized_class_name.camelize}.new(args)\n")
+        end
+      end
+      File.open(file_path, "a") do |new_line|
+        new_line.write(<<~TEXT)
+                  raise(StandardError, data.errors.full_messages) unless data.save
+
+                  { #{singularized_class_name}_edge: { node: data } }
+                rescue StandardError => error
+                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
-          TEXT
-        end
+          end
+        TEXT
       end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
     end
 
     ## 2.Mutation - Update
     def update_mutation_head(class_name: "user")
-      file_path = "./app/graphql/mutations/base/#{class_name}/update_#{class_name}.rb"
+      singularized_class_name = class_name.singularize.underscore
+      file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
+      file_path = "#{file_dir}/update_#{class_name}.rb"
       File.open(file_path, "w") do |new_line|
         new_line.write(<<~TEXT)
           module Mutations
@@ -170,6 +184,7 @@ module Souls
           end
         TEXT
       end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
     end
 
@@ -209,6 +224,7 @@ module Souls
           end
         TEXT
       end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
     end
 
@@ -238,6 +254,7 @@ module Souls
           end
         TEXT
       end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
     rescue StandardError => e
       puts(e)
