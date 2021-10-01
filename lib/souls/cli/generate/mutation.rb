@@ -42,7 +42,7 @@ module Souls
 
       File.open(file_path, "a") do |f|
         params[:params].each_with_index do |param, i|
-          type = Souls.rbs_type_check(param[:type])
+          type = Souls.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, null: true\n\n")

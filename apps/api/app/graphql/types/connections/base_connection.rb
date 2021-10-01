@@ -8,7 +8,7 @@ module Types
     end
 
     def total_pages
-      total_count / object.max_page_size + 1
+      (total_count / object.max_page_size) + 1
     end
   end
 end
