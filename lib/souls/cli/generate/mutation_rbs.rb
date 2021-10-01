@@ -122,6 +122,7 @@ module Souls
           cols.each_with_index do |param, i|
             type = Souls.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
+            type = "String" if param[:column_name].match?(/$*_id\z/)
 
             if i == params[:params].size - 1
               f.write("                          #{param[:column_name]}: #{type}?\n")
@@ -142,15 +143,12 @@ module Souls
             type = Souls.type_check(param[:type])
             rbs_type = Souls.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
+            type = "String" if param[:column_name].match?(/$*_id\z/)
+            rbs_type = "String" if param[:column_name].match?(/$*_id\z/)
 
             required = param[:column_name] == "id" ? "required: true" : "required: false"
             if i.zero?
-              if param[:column_name].match?(/$*_id\z/)
-                f.write("        def self.argument: (:#{param[:column_name]}, String, #{required} ) -> String\n")
-              else
-                f.write("        def self.argument: (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
-              end
-
+              f.write("        def self.argument: (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
             else
               f.write("                         | (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
             end
