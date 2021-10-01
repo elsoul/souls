@@ -43,7 +43,7 @@ module Souls
             if i == params[:params].size - 1
               f.write("                          #{param[:column_name]}: #{type}?\n")
             elsif param[:column_name].match?(/$*_id\z/)
-              f.write("                          #{param[:column_name]}: String?\n")
+              f.write("                          #{param[:column_name]}: String?,\n")
             else
               f.write("                          #{param[:column_name]}: #{type}?,\n")
             end

@@ -45,6 +45,8 @@ module Souls
           type = Souls.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           type = "String" if param[:column_name].match?(/$*_id\z/)
+          next if params[:column_name] == "user_id"
+
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
             f.write("      def resolve(args)\n")
@@ -105,6 +107,7 @@ module Souls
                 field :#{singularized_class_name}_edge, Types::#{singularized_class_name.camelize}Type.edge_type, null: false
                 field :error, String, null: true
 
+                argument :id, String, required: true
         TEXT
       end
 
@@ -113,6 +116,8 @@ module Souls
           type = Souls.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           type = "String" if param[:column_name].match?(/$*_id\z/)
+          next if col[:column_name] == "user_id"
+
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
             f.write("      def resolve(args)\n")
@@ -138,7 +143,7 @@ module Souls
           f.write("        data = ::#{singularized_class_name.camelize}.find(article_id)\n")
           f.write("        data.update(new_record)\n")
         else
-          f.write("        data = ::#{singularized_class_name.camelize}.find(article_id)\n")
+          f.write("        data = ::#{singularized_class_name.camelize}.find(args[:id])\n")
           f.write("        data.update(args)\n")
         end
       end

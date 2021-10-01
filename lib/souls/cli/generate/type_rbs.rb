@@ -25,7 +25,12 @@ module Souls
             type = "[#{type}]" if param[:array]
             rbs_type = Souls.rbs_type_check(param[:type])
             if i.zero?
-              f.write("    def self.field: (:#{param[:column_name]}, #{type}, null: true) -> #{rbs_type}\n")
+              if params[:column_name].match?(/$*_id\z/)
+                col_name = param[:column_name].gsub("_id", "")
+                f.write("    def self.field: (:#{col_name}, untyped, null: false) -> untyped\n")
+              else
+                f.write("    def self.field: (:#{param[:column_name]}, #{type}, null: true) -> #{rbs_type}\n")
+              end
             elsif param[:column_name].match?(/$*_id\z/)
               col_name = param[:column_name].gsub("_id", "")
               f.write("                  | (:#{col_name}, untyped, null: false) -> untyped\n")
