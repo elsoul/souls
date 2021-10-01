@@ -116,7 +116,7 @@ module Souls
           type = Souls.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           type = "String" if param[:column_name].match?(/$*_id\z/)
-          next if col[:column_name] == "user_id"
+          next if param[:column_name] == "user_id"
 
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
