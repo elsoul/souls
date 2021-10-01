@@ -45,7 +45,7 @@ module Souls
           type = Souls.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           type = "String" if param[:column_name].match?(/$*_id\z/)
-          next if params[:column_name] == "user_id"
+          next if param[:column_name] == "user_id"
 
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
@@ -121,6 +121,7 @@ module Souls
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
             f.write("      def resolve(args)\n")
+            f.write("      _, data_id = SoulsApiSchema.from_global_id(args[:id])\n")
           else
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n")
           end
@@ -140,12 +141,11 @@ module Souls
               ", #{n[:column_name]}: #{n[:column_name]}"
             end
           f.write("        new_record = { **args #{relation_params.compact.join} }\n")
-          f.write("        data = ::#{singularized_class_name.camelize}.find(article_id)\n")
-          f.write("        data.update(new_record)\n")
         else
-          f.write("        data = ::#{singularized_class_name.camelize}.find(args[:id])\n")
-          f.write("        data.update(args)\n")
+          f.write("        new_record = args.except(:id)\n")
         end
+        f.write("        data = ::#{singularized_class_name.camelize}.find(data_id)\n")
+        f.write("        data.update(new_record)\n")
       end
       File.open(file_path, "a") do |new_line|
         new_line.write(<<~TEXT)

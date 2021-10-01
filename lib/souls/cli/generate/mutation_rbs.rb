@@ -61,7 +61,11 @@ module Souls
             rbs_type = Souls.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
             if i.zero?
-              f.write("        def self.argument: (:#{param[:column_name]}, #{type}, required: false ) -> #{rbs_type}\n")
+              if param[:column_name].match?(/$*_id\z/)
+                f.write("        def self.argument: (:#{param[:column_name]}, String, required: false ) -> #{rbs_type}\n")
+              else
+                f.write("        def self.argument: (:#{param[:column_name]}, #{type}, required: false ) -> #{rbs_type}\n")
+              end
             elsif param[:column_name].match?(/$*_id\z/)
               f.write("                         | (:#{param[:column_name]}, String, required: false ) -> String\n")
             else
@@ -117,6 +121,8 @@ module Souls
           params[:params].each_with_index do |param, i|
             type = Souls.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
+            next if param[:column_name] == "user_id"
+
             if i == params[:params].size - 1
               f.write("                          #{param[:column_name]}: #{type}?\n")
             else
@@ -135,9 +141,16 @@ module Souls
             type = Souls.type_check(param[:type])
             rbs_type = Souls.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
+            next if param[:column_name] == "user_id"
+
             required = param[:column_name] == "id" ? "required: true" : "required: false"
             if i.zero?
-              f.write("        def self.argument: (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
+              if param[:column_name].match?(/$*_id\z/)
+                f.write("        def self.argument: (:#{param[:column_name]}, String, #{required} ) -> String\n")
+              else
+                f.write("        def self.argument: (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
+              end
+
             else
               f.write("                         | (:#{param[:column_name]}, #{type}, #{required} ) -> #{rbs_type}\n")
             end
