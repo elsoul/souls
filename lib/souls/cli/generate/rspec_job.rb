@@ -10,12 +10,12 @@ module Souls
 
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          RSpec.describe("#{class_name.singularize.camelize}") do
-            describe "Define #{class_name.singularize.camelize}" do
+          RSpec.describe("#{singularized_class_name.camelize}") do
+            describe "Define #{singularized_class_name.camelize}" do
 
               let(:mutation) do
                 %(mutation {
-                  #{class_name.singularize.camelize(:lower)}(input: {}) {
+                  #{singularized_class_name.camelize(:lower)}(input: {}) {
                       response
                     }
                   }
@@ -28,7 +28,7 @@ module Souls
 
               it "return StockSheet Data" do
                 begin
-                  a1 = result.dig("data", "#{options[:mutation].singularize.camelize(:lower)}", "response")
+                  a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}", "response")
                   raise unless a1.present?
                 rescue StandardError
                   raise(StandardError, result)

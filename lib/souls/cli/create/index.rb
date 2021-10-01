@@ -21,6 +21,7 @@ module Souls
         souls_config_init(worker_name: options[:name])
         steepfile(worker_name: options[:name])
         souls_helper_rbs(worker_name: options[:name])
+        system("cd apps/#{options[:name]} && bundle")
         souls_worker_credit(worker_name: options[:name])
       end
       true
@@ -313,7 +314,6 @@ end
       endroll = <<~TEXT
         Easy to Run
         $ cd apps/#{worker_name}
-        $ bundle
         $ souls sync model
         $ souls s
         Go To : http://localhost:3000
