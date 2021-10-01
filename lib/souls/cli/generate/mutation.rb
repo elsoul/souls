@@ -45,10 +45,10 @@ module Souls
           type = Souls.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           if i == params[:params].size - 1
-            f.write("      argument :#{param[:column_name]}, #{type}, null: true\n\n")
+            f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
             f.write("      def resolve(args)\n")
           else
-            f.write("      argument :#{param[:column_name]}, #{type}, null: true\n")
+            f.write("      argument :#{param[:column_name]}, #{type}, required: false\n")
           end
         end
       end
