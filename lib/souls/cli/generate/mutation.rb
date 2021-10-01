@@ -44,6 +44,7 @@ module Souls
         params[:params].each_with_index do |param, i|
           type = Souls.type_check(param[:type])
           type = "[#{type}]" if param[:array]
+          type = "String" if param[:column_name].match?(/$*_id\z/)
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
             f.write("      def resolve(args)\n")
@@ -59,7 +60,7 @@ module Souls
           params[:relation_params].each_with_index do |col, _i|
             next if col[:column_name] == "user_id"
 
-            f.write("        #{col[:column_name]} = SoulsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
+            f.write("      _, #{col[:column_name]} = SoulsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
           end
           relation_params =
             params[:relation_params].map do |n|
