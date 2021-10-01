@@ -50,7 +50,7 @@ module Souls
         end
       end
       FileUtils.rm(file_path)
-      FileUtils.mv(new_file_path(file_path))
+      FileUtils.mv(new_file_path, file_path)
     end
 
     def procfile(worker_name: "mailer", port: 3000)
