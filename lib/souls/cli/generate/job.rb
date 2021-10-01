@@ -1,7 +1,7 @@
 module Souls
   class Generate < Thor
     desc "job [CLASS_NAME]", "Generate Job File in Worker"
-    method_option :mutation, type: :boolean, aliases: "--mailer", default: false, desc: "Mailer Option"
+    method_option :mailer, type: :boolean, aliases: "--mailer", default: false, desc: "Mailer Option"
     def job(class_name)
       if options[:mailer]
         mailgun_mailer(class_name: class_name)
