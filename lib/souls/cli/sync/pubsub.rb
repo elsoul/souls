@@ -14,7 +14,7 @@ module Souls
     def get_topics(workers: {})
       app_name = Souls.configuration.app
       project_id = Souls.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new
+      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
       topics = pubsub.topics
 
       topic_names =
@@ -41,7 +41,7 @@ module Souls
 
     def create_topic(topic_id: "mailer")
       app_name = Souls.configuration.app
-      pubsub = Google::Cloud::Pubsub.new
+      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
       topic_name = "souls_#{app_name}_#{topic_id}"
       topic = pubsub.create_topic(topic_name.to_s)
       puts("Topic #{topic.name} created.")
@@ -49,7 +49,7 @@ module Souls
 
     def delete_topic(topic_id: "mailer")
       app_name = Souls.configuration.app
-      pubsub = Google::Cloud::Pubsub.new
+      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
       topic_name = "souls_#{app_name}_#{topic_id}"
       topic = pubsub.topic(topic_name.to_s)
       topic.delete
@@ -69,7 +69,7 @@ module Souls
         endpoint = worker[:endpoint] if worker[:name] == worker_name
       end
 
-      pubsub = Google::Cloud::Pubsub.new
+      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
 
       topic = pubsub.topic(topic_name)
       sub = topic.subscribe(subscription_id, endpoint: endpoint, deadline: 20)
