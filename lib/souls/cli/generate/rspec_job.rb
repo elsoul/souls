@@ -28,7 +28,7 @@ module Souls
 
               it "return StockSheet Data" do
                 begin
-                  a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}", "response")
+                  a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
                   raise unless a1.present?
                 rescue StandardError
                   raise(StandardError, result)
