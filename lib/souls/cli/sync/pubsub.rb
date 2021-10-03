@@ -68,7 +68,7 @@ module Souls
       project_id = Souls.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
 
-      topic = pubsub.topic(topic_name)
+      topic = pubsub.topic(topic_id)
       sub = topic.subscribe(subscription_id, endpoint: endpoint, deadline: 20)
       sub.expires_in = nil
       puts("Push subscription #{subscription_id} created.")
