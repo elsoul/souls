@@ -12,9 +12,8 @@ module Souls
     private
 
     def get_topics(workers: {})
-      app_name = Souls.configuration.app
       project_id = Souls.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
+      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       topics = pubsub.topics
 
       topic_names =
@@ -22,7 +21,7 @@ module Souls
           topic.name.gsub("projects/#{project_id}/topics/", "")
         end
 
-      souls_topics = topic_names.select { |n| n.include?("souls_#{app_name}_") }
+      souls_topics = topic_names.select { |n| n.include?("souls_") }
 
       souls_topics.each do |name|
         value = workers[name.to_sym] || 0
@@ -40,17 +39,16 @@ module Souls
     end
 
     def create_topic(topic_id: "mailer")
-      app_name = Souls.configuration.app
-      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
-      topic_name = "souls_#{app_name}_#{topic_id}"
-      topic = pubsub.create_topic(topic_name.to_s)
+      project_id = Souls.configuration.project_id
+      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      topic = pubsub.create_topic(topic_id.to_s)
       puts("Topic #{topic.name} created.")
     end
 
     def delete_topic(topic_id: "mailer")
-      app_name = Souls.configuration.app
-      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
-      topic_name = "souls_#{app_name}_#{topic_id}"
+      project_id = Souls.configuration.project_id
+      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      topic_name = "#{topic_id}_sub"
       topic = pubsub.topic(topic_name.to_s)
       topic.delete
       puts("Topic #{topic_name} deleted.")
@@ -58,18 +56,17 @@ module Souls
 
     def create_push_subscription(topic_id: "mailer")
       require("#{Souls.get_mother_path}/config/souls")
-      app_name = Souls.configuration.app
-      topic_name = "souls_#{app_name}_#{topic_id}"
-      worker_name = topic_id.split("_")[0]
+      worker_name = topic_id.split("_")[1]
 
-      subscription_id = "#{topic_name}_sub"
+      subscription_id = "#{topic_id}_sub"
       endpoint = ""
       worker_paths = Souls.configuration.workers
       worker_paths.each do |worker|
         endpoint = worker[:endpoint] if worker[:name] == worker_name
       end
 
-      pubsub = Google::Cloud::Pubsub.new(project_id: ENV["PROJECT_ID"])
+      project_id = Souls.configuration.project_id
+      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
 
       topic = pubsub.topic(topic_name)
       sub = topic.subscribe(subscription_id, endpoint: endpoint, deadline: 20)
@@ -83,19 +80,13 @@ module Souls
       response = {}
       Dir.chdir(Souls.get_mother_path.to_s) do
         worker_paths.each do |worker|
-          mailers =
-            Dir["apps/#{worker}/app/graphql/mutations/mailers/*.rb"].map do |file|
-              file.gsub("apps/#{worker}/app/graphql/mutations/mailers/", "").gsub(".rb", "")
-            end
-
           workers =
             Dir["apps/#{worker}/app/graphql/mutations/*.rb"].map do |file|
               file.gsub("apps/#{worker}/app/graphql/mutations/", "").gsub(".rb", "")
             end
           workers.delete("base_mutation")
-          local_files = mailers + workers
-          local_files.each do |file|
-            response[:"#{worker}_#{file}"] = 1
+          workers.each do |file|
+            response[:"souls_#{worker}_#{file}"] = 1
           end
         end
       end
