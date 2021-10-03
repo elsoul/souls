@@ -11,13 +11,11 @@ module Souls
         file_path = "#{file_dir}#{singularized_class_name}.rbs"
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
-            module Types
-              module Mutations
-                String: String
-                class #{singularized_class_name.camelize} < BaseMutation
-                  def self.description: (String) -> untyped
-                  def self.field: (:response, String, null: false) -> untyped
-                end
+            module Mutations
+              String: String
+              class #{singularized_class_name.camelize} < BaseMutation
+                def self.description: (String) -> untyped
+                def self.field: (:response, String, null: false) -> untyped
               end
             end
           TEXT
