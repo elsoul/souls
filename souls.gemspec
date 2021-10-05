@@ -7,13 +7,13 @@ Gem::Specification.new do |gem|
   gem.email         = ["f.kawasaki@elsoul.nl", "s.kishi@elsoul.nl", "jamesoneve@gmail.com"]
 
   gem.summary       = "Welcome to SOULs Serverless Application Framework!
-\n- Focus on business logic in serverless environment
+- Ruby GraphQL with RBS/Steep  - Focus on business logic in serverless environment
 \n- Maximize development efficiency with CI / CD standard schema-driven Scaffold
-\n- Achieve global scale with lower management costs"
+\n- Achieve global scale with lower management costs - Rails like Scaffold"
   gem.description = "Welcome to SOULs Serverless Application Framework!
-\n- Focus on business logic in serverless environment
+- Ruby GraphQL with RBS/Steep  - Focus on business logic in serverless environment
 \n- Maximize development efficiency with CI / CD standard schema-driven Scaffold
-\n- Achieve global scale with lower management costs"
+\n- Achieve global scale with lower management costs - Rails like Scaffold"
   gem.homepage      = "https://souls.elsoul.nl"
   gem.license       = "Apache-2.0"
   gem.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
