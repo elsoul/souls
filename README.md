@@ -36,7 +36,7 @@ Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cl
 ![画像](https://souls.elsoul.nl/imgs/docs/SOULs-architecture.jpg)
 
 
-SOULs creates 2 types of framework.
+SOULs creates 2 types of APP.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Messaging Worker API (Ruby) - Cloud Run
