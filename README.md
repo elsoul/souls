@@ -17,6 +17,11 @@
   </a>
 </p>
 
+## SOULs Serverless Application Framework Document
+
+- [Go to SOULs Document](https://souls.elsoul.nl/)
+
+
 ## What's SOULs?
 
 Welcome to SOULs Serverless Application Framework!
@@ -81,9 +86,6 @@ Check your GraphQL PlayGround
 [localhost:4000/playground](localhost:4000/playground)
 
 
-## SOULs Serverless Application Framework Document
-
-- [SOULs Document](https://souls.elsoul.nl/)
 
 ## Development
 
