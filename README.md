@@ -26,6 +26,9 @@
 
 Welcome to SOULs Serverless Application Framework!
 
+Build Serverless Apps faster like Rails.
+Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cloud. 
+
 - Focus on business logic in serverless environment
 - Maximize development efficiency with CI / CD standard schema-driven Scaffold
 - Achieve global scale with lower management costs
