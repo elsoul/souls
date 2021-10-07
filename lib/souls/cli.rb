@@ -13,6 +13,9 @@ module Souls
     desc "db [COMMAND]", "SOULs DB Commands"
     subcommand "db", DB
 
+    desc "delete [COMMAND]", "SOULs Delete Commands"
+    subcommand "delete", Delete
+
     desc "docker [COMMAND]", "SOULs Docker Commands"
     subcommand "docker", Docker
 
@@ -30,6 +33,7 @@ module Souls
     map "s" => :server
     map "g" => :generate
     map "t" => :test
+    map "d" => :delete
     map ["-v", "--v", "--version", "-version"] => :version
     # rubocop:enable Style/StringHashKeys
 

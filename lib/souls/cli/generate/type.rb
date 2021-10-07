@@ -49,10 +49,7 @@ module Souls
                   "    field :#{name.gsub(
                     '_id',
                     ''
-                  )}, Types::#{name.gsub(
-                    '_id',
-                    ''
-                  ).singularize.camelize}Type, null: false\n"
+                  )}, Types::#{name.gsub('_id', '').singularize.camelize}Type, null: false\n"
                 )
               else
                 new_line.write("    field :#{name}, #{field}, null: true\n")

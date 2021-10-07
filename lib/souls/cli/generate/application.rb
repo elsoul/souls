@@ -30,30 +30,6 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    desc "delete_all  [CLASS_NAME]", "Generate Scaffold All Tables from schema.rb"
-    def delete_all(class_name)
-      singularized_class_name = class_name.singularize.underscore
-      pluralized_class_name = class_name.pluralize.underscore
-      FileUtils.rm("./app/models/#{singularized_class_name}.rb")
-      FileUtils.rm("./app/policies/#{singularized_class_name}_policy.rb")
-      FileUtils.rm_rf("./app/graphql/mutations/base/#{singularized_class_name}")
-      FileUtils.rm("./app/graphql/queries/#{singularized_class_name}.rb")
-      FileUtils.rm("./app/graphql/queries/#{pluralized_class_name}.rb")
-      FileUtils.rm("./app/graphql/resolvers/#{singularized_class_name}_search.rb")
-      FileUtils.rm("./app/graphql/types/#{singularized_class_name}_type.rb")
-      FileUtils.rm("./app/graphql/types/edges/#{singularized_class_name}_edge.rb")
-      FileUtils.rm("./app/graphql/types/connections/#{singularized_class_name}_connection.rb")
-      FileUtils.rm("./spec/factories/#{pluralized_class_name}.rb")
-      FileUtils.rm("./spec/mutations/base/#{singularized_class_name}_spec.rb")
-      FileUtils.rm("./spec/models/#{singularized_class_name}_spec.rb")
-      FileUtils.rm("./spec/queries/#{singularized_class_name}_spec.rb")
-      FileUtils.rm("./spec/policies/#{singularized_class_name}_policy_spec.rb")
-      FileUtils.rm("./spec/resolvers/#{singularized_class_name}_search_spec.rb")
-      puts(Paint["deleted #{class_name.camelize} CRUD!", :yellow])
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
-    end
-
     private
 
     def run_scaffold(class_name: "user")
