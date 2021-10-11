@@ -62,13 +62,14 @@ module Souls
     desc "create_vpc_connector", "Create VPC-PEERING Connect"
     def create_vpc_connector
       app_name = Souls.configuration.app
+      project_id = Souls.configuration.project_id
       system(
         "
             gcloud services vpc-peerings connect \
               --service=servicenetworking.googleapis.com \
               --ranges=#{app_name}-ip-range \
               --network=#{app_name} \
-              --project=#{app_name}
+              --project=#{project_id}
             "
       )
     rescue Thor::Error => e
