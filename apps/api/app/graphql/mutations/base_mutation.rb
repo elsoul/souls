@@ -41,7 +41,8 @@ module Mutations
     end
 
     def post_to_dev(worker_name: "", mutation_string: "")
-      port = get_worker(worker_name: worker_name)[0][:port]
+      app = Souls.configuration.app
+      port = get_worker(worker_name: "souls-#{app}-#{worker_name}")[0][:port]
       endpoint = Souls.configuration.endpoint
       res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: mutation_string })
       res.body
