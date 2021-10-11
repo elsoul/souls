@@ -12,7 +12,7 @@
   <a aria-label="Downloads Number" href="https://rubygems.org/gems/souls">
     <img alt="" src="https://badgen.net/rubygems/dt/souls">
   </a>
-  <a aria-label="License" href="https://github.com/elsoul/souls/blob/master/LICENSE">
+  <a aria-label="License" href="https://github.com/elsoul/souls/blob/master/LICENSE.txt">
     <img alt="" src="https://badgen.net/badge/license/Apache/blue">
   </a>
 </p>
