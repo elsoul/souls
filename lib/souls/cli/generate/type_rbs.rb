@@ -42,8 +42,8 @@ module Souls
 
         File.open(file_path, "a") do |f|
           f.write(<<~TEXT)
-              def self.edge_type: () -> void
-                def self.connection_type: () -> void
+              def self.edge_type: () -> untyped
+                def self.connection_type: () -> untyped
               end
             end
           TEXT
