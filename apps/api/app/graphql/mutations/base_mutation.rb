@@ -14,13 +14,13 @@ module Mutations
       @payload
     end
 
-    def pubsub_queue(topic_name: "send-mail-job", message: "text!")
+    def publish_pubsub_queue(topic_name: "send-mail-job", message: "text!")
       pubsub = Google::Cloud::Pubsub.new(project: ENV["PROJECT_ID"])
       topic = pubsub.topic(topic_name)
       topic.publish(message)
     end
 
-    def graphql_query(mutation: "newCommentMailer", args: {})
+    def make_graphql_mutation(mutation: "newCommentMailer", args: {})
       if args.blank?
         mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {}) { response } })
       else
@@ -40,7 +40,7 @@ module Mutations
       raise(StandardError, e)
     end
 
-    def send_post(worker_name: "", mutation_string: "")
+    def post_to_dev(worker_name: "", mutation_string: "")
       port = get_worker(worker_name: worker_name)[0][:port]
       endpoint = Souls.configuration.endpoint
       res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: mutation_string })
