@@ -55,6 +55,7 @@ module Souls
     end
 
     def create_push_subscription(topic_id: "mailer")
+      app = Souls.configuration.app
       require("#{Souls.get_mother_path}/config/souls")
       worker_name = topic_id.split("_")[1]
 
@@ -62,7 +63,7 @@ module Souls
       endpoint = ""
       worker_paths = Souls.configuration.workers
       worker_paths.each do |worker|
-        endpoint = worker[:endpoint] if worker[:name] == worker_name
+        endpoint = worker[:endpoint] if worker[:name] == "souls-#{app}-#{worker_name}"
       end
 
       project_id = Souls.configuration.project_id
