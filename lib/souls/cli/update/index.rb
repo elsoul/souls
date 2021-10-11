@@ -10,17 +10,17 @@ require_relative "./rspec_resolver"
 module Souls
   class Update < Thor
     desc "scaffold [CLASS_NAME]", "Update Scaffold Params"
-    def scaffold(_class_name)
-      invoke(:create_mutation)
-      invoke(:update_mutation)
-      invoke(:create_mutation_rbs)
-      invoke(:update_mutation_rbs)
-      invoke(:resolver)
-      invoke(:type)
-      invoke(:type_rbs)
-      invoke(:rspec_factory)
-      invoke(:rspec_mutation)
-      invoke(:rspec_resolver)
+    def scaffold(class_name)
+      create_mutation(class_name)
+      update_mutation(class_name)
+      create_mutation_rbs(class_name)
+      update_mutation_rbs(class_name)
+      resolver(class_name)
+      type(class_name)
+      type_rbs(class_name)
+      rspec_factory(class_name)
+      rspec_mutation(class_name)
+      rspec_resolver(class_name)
     end
   end
 end
