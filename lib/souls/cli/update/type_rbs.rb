@@ -19,7 +19,7 @@ module Souls
             if line.include?("    def self.edge_type:")
               new_line.write(line)
               argument = false
-            elsif line.include?("def self.argument:") && !argument
+            elsif line.include?("def self.field:") && !argument
               new_cols.each_with_index do |col, i|
                 type = Souls.get_type(col[:type])
                 type = "[#{type}]" if col[:array]
