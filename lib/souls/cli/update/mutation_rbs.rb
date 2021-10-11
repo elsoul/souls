@@ -23,8 +23,6 @@ module Souls
               new_cols.each_with_index do |col, i|
                 type = Souls.type_check(col[:type])
                 type = "[#{type}]" if col[:array]
-                args = check_mutation_argument(class_name: class_name)
-                next if args.include?(col[:column_name])
                 next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
                 if i.zero?
@@ -38,8 +36,6 @@ module Souls
               new_cols.each_with_index do |col, i|
                 type = Souls.type_check(col[:type])
                 type = "[#{type}]" if col[:array]
-                args = check_mutation_argument(class_name: class_name)
-                next if args.include?(col[:column_name])
                 next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
                 if i.zero?
@@ -89,8 +85,6 @@ module Souls
               new_cols.each_with_index do |col, i|
                 type = Souls.type_check(col[:type])
                 type = "[#{type}]" if col[:array]
-                args = check_mutation_argument(class_name: class_name)
-                next if args.include?(col[:column_name])
                 next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
                 if i.zero?
@@ -105,8 +99,6 @@ module Souls
               new_cols.each_with_index do |col, i|
                 type = Souls.type_check(col[:type])
                 type = "[#{type}]" if col[:array]
-                args = check_mutation_argument(class_name: class_name)
-                next if args.include?(col[:column_name])
                 next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
                 if i.zero?
@@ -131,21 +123,6 @@ module Souls
       puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
     rescue Thor::Error => e
       raise(Thor::Error, e)
-    end
-
-    private
-
-    def check_mutation_argument(class_name: "user", action: "create")
-      singularized_class_name = class_name.singularize.underscore
-      dir_name = "./sig/api/app/graphql/mutations/base/#{singularized_class_name}"
-      file_path = "#{dir_name}/#{action}_#{singularized_class_name}.rbs"
-      args = []
-      File.open(file_path) do |f|
-        f.each_line do |line|
-          args << line.split(",")[0].gsub("argument :", "").strip.underscore if line.include?("argument")
-        end
-      end
-      args
     end
   end
 end
