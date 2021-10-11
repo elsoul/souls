@@ -3,7 +3,10 @@ module Souls
     desc "create_mutation_rbs [CLASS_NAME]", "Update GraphQL Type from schema.rb"
     def create_mutation_rbs(class_name)
       singularized_class_name = class_name.singularize.underscore
-      new_cols = Souls.get_columns_num(class_name: singularized_class_name)
+      new_cols = ""
+      Dir.chdir(Souls.get_api_path.to_s) do
+        new_cols = Souls.get_columns_num(class_name: singularized_class_name)
+      end
       dir_name = "./sig/api/app/graphql/mutations/base/#{singularized_class_name}"
       new_file_path = "tmp/create_mutation.rbs"
       file_path = "#{dir_name}/create_#{singularized_class_name}.rbs"
