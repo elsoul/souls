@@ -5,7 +5,7 @@ module Souls
       singularized_class_name = class_name.singularize.underscore
       new_cols = Souls.get_columns_num(class_name: singularized_class_name)
       dir_name = "./sig/api/app/graphql/types"
-      new_file_path = "tmp/create_type.rbs"
+      new_file_path = "config/create_type.rbs"
       file_path = "#{dir_name}/#{singularized_class_name}_type.rbs"
       argument = false
       File.open(file_path) do |f|

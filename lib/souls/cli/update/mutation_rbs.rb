@@ -8,7 +8,7 @@ module Souls
         new_cols = Souls.get_columns_num(class_name: singularized_class_name)
       end
       dir_name = "./sig/api/app/graphql/mutations/base/#{singularized_class_name}"
-      new_file_path = "tmp/create_mutation.rbs"
+      new_file_path = "config/create_mutation.rbs"
       file_path = "#{dir_name}/create_#{singularized_class_name}.rbs"
       argument = false
       resolve = false
@@ -70,7 +70,7 @@ module Souls
       singularized_class_name = class_name.singularize.underscore
       new_cols = Souls.get_columns_num(class_name: singularized_class_name)
       dir_name = "./sig/api/app/graphql/mutations/base/#{singularized_class_name}"
-      new_file_path = "tmp/update_mutation.rbs"
+      new_file_path = "config/update_mutation.rbs"
       file_path = "#{dir_name}/update_#{singularized_class_name}.rbs"
       argument = false
       resolve = false
