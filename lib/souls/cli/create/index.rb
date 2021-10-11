@@ -39,7 +39,7 @@ module Souls
           f.each_line do |line|
             case line.strip.to_s
             when "end"
-              ["app", "db", "constants", "app.rb"].each do |path|
+              ["app", "db/seeds.rb", "constants", "app.rb"].each do |path|
                 new_line.write("  check \"apps/#{worker_name}/#{path}\"\n")
               end
               new_line.write("end\n")
