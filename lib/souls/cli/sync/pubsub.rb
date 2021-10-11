@@ -76,7 +76,7 @@ module Souls
 
     def get_workers
       require("#{Souls.get_mother_path}/config/souls")
-      worker_paths = Souls.configuration.workers.map { |n| n[:name] }
+      worker_paths = Souls.configuration.workers.map { |n| n[:name].split("-").last }
       response = {}
       Dir.chdir(Souls.get_mother_path.to_s) do
         worker_paths.each do |worker|
