@@ -1,0 +1,57 @@
+module Mutations
+  module Base
+    module User
+      class UpdateUser < BaseMutation
+        String: String
+        Boolean: Boolean
+        Integer: Integer
+        def resolve:  ({
+                          id: String,
+                          username: String?,
+                          screen_name: String?,
+                          last_name: String?,
+                          first_name: String?,
+                          last_name_kanji: String?,
+                          first_name_kanji: String?,
+                          last_name_kana: String?,
+                          first_name_kana: String?,
+                          email: String?,
+                          tel: String?,
+                          icon_url: String?,
+                          birthday: String?,
+                          gender: String?,
+                          lang: String?,
+                          category: String?,
+                          roles_mask: Integer?,
+                          is_deleted: Boolean?,
+                      }) -> ({ :user_edge => { :node => String } } | ::GraphQL::ExecutionError )
+
+        def self.argument: (:uid, String, required: false ) -> String
+                         | (:username, String, required: false ) -> String
+                         | (:screen_name, String, required: false ) -> String
+                         | (:last_name, String, required: false ) -> String
+                         | (:first_name, String, required: false ) -> String
+                         | (:last_name_kanji, String, required: false ) -> String
+                         | (:first_name_kanji, String, required: false ) -> String
+                         | (:last_name_kana, String, required: false ) -> String
+                         | (:first_name_kana, String, required: false ) -> String
+                         | (:email, String, required: false ) -> String
+                         | (:tel, String, required: false ) -> String
+                         | (:icon_url, String, required: false ) -> String
+                         | (:birthday, String, required: false ) -> String
+                         | (:gender, String, required: false ) -> String
+                         | (:lang, String, required: false ) -> String
+                         | (:category, String, required: false ) -> String
+                         | (:roles_mask, Integer, required: false ) -> Integer
+                         | (:is_deleted, Boolean, required: false ) -> Boolean
+
+        def self.field: (*untyped) -> String
+        attr_accessor context: {user:{
+          id: Integer,
+          username: String,
+          email: String
+        }}
+      end
+    end
+  end
+end

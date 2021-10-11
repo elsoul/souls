@@ -1,4 +1,5 @@
 require_relative "./mutation"
+require_relative "./mutation_rbs"
 require_relative "./resolver"
 require_relative "./type"
 require_relative "./rspec_factory"
