@@ -45,6 +45,7 @@ module Souls
     desc "create_ip_range", "Create VPC Adress Range"
     def create_ip_range
       app_name = Souls.configuration.app
+      project_id = Souls.configuration.project_id
       system(
         "
             gcloud compute addresses create #{app_name}-ip-range \
@@ -53,7 +54,7 @@ module Souls
               --prefix-length=16 \
               --description='peering range for SOULs' \
               --network=#{app_name} \
-              --project=#{app_name}"
+              --project=#{project_id}"
       )
     rescue Thor::Error => e
       raise(Thor::Error, e)
