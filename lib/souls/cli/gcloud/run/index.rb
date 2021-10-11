@@ -23,7 +23,7 @@ module Souls
     desc "get_endpoint", "Show Worker's Endpoint"
     def get_endpoint(worker_name: "")
       project_id = Souls.configuration.project_id
-      `gcloud run services list  --project #{project_id} | grep ##{worker_name} | awk '{print $4}'`
+      `gcloud run services list  --project #{project_id} | grep #{worker_name} | awk '{print $4}'`
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
