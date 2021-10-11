@@ -13,14 +13,16 @@ module Souls
     def scaffold(class_name)
       create_mutation(class_name)
       update_mutation(class_name)
-      create_mutation_rbs(class_name)
-      update_mutation_rbs(class_name)
       resolver(class_name)
       type(class_name)
-      type_rbs(class_name)
       rspec_factory(class_name)
       rspec_mutation(class_name)
       rspec_resolver(class_name)
+      Dir.chdir(Souls.get_mother_path.to_s) do
+        create_mutation_rbs(class_name)
+        update_mutation_rbs(class_name)
+        type_rbs(class_name)
+      end
     end
   end
 end
