@@ -119,7 +119,7 @@ module Souls
           else
             get_columns_num(class_name: class_name)
           end
-        relation_params = cols.select { |col| col[:column_name].match?(/_id$/) }
+        relation_params = cols.select { |n| n[:column_name].match?(/_id$/) }
         user_check =
           relation_params.map do |param|
             param[:column_name] == "user_id"

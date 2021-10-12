@@ -8,7 +8,9 @@ module Souls
           system("foreman start -f Procfile.dev")
         end
       else
+        current_dir = FileUtils.pwd.split("/").last
         system("foreman start -f Procfile.dev")
+        puts("GraphQL Playground is running on\n\nhttp://localhost:4000/playground") if current_dir == "api"
       end
     end
   end
