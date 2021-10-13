@@ -40,7 +40,6 @@ ActiveRecord::Base.default_timezone = :local
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{Dir.pwd}/app/models")
 loader.push_dir("#{Dir.pwd}/app/utils")
-loader.push_dir("#{Dir.pwd}/app/models/engines")
 loader.push_dir("#{Dir.pwd}/app/policies")
 
 loader.collapse("#{__dir__}/app/types")
