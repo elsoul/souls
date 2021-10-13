@@ -55,6 +55,7 @@ module Souls
     end
 
     def delete_subscription(topic_id: "mailer")
+      project_id = Souls.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       subscription_id = "#{topic_id}_sub"
       subscription = pubsub.subscription(subscription_id)
