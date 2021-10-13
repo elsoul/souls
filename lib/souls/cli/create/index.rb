@@ -298,14 +298,14 @@ end
            _____ ____  __  ____#{'        '}
           / ___// __ \\/ / / / /   %{red1}
           \\__ \\/ / / / / / / /   %{red2}
-         ___/ / /_/ / /_/ / /___%{red3}#{' '}
+          __/ / /_/ / /_/ / /___%{red3}#{' '}
         /____/\\____/\\____/_____%{red4}#{'  '}
       TEXT
       red1 = ["_____", :red]
       red2 = ["/ ___/", :red]
       red3 = ["(__  )", :red]
       red4 = ["/____/", :red]
-      ms = Paint % [txt2, :cyan, { red1: red1, red2: red2, red3: red3, red4: red4 }]
+      ms = Paint % [txt2, :blue, { red1: red1, red2: red2, red3: red3, red4: red4 }]
       puts(ms)
       puts(line)
       welcome = Paint["SOULs Worker is Ready!", :white]
@@ -318,7 +318,7 @@ end
         $ cd apps/#{worker_name}
         $ souls sync model
         $ souls s
-        Go To : http://localhost:3000
+        Go To : http://localhost:3000/playground
 
         Doc: https://souls.elsoul.nl
       TEXT
