@@ -34,6 +34,7 @@ module Souls
           create_push_subscription(topic_id: key.to_s)
         end
         delete_topic(topic_id: key.to_s) if value == -1
+        delete_subscription(topic_id: key.to_s) if value == -1
       end
       workers
     end
@@ -51,6 +52,13 @@ module Souls
       topic = pubsub.topic(topic_id.to_s)
       topic.delete
       puts("Topic #{topic_id} deleted.")
+    end
+
+    def delete_subscription(topic_id: "mailer")
+      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      subscription_id = "#{topic_id}_sub"
+      subscription = pubsub.subscription(subscription_id)
+      subscription.detach
     end
 
     def create_push_subscription(topic_id: "mailer")
