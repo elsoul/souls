@@ -48,10 +48,9 @@ module Souls
     def delete_topic(topic_id: "mailer")
       project_id = Souls.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
-      topic_name = "#{topic_id}_sub"
-      topic = pubsub.topic(topic_name.to_s)
+      topic = pubsub.topic(topic_id.to_s)
       topic.delete
-      puts("Topic #{topic_name} deleted.")
+      puts("Topic #{topic_id} deleted.")
     end
 
     def create_push_subscription(topic_id: "mailer")
