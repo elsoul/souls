@@ -15,6 +15,8 @@ RSpec.describe(Souls::Generate) do
       a1 = Souls::Generate.new.connection(class_name)
       expect(a1).to(eq(file_path))
       FileUtils.rm_rf(file_dir)
+    rescue StandardError => error
+      FileUtils.rm(file_path) if File.exist?(file_path)
     end
   end
 end

@@ -12,6 +12,7 @@ RSpec.describe(Souls::Create) do
       FileUtils.mv "tmp/souls-api.rb", "apps/api/#{mother_conf}"
       FileUtils.mv "tmp/Procfile.dev", "Procfile.dev"
       FileUtils.rm_rf "apps/scraper"
+      FileUtils.rm_rf "sig/scraper"
       FileUtils.rm_rf ".github/workflows/scraper.yml"
     end
   end
