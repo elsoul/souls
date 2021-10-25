@@ -21,6 +21,7 @@
 
 - [Go to SOULs Document](https://souls.elsoul.nl/)
 
+![画像](https://souls.elsoul.nl/imgs/gifs/souls-new-video.gif)
 
 ## What's SOULs?
 
@@ -33,13 +34,24 @@ Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cl
 - Maximize development efficiency with CI / CD standard schema-driven Scaffold
 - Achieve global scale with lower management costs
 
-![画像](https://souls.elsoul.nl/imgs/docs/SOULs-architecture.jpg)
-
+![SOULs Architecture](https://souls.elsoul.nl/imgs/docs/SOULs-architecture.jpg)
 
 SOULs creates 2 types of APP.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Messaging Worker API (Ruby) - Cloud Run
+
+## Ruby type checking
+The SOULs framework uses RBS / Steep, which appeared in Ruby 3.0.
+
+- [RBS](https://github.com/ruby/rbs/)
+- [Steep](https://github.com/soutaro/steep/)
+
+As a result, typos, column types, etc.
+
+It is a development environment where you can immediately notice the mistakes that occur frequently.
+
+![SOULs RBS](https://souls.elsoul.nl/imgs/gifs/rbs-video.gif)
 
 ## Dependency
 
