@@ -21,7 +21,11 @@
 
 - [Go to SOULs Document](https://souls.elsoul.nl/)
 
-![画像](https://souls.elsoul.nl/imgs/gifs/souls-new-video.gif)
+<p>
+  <a aria-label="SOULs Document" href="https://souls.elsoul.nl/">
+    <img src="https://souls.elsoul.nl/imgs/gifs/souls-new-video.gif">
+  </a>
+</p>
 
 ## What's SOULs?
 
@@ -51,7 +55,12 @@ As a result, typos, column types, etc.
 
 It is a development environment where you can immediately notice the mistakes that occur frequently.
 
-![SOULs RBS](https://souls.elsoul.nl/imgs/gifs/rbs-video.gif)
+<p>
+  <a aria-label="RBS Demo" href="https://souls.elsoul.nl/ja/docs/guides/basic/type-check/">
+    <img src="https://souls.elsoul.nl/imgs/gifs/rbs-video.gif">
+  </a>
+</p>
+
 
 ## Dependency
 
