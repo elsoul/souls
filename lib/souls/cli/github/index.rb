@@ -14,7 +14,7 @@ module Souls
       File.open(file_path, "r") do |file|
         file.each_line do |line|
           key_and_value = line.split("=")
-          system("gh secret set #{key_and_value[0]} -b \"#{key_and_value[1]}\"")
+          system("gh secret set #{key_and_value[0]} -b \"#{key_and_value[1].strip}\"")
         end
       end
     end
