@@ -159,6 +159,7 @@ module Souls
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/gitignore")
+      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.env.production.sample")
       system("cd #{app_name} && mv gitignore .gitignore")
       system("cd #{app_name} && bundle")
       system("cd #{app_name}/apps/api && bundle")
