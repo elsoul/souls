@@ -4,6 +4,9 @@ module Souls
     desc "generate [COMMAND]", "SOULs Generate Commands"
     subcommand "generate", Generate
 
+    desc "github [COMMAND]", "SOULs Github Commands"
+    subcommand "github", Github
+
     desc "update [COMMAND]", "SOULs Update Commands"
     subcommand "update", Update
 
@@ -32,6 +35,7 @@ module Souls
     map "c" => :console
     map "s" => :server
     map "g" => :generate
+    map "gh" => :github
     map "t" => :test
     map "d" => :delete
     map ["-v", "--v", "--version", "-version"] => :version

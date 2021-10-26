@@ -28,7 +28,6 @@ namespace :upload do
     Rake::Task["upload:github"].invoke
     Rake::Task["upload:sig"].invoke
     files = Dir["init_files/*"]
-    files << ".rubocop.yml"
     files.each do |file|
       system("gsutil cp #{file} gs://souls-bucket/boilerplates/")
     end

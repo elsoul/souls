@@ -7,7 +7,11 @@ module Souls
       create_service_account_key
       Souls::Gcloud.new.enable_permissions
       add_permissions
-      export_key_to_console
+      begin
+        set_gh_secret_json
+      rescue StandardError
+        export_key_to_console
+      end
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
@@ -94,6 +98,10 @@ module Souls
       roles.each do |role|
         add_service_account_role(role: role)
       end
+    end
+
+    def set_gh_secret_json
+      system("gh secret set GCP_SA_KEY < ./config/keyfile.json")
     end
   end
 end
