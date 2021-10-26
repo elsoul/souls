@@ -101,7 +101,9 @@ module Souls
     end
 
     def set_gh_secret_json
-      system("gh secret set GCP_SA_KEY < ./config/keyfile.json")
+      file_path = "config/keyfile.json"
+      system("gh secret set GCP_SA_KEY < #{file_path}")
+      FileUtils.rm(file_path)
     end
   end
 end
