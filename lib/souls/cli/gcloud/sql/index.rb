@@ -18,9 +18,9 @@ module Souls
       Dir.chdir(Souls.get_api_path.to_s) do
         file_path = ".env"
         lines = File.readlines(".env")
-        lines[0] = "DB_HOST=#{get_sql_ip.strip}" << $RS
-        lines[1] = "DB_PW=#{options[:root_password]}" << $RS
-        lines[2] = "DB_USER=#{instance_name}" << $RS
+        lines[0] = "DB_HOST=#{get_sql_ip.strip}\n"
+        lines[1] = "DB_PW=#{options[:root_password]}\n"
+        lines[2] = "DB_USER=postgres\n"
         File.open(file_path, "w") { |f| f.write(lines.join) }
       end
     rescue Thor::Error => e

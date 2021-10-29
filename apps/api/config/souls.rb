@@ -1,6 +1,7 @@
 Souls.configure do |config|
-  config.app = "souls"
-  config.project_id = "el-quest"
+  config.app = "souls-app"
+  config.project_id = "souls-app"
+  config.region = "asia-northeast1"
   config.endpoint = "/endpoint"
   config.strain = "api"
   config.fixed_gems = ["spring"]
