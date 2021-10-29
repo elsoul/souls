@@ -55,7 +55,6 @@ module Souls
         system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
       else
         system("rake db:migrate:reset")
-        system("rake db:migrate:reset RACK_ENV=test")
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
