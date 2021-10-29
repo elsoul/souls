@@ -3,15 +3,26 @@ module Souls
     desc "create_instance", "Create Google Cloud SQL - PostgreSQL13"
     method_option :region, default: "", aliases: "--region", desc: "Google Cloud Platform Region"
     method_option :root_password, default: "", aliases: "--root-password", desc: "Set Cloud SQL Root Password"
+    method_option :mysql, type: :boolean, default: false, aliases: "--mysql", desc: "Set Cloud SQL Type to MySQL"
     def create_instance
-      instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
+      instance_name = "souls-#{Souls.configuration.app}-db" if instance_name.blank?
       region = Souls.configuration.region if options[:region].blank?
+      db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
+
       zone = "#{region}-b"
       system(
         "gcloud sql instances create #{instance_name} \
-              --database-version=POSTGRES_13 --cpu=2 --memory=7680MB --zone=#{zone} \
+              --database-version=#{db_type} --cpu=2 --memory=7680MB --zone=#{zone} \
               --root-password='#{options[:root_password]}' --database-flags cloudsql.iam_authentication=on"
       )
+      Dir.chdir(Souls.get_api_path.to_s) do
+        file_path = ".env"
+        lines = File.readlines(".env")
+        lines[0] = "DB_HOST=#{get_sql_ip.strip}" << $RS
+        lines[1] = "DB_PW=#{options[:root_password]}" << $RS
+        lines[2] = "DB_USER=#{instance_name}" << $RS
+        File.open(file_path, "w") { |f| f.write(lines.join) }
+      end
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
@@ -93,6 +104,12 @@ module Souls
       )
     rescue Thor::Error => e
       raise(Thor::Error, e)
+    end
+
+    private
+
+    def get_sql_ip
+      `gcloud sql instances list | grep james | awk '{print $5}'`
     end
   end
 end
