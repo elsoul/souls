@@ -68,6 +68,7 @@ It is a development environment where you can immediately notice the mistakes th
 - [Docker](https://www.docker.com/)
 - [Firebase CLI](https://firebase.google.com/docs/cli)
 - [Ruby](https://www.ruby-lang.org)
+- [Github CLI](https://cli.github.com/)
 
 ## Cloud Infrastructure
 
