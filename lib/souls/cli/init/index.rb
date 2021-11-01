@@ -159,14 +159,13 @@ module Souls
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/gitignore")
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.env.production.sample")
       system("cd #{app_name} && mv gitignore .gitignore")
       system("cd #{app_name} && bundle")
       system("cd #{app_name}/apps/api && bundle")
       FileUtils.rm(sig_name)
     end
 
-    def souls_api_credit(app_name: "souls", service_name: "api")
+    def souls_api_credit(app_name: "souls")
       line = Paint["====================================", :yellow]
       puts("\n")
       puts(line)
