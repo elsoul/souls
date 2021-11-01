@@ -7,7 +7,6 @@ module Souls
     def create_instance
       app_name = Souls.configuration.app
       project_id = Souls.configuration.project_id
-      region = Souls.configuration.region
       instance_name = Souls.configuration.instance_name if instance_name.blank?
       region = Souls.configuration.region if options[:region].blank?
       db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
@@ -22,12 +21,11 @@ module Souls
         file_path = ".env"
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
-            DB_HOST=#{get_sql_ip.strip}
-            DB_PW=#{options[:root_password]}
-            DB_USER=postgres
-            SLACK=YOUR_WEB_HOOK_URL
-            TZ="Asia/Tokyo"
-            SECRET_KEY_BASE=xxxxxxxxxxxxxx
+            SOULS_DB_HOST=#{get_sql_ip.strip}
+            SOULS_DB_PW=#{options[:root_password]}
+            SOULS_DB_USER=postgres
+            SOULS_TZ="#{region_to_timezone(region: region)}"
+            SOULS_SECRET_KEY_BASE="#{SecureRandom.base64(64)}"
           TEXT
         end
       end
@@ -35,16 +33,15 @@ module Souls
         file_path = ".env.production"
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
-            DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
-            DB_PW=#{options[:root_password]}
-            DB_USER=postgres
-            APP_NAME=#{app_name}
-            GCP_PROJECT_ID=#{project_id}
-            GCP_REGION=#{region}
-            GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
-            TZ="Asia/Tokyo"
-            SLACK="https://YOUR.WEB_HOOK_URL"
-            SECRET_KEY_BASE="XXXXXXXSecureTokenXXXXXXXXXX"
+            SOULS_DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
+            SOULS_DB_PW=#{options[:root_password]}
+            SOULS_DB_USER=postgres
+            SOULS_APP_NAME=#{app_name}
+            SOULS_GCP_PROJECT_ID=#{project_id}
+            SOULS_GCP_REGION=#{region}
+            SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
+            SOULS_TZ="#{region_to_timezone(region: region)}"
+            SOULS_SECRET_KEY_BASE="#{SecureRandom.base64(64)}"
           TEXT
         end
       end
@@ -135,6 +132,16 @@ module Souls
 
     def get_sql_ip
       `gcloud sql instances list | grep james | awk '{print $5}'`
+    end
+
+    def region_to_timezone(region: "asia-northeast1")
+      if region.include?("asia")
+        "Asia/Tokyo"
+      elsif region.include?("europe")
+        "Europe/Amsterdam"
+      else
+        "America/Los_Angeles"
+      end
     end
   end
 end

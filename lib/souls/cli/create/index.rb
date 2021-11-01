@@ -173,39 +173,38 @@ end
                   uses: google-github-actions/setup-gcloud@master
                   with:
                     version: "323.0.0"
-                    project_id: ${{ secrets.GCP_PROJECT_ID }}
-                    service_account_key: ${{ secrets.GCP_SA_KEY }}
+                    project_id: ${{ secrets.SOULS_GCP_PROJECT_ID }}
+                    service_account_key: ${{ secrets.SOULS_GCP_SA_KEY }}
                     export_default_credentials: true
 
                 - name: Configure Docker
                   run: gcloud auth configure-docker --quiet
 
                 - name: Build Docker container
-                  run: docker build -f ./apps/#{worker_name}/Dockerfile ./apps/#{worker_name} -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-#{worker_name}
+                  run: docker build -f ./apps/#{worker_name}/Dockerfile ./apps/#{worker_name} -t gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-#{worker_name}
 
                 - name: Push to Container Resistory
-                  run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-#{worker_name}
+                  run: docker push gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-#{worker_name}
 
                 - name: Deploy to Cloud Run
                   run: |
-                      gcloud run deploy souls-${{ secrets.APP_NAME }}-#{worker_name} \\
-                        --service-account=${{ secrets.APP_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \\
-                        --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-#{worker_name} \\
+                      gcloud run deploy souls-${{ secrets.SOULS_APP_NAME }}-#{worker_name} \\
+                        --service-account=${{ secrets.SOULS_APP_NAME }}@${{ secrets.SOULS_GCP_PROJECT_ID }}.iam.gserviceaccount.com \\
+                        --image=gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-#{worker_name} \\
                         --memory=4Gi \\
-                        --region=${{ secrets.GCP_REGION }} \\
+                        --region=${{ secrets.SOULS_GCP_REGION }} \\
                         --allow-unauthenticated \\
                         --platform=managed \\
                         --quiet \\
                         --concurrency=80 \\
                         --port=8080 \\
-                        --set-cloudsql-instances=${{ secrets.GCLOUDSQL_INSTANCE }} \\
-                        --set-env-vars="DB_USER=${{ secrets.DB_USER }}" \\
-                        --set-env-vars="DB_PW=${{ secrets.DB_PW }}" \\
-                        --set-env-vars="DB_HOST=${{ secrets.DB_HOST }}" \\
-                        --set-env-vars="TZ=${{ secrets.TZ }}" \\
-                        --set-env-vars="SLACK=${{ secrets.SLACK }}" \\
-                        --set-env-vars="SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}" \\
-                        --set-env-vars="PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}"
+                        --set-cloudsql-instances=${{ secrets.SOULS_GCLOUDSQL_INSTANCE }} \\
+                        --set-env-vars="SOULS_DB_USER=${{ secrets.SOULS_DB_USER }}" \\
+                        --set-env-vars="SOULS_DB_PW=${{ secrets.SOULS_DB_PW }}" \\
+                        --set-env-vars="SOULS_DB_HOST=${{ secrets.SOULS_DB_HOST }}" \\
+                        --set-env-vars="SOULS_TZ=${{ secrets.SOULS_TZ }}" \\
+                        --set-env-vars="SOULS_SECRET_KEY_BASE=${{ secrets.SOULS_SECRET_KEY_BASE }}" \\
+                        --set-env-vars="SOULS_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}"
         TEXT
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
