@@ -38,6 +38,7 @@
     <orderEntry type="library" scope="PROVIDED" name="google-cloud-errors (v1.2.0, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="google-cloud-pubsub (v2.8.1, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="google-cloud-pubsub-v1 (v0.6.0, RVM: ruby-3.0.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="google-protobuf (v3.19.0, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="googleapis-common-protos (v1.3.12, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="googleapis-common-protos-types (v1.3.0, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="googleauth (v1.1.0, RVM: ruby-3.0.2) [gem]" level="application" />
@@ -72,6 +73,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.10.1, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rbs (v1.6.2, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="regexp_parser (v2.1.1, RVM: ruby-3.0.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="reverse_markdown (v2.0.0, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rexml (v3.2.5, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec (v3.10.0, RVM: ruby-3.0.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-core (v3.10.1, RVM: ruby-3.0.2) [gem]" level="application" />
