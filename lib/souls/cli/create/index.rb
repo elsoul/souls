@@ -192,7 +192,7 @@ end
                         --service-account=${{ secrets.APP_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \\
                         --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-#{worker_name} \\
                         --memory=4Gi \\
-                        --region=asia-northeast1 \\
+                        --region=${{ secrets.GCP_REGION }} \\
                         --allow-unauthenticated \\
                         --platform=managed \\
                         --quiet \\
