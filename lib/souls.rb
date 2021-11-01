@@ -49,5 +49,9 @@ module Souls
       @fixed_gems = nil
       @workers = nil
     end
+
+    def instance_name
+      "souls-#{@app}-db"
+    end
   end
 end

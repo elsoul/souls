@@ -5,7 +5,7 @@ module Souls
     method_option :root_password, default: "", aliases: "--root-password", desc: "Set Cloud SQL Root Password"
     method_option :mysql, type: :boolean, default: false, aliases: "--mysql", desc: "Set Cloud SQL Type to MySQL"
     def create_instance
-      instance_name = "souls-#{Souls.configuration.app}-db" if instance_name.blank?
+      instance_name = Souls.configuration.instance_name if instance_name.blank?
       region = Souls.configuration.region if options[:region].blank?
       db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
 
@@ -46,7 +46,7 @@ module Souls
     desc "assign_network", "Assign Network"
     def assign_network
       app_name = Souls.configuration.app
-      instance_name = "#{Souls.configuration.app}-db"
+      instance_name = Souls.configuration.instance_name
       project_id = Souls.configuration.project_id
       system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --network=#{app_name}")
     rescue Thor::Error => e
@@ -91,8 +91,8 @@ module Souls
     desc "assgin_ip", "Add Current Grobal IP to White List"
     def assign_ip(instance_name: "", ip: "")
       ip = `curl inet-ip.info` if ip.blank?
-      project_id = Souls.configuration.project_id
-      instance_name = "#{Souls.configuration.app}-db" if instance_name.blank?
+      project_id = Souls.configuration.project_id if instance_name.blank?
+      instance_name = Souls.configuration.instance_name if instance_name.blank?
       system(
         "
             gcloud beta sql instances patch #{instance_name} \
