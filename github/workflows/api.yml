@@ -60,7 +60,7 @@ jobs:
       run: gcloud auth configure-docker --quiet
     
     - name: Build Docker container
-      run: docker build -f ./apps/api/Dockerfile ./apps/api -t gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.APP_NAME}}-api
+      run: docker build -f ./apps/api/Dockerfile ./apps/api -t gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-api
 
     - name: Push to Container Resistory
       run: docker push gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-api
