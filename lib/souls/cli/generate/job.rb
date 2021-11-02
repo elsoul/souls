@@ -4,9 +4,9 @@ module Souls
     method_option :mailer, type: :boolean, aliases: "--mailer", default: false, desc: "Mailer Option"
     def job(class_name)
       if options[:mailer]
-        mailgun_mailer(class_name: class_name)
+        mailgun_mailer(class_name)
       else
-        create_job_mutation(class_name: class_name)
+        create_job_mutation(class_name)
       end
       Souls::Generate.new.invoke(:job_rbs, [class_name], {})
       Souls::Generate.new.invoke(:rspec_job, [class_name], {})
@@ -16,7 +16,7 @@ module Souls
 
     private
 
-    def create_job_mutation(class_name: "send-mailer")
+    def create_job_mutation(class_name)
       file_dir = "./app/graphql/mutations/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}#{class_name.singularize}.rb"
@@ -44,7 +44,7 @@ module Souls
       file_path
     end
 
-    def mailgun_mailer(class_name: "mailer")
+    def mailgun_mailer(class_name)
       file_dir = "./app/graphql/mutations/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}#{class_name.singularize}.rb"
