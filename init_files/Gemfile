@@ -15,4 +15,3 @@ gem "steep", "0.46.0"
 gem "thor", "1.1.0"
 gem "tty-prompt", "0.23.1"
 gem "whirly", "0.3.0"
-

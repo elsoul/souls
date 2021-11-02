@@ -6,10 +6,10 @@ module Souls
       file_path = "./spec/queries/#{singularized_class_name}_spec.rb"
       return "RspecQuery already exist! #{file_path}" if File.exist?(file_path)
 
-      rspec_query_head(class_name: singularized_class_name)
-      rspec_query_after_head(class_name: singularized_class_name)
-      rspec_query_params(class_name: singularized_class_name)
-      rspec_query_end(class_name: singularized_class_name)
+      rspec_query_head(singularized_class_name)
+      rspec_query_after_head(singularized_class_name)
+      rspec_query_params(singularized_class_name)
+      rspec_query_end(singularized_class_name)
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
     rescue Thor::Error => e
@@ -18,7 +18,7 @@ module Souls
 
     private
 
-    def rspec_query_head(class_name: "user")
+    def rspec_query_head(class_name)
       file_dir = "./spec/queries/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
@@ -30,8 +30,10 @@ module Souls
       end
     end
 
-    def rspec_query_after_head(class_name: "user")
+    def rspec_query_after_head(class_name)
       file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
+      return unless File.exist?(file_path)
+
       path = "./db/schema.rb"
       @on = false
       @user_exist = false
@@ -78,8 +80,10 @@ module Souls
       end
     end
 
-    def rspec_query_params(class_name: "user")
+    def rspec_query_params(class_name)
       file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
+      return unless File.exist?(file_path)
+
       path = "./db/schema.rb"
       @on = false
       File.open(file_path, "a") do |new_line|
@@ -123,7 +127,7 @@ module Souls
       end
     end
 
-    def rspec_query_end(class_name: "user")
+    def rspec_query_end(class_name)
       file_path = "./spec/queries/#{class_name.singularize}_spec.rb"
       path = "./db/schema.rb"
       @on = false

@@ -21,7 +21,7 @@ module Souls
 
     private
 
-    def create_mutation(class_name: "user")
+    def create_mutation(class_name)
       singularized_class_name = class_name.singularize.underscore
       file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
@@ -29,7 +29,7 @@ module Souls
       raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
       params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
-      File.open(file_path, "w") do |f|
+      File.open(file_path, "a") do |f|
         f.write(<<~TEXT)
           module Mutations
             module Base::#{singularized_class_name.camelize}
@@ -91,7 +91,7 @@ module Souls
       file_path
     end
 
-    def update_mutation(class_name: "user")
+    def update_mutation(class_name)
       singularized_class_name = class_name.singularize.underscore
       file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
@@ -165,7 +165,7 @@ module Souls
     end
 
     # 3. Mutation - Delete
-    def delete_mutation(class_name: "user")
+    def delete_mutation(class_name)
       file_path = "./app/graphql/mutations/base/#{class_name}/delete_#{class_name}.rb"
       return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 
@@ -195,7 +195,7 @@ module Souls
     end
 
     # 4. Mutation - Destroy Delete
-    def destroy_delete_mutation(class_name: "user")
+    def destroy_delete_mutation(class_name)
       file_path = "./app/graphql/mutations/base/#{class_name}/destroy_delete_#{class_name}.rb"
       return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 

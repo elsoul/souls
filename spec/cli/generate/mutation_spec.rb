@@ -3,21 +3,84 @@ RSpec.describe(Souls::Generate) do
     let(:class_name) { "user" }
 
     before do
-      file_dir = "./app/graphql/mutations/base/#{class_name}/"
-      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-      file_path = "#{file_dir}create_#{class_name.singularize}.rb"
-      FileUtils.rm(file_path) if File.exist?(file_path)
+      FakeFS do
+        @file_dir = "./app/graphql/mutations/base/#{class_name}/"
+        FileUtils.mkdir_p(@file_dir) unless Dir.exist?(@file_dir)
+      end
     end
 
-    it "destroy delete mutation" do
-      file_dir = "./app/graphql/mutations/base/#{class_name}/"
-      file_path = "#{file_dir}destroy_delete_#{class_name.singularize}.rb"
-      a1 = Souls::Generate.new.mutation(class_name)
-      expect(a1).to(eq(file_path))
-      rm_path = "./apps/api/app/graphql/mutations/base/#{class_name}/"
-      FileUtils.rm_rf(rm_path)
-    rescue StandardError => error
-      FileUtils.rm_rf(rm_path) if Dir.exist?(rm_path)
+    describe "create_mutation" do
+      it "generates the correct file" do
+        file_path = "#{@file_dir}create_#{class_name.singularize}.rb"
+
+        FakeFS.activate!
+        generate = Souls::Generate.new
+        allow(Souls).to receive(:get_relation_params).and_return({:params => {}})
+        a1 = generate.send(:create_mutation, class_name)
+        file_output = File.read(file_path)
+
+        expect(a1).to(eq(file_path))
+        expect(File.exists? file_path).to(eq(true))
+        FakeFS.deactivate!
+
+        example_file_path = File.join(File.dirname(__FILE__), "./output_scaffolds/scaffold_mutation_create.rb")
+        expect(file_output).to(eq(File.read(example_file_path)))
+      end
+    end
+
+    describe "update_mutation" do
+      it "generates the correct file" do
+        file_path = "#{@file_dir}update_#{class_name.singularize}.rb"
+
+        FakeFS.activate!
+        generate = Souls::Generate.new
+        allow(Souls).to receive(:get_relation_params).and_return({:params => {}})
+        a1 = generate.send(:update_mutation, class_name)
+        file_output = File.read(file_path)
+
+        expect(a1).to(eq(file_path))
+        expect(File.exists? file_path).to(eq(true))
+        FakeFS.deactivate!
+
+        example_file_path = File.join(File.dirname(__FILE__), "./output_scaffolds/scaffold_mutation_update.rb")
+        expect(file_output).to(eq(File.read(example_file_path)))
+      end
+    end
+
+    describe "delete_mutation" do
+      it "generates the correct file" do
+        file_path = "#{@file_dir}delete_#{class_name.singularize}.rb"
+
+        FakeFS.activate!
+        generate = Souls::Generate.new
+        a1 = generate.send(:delete_mutation, class_name)
+        file_output = File.read(file_path)
+
+        expect(a1).to(eq(file_path))
+        expect(File.exists? file_path).to(eq(true))
+        FakeFS.deactivate!
+
+        example_file_path = File.join(File.dirname(__FILE__), "./output_scaffolds/scaffold_mutation_delete.rb")
+        expect(file_output).to(eq(File.read(example_file_path)))
+      end
+    end
+
+    describe "destroy_delete_mutation" do
+      it "generates the correct file" do
+        file_path = "#{@file_dir}destroy_delete_#{class_name.singularize}.rb"
+
+        FakeFS.activate!
+        generate = Souls::Generate.new
+        a1 = generate.send(:destroy_delete_mutation, class_name)
+        file_output = File.read(file_path)
+
+        expect(a1).to(eq(file_path))
+        expect(File.exists? file_path).to(eq(true))
+        FakeFS.deactivate!
+
+        example_file_path = File.join(File.dirname(__FILE__), "output_scaffolds/scaffold_mutation_destroy_delete.rb")
+        expect(file_output).to(eq(File.read(example_file_path)))
+      end
     end
   end
 end
