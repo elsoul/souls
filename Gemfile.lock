@@ -32,6 +32,7 @@ GEM
     concurrent-ruby (1.1.9)
     diff-lcs (1.4.4)
     e2mmap (0.1.0)
+    fakefs (1.4.0)
     faraday (1.8.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -236,6 +237,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (= 6.1.4.1)
+  fakefs (= 1.4.0)
   foreman (= 0.87.2)
   google-cloud-pubsub (= 2.8.1)
   paint (= 2.2.1)
