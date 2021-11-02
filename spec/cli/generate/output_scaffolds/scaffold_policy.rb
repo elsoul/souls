@@ -1,3 +1,6 @@
+module OutputScaffold
+  def self.scaffold_policy
+    <<~POLICY
 class UserPolicy < ApplicationPolicy
   def show?
     true
@@ -27,5 +30,8 @@ class UserPolicy < ApplicationPolicy
 
   def admin_permissions?
     @user.master? or @user.admin?
+  end
+end
+POLICY
   end
 end

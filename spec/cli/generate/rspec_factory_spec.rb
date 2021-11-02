@@ -1,3 +1,5 @@
+require_relative "./output_scaffolds/scaffold_rspec_factory"
+
 RSpec.describe(Souls::Generate) do
   describe "Generate Rspec Factory" do
 
@@ -24,8 +26,7 @@ RSpec.describe(Souls::Generate) do
       expect(File.exists? file_path).to(eq(true))
       FakeFS.deactivate!
 
-      example_file_path = File.join(File.dirname(__FILE__), "output_scaffolds/scaffold_rspec_factory.rb")
-      expect(file_output).to(eq(File.read(example_file_path)))
+      expect(file_output).to(eq(OutputScaffold.scaffold_rspec_factory))
     end
   end
 end

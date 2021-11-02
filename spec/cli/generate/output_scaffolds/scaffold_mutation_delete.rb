@@ -1,3 +1,6 @@
+module OutputScaffold
+  def self.scaffold_mutation_delete
+    <<~MUTATIONDELETE
 module Mutations
   module Base::User
     class DeleteUser < BaseMutation
@@ -13,5 +16,8 @@ module Mutations
         GraphQL::ExecutionError.new(error.message)
       end
     end
+  end
+end
+MUTATIONDELETE
   end
 end

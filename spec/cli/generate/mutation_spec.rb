@@ -1,3 +1,8 @@
+require_relative "./output_scaffolds/scaffold_mutation_create"
+require_relative "./output_scaffolds/scaffold_mutation_update"
+require_relative "./output_scaffolds/scaffold_mutation_delete"
+require_relative "./output_scaffolds/scaffold_mutation_destroy_delete"
+
 RSpec.describe(Souls::Generate) do
   describe "Generate Mutation" do
     let(:class_name) { "user" }
@@ -23,8 +28,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        example_file_path = File.join(File.dirname(__FILE__), "./output_scaffolds/scaffold_mutation_create.rb")
-        expect(file_output).to(eq(File.read(example_file_path)))
+        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_create))
       end
     end
 
@@ -42,8 +46,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        example_file_path = File.join(File.dirname(__FILE__), "./output_scaffolds/scaffold_mutation_update.rb")
-        expect(file_output).to(eq(File.read(example_file_path)))
+        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_update))
       end
     end
 
@@ -60,8 +63,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        example_file_path = File.join(File.dirname(__FILE__), "./output_scaffolds/scaffold_mutation_delete.rb")
-        expect(file_output).to(eq(File.read(example_file_path)))
+        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_delete))
       end
     end
 
@@ -78,8 +80,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        example_file_path = File.join(File.dirname(__FILE__), "output_scaffolds/scaffold_mutation_destroy_delete.rb")
-        expect(file_output).to(eq(File.read(example_file_path)))
+        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_dd))
       end
     end
   end

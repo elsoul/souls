@@ -1,3 +1,6 @@
+module OutputScaffold
+  def self.scaffold_mutation_update
+    <<~MUTATIONUPDATE
 module Mutations
   module Base::User
     class UpdateUser < BaseMutation
@@ -15,5 +18,8 @@ module Mutations
         GraphQL::ExecutionError.new(error.message)
       end
     end
+  end
+end
+    MUTATIONUPDATE
   end
 end

@@ -1,3 +1,6 @@
+module OutputScaffold
+  def self.scaffold_rspec_policy
+    <<~RSPECPOLICY
 describe UserPolicy do
   subject { described_class.new(user, user) }
 
@@ -21,5 +24,8 @@ describe UserPolicy do
     let(:user) { FactoryBot.create(:user, roles: :admin) }
 
     it { is_expected.to permit_actions([:create, :update, :delete]) }
+  end
+end
+RSPECPOLICY
   end
 end

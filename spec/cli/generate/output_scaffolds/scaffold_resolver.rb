@@ -1,3 +1,6 @@
+module OutputScaffold
+  def self.scaffold_resolver
+    <<~RESOLVER
 module Resolvers
   class UserSearch < Base
     include SearchObject.module(:graphql)
@@ -28,5 +31,8 @@ module Resolvers
       value[:OR].inject(branches) { |s, v| normalize_filters(v, s) } if value[:OR].present?
       branches
     end
+  end
+end
+RESOLVER
   end
 end

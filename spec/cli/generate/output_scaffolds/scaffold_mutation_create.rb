@@ -1,3 +1,6 @@
+module OutputScaffold
+  def self.scaffold_mutation_create
+    <<~MUTATIONCREATE
 module Mutations
   module Base::User
     class CreateUser < BaseMutation
@@ -12,5 +15,8 @@ module Mutations
         GraphQL::ExecutionError.new(error.message)
       end
     end
+  end
+end
+    MUTATIONCREATE
   end
 end
