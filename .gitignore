@@ -13,3 +13,4 @@
 /app/
 /vendor/rbs/gem_rbs_collection/
 /.idea/
+tmp/*
