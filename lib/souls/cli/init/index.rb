@@ -119,15 +119,15 @@ module Souls
 
           gem "activesupport", "6.1.4.1"
           gem "foreman", "0.87.2"
-          gem "google-cloud-pubsub", "2.8.1"
+          gem "google-cloud-pubsub", "2.9.0"
           gem "paint", "2.2.1"
           gem "parser", "3.0.2.0"
           gem "pg", "1.2.3"
           gem "rake", "13.0.6"
           gem "rspec", "3.10.0"
-          gem "rubocop", "1.21.0"
+          gem "rubocop", "1.22.3"
           gem "sinatra-activerecord", "2.0.23"
-          gem "solargraph", "0.43.2"
+          gem "solargraph", "0.44.0"
           gem "souls", "#{Souls::VERSION}"
           gem "steep", "0.46.0"
           gem "thor", "1.1.0"
@@ -159,14 +159,13 @@ module Souls
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/gitignore")
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.env.production.sample")
       system("cd #{app_name} && mv gitignore .gitignore")
       system("cd #{app_name} && bundle")
       system("cd #{app_name}/apps/api && bundle")
       FileUtils.rm(sig_name)
     end
 
-    def souls_api_credit(app_name: "souls", service_name: "api")
+    def souls_api_credit(app_name: "souls")
       line = Paint["====================================", :yellow]
       puts("\n")
       puts(line)

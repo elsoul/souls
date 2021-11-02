@@ -12,11 +12,11 @@ development:
 
 production:
   <<: *default
-  username: <%= ENV.fetch("DB_USER") { "" } %>
+  username: <%= ENV.fetch("SOULS_DB_USER") { "" } %>
   database: souls_api_production
-  password: <%= ENV.fetch("DB_PW") { "" } %>
-  host: <%= ENV.fetch("DB_HOST") { "" } %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  password: <%= ENV.fetch("SOULS_DB_PW") { "" } %>
+  host: <%= ENV.fetch("SOULS_DB_HOST") { "" } %>
+  pool: <%= ENV.fetch("SOULS_MAX_THREADS") { 5 } %>
   port: 5432
 
 ## Use local docker postgresql13

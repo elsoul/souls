@@ -15,7 +15,7 @@ module Mutations
     end
 
     def publish_pubsub_queue(topic_name: "send-mail-job", message: "text!")
-      pubsub = Google::Cloud::Pubsub.new(project: ENV["PROJECT_ID"])
+      pubsub = Google::Cloud::Pubsub.new(project: ENV["SOULS_GCP_PROJECT_ID"])
       topic = pubsub.topic(topic_name)
       topic.publish(message)
     end
