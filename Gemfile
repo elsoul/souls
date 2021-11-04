@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+require "pp"
 
 # Specify your gem's dependencies in souls.gemspec
 gemspec
