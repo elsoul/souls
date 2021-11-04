@@ -101,7 +101,7 @@ module Souls
 end
       TEXT
 
-      File.open(file_path, "w")  { |f| f.write(write_txt) }
+      File.open(file_path, "w") { |f| f.write(write_txt) }
     end
 
     def workflow(worker_name)
