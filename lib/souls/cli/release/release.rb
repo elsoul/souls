@@ -2,6 +2,8 @@ module Souls
   class CLI < Thor
     desc "release", "Release Gem"
     def release
+      raise(StandardError, "hey! It's Broken!") unless system("rspec")
+
       system("gem install souls")
       sleep(3)
       current_souls_ver = Souls::VERSION.strip.split(".").map(&:to_i)
