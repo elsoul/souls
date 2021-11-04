@@ -4,9 +4,6 @@ require_relative "./scaffolds/scaffold_workflow"
 require_relative "./scaffolds/scaffold_souls_helper"
 
 RSpec.describe(Souls::CLI) do
-  describe "worker" do
-  end
-
   describe "steepfile" do
     it "should move Steepfile contents" do
       cli = Souls::Create.new

@@ -20,7 +20,6 @@ RSpec.describe(Souls::Generate) do
       allow(FileUtils).to receive(:pwd).and_return("api")
       a1 = generate.manager_rbs(class_name)
       file_output = File.read(file_path)
-      puts file_output
 
       expect(a1).to(eq(file_path))
       expect(File.exists? file_path).to(eq(true))
