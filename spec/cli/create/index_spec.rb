@@ -1,21 +1,21 @@
 require_relative "./scaffolds/scaffold_steepfile"
 require_relative "./scaffolds/scaffold_souls"
+require_relative "./scaffolds/scaffold_workflow"
+require_relative "./scaffolds/scaffold_souls_helper"
 
 RSpec.describe(Souls::CLI) do
-  describe "worker" do
-  end
-
   describe "steepfile" do
     it "should move Steepfile contents" do
       cli = Souls::Create.new
 
-      FakeFS.activate!
-      FileUtils.mkdir_p("config") unless Dir.exist?("config")
-      File.open("./Steepfile", 'w') { |file| file.write(Scaffold.scaffold_steepfile) }
+      FakeFS.with_fresh do
+        FakeFS::FileSystem.clone("/Users/james.neve/development/ruby/souls/lib/souls/cli/create/templates/steepfile_template.erb")
+        FileUtils.mkdir_p("config") unless Dir.exist?("config")
+        File.open("./Steepfile", 'w') { |file| file.write(Scaffold.scaffold_steepfile) }
 
-      cli.send(:steepfile, "mailer")
-      expect(File.exists? "./Steepfile").to(eq(true))
-      FakeFS.deactivate!
+        cli.send(:steepfile, "mailer")
+        expect(File.exists? "./Steepfile").to(eq(true))
+      end
     end
   end
 
@@ -66,7 +66,7 @@ RSpec.describe(Souls::CLI) do
       FakeFS.with_fresh do
         cli = Souls::Create.new
         file_dir = "apps/api/config"
-        FileUtils.mkdir_p("#{file_dir}") unless Dir.exist?("#{file_dir}")
+        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         File.open("#{file_dir}/souls.rb", "w") { |file| file.write(Scaffold.scaffold_souls) }
 
         cli.send(:souls_conf_update, "mailer", "father")
@@ -79,22 +79,53 @@ RSpec.describe(Souls::CLI) do
   end
 
   describe "workflow" do
-    
+    it "should write workflows" do
+      FakeFS.with_fresh do
+        cli = Souls::Create.new
+        file_dir = ".github/workflows"
+        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+
+        cli.send(:workflow, "mailer")
+        output = File.read("#{file_dir}/mailer.yml")
+
+        expected_output = Scaffold.scaffold_workflow
+
+        expect(output).to eq(expected_output)
+      end
+    end
   end
 
   describe "souls_config_init" do
+    it "should write config file" do
+      FakeFS.with_fresh do
+        cli = Souls::Create.new
+        file_dir = "apps/mailer/config"
+        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
+        cli.send(:souls_config_init, "mailer")
+        output = File.read("#{file_dir}/souls.rb")
+
+        expected_output = Scaffold.scaffold_souls_init
+
+        expect(output).to eq(expected_output)
+      end
+    end
   end
 
   describe "souls_helper_rbs" do
+    it "should write config file" do
+      FakeFS.with_fresh do
+        cli = Souls::Create.new
+        file_dir = "./sig/mailer/app/utils"
+        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
-  end
+        cli.send(:souls_helper_rbs, "mailer")
+        output = File.read("#{file_dir}/souls_helper.rbs")
 
-  describe "download_worker" do
+        expected_output = Scaffold.scaffold_souls_helper
 
-  end
-
-  describe "souls_worker_credit" do
-
+        expect(output).to eq(expected_output)
+      end
+    end
   end
 end

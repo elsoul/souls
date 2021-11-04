@@ -32,4 +32,18 @@ Souls.configure do |config|
 end
     SOULSUPDATED
   end
+
+  def self.scaffold_souls_init
+    <<~SOULSINIT
+Souls.configure do |config|
+  config.app = "souls"
+  config.project_id = "el-quest"
+  config.region = "asia-northeast1"
+  config.endpoint = "/endpoint"
+  config.strain = "worker"
+  config.fixed_gems = ["spring"]
+  config.workers = []
+end
+    SOULSINIT
+  end
 end

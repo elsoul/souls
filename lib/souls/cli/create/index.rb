@@ -229,7 +229,7 @@ end
     end
 
     def souls_helper_rbs(worker_name)
-      file_dir = "./sig/#{worker_name}/app/utils/"
+      file_dir = "./sig/#{worker_name}/app/utils"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}/souls_helper.rbs"
       File.open(file_path, "w") do |f|
