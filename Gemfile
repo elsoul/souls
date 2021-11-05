@@ -22,4 +22,5 @@ gem "whirly", "0.3.0"
 group :test, :development do
   gem "fakefs", "1.4.0", require: "fakefs/safe"
   gem "rspec", "3.10.0"
+  gem 'simplecov', require: false
 end

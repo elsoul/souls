@@ -75,5 +75,18 @@ RSpec.describe(Souls::Update) do
         expect(output).to eq(expected_output)
       end
     end
+
+    it "Should fail with CLIException if there's no file" do
+      FakeFS.with_fresh do
+        cli = Souls::Update.new
+        file_dir = "./app/graphql/mutations/base/user/"
+        FileUtils.mkdir_p("#{file_dir}")
+        allow(Souls).to receive(:get_columns_num).and_return(2)
+
+        expect {
+          cli.update_mutation("user")
+        }.to raise_error(Souls::CLIException)
+      end
+    end
   end
 end
