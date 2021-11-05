@@ -1,3 +1,11 @@
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter "spec/"
+
+  add_group "CLI", "lib/souls/cli"
+end
+
 require "bundler/setup"
 require "souls"
 require "bundler/gem_tasks"
