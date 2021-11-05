@@ -21,7 +21,7 @@ module Souls
         git submodule add -f https://github.com/ruby/gem_rbs_collection.git vendor/rbs/gem_rbs_collection
         "
       )
-      souls_api_credit(app_name: app_name, service_name: service_name)
+      souls_api_credit(app_name)
     end
 
     private
@@ -165,7 +165,7 @@ module Souls
       FileUtils.rm(sig_name)
     end
 
-    def souls_api_credit(app_name: "souls")
+    def souls_api_credit(app_name)
       line = Paint["====================================", :yellow]
       puts("\n")
       puts(line)
