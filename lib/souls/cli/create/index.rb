@@ -62,7 +62,7 @@ module Souls
       end
     end
 
-    def souls_conf_update(worker_name, strain)
+    def souls_conf_update(worker_name, strain = "mother")
       workers = Souls.configuration.workers
       port = 3000 + workers.size
       file_path = strain == "mother" ? "config/souls.rb" : "apps/api/config/souls.rb"
