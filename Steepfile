@@ -22,6 +22,5 @@ target :app do
   library "graphql"
   signature "rbs"
 
-  # check 'app'
-  # check "lib/souls/api/generate/edge.rb"
+  # check "lib"
 end
