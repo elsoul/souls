@@ -8,7 +8,7 @@ module Souls
       password = prompt.mask("Set DB PassWord:")
       app_name = Souls.configuration.app
       project_id = Souls.configuration.project_id
-      instance_name = Souls.configuration.instance_name if instance_name.blank?
+      instance_name = Souls.configuration.instance_name
       region = Souls.configuration.region if options[:region].blank?
       db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
 
