@@ -9,6 +9,7 @@ require "paint"
 require "whirly"
 require "tty-prompt"
 require "thor"
+require "resolv"
 
 module Souls
   extend Souls::Utils

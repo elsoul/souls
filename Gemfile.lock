@@ -170,6 +170,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.13.0)
       parser (>= 3.0.1.1)
+    rubocop-graphql (0.10.2)
+      rubocop (>= 0.87, < 2)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     signet (0.16.0)
@@ -253,7 +255,8 @@ DEPENDENCIES
   rake (= 13.0.6)
   rspec (= 3.10.0)
   rubocop (= 1.22.2)
-  simplecov
+  rubocop-graphql (= 0.10.2)
+  simplecov (= 0.21.2)
   sinatra-activerecord (= 2.0.23)
   solargraph (= 0.44.0)
   souls!
