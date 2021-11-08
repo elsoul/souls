@@ -10,10 +10,10 @@ module Souls
         file_path = "./app/graphql/mutations/base/#{singularized_class_name}/create_#{singularized_class_name}.rb"
         return "Mutation already exist! #{file_path}" if File.exist?(file_path)
 
-        create_mutation(class_name: singularized_class_name)
-        update_mutation(class_name: singularized_class_name)
-        delete_mutation(class_name: singularized_class_name)
-        destroy_delete_mutation(class_name: singularized_class_name)
+        create_mutation(singularized_class_name)
+        update_mutation(singularized_class_name)
+        delete_mutation(singularized_class_name)
+        destroy_delete_mutation(singularized_class_name)
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
