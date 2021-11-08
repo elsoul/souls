@@ -103,7 +103,7 @@ module Souls
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/update_#{class_name}.rbs"
         params = Souls.get_relation_params(class_name: class_name, col: "mutation")
-        params[:params] < { column_name: "id", type: "string", array: false }
+        params[:params] << { column_name: "id", type: "string", array: false }
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             module Mutations
