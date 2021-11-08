@@ -11,8 +11,8 @@ module Souls
       raise Souls::CLIException.new("File #{file_path} is missing. Please recreate it and then run this command again.") unless
         File.exist? file_path
 
-      mutation_argument = check_mutation_argument(class_name, "create")
-      overwrite_class_file(mutation_argument, file_path, new_cols)
+      mutation_argument = check_mutation_argument(class_name: "user", action: "create")
+      overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
       puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
     end
 
@@ -25,15 +25,15 @@ module Souls
       raise Souls::CLIException.new("File #{file_path} is missing. Please recreate it and then run this command again.") unless
         File.exist? file_path
 
-      mutation_argument = check_mutation_argument(class_name, "update")
-      overwrite_class_file(mutation_argument, file_path, new_cols)
+      mutation_argument = check_mutation_argument(class_name: class_name, action: "update")
+      overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
 
       puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
     end
 
     private
 
-    def overwrite_class_file(mutation_argument, file_path, new_cols)
+    def overwrite_class_file(mutation_argument: "arg", file_path: "path", new_cols: 1)
       write_txt = String.new
       File.open(file_path, "r") do |f|
         f.each_line do |line|
@@ -55,7 +55,7 @@ module Souls
       File.open(file_path, "w") { |f| f.write(write_txt) }
     end
 
-    def check_mutation_argument(class_name, action)
+    def check_mutation_argument(class_name: "user", action: "action")
       singularized_class_name = class_name.singularize.underscore
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/#{action}_#{singularized_class_name}.rb"

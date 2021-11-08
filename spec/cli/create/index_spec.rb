@@ -13,7 +13,7 @@ RSpec.describe(Souls::CLI) do
         FileUtils.mkdir_p("config") unless Dir.exist?("config")
         File.open("./Steepfile", 'w') { |file| file.write(Scaffold.scaffold_steepfile) }
 
-        cli.send(:steepfile, "mailer")
+        cli.send(:steepfile, **{ worker_name: "mailer" })
         expect(File.exists? "./Steepfile").to(eq(true))
       end
     end
@@ -25,7 +25,7 @@ RSpec.describe(Souls::CLI) do
         cli = Souls::Create.new
         FileUtils.mkdir_p("apps/mailer") unless Dir.exist?("apps/mailer")
 
-        cli.send(:procfile, "mailer", 123)
+        cli.send(:procfile, **{ worker_name: "mailer", port: "123" })
         output = File.readlines("apps/mailer/Procfile.dev")
         expected_output = ["mailer: bundle exec puma -p 123 -e development"]
         expect(output).to eq(expected_output)
@@ -38,7 +38,7 @@ RSpec.describe(Souls::CLI) do
       FakeFS.with_fresh do
         cli = Souls::Create.new
 
-        cli.send(:mother_procfile, "mailer")
+        cli.send(:mother_procfile, **{ worker_name: "mailer" })
         output = File.readlines("Procfile.dev")[1]
 
         expected_output = "mailer: foreman start -f ./apps/mailer/Procfile.dev"
@@ -54,7 +54,7 @@ RSpec.describe(Souls::CLI) do
         FileUtils.mkdir_p("config") unless Dir.exist?("config")
         File.open("config/souls.rb", "w") { |file| file.write(Scaffold.scaffold_souls) }
 
-        cli.send(:souls_conf_update, "mailer", "mother")
+        cli.send(:souls_conf_update, **{ worker_name: "mailer", strain: "mother" })
         output = File.read("config/souls.rb")
 
         expected_output = Scaffold.scaffold_souls_updated
@@ -69,7 +69,7 @@ RSpec.describe(Souls::CLI) do
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         File.open("#{file_dir}/souls.rb", "w") { |file| file.write(Scaffold.scaffold_souls) }
 
-        cli.send(:souls_conf_update, "mailer", "father")
+        cli.send(:souls_conf_update, **{ worker_name: "mailer", strain: "father" })
         output = File.read("#{file_dir}/souls.rb")
 
         expected_output = Scaffold.scaffold_souls_updated
@@ -85,7 +85,7 @@ RSpec.describe(Souls::CLI) do
         file_dir = ".github/workflows"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
-        cli.send(:workflow, "mailer")
+        cli.send(:workflow, **{ worker_name: "mailer" })
         output = File.read("#{file_dir}/mailer.yml")
 
         expected_output = Scaffold.scaffold_workflow
@@ -102,7 +102,7 @@ RSpec.describe(Souls::CLI) do
         file_dir = "apps/mailer/config"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
-        cli.send(:souls_config_init, "mailer")
+        cli.send(:souls_config_init, **{ worker_name: "mailer" })
         output = File.read("#{file_dir}/souls.rb")
 
         expected_output = Scaffold.scaffold_souls_init
@@ -119,7 +119,7 @@ RSpec.describe(Souls::CLI) do
         file_dir = "./sig/mailer/app/utils"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
-        cli.send(:souls_helper_rbs, "mailer")
+        cli.send(:souls_helper_rbs, **{ worker_name: "mailer" })
         output = File.read("#{file_dir}/souls_helper.rbs")
 
         expected_output = Scaffold.scaffold_souls_helper

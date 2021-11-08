@@ -3,17 +3,17 @@ module Souls
     desc "mutation_rbs [CLASS_NAME]", "Generate GraphQL Mutation RBS from schema.rb"
     def mutation_rbs(class_name)
       singularized_class_name = class_name.underscore.singularize
-      create_rbs_mutation(singularized_class_name)
-      update_rbs_mutation(singularized_class_name)
-      delete_rbs_mutation(singularized_class_name)
-      destroy_delete_rbs_mutation(singularized_class_name)
+      create_rbs_mutation(class_name: singularized_class_name)
+      update_rbs_mutation(class_name: singularized_class_name)
+      delete_rbs_mutation(class_name: singularized_class_name)
+      destroy_delete_rbs_mutation(class_name: singularized_class_name)
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
 
     private
 
-    def create_rbs_mutation(class_name)
+    def create_rbs_mutation(class_name: "user")
       file_path = ""
       Dir.chdir(Souls.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
@@ -21,7 +21,7 @@ module Souls
         file_path = "#{file_dir}/create_#{class_name}.rbs"
         raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-        params = Souls.get_relation_params(class_name, "mutation")
+        params = Souls.get_relation_params(class_name: class_name, col: "mutation")
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             class Boolean
@@ -96,13 +96,13 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    def update_rbs_mutation(class_name)
+    def update_rbs_mutation(class_name: "user")
       file_path = ""
       Dir.chdir(Souls.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/update_#{class_name}.rbs"
-        params = Souls.get_relation_params(class_name, "mutation")
+        params = Souls.get_relation_params(class_name: class_name, col: "mutation")
         params[:params] < { column_name: "id", type: "string", array: false }
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
@@ -175,7 +175,7 @@ module Souls
       file_path
     end
 
-    def delete_rbs_mutation(class_name)
+    def delete_rbs_mutation(class_name: "user")
       file_path = ""
       Dir.chdir(Souls.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
@@ -206,7 +206,7 @@ module Souls
       raise(Thor::Error, e)
     end
 
-    def destroy_delete_rbs_mutation(class_name)
+    def destroy_delete_rbs_mutation(class_name: "user")
       file_path = ""
       Dir.chdir(Souls.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"

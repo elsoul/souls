@@ -1,6 +1,14 @@
 {
   "RSpec": {
     "coverage": {
+      "/Users/james.neve/development/ruby/souls/lib/souls/version.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
       "/Users/james.neve/development/ruby/souls/lib/souls.rb": {
         "lines": [
           1,
@@ -6174,6 +6182,6 @@
         ]
       }
     },
-    "timestamp": 1636366664
+    "timestamp": 1636370808
   }
 }
