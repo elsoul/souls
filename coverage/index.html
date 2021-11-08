@@ -14,7 +14,7 @@
       <img src="./assets/0.12.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2021-11-08T11:17:44+01:00">2021-11-08T11:17:44+01:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2021-11-08T12:26:48+01:00">2021-11-08T12:26:48+01:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -23,7 +23,7 @@
     <span class="group_name">All Files</span>
     (<span class="covered_percent">
       <span class="red">
-  41.55%
+  41.6%
 </span>
 
      </span>
@@ -39,15 +39,15 @@
   <a name="AllFiles"></a>
 
   <div>
-    <b>98</b> files in total.
+    <b>99</b> files in total.
   </div>
 
   <div class="t-line-summary">
-    <b>3117</b> relevant lines,
-    <span class="green"><b>1295</b> lines covered</span> and
+    <b>3120</b> relevant lines,
+    <span class="green"><b>1298</b> lines covered</span> and
     <span class="red"><b>1822</b> lines missed. </span>
     (<span class="red">
-  41.55%
+  41.6%
 </span>
 )
   </div>
@@ -1145,6 +1145,17 @@
             <td class="cell--number">27</td>
             <td class="cell--number">93</td>
             <td class="cell--number">0.62</td>
+            
+          </tr>
+        
+          <tr class="t-file">
+            <td class="strong t-file__name"><a href="#3c657db2c48f3ef15418b82906f4f54418e96ae8" class="src_link" title="lib/souls/version.rb">lib/souls/version.rb</a></td>
+            <td class="green strong cell--number t-file__coverage">100.00 %</td>
+            <td class="cell--number">4</td>
+            <td class="cell--number">3</td>
+            <td class="cell--number">3</td>
+            <td class="cell--number">0</td>
+            <td class="cell--number">1.00</td>
             
           </tr>
         
@@ -2252,7 +2263,7 @@
     <span class="group_name">Ungrouped</span>
     (<span class="covered_percent">
       <span class="red">
-  43.37%
+  44.38%
 </span>
 
      </span>
@@ -2268,15 +2279,15 @@
   <a name="Ungrouped"></a>
 
   <div>
-    <b>4</b> files in total.
+    <b>5</b> files in total.
   </div>
 
   <div class="t-line-summary">
-    <b>166</b> relevant lines,
-    <span class="green"><b>72</b> lines covered</span> and
+    <b>169</b> relevant lines,
+    <span class="green"><b>75</b> lines covered</span> and
     <span class="red"><b>94</b> lines missed. </span>
     (<span class="red">
-  43.37%
+  44.38%
 </span>
 )
   </div>
@@ -2340,6 +2351,17 @@
             <td class="cell--number">27</td>
             <td class="cell--number">93</td>
             <td class="cell--number">0.62</td>
+            
+          </tr>
+        
+          <tr class="t-file">
+            <td class="strong t-file__name"><a href="#3c657db2c48f3ef15418b82906f4f54418e96ae8" class="src_link" title="lib/souls/version.rb">lib/souls/version.rb</a></td>
+            <td class="green strong cell--number t-file__coverage">100.00 %</td>
+            <td class="cell--number">4</td>
+            <td class="cell--number">3</td>
+            <td class="cell--number">3</td>
+            <td class="cell--number">0</td>
+            <td class="cell--number">1.00</td>
             
           </tr>
         
@@ -4494,7 +4516,7 @@
 
             
 
-            <code class="ruby">        download_worker(options[:name])</code>
+            <code class="ruby">        download_worker(worker_name: options[:name])</code>
           </li>
         </div>
       
@@ -4505,7 +4527,7 @@
 
             
 
-            <code class="ruby">        souls_conf_update(souls_worker_name)</code>
+            <code class="ruby">        souls_conf_update(worker_name: souls_worker_name)</code>
           </li>
         </div>
       
@@ -4516,7 +4538,7 @@
 
             
 
-            <code class="ruby">        souls_conf_update(souls_worker_name, &quot;api&quot;)</code>
+            <code class="ruby">        souls_conf_update(worker_name: souls_worker_name, strain: &quot;api&quot;)</code>
           </li>
         </div>
       
@@ -4527,7 +4549,7 @@
 
             
 
-            <code class="ruby">        workflow(options[:name])</code>
+            <code class="ruby">        workflow(worker_name: options[:name])</code>
           </li>
         </div>
       
@@ -4538,7 +4560,7 @@
 
             
 
-            <code class="ruby">        procfile(options[:name], port)</code>
+            <code class="ruby">        procfile(worker_name: options[:name], port: port)</code>
           </li>
         </div>
       
@@ -4549,7 +4571,7 @@
 
             
 
-            <code class="ruby">        mother_procfile(options[:name])</code>
+            <code class="ruby">        mother_procfile(worker_name: options[:name])</code>
           </li>
         </div>
       
@@ -4560,7 +4582,7 @@
 
             
 
-            <code class="ruby">        souls_config_init(options[:name])</code>
+            <code class="ruby">        souls_config_init(worker_name: options[:name])</code>
           </li>
         </div>
       
@@ -4571,7 +4593,7 @@
 
             
 
-            <code class="ruby">        steepfile(options[:name])</code>
+            <code class="ruby">        steepfile(worker_name: options[:name])</code>
           </li>
         </div>
       
@@ -4582,7 +4604,7 @@
 
             
 
-            <code class="ruby">        souls_helper_rbs(options[:name])</code>
+            <code class="ruby">        souls_helper_rbs(worker_name: options[:name])</code>
           </li>
         </div>
       
@@ -4604,7 +4626,7 @@
 
             
 
-            <code class="ruby">        souls_worker_credit(options[:name])</code>
+            <code class="ruby">        souls_worker_credit(worker_name: options[:name])</code>
           </li>
         </div>
       
@@ -4681,7 +4703,7 @@
 
             
 
-            <code class="ruby">    def steepfile(worker_name)</code>
+            <code class="ruby">    def steepfile(worker_name: &quot;mailer&quot;)</code>
           </li>
         </div>
       
@@ -4890,7 +4912,7 @@
 
             
 
-            <code class="ruby">    def procfile(worker_name, port)</code>
+            <code class="ruby">    def procfile(worker_name: &quot;mailer&quot;, port: 123)</code>
           </li>
         </div>
       
@@ -4967,7 +4989,7 @@
 
             
 
-            <code class="ruby">    def mother_procfile(worker_name)</code>
+            <code class="ruby">    def mother_procfile(worker_name: &quot;mailer&quot;)</code>
           </li>
         </div>
       
@@ -5044,7 +5066,7 @@
 
             
 
-            <code class="ruby">    def souls_conf_update(worker_name, strain = &quot;mother&quot;)</code>
+            <code class="ruby">    def souls_conf_update(worker_name: &quot;mailer&quot;, strain: &quot;mother&quot;)</code>
           </li>
         </div>
       
@@ -5506,7 +5528,7 @@
 
             
 
-            <code class="ruby">    def workflow(worker_name)</code>
+            <code class="ruby">    def workflow(worker_name: &quot;mailer&quot;)</code>
           </li>
         </div>
       
@@ -6606,7 +6628,7 @@
 
             
 
-            <code class="ruby">    def souls_config_init(worker_name)</code>
+            <code class="ruby">    def souls_config_init(worker_name: &quot;mailer&quot;)</code>
           </li>
         </div>
       
@@ -6870,7 +6892,7 @@
 
             
 
-            <code class="ruby">    def souls_helper_rbs(worker_name)</code>
+            <code class="ruby">    def souls_helper_rbs(worker_name: &quot;mailer&quot;)</code>
           </li>
         </div>
       
@@ -7321,7 +7343,7 @@
 
             
 
-            <code class="ruby">    def download_worker(worker_name)</code>
+            <code class="ruby">    def download_worker(worker_name: &quot;mailer&quot;)</code>
           </li>
         </div>
       
@@ -7442,7 +7464,7 @@
 
             
 
-            <code class="ruby">    def souls_worker_credit(worker_name)</code>
+            <code class="ruby">    def souls_worker_credit(worker_name: &quot;mailer&quot;)</code>
           </li>
         </div>
       
@@ -28920,7 +28942,7 @@
 
             
 
-            <code class="ruby">        create_mutation(singularized_class_name)</code>
+            <code class="ruby">        create_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -28931,7 +28953,7 @@
 
             
 
-            <code class="ruby">        update_mutation(singularized_class_name)</code>
+            <code class="ruby">        update_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -28942,7 +28964,7 @@
 
             
 
-            <code class="ruby">        delete_mutation(singularized_class_name)</code>
+            <code class="ruby">        delete_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -28953,7 +28975,7 @@
 
             
 
-            <code class="ruby">        destroy_delete_mutation(singularized_class_name)</code>
+            <code class="ruby">        destroy_delete_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -29041,7 +29063,7 @@
 
             
 
-            <code class="ruby">    def create_mutation(class_name)</code>
+            <code class="ruby">    def create_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -29118,7 +29140,7 @@
 
             
 
-            <code class="ruby">      params = Souls.get_relation_params(singularized_class_name, &quot;mutation&quot;)</code>
+            <code class="ruby">      params = Souls.get_relation_params(class_name: singularized_class_name, col: &quot;mutation&quot;)</code>
           </li>
         </div>
       
@@ -29811,7 +29833,7 @@
 
             
 
-            <code class="ruby">    def update_mutation(class_name)</code>
+            <code class="ruby">    def update_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -29888,7 +29910,7 @@
 
             
 
-            <code class="ruby">      params = Souls.get_relation_params(singularized_class_name, &quot;mutation&quot;)</code>
+            <code class="ruby">      params = Souls.get_relation_params(class_name: singularized_class_name, col: &quot;mutation&quot;)</code>
           </li>
         </div>
       
@@ -30625,7 +30647,7 @@
 
             
 
-            <code class="ruby">    def delete_mutation(class_name)</code>
+            <code class="ruby">    def delete_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -30955,7 +30977,7 @@
 
             
 
-            <code class="ruby">    def destroy_delete_mutation(class_name)</code>
+            <code class="ruby">    def destroy_delete_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -31393,7 +31415,7 @@
 
             
 
-            <code class="ruby">      create_rbs_mutation(singularized_class_name)</code>
+            <code class="ruby">      create_rbs_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -31404,7 +31426,7 @@
 
             
 
-            <code class="ruby">      update_rbs_mutation(singularized_class_name)</code>
+            <code class="ruby">      update_rbs_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -31415,7 +31437,7 @@
 
             
 
-            <code class="ruby">      delete_rbs_mutation(singularized_class_name)</code>
+            <code class="ruby">      delete_rbs_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -31426,7 +31448,7 @@
 
             
 
-            <code class="ruby">      destroy_delete_rbs_mutation(singularized_class_name)</code>
+            <code class="ruby">      destroy_delete_rbs_mutation(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -31503,7 +31525,7 @@
 
             
 
-            <code class="ruby">    def create_rbs_mutation(class_name)</code>
+            <code class="ruby">    def create_rbs_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -31591,7 +31613,7 @@
 
             
 
-            <code class="ruby">        params = Souls.get_relation_params(class_name, &quot;mutation&quot;)</code>
+            <code class="ruby">        params = Souls.get_relation_params(class_name: class_name, col: &quot;mutation&quot;)</code>
           </li>
         </div>
       
@@ -32416,7 +32438,7 @@
 
             
 
-            <code class="ruby">    def update_rbs_mutation(class_name)</code>
+            <code class="ruby">    def update_rbs_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -32482,7 +32504,7 @@
 
             
 
-            <code class="ruby">        params = Souls.get_relation_params(class_name, &quot;mutation&quot;)</code>
+            <code class="ruby">        params = Souls.get_relation_params(class_name: class_name, col: &quot;mutation&quot;)</code>
           </li>
         </div>
       
@@ -33285,7 +33307,7 @@
 
             
 
-            <code class="ruby">    def delete_rbs_mutation(class_name)</code>
+            <code class="ruby">    def delete_rbs_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -33626,7 +33648,7 @@
 
             
 
-            <code class="ruby">    def destroy_delete_rbs_mutation(class_name)</code>
+            <code class="ruby">    def destroy_delete_rbs_mutation(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -49480,7 +49502,7 @@
 
             
 
-            <code class="ruby">        params = Souls.get_relation_params(singularized_class_name)</code>
+            <code class="ruby">        params = Souls.get_relation_params(class_name: singularized_class_name)</code>
           </li>
         </div>
       
@@ -57849,7 +57871,7 @@
 
             
 
-            <code class="ruby">      mutation_argument = check_mutation_argument(class_name, &quot;create&quot;)</code>
+            <code class="ruby">      mutation_argument = check_mutation_argument(class_name: &quot;user&quot;, action: &quot;create&quot;)</code>
           </li>
         </div>
       
@@ -57860,7 +57882,7 @@
 
             
 
-            <code class="ruby">      overwrite_class_file(mutation_argument, file_path, new_cols)</code>
+            <code class="ruby">      overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)</code>
           </li>
         </div>
       
@@ -58003,7 +58025,7 @@
 
             
 
-            <code class="ruby">      mutation_argument = check_mutation_argument(class_name, &quot;update&quot;)</code>
+            <code class="ruby">      mutation_argument = check_mutation_argument(class_name: class_name, action: &quot;update&quot;)</code>
           </li>
         </div>
       
@@ -58014,7 +58036,7 @@
 
             
 
-            <code class="ruby">      overwrite_class_file(mutation_argument, file_path, new_cols)</code>
+            <code class="ruby">      overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)</code>
           </li>
         </div>
       
@@ -58091,7 +58113,7 @@
 
             
 
-            <code class="ruby">    def overwrite_class_file(mutation_argument, file_path, new_cols)</code>
+            <code class="ruby">    def overwrite_class_file(mutation_argument: &quot;arg&quot;, file_path: &quot;path&quot;, new_cols: 1)</code>
           </li>
         </div>
       
@@ -58333,7 +58355,7 @@
 
             
 
-            <code class="ruby">    def check_mutation_argument(class_name, action)</code>
+            <code class="ruby">    def check_mutation_argument(class_name: &quot;user&quot;, action: &quot;action&quot;)</code>
           </li>
         </div>
       
@@ -67549,7 +67571,7 @@
 
             
 
-            <code class="ruby">    def get_relation_params(class_name, col = &quot;&quot;)</code>
+            <code class="ruby">    def get_relation_params(class_name: &quot;user&quot;, col: &quot;&quot;)</code>
           </li>
         </div>
       
@@ -67747,7 +67769,7 @@
 
             
 
-            <code class="ruby">    def get_columns_num(class_name)</code>
+            <code class="ruby">    def get_columns_num(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -67967,7 +67989,7 @@
 
             
 
-            <code class="ruby">    def get_columns_num_no_timestamp(class_name)</code>
+            <code class="ruby">    def get_columns_num_no_timestamp(class_name: &quot;user&quot;)</code>
           </li>
         </div>
       
@@ -68963,6 +68985,81 @@
       
         <div>
           <li class="never" data-hits="" data-linenumber="243">
+            
+            
+
+            
+
+            <code class="ruby">end</code>
+          </li>
+        </div>
+      
+    </ol>
+  </pre>
+</div>
+
+      
+        <div class="source_table" id="3c657db2c48f3ef15418b82906f4f54418e96ae8">
+  <div class="header">
+    <h3>lib/souls/version.rb</h3>
+    <h4>
+      <span class="green">
+  100.0%
+</span>
+
+      lines covered
+    </h4>
+
+    
+
+    <div class="t-line-summary">
+      <b>3</b> relevant lines.
+      <span class="green"><b>3</b> lines covered</span> and
+      <span class="red"><b>0</b> lines missed.</span>
+    </div>
+
+    
+
+  </div>
+
+  <pre>
+    <ol>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="1">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">module Souls</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="2">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  VERSION = &quot;1.4.5&quot;.freeze</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="3">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  public_constant :VERSION</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="4">
             
             
 
