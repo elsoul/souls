@@ -85,7 +85,7 @@ module Souls
     end
 
     def network_list
-      system("gcloud compute network list")
+      system("gcloud compute networks list")
     end
 
     def nat_credit
