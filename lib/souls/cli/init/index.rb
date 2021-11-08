@@ -7,6 +7,8 @@ module Souls
         puts(Paint["`souls new souls-app`", :yellow])
         exit
       end
+      file_dir = "./#{app_name}"
+      raise(StandardError, "Directory Already Exist!") if Dir.exist?(file_dir)
 
       service_name = "api"
       download_souls(app_name: app_name, service_name: service_name)
