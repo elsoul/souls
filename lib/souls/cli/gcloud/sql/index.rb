@@ -18,11 +18,13 @@ module Souls
               --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
               --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
       )
+      instance_ip = `gcloud sql instances list | grep -x #{instance_name} | awk '{print $5}'`.strip
+      sleep(5) until instance_ip.match?(Resolv::IPv4::Regex)
       Dir.chdir(Souls.get_api_path.to_s) do
         file_path = ".env"
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
-            SOULS_DB_HOST=#{get_sql_ip.strip}
+            SOULS_DB_HOST=#{instance_ip}
             SOULS_DB_PW=#{password}
             SOULS_DB_USER=postgres
             SOULS_GCP_PROJECT_ID=#{project_id}
@@ -36,7 +38,7 @@ module Souls
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
             SOULS_DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
-            SOULS_DB_PW=#{options[:root_password]}
+            SOULS_DB_PW=#{password}
             SOULS_DB_USER=postgres
             SOULS_APP_NAME=#{app_name}
             SOULS_GCP_PROJECT_ID=#{project_id}
@@ -132,10 +134,6 @@ module Souls
     end
 
     private
-
-    def get_sql_ip
-      `gcloud sql instances list | grep james | awk '{print $5}'`
-    end
 
     def region_to_timezone(region: "asia-northeast1")
       if region.include?("asia")
