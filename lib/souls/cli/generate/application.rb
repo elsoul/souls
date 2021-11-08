@@ -5,9 +5,9 @@ module Souls
     def scaffold(class_name)
       singularized_class_name = class_name.singularize
       if options[:rbs]
-        run_rbs_scaffold(class_name: singularized_class_name)
+        run_rbs_scaffold(singularized_class_name)
       else
-        run_scaffold(class_name: singularized_class_name)
+        run_scaffold(singularized_class_name)
       end
       true
     rescue Thor::Error => e
@@ -32,7 +32,7 @@ module Souls
 
     private
 
-    def run_scaffold(class_name: "user")
+    def run_scaffold(class_name)
       type(class_name)
       type_rbs(class_name)
       query(class_name)
@@ -54,7 +54,7 @@ module Souls
       rspec_policy(class_name)
     end
 
-    def run_rbs_scaffold(class_name: "user")
+    def run_rbs_scaffold(class_name)
       type_rbs(class_name)
       query_rbs(class_name)
       mutation_rbs(class_name)
@@ -64,7 +64,7 @@ module Souls
       resolver_rbs(class_name)
     end
 
-    def generated_paths(class_name: "user")
+    def generated_paths(class_name)
       singularized_class_name = class_name.singularize.underscore
       pluralized_class_name = class_name.pluralize.underscore
       [
