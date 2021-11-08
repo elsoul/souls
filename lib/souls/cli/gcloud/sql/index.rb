@@ -19,7 +19,6 @@ module Souls
               --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
       )
       instance_ip = `gcloud sql instances list | grep -x #{instance_name} | awk '{print $5}'`.strip
-      sleep(5) until instance_ip.match?(Resolv::IPv4::Regex)
       Dir.chdir(Souls.get_api_path.to_s) do
         file_path = ".env"
         File.open(file_path, "w") do |line|
