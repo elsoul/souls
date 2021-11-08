@@ -2,9 +2,10 @@ module Souls
   class Sql < Thor
     desc "create_instance", "Create Google Cloud SQL - PostgreSQL13"
     method_option :region, default: "", aliases: "--region", desc: "Google Cloud Platform Region"
-    method_option :root_password, default: "", aliases: "--root-password", desc: "Set Cloud SQL Root Password"
     method_option :mysql, type: :boolean, default: false, aliases: "--mysql", desc: "Set Cloud SQL Type to MySQL"
     def create_instance
+      prompt = TTY::Prompt.new
+      password = prompt.mask("Set DB PassWord:")
       app_name = Souls.configuration.app
       project_id = Souls.configuration.project_id
       instance_name = Souls.configuration.instance_name if instance_name.blank?
@@ -15,14 +16,14 @@ module Souls
       system(
         "gcloud sql instances create #{instance_name} \
               --database-version=#{db_type} --cpu=1 --memory=3750MB --zone=#{zone} \
-              --root-password='#{options[:root_password]}' --database-flags cloudsql.iam_authentication=on"
+              --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
       )
       Dir.chdir(Souls.get_api_path.to_s) do
         file_path = ".env"
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
             SOULS_DB_HOST=#{get_sql_ip.strip}
-            SOULS_DB_PW=#{options[:root_password]}
+            SOULS_DB_PW=#{password}
             SOULS_DB_USER=postgres
             SOULS_GCP_PROJECT_ID=#{project_id}
             SOULS_SECRET_KEY_BASE="#{SecureRandom.base64(64)}"

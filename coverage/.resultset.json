@@ -1,6 +1,14 @@
 {
   "RSpec": {
     "coverage": {
+      "/home/fudo/dev/souls/lib/souls/version.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
       "/home/fudo/dev/souls/lib/souls.rb": {
         "lines": [
           1,
@@ -4821,7 +4829,8 @@
           1,
           1,
           1,
-          1,
+          0,
+          0,
           0,
           0,
           0,
@@ -6174,6 +6183,6 @@
         ]
       }
     },
-    "timestamp": 1636128087
+    "timestamp": 1636389184
   }
 }
