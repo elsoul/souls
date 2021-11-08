@@ -10,8 +10,12 @@ module Mutations
         Integer: Integer
         def resolve:  ({
                         id: String,
+                          website: String?,
+                          id: String?
                       }) -> ({ :user_edge => { :node => String } } | ::GraphQL::ExecutionError )
 
+        def self.argument: (:website, String, required: false ) -> String
+                         | (:id, String, required: true ) -> String
 
         def self.field: (*untyped) -> String
         attr_accessor context: {user:{

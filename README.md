@@ -4,6 +4,9 @@
   <a aria-label="Ruby logo" href="https://el-soul.com">
     <img src="https://badgen.net/badge/icon/Made%20by%20ELSOUL?icon=ruby&label&color=black&labelColor=black">
   </a>
+  <a href="https://twitter.com/intent/follow?screen_name=SOULsOpenSource">
+    <img src="https://img.shields.io/twitter/follow/SOULsOpenSource.svg?label=Follow%20@SOULsOpenSource" alt="Follow @SOULsOpenSource" />
+  </a>
   <br/>
 
   <a aria-label="Ruby Gem version" href="https://rubygems.org/gems/souls">
