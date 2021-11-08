@@ -1,6 +1,14 @@
 {
   "RSpec": {
     "coverage": {
+      "/Users/james.neve/development/ruby/souls/lib/souls/version.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
       "/Users/james.neve/development/ruby/souls/lib/souls.rb": {
         "lines": [
           1,
@@ -932,39 +940,39 @@
           null,
           null,
           1,
+          3,
           1,
+          2,
+          2,
+          2,
+          null,
+          2,
           1,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          null,
-          null,
-          null,
           null,
           1,
-          1,
+          null,
           null,
           null,
           null,
           1,
           1,
+          null,
+          null,
+          null,
           1,
-          0,
-          0,
-          0,
-          0,
-          0,
+          3,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
           null,
-          0,
-          0,
-          0,
+          2,
+          2,
+          1,
           null,
-          0,
+          1,
           null,
           null,
           null,
@@ -5846,7 +5854,7 @@
           null,
           1,
           null,
-          3,
+          5,
           null,
           null,
           null,
@@ -5859,7 +5867,7 @@
           null,
           1,
           null,
-          0,
+          4,
           null,
           null,
           null,
@@ -6174,6 +6182,6 @@
         ]
       }
     },
-    "timestamp": 1636370967
+    "timestamp": 1636372331
   }
 }

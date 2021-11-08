@@ -39,7 +39,7 @@ RSpec.describe(Souls::Generate) do
 
         FakeFS.activate!
         generate = Souls::Generate.new
-        allow(Souls).to receive(:get_relation_params).and_return({:params => {}})
+        allow(Souls).to receive(:get_relation_params).and_return({params: [{:column_name=>"website", :type=>"string", :array=>false}]})
         allow(Souls).to receive(:get_mother_path).and_return("")
         a1 = generate.send(:update_rbs_mutation, **{ class_name: class_name})
         file_output = File.read(file_path)
