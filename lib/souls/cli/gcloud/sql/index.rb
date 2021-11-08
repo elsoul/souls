@@ -13,12 +13,13 @@ module Souls
       db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
 
       zone = "#{region}-b"
+      system("gcloud config set project #{project_id}")
       system(
         "gcloud sql instances create #{instance_name} \
               --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
               --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
       )
-      instance_ip = `gcloud sql instances list | grep -x #{instance_name} | awk '{print $5}'`.strip
+      instance_ip = `gcloud sql instances list | grep #{instance_name} | awk '{print $5}'`.strip
       Dir.chdir(Souls.get_api_path.to_s) do
         file_path = ".env"
         File.open(file_path, "w") do |line|
