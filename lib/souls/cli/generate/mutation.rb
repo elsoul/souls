@@ -28,7 +28,7 @@ module Souls
       file_path = "#{file_dir}/create_#{singularized_class_name}.rb"
       raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-      params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
+      params = Souls.get_relation_params(singularized_class_name, "mutation")
       File.open(file_path, "a") do |f|
         f.write(<<~TEXT)
           module Mutations
@@ -98,7 +98,7 @@ module Souls
       file_path = "#{file_dir}/update_#{singularized_class_name}.rb"
       raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-      params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
+      params = Souls.get_relation_params(singularized_class_name, "mutation")
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Mutations

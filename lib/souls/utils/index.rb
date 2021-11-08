@@ -111,7 +111,7 @@ module Souls
       end
     end
 
-    def get_relation_params(class_name: "user", col: "")
+    def get_relation_params(class_name, col = "")
       Dir.chdir(Souls.get_api_path.to_s) do
         cols =
           if col == "mutation"
@@ -129,7 +129,7 @@ module Souls
       end
     end
 
-    def get_columns_num(class_name: "user")
+    def get_columns_num(class_name)
       pluralized_class_name = class_name.pluralize
       file_path = "./db/schema.rb"
       class_check_flag = false
@@ -149,7 +149,7 @@ module Souls
       cols
     end
 
-    def get_columns_num_no_timestamp(class_name: "user")
+    def get_columns_num_no_timestamp(class_name)
       pluralized_class_name = class_name.pluralize
       file_path = "./db/schema.rb"
       class_check_flag = false

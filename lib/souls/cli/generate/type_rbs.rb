@@ -10,7 +10,7 @@ module Souls
         file_path = "#{file_dir}/#{singularized_class_name}_type.rbs"
         raise(Thor::Error, "Type RBS already exist! #{file_path}") if File.exist?(file_path)
 
-        params = Souls.get_relation_params(class_name: singularized_class_name)
+        params = Souls.get_relation_params(singularized_class_name)
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             module Types
