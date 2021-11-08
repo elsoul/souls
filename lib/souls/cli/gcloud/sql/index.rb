@@ -15,7 +15,7 @@ module Souls
       zone = "#{region}-b"
       system(
         "gcloud sql instances create #{instance_name} \
-              --database-version=#{db_type} --cpu=1 --memory=3840MB --zone=#{zone} \
+              --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
               --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
       )
       Dir.chdir(Souls.get_api_path.to_s) do
