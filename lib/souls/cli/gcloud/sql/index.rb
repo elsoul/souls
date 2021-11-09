@@ -125,8 +125,7 @@ module Souls
             gcloud beta sql instances patch #{instance_name} \
               --project=#{project_id} \
               --assign-ip \
-              --authorized-networks=#{ip} \
-              --quiet
+              --authorized-networks=#{ip}
             "
       )
     rescue Thor::Error => e
