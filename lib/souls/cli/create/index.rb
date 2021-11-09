@@ -145,6 +145,7 @@ end
                 uses: actions/setup-ruby@v1
                 with:
                   ruby-version: 3.0
+                  bundler-cache: true
               - name: Build and test with Rake
                 env:
                   PGHOST: 127.0.0.1
