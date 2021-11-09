@@ -9,7 +9,7 @@ module Souls
         create_job_mutation(class_name)
       end
       Souls::Generate.new.invoke(:job_rbs, [class_name], {})
-      Souls::Generate.new.invoke(:rspec_job, [class_name], {})
+      Souls::Generate.new.invoke(:rspec_job, [class_name], { mailer: options[:mailer] })
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
