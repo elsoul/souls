@@ -4,8 +4,10 @@ module Souls
     def config
       souls = Souls.configuration
       prompt = TTY::Prompt.new
+      regions = `gcloud app regions list | awk '{print $1}'`.split("\n")
+      regions.shift
       project_id = prompt.ask("Project ID:", default: souls.project_id)
-      region = prompt.ask("Region:", default: souls.region)
+      region = prompt.select("Region:", regions, default: souls.region)
       endpoint = prompt.ask("Endpoint:", default: souls.endpoint)
 
       Dir.chdir(Souls.get_mother_path.to_s) do
