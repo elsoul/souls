@@ -27,7 +27,7 @@ module Souls
                 SoulsApiSchema.execute(mutation).as_json
               end
 
-              it "return StockSheet Data" do
+              it "return User response" do
                 begin
                   a1 = result.dig("data", "#{options[:mutation].singularize.camelize(:lower)}", "response")
                   raise unless a1.present?

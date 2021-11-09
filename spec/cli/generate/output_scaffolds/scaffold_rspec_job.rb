@@ -17,7 +17,7 @@ RSpec.describe("User") do
       SoulsApiSchema.execute(mutation).as_json
     end
 
-    it "return StockSheet Data" do
+    it "return User response" do
       begin
         a1 = result.dig("data", "user")
         raise unless a1.present?
