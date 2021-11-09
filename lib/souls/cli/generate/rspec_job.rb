@@ -28,7 +28,7 @@ module Souls
                   SoulsApiSchema.execute(mutation).as_json
                 end
 
-                it "return StockSheet Data" do
+                it "return #{singularized_class_name.camelize} response" do
                   stub_request(:post, "https://api.mailgun.net/v3/YOUR-MAILGUN-DOMAIN/messages")
                     .to_return(status: 200, body: "", headers: {})
                   begin
@@ -62,7 +62,7 @@ module Souls
                   SoulsApiSchema.execute(mutation).as_json
                 end
 
-                it "return StockSheet Data" do
+                it "return #{singularized_class_name.camelize} response" do
                   begin
                     a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
                     raise unless a1.present?
