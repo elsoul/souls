@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
 
   gem.metadata["homepage_uri"] = gem.homepage
   gem.metadata["source_code_uri"] = "https://github.com/elsoul/souls"
-  gem.metadata["changelog_uri"] = "https://github.com/elsoul/souls"
+  gem.metadata["changelog_uri"] = "https://github.com/elsoul/souls/releases/tag/#{gem.version}"
 
   gem.files         = `git ls-files -- lib/*`.split("\n") +
                       [
