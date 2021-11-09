@@ -22,6 +22,14 @@ module Souls
       Souls::Github.new.invoke(:secret_set)
     end
 
+    desc "watch", "Watch GitHub Actions Workflow"
+    def watch
+      run_id = `gh run list | grep Mailer | awk '{print $7}'`.strip
+      raise(StandardError, "No workflow is running.") if run_id.include?("push")
+
+      system("gh run watch #{run_id}")
+    end
+
     private
 
     def update_env_production(key:, value:, dqm: false)
