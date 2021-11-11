@@ -1,12 +1,12 @@
 module OutputScaffold
   def self.scaffold_rspec_job
-    <<~MUTATIONSPECJOB
+    <<~QUERYSPECJOB
 RSpec.describe("User") do
   describe "Define User" do
 
-    let(:mutation) do
-      %(mutation {
-        user(input: {}) {
+    let(:query) do
+      %(query {
+        user {
             response
           }
         }
@@ -14,20 +14,16 @@ RSpec.describe("User") do
     end
 
     subject(:result) do
-      SoulsApiSchema.execute(mutation).as_json
+      SoulsApiSchema.execute(query).as_json
     end
 
     it "return User response" do
-      begin
-        a1 = result.dig("data", "user")
-        raise unless a1.present?
-      rescue StandardError
-        raise(StandardError, result)
-      end
+      a1 = result.dig("data", "user")
+      expect(a1).not_to be_empty
       expect(a1).to(include("response" => be_a(String)))
     end
   end
 end
-    MUTATIONSPECJOB
+    QUERYSPECJOB
   end
 end
