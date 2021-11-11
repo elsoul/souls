@@ -50,7 +50,7 @@ module Souls
       md = ""
       doc.each_line do |l|
         md << if l.include?("Merge pull request")
-                "## #{l}"
+                "### #{l}"
               else
                 l
               end
