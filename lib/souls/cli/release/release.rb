@@ -33,6 +33,7 @@ module Souls
         puts("before build")
         system("rake build")
         system("rake release")
+        system("gh release create v#{souls_new_ver}")
         system("gsutil -m -q cp -r coverage gs://souls-bucket/souls-coverage")
         Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
       end
