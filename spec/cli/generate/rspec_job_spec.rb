@@ -8,7 +8,7 @@ RSpec.describe(Souls::Generate) do
 
     before do
       FakeFS do
-        @file_dir = "./spec/mutations/jobs/"
+        @file_dir = "./spec/queries/jobs/"
         FileUtils.mkdir_p(@file_dir) unless Dir.exist?(@file_dir)
         @schema_dir = "./db/"
         FileUtils.mkdir_p(@schema_dir) unless Dir.exist?(@schema_dir)

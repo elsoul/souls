@@ -4,7 +4,7 @@ module Souls
     method_option :mailer, type: :boolean, aliases: "--mailer", default: false, desc: "Mailgun Template"
     def rspec_job(class_name)
       singularized_class_name = class_name.underscore.singularize
-      file_dir = "./spec/mutations/jobs/"
+      file_dir = "./spec/queries/jobs/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}/#{singularized_class_name}_spec.rb"
       return "RspecJob already exist! #{file_path}" if File.exist?(file_path)
@@ -15,9 +15,9 @@ module Souls
             RSpec.describe("#{singularized_class_name.camelize}") do
               describe "Define #{singularized_class_name.camelize}" do
 
-                let(:mutation) do
-                  %(mutation {
-                    #{singularized_class_name.camelize(:lower)}(input: {}) {
+                let(:query) do
+                  %(query {
+                    #{singularized_class_name.camelize(:lower)} {
                         response
                       }
                     }
@@ -31,12 +31,9 @@ module Souls
                 it "return #{singularized_class_name.camelize} response" do
                   stub_request(:post, "https://api.mailgun.net/v3/YOUR-MAILGUN-DOMAIN/messages")
                     .to_return(status: 200, body: "", headers: {})
-                  begin
-                    a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
-                    raise unless a1.present?
-                  rescue StandardError
-                    raise(StandardError, result)
-                  end
+                  
+                  a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
+                  expect(a1).not_to be_empty
                   expect(a1).to(include("response" => be_a(String)))
                 end
               end
@@ -49,9 +46,9 @@ module Souls
             RSpec.describe("#{singularized_class_name.camelize}") do
               describe "Define #{singularized_class_name.camelize}" do
 
-                let(:mutation) do
-                  %(mutation {
-                    #{singularized_class_name.camelize(:lower)}(input: {}) {
+                let(:query) do
+                  %(query {
+                    #{singularized_class_name.camelize(:lower)} {
                         response
                       }
                     }
@@ -59,16 +56,12 @@ module Souls
                 end
 
                 subject(:result) do
-                  SoulsApiSchema.execute(mutation).as_json
+                  SoulsApiSchema.execute(query).as_json
                 end
 
                 it "return #{singularized_class_name.camelize} response" do
-                  begin
-                    a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
-                    raise unless a1.present?
-                  rescue StandardError
-                    raise(StandardError, result)
-                  end
+                  a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
+                  expect(a1).not_to be_empty
                   expect(a1).to(include("response" => be_a(String)))
                 end
               end
