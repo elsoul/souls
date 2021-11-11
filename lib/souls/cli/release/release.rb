@@ -45,8 +45,10 @@ module Souls
     desc "release_local", "Release gem for local use"
     def release_local
       raise(StandardError, "You can only release to local with a clean working directory. Please commit your changes.") unless `git status`.include?("nothing to commit")
+      local_dir = "~/.local_souls/"
+
       system("rm *.gem")
-      system("mkdir -p ~/local_souls/")
+      system("mkdir -p #{local_dir}")
       souls_local_ver = generate_local_version
 
       status = Paint["Saving Repo...", :yellow]
@@ -65,11 +67,11 @@ module Souls
         Whirly.status = Paint["Creating local gem..."]
 
         overwrite_version(new_version: souls_local_ver)
-        system("gem build souls.gemspec")
-        Whirly.status = Paint["Done. Created gem at ~/local_souls/souls-#{souls_local_ver}.gem"]
+        system("gem build souls.gemspec --output #{local_dir}souls-#{souls_local_ver}.gem")
+        Whirly.status = Paint["Done. Created gem at #{local_dir}souls-#{souls_local_ver}.gem"]
         Whirly.status = Paint["Installing local gem..."]
         system("yes | gem uninstall souls")
-        system("gem install ~/local_souls/souls-#{souls_local_ver}.gem")
+        system("gem install #{local_dir}souls-#{souls_local_ver}.gem")
 
         Whirly.status = Paint["Cleaning up..."]
         system("git checkout .")
@@ -130,7 +132,7 @@ module Souls
           gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
           if gem[0] == "souls"
             if local
-              write_txt += "  gem \"souls\", path: \"~/local_souls/souls-#{version}.gem\"\n"
+              write_txt += "  gem \"souls\", path: \"#{local_dir}souls-#{version}.gem\"\n"
             else
               write_txt += "  gem \"souls\", \"#{version}\"\n"
             end
