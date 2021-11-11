@@ -45,15 +45,14 @@ module Souls
     desc "release_local", "Release gem for local use"
     def release_local
       raise(StandardError, "You can only release to local with a clean working directory. Please commit your changes.") unless `git status`.include?("nothing to commit")
-      system("gem install souls")
-      sleep(3)
+      system("rm *.gem")
       souls_local_ver = generate_local_version
 
       status = Paint["Saving Repo...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
 
-        Whirly.status = Paint["Cleaning up previous gems...", :white]
+        Whirly.status = Paint["Removing previous versions...", :white]
         system("rm *.gem")
 
         %w[api worker].each do |s_name|
@@ -66,8 +65,13 @@ module Souls
 
         overwrite_version(new_version: souls_local_ver)
         system("gem build souls.gemspec")
-        Whirly.status = Paint["Done. Created gem at souls-v#{souls_local_ver}.gem"]
+        Whirly.status = Paint["Done. Created gem at souls-#{souls_local_ver}.gem"]
         Whirly.status = Paint["Installing local gem..."]
+        system("yes | gem uninstall souls")
+        system("gem install souls-#{souls_local_ver}.gem")
+
+        Whirly.status = Paint["Cleaning up..."]
+        system("git checkout .")
       end
     end
 
