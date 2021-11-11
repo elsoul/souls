@@ -115,6 +115,8 @@ module Souls
 
     def get_latest_gem(app_name)
       file_path = "./#{app_name}/Gemfile"
+      souls_gem = "gem \"souls\", \"#{Souls::VERSION}\""
+      souls_gem = "gem \"souls\", \"#{Souls::VERSION}\", path: \"~/.local_souls/\"" if Souls::VERSION.length > 20
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           source "https://rubygems.org"
@@ -130,7 +132,7 @@ module Souls
           gem "rubocop", "1.22.3"
           gem "sinatra-activerecord", "2.0.23"
           gem "solargraph", "0.44.0"
-          gem "souls", "#{Souls::VERSION}"
+          #{souls_gem}
           gem "steep", "0.46.0"
           gem "thor", "1.1.0"
           gem "tty-prompt", "0.23.1"
