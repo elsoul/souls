@@ -54,8 +54,6 @@ module Souls
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
 
-        Whirly.status = Paint["Removing previous versions...", :white]
-
         %w[api worker].each do |s_name|
           update_service_gemfile(service_name: s_name, version: souls_local_ver, local: true)
           result = Paint[update_repo(service_name: s_name, version: souls_local_ver), :green]
@@ -67,8 +65,10 @@ module Souls
         overwrite_version(new_version: souls_local_ver)
         system("gem build souls.gemspec --output #{local_dir}souls-#{souls_local_ver}.gem")
         Whirly.status = Paint["Done. Created gem at #{local_dir}souls-#{souls_local_ver}.gem"]
+        Whirly.status = Paint["Removing previous versions...", :white]
+        system("gem uninstall souls -x --force")
+        
         Whirly.status = Paint["Installing local gem..."]
-        system("yes | gem uninstall souls")
         system("gem install #{local_dir}souls-#{souls_local_ver}.gem")
 
         Whirly.status = Paint["Cleaning up..."]
