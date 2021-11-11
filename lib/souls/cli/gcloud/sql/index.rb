@@ -122,7 +122,7 @@ module Souls
       instance_name = Souls.configuration.instance_name if instance_name.blank?
       system(
         "
-            gcloud beta sql instances patch #{instance_name} \
+            gcloud sql instances patch #{instance_name} \
               --project=#{project_id} \
               --assign-ip \
               --authorized-networks=#{ip}
