@@ -44,6 +44,7 @@ module Souls
 
     desc "release_local", "Release gem for local use"
     def release_local
+      raise(StandardError, "You can only release to local with a clean working directory. Please commit your changes.") unless `git status`.include?("nothing to commit")
       system("gem install souls")
       sleep(3)
       souls_local_ver = generate_local_version
