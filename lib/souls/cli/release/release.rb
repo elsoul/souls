@@ -132,7 +132,7 @@ module Souls
           gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
           if gem[0] == "souls"
             if local
-              write_txt += "  gem \"souls\", path: \"#{local_dir}souls-#{version}.gem\"\n"
+              write_txt += "  gem \"souls\", path: \"~/.local_souls/souls-#{version}.gem\"\n"
             else
               write_txt += "  gem \"souls\", \"#{version}\"\n"
             end
