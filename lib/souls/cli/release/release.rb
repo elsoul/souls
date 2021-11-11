@@ -47,7 +47,7 @@ module Souls
       raise(StandardError, "You can only release to local with a clean working directory. Please commit your changes.") unless `git status`.include?("nothing to commit")
       system("gem install souls")
       sleep(3)
-      souls_local_ver = generate_local_version
+      souls_local_ver = self.generate_local_version
 
       status = Paint["Saving Repo...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
