@@ -27,7 +27,6 @@ module Souls
         system("rake db:create RACK_ENV=production")
       else
         system("rake db:create")
-        system("rake db:create RACK_ENV=test")
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
