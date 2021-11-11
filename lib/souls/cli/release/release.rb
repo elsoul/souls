@@ -1,4 +1,4 @@
-require 'securerandom'
+require "securerandom"
 
 module Souls
   class CLI < Thor
@@ -44,7 +44,13 @@ module Souls
 
     desc "release_local", "Release gem for local use"
     def release_local
-      raise(StandardError, "You can only release to local with a clean working directory. Please commit your changes.") unless `git status`.include?("nothing to commit")
+      unless `git status`.include?("nothing to commit")
+        raise(
+          StandardError,
+          "You can only release to local with a clean working directory. Please commit your changes."
+        )
+      end
+
       local_dir = "~/.local_souls/"
 
       system("mkdir -p #{local_dir}")
@@ -67,7 +73,7 @@ module Souls
         Whirly.status = Paint["Done. Created gem at #{local_dir}souls-#{souls_local_ver}.gem"]
         Whirly.status = Paint["Removing previous versions...", :white]
         system("gem uninstall souls -x --force")
-        
+
         Whirly.status = Paint["Installing local gem..."]
         system("gem install #{local_dir}souls-#{souls_local_ver}.gem")
 
@@ -128,15 +134,16 @@ module Souls
       File.open(file_path, "r") do |f|
         f.each_line do |line|
           gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
-          if gem[0] == "souls"
-            if local
-              write_txt += "  gem \"souls\", \"#{version}\", path: \"~/.local_souls/\"\n"
+          write_txt +=
+            if gem[0] == "souls"
+              if local
+                "  gem \"souls\", \"#{version}\", path: \"~/.local_souls/\"\n"
+              else
+                "  gem \"souls\", \"#{version}\"\n"
+              end
             else
-              write_txt += "  gem \"souls\", \"#{version}\"\n"
+              line
             end
-          else
-            write_txt += line
-          end
         end
       end
       File.open(file_path, "w") { |f| f.write(write_txt) }
@@ -182,7 +189,7 @@ module Souls
     end
 
     def generate_local_version
-      max = 99999999999
+      max = 99_999_999_999
       a = SecureRandom.random_number(max) + 9999
       b = SecureRandom.random_number(max)
       c = SecureRandom.random_number(max)
