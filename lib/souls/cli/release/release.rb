@@ -7,7 +7,6 @@ module Souls
       system("gem install souls")
       sleep(3)
       current_souls_ver = Souls::VERSION.strip.split(".").map(&:to_i)
-      p(current_souls_ver)
       prompt = TTY::Prompt.new
       choices = [
         "1. Patch(#{Souls.version_detector(current_ver: current_souls_ver, update_kind: 'patch')})",
@@ -34,9 +33,8 @@ module Souls
         puts("before build")
         system("rake build")
         system("rake release")
-        p(current_souls_ver)
         system(
-          "git -c log.ShowSignature=false log v#{current_souls_ver}... \
+          "git -c log.ShowSignature=false log v#{current_souls_ver.join('.')}... \
             --reverse --merges --grep='Merge pull request' --pretty=format:%B > ./CHANGELOG.md"
         )
         system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
