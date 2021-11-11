@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module Souls
   class CLI < Thor
     desc "release", "Release Gem"
@@ -22,7 +24,7 @@ module Souls
         Whirly.status = status
         %w[api worker].each do |s_name|
           update_service_gemfile(service_name: s_name, version: souls_new_ver)
-          result = Paint[update_repo(service_name: s_name, update_kind: update_kind), :green]
+          result = Paint[update_repo(service_name: s_name, version: souls_new_ver), :green]
           Whirly.status = result
         end
         overwrite_version(new_version: souls_new_ver)
@@ -37,6 +39,34 @@ module Souls
         system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
         system("gsutil -m -q cp -r coverage gs://souls-bucket/souls-coverage")
         Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
+      end
+    end
+
+    desc "release_local", "Release gem for local use"
+    def release_local
+      system("gem install souls")
+      sleep(3)
+      souls_local_ver = generate_local_version
+
+      status = Paint["Saving Repo...", :yellow]
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = status
+
+        Whirly.status = Paint["Cleaning up previous gems...", :white]
+        system("rm *.gem")
+
+        %w[api worker].each do |s_name|
+          update_service_gemfile(service_name: s_name, version: souls_local_ver, local: false)
+          result = Paint[update_repo(service_name: s_name, version: souls_local_ver), :green]
+          Whirly.status = result
+        end
+
+        Whirly.status = Paint["Creating local gem..."]
+
+        overwrite_version(new_version: souls_local_ver)
+        system("gem build souls.gemspec")
+        Whirly.status = Paint["Done. Created gem at souls-v#{souls_local_ver}.gem"]
+        Whirly.status = Paint["Installing local gem..."]
       end
     end
 
@@ -58,22 +88,20 @@ module Souls
       File.open("./CHANGELOG.md", "w") { |f| f.write(md) }
     end
 
-    def update_repo(service_name: "api", update_kind: "patch")
+    def update_repo(service_name: "api", version: "0.0.1")
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
-      current_ver = Souls.get_latest_version_txt(service_name: service_name)
-      new_ver = Souls.version_detector(current_ver: current_ver, update_kind: update_kind)
       bucket_url = "gs://souls-bucket/boilerplates"
-      file_name = "#{service_name}-v#{new_ver}.tgz"
+      file_name = "#{service_name}-v#{version}.tgz"
       release_name = "#{service_name}-latest.tgz"
 
       case current_dir_name
       when "souls"
-        system("echo '#{new_ver}' > lib/souls/versions/.souls_#{service_name}_version")
-        system("echo '#{new_ver}' > apps/#{service_name}/.souls_#{service_name}_version")
+        system("echo '#{version}' > lib/souls/versions/.souls_#{service_name}_version")
+        system("echo '#{version}' > apps/#{service_name}/.souls_#{service_name}_version")
         system("cd apps/ && tar -czf ../#{service_name}.tgz #{service_name}/ && cd ..")
       when "api", "worker", "console", "admin", "media"
-        system("echo '#{new_ver}' > lib/souls/versions/.souls_#{service_name}_version")
-        system("echo '#{new_ver}' > .souls_#{service_name}_version")
+        system("echo '#{version}' > lib/souls/versions/.souls_#{service_name}_version")
+        system("echo '#{version}' > .souls_#{service_name}_version")
         system("cd .. && tar -czf ../#{service_name}.tgz #{service_name}/ && cd #{service_name}")
       else
         raise(StandardError, "You are at wrong directory!")
@@ -83,31 +111,32 @@ module Souls
       system("gsutil cp #{service_name}.tgz #{bucket_url}/#{service_name.pluralize}/#{release_name}")
       system("gsutil cp .rubocop.yml #{bucket_url}/.rubocop.yml")
       FileUtils.rm("#{service_name}.tgz")
-      "#{service_name}-v#{new_ver} Succefully Stored to GCS! "
+      "#{service_name}-v#{version} Succefully Stored to GCS! "
     end
 
-    def update_service_gemfile(service_name: "api", version: "0.0.1")
+    def update_service_gemfile(service_name: "api", version: "0.0.1", local: false)
       file_dir = "./apps/#{service_name}"
       file_path = "#{file_dir}/Gemfile"
-      gemfile_lock = "#{file_dir}/Gemfile.lock"
-      tmp_file = "#{file_dir}/tmp/Gemfile"
+
+      write_txt = ""
       File.open(file_path, "r") do |f|
-        File.open(tmp_file, "w") do |new_line|
-          f.each_line do |line|
-            gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
-            if gem[0] == "souls"
-              old_ver = gem[1].split(".")
-              old_ver[2] = (old_ver[2].to_i + 1).to_s
-              new_line.write("  gem \"souls\", \"#{version}\"\n")
+        f.each_line do |line|
+          gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
+          if gem[0] == "souls"
+            if local
+              write_txt += "  gem \"souls\", path: \"#{Dir.pwd}/souls-#{version}.gem\""
             else
-              new_line.write(line)
+              write_txt += "  gem \"souls\", \"#{version}\"\n"
             end
+          else
+            write_txt += line
           end
         end
       end
-      FileUtils.rm(file_path)
+      File.open(file_path, "w") { |f| f.write(write_txt) }
+
+      gemfile_lock = "#{file_dir}/Gemfile.lock"
       FileUtils.rm(gemfile_lock) if File.exist?(gemfile_lock)
-      FileUtils.mv(tmp_file, file_path)
       puts(Paint["\nSuccessfully Updated #{service_name} Gemfile!", :green])
     end
 
@@ -145,5 +174,14 @@ module Souls
       FileUtils.rm(file_path)
       FileUtils.mv(new_file_path, file_path)
     end
+  end
+
+  def generate_local_version
+    max = 99999999999
+    a = SecureRandom.random_number(max) + 9999
+    b = SecureRandom.random_number(max)
+    c = SecureRandom.random_number(max)
+
+    "#{a}.#{b}.#{c}"
   end
 end
