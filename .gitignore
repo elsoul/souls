@@ -16,3 +16,4 @@
 tmp/*
 /coverage/
 CHANGELOG.md
+souls-*.gem
