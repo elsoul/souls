@@ -56,7 +56,7 @@ module Souls
         system("rm *.gem")
 
         %w[api worker].each do |s_name|
-          update_service_gemfile(service_name: s_name, version: souls_local_ver, local: false)
+          update_service_gemfile(service_name: s_name, version: souls_local_ver, local: true)
           result = Paint[update_repo(service_name: s_name, version: souls_local_ver), :green]
           Whirly.status = result
         end
