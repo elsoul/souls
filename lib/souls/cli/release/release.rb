@@ -33,19 +33,7 @@ module Souls
         puts("before build")
         system("rake build")
         system("rake release")
-        doc =
-          `git -c log.ShowSignature=false log v#{current_souls_ver.join(".")}... \
-            --reverse --merges --grep='Merge pull request' --pretty=format:%B`
-
-        md = ""
-        doc.each_line do |l|
-          md << if l.include?("Merge pull request")
-                  "## #{l}"
-                else
-                  l
-                end
-        end
-        File.open("./CHANGELOG.md", "w") { |f| f.write(md) }
+        write_changelog(current_souls_ver: current_souls_ver)
         system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
         system("gsutil -m -q cp -r coverage gs://souls-bucket/souls-coverage")
         Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
@@ -53,6 +41,22 @@ module Souls
     end
 
     private
+
+    def write_changelog(current_souls_ver:)
+      doc =
+        `git -c log.ShowSignature=false log v#{current_souls_ver.join(".")}... \
+          --reverse --merges --grep='Merge pull request' --pretty=format:%B`
+
+      md = ""
+      doc.each_line do |l|
+        md << if l.include?("Merge pull request")
+                "## #{l}"
+              else
+                l
+              end
+      end
+      File.open("./CHANGELOG.md", "w") { |f| f.write(md) }
+    end
 
     def update_repo(service_name: "api", update_kind: "patch")
       current_dir_name = FileUtils.pwd.to_s.match(%r{/([^/]+)/?$})[1]
