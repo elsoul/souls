@@ -1,6 +1,7 @@
 module Souls
   class CLI < Thor
     desc "new [APP_NAME]", "Create SOULs APP"
+    method_option :local, type: :boolean, aliases: "--local", default: false, desc: "Create Souls app from local"
     def new(app_name)
       if app_name.nil?
         puts(Paint["you need to specify your app name", :red])
@@ -11,7 +12,7 @@ module Souls
       raise(StandardError, "Directory Already Exist!") if Dir.exist?(file_dir)
 
       service_name = "api"
-      download_souls(app_name: app_name, service_name: service_name)
+      download_souls(app_name: app_name, service_name: service_name, local: options[:local])
       mother_config_init(app_name: app_name)
       download_github_actions(app_name: app_name)
       initial_config_init(app_name: app_name, service_name: service_name)
@@ -113,8 +114,10 @@ module Souls
       puts(e)
     end
 
-    def get_latest_gem(app_name)
+    def get_latest_gem(app_name, local)
       file_path = "./#{app_name}/Gemfile"
+      souls_gem = "gem \"souls\", \"#{Souls::VERSION}\""
+      souls_gem = "gem \"souls\", path: \"~/local_souls/souls-#{Souls::VERSION}.gem\"" if local
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           source "https://rubygems.org"
@@ -130,7 +133,7 @@ module Souls
           gem "rubocop", "1.22.3"
           gem "sinatra-activerecord", "2.0.23"
           gem "solargraph", "0.44.0"
-          gem "souls", "#{Souls::VERSION}"
+          #{souls_gem}
           gem "steep", "0.46.0"
           gem "thor", "1.1.0"
           gem "tty-prompt", "0.23.1"
@@ -141,7 +144,7 @@ module Souls
       puts(e)
     end
 
-    def download_souls(app_name: "souls", service_name: "api")
+    def download_souls(app_name: "souls", service_name: "api", local: false)
       version = Souls.get_latest_version_txt(service_name: service_name).join(".")
       file_name = "#{service_name}-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
@@ -156,7 +159,7 @@ module Souls
       system("tar -zxvf ./#{sig_name} -C #{app_name}")
 
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml")
-      get_latest_gem(app_name)
+      get_latest_gem(app_name, local)
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
       system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
