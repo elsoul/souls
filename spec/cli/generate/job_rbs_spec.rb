@@ -6,7 +6,7 @@ RSpec.describe(Souls::Generate) do
 
     before do
       FakeFS do
-        @file_dir = "./sig/api/app/graphql/mutations/"
+        @file_dir = "./sig/api/app/graphql/queries/"
         FileUtils.mkdir_p(@file_dir) unless Dir.exist?(@file_dir)
       end
     end
