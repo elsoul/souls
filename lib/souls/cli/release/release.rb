@@ -33,10 +33,19 @@ module Souls
         puts("before build")
         system("rake build")
         system("rake release")
-        system(
-          "git -c log.ShowSignature=false log v#{current_souls_ver.join('.')}... \
-            --reverse --merges --grep='Merge pull request' --pretty=format:%B > ./CHANGELOG.md"
-        )
+        doc =
+          `git -c log.ShowSignature=false log v#{current_souls_ver.join(".")}... \
+            --reverse --merges --grep='Merge pull request' --pretty=format:%B`
+
+        md = ""
+        doc.each_line do |l|
+          md << if l.include?("Merge pull request")
+                  "## #{l}"
+                else
+                  l
+                end
+        end
+        File.open("./CHANGELOG.md", "w") { |f| f.write(md) }
         system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
         system("gsutil -m -q cp -r coverage gs://souls-bucket/souls-coverage")
         Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
