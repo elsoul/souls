@@ -47,7 +47,6 @@ module Souls
       raise(StandardError, "You can only release to local with a clean working directory. Please commit your changes.") unless `git status`.include?("nothing to commit")
       local_dir = "~/.local_souls/"
 
-      system("rm *.gem")
       system("mkdir -p #{local_dir}")
       souls_local_ver = generate_local_version
 
@@ -56,7 +55,6 @@ module Souls
         Whirly.status = status
 
         Whirly.status = Paint["Removing previous versions...", :white]
-        system("rm *.gem")
 
         %w[api worker].each do |s_name|
           update_service_gemfile(service_name: s_name, version: souls_local_ver, local: true)
@@ -132,7 +130,7 @@ module Souls
           gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
           if gem[0] == "souls"
             if local
-              write_txt += "  gem \"souls\", path: \"~/.local_souls/souls-#{version}.gem\"\n"
+              write_txt += "  gem \"souls\", \"#{version}\", path: \"~/.local_souls/\"\n"
             else
               write_txt += "  gem \"souls\", \"#{version}\"\n"
             end
