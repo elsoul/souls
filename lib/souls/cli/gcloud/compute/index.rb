@@ -3,6 +3,7 @@ module Souls
     desc "setup_vpc_nat", "Set Up VPC Cloud Nat"
     method_option :range, default: "10.124.0.0/28", aliases: "--range", desc: "GCP VPC Network IP Range"
     def setup_vpc_nat
+      puts(Paint["Initializing NAT Setup This process might take about 5 min...", :yellow])
       create_network
       create_firewall_tcp(range: options[:range])
       create_firewall_ssh
@@ -11,7 +12,10 @@ module Souls
       create_router
       create_external_ip
       create_nat
-      nat_credit
+      Souls::Sql.new.invoke(:setup_private_ip)
+      update_workflows
+      puts(Paint["Cloud NAT is All Set!", :green])
+      true
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
@@ -88,40 +92,24 @@ module Souls
       system("gcloud compute networks list")
     end
 
-    def nat_credit
+    def update_workflows
       app_name = Souls.configuration.app
-      line = Paint["====================================", :yellow]
-      puts("\n")
-      puts(line)
-      txt2 = <<~TEXT
-           _____ ____  __  ____#{'        '}
-          / ___// __ \\/ / / / /   %{red1}
-          \\__ \\/ / / / / / / /   %{red2}
-         ___/ / /_/ / /_/ / /___%{red3}#{' '}
-        /____/\\____/\\____/_____%{red4}#{'  '}
-      TEXT
-      red1 = ["_____", :red]
-      red2 = ["/ ___/", :red]
-      red3 = ["(__  )", :red]
-      red4 = ["/____/", :red]
-      ms = Paint % [txt2, :cyan, { red1: red1, red2: red2, red3: red3, red4: red4 }]
-      puts(ms)
-      puts(line)
-      welcome = Paint["VPC Network is All Set!", :white]
-      puts(welcome)
-      puts(line)
-      endroll = <<~TEXT
-
-        Edit  `.github/workflow/worker.yml`
-
-        Add these 2 options in \n`- name: Deploy to Cloud Run` step
-        \n--vpc-connector=#{app_name}-connector \
-        \n--vpc-egress=all \
-
-      TEXT
-      cd = Paint[endroll, :white]
-      puts(cd)
-      puts(line)
+      Dir.chdir(Souls.get_mother_path.to_s) do
+        api_workflow_path = ".github/workflows/api.yml"
+        worker_workflow_paths = Dir[".github/workflows/*.yml"]
+        worker_workflow_paths.delete(api_workflow_path)
+        File.open(api_workflow_path, "a") do |line|
+          line.write(" \\ \n            --vpc-connector=#{app_name}-connector")
+        end
+        puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [api_workflow_path.to_s, :white] }])
+        worker_workflow_paths.each do |file_path|
+          File.open(file_path, "a") do |line|
+            line.write(" \\             --vpc-connector=#{app_name}-connector \\")
+            line.write("\n            --vpc-egress=all")
+          end
+          puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+        end
+      end
     end
   end
 end
