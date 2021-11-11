@@ -16,8 +16,16 @@ module Souls
       Souls::Sql.new.invoke(:setup_private_ip)
       update_workflows
       update_env
-      puts(Paint["Cloud NAT is All Set!", :green])
-      puts(Paint["\nYou need to deploy to update production DB_HOST environment!", :yellow])
+      puts(Paint["Cloud NAT is All Set!\n", :white])
+      puts(
+        Paint % [
+          "Your Worker's External IP:  %{white_text}",
+          :green,
+          { white_text: [get_external_ip.to_s, :white] }
+        ]
+      )
+      puts(Paint["\nYou can add this IP to third party white list", :white])
+      puts(Paint["\nPlease git push to update your github workflow now!", :yellow])
       true
     rescue Thor::Error => e
       raise(Thor::Error, e)
