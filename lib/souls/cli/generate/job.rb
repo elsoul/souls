@@ -4,10 +4,13 @@ module Souls
     method_option :mailer, type: :boolean, aliases: "--mailer", default: false, desc: "Mailer Option"
     def job(class_name)
       if options[:mailer]
+        create_job_mailer_type(class_name)
         mailgun_mailer(class_name)
       else
-        create_job_mutation(class_name)
+        create_job_type(class_name)
+        create_job(class_name)
       end
+      update_query_type(class_name)
       Souls::Generate.new.invoke(:job_rbs, [class_name], {})
       Souls::Generate.new.invoke(:rspec_job, [class_name], { mailer: options[:mailer] })
     rescue Thor::Error => e
@@ -16,22 +19,74 @@ module Souls
 
     private
 
-    def create_job_mutation(class_name)
-      file_dir = "./app/graphql/mutations/"
+    def create_job(class_name)
+      file_dir = "./app/graphql/queries/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}#{class_name.singularize}.rb"
-      raise(StandardError, "Mutation already exist! #{file_path}") if File.exist?(file_path)
+      raise(StandardError, "Query already exist! #{file_path}") if File.exist?(file_path)
 
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          module Mutations
-            class #{class_name.camelize} < BaseMutation
-              description "Job Description"
-              field :response, String, null: false
-
+          module Queries
+            class #{class_name.camelize} < BaseQuery
+              description ""
+              type Types::#{class_name.camelize}Type, null: false
+          
               def resolve
-                # Define Job Here
+              end
+            end
+          end
+        TEXT
+      end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      file_path
+    end
+    
+    def create_job_type(class_name)
+      file_dir = "./app/graphql/types/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+      file_path = "#{file_dir}#{class_name.singularize}_type.rb"
+      raise(StandardError, "Type already exists! #{file_path}") if File.exist?(file_path)
 
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
+          module Types
+            class #{class_name.camelize}Type < BaseObject
+            end
+          end
+        TEXT
+      end
+      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      file_path
+    end
+
+    def mailgun_mailer(class_name)
+      file_dir = "./app/graphql/queries/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+      file_path = "#{file_dir}#{class_name.singularize}.rb"
+      raise(StandardError, "Mailer already exists! #{file_path}") if File.exist?(file_path)
+
+      File.open(file_path, "w") do |f|
+        f.write(<<~TEXT)
+          module Queries
+            class #{class_name.camelize} < BaseQuery
+              description ""
+              type Types::#{class_name.camelize}Type, null: false
+          
+              def resolve
+                # First, instantiate the Mailgun Client with your API key
+                mg_client = ::Mailgun::Client.new("YOUR-API-KEY")
+          
+                # Define your message parameters
+                message_params = {
+                  from: "postmaster@from.mail.com",
+                  to: "sending@to.mail.com",
+                  subject: "SOULs Mailer test!",
+                  text: "It is really easy to send a message!"
+                }
+          
+                # Send your message through the client
+                mg_client.send_message("YOUR-MAILGUN-DOMAIN", message_params)
                 { response: "Job done!" }
               rescue StandardError => e
                 GraphQL::ExecutionError.new(e.to_s)
@@ -44,42 +99,42 @@ module Souls
       file_path
     end
 
-    def mailgun_mailer(class_name)
-      file_dir = "./app/graphql/mutations/"
+    def create_job_mailer_type(class_name)
+      file_dir = "./app/graphql/types/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-      file_path = "#{file_dir}#{class_name.singularize}.rb"
-      raise(StandardError, "Mailer already exist! #{file_path}") if File.exist?(file_path)
+      file_path = "#{file_dir}#{class_name.singularize}_type.rb"
+      raise(StandardError, "Type already exists! #{file_path}") if File.exist?(file_path)
 
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          module Mutations
-            class #{class_name.camelize} < BaseMutation
-              description "Mail を送信します。"
-              field :response, String, null: false
-
-              def resolve
-                # First, instantiate the Mailgun Client with your API key
-                mg_client = ::Mailgun::Client.new("YOUR-API-KEY")
-
-                # Define your message parameters
-                message_params = {
-                  from: "postmaster@YOUR-DOMAIN",
-                  to: "sending@to.mail.com",
-                  subject: "SOULs Mailer test!",
-                  text: "It is really easy to send a message!"
-                }
-
-                # Send your message through the client
-                mg_client.send_message("YOUR-MAILGUN-DOMAIN", message_params)
-                { response: "Job done!" }
-              rescue StandardError => e
-                GraphQL::ExecutionError.new(e.to_s)
-              end
+          module Types
+            class #{class_name.camelize}Type < BaseObject
+              field :response, String, null: true
             end
           end
         TEXT
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      file_path
+    end
+    
+    def update_query_type(class_name)
+      file_dir = "./app/graphql/types/base/"
+      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
+      file_path = "#{file_dir}query_type.rb"
+      raise(StandardError, "Query type doesn't exist, please re-create it") unless File.exist?(file_path)
+
+      lines = File.readlines(file_path)
+      unless lines[-1].strip == "end" and lines[-2].strip == "end"
+        puts(Paint % ["Base query file has changed significantly and cannot be modified automatically, please update routes manually"], :yellow)
+        return
+      end
+
+      insert_string = "    field :#{class_name.singularize}, resolver: Queries::#{class_name.camelize}\n"
+      lines.insert(-3, insert_string)
+      File.open(file_path, "w") { |f| f.write(lines.join) }
+
+      puts(Paint % ["Updated file : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
     end
   end
