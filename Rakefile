@@ -9,12 +9,6 @@ RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
 
-namespace :souls do
-  task :release do
-    system("bundle exec exe/souls release")
-  end
-end
-
 namespace :upload do
   task :github do
     file_name = "./github.tgz"
