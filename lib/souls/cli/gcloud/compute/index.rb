@@ -4,6 +4,7 @@ module Souls
     method_option :range, default: "10.124.0.0/28", aliases: "--range", desc: "GCP VPC Network IP Range"
     def setup_vpc_nat
       puts(Paint["Initializing NAT Setup This process might take about 5 min...", :yellow])
+      Souls::Gcloud.new.config_set
       create_network
       create_firewall_tcp(range: options[:range])
       create_firewall_ssh
@@ -14,6 +15,7 @@ module Souls
       create_nat
       Souls::Sql.new.invoke(:setup_private_ip)
       update_workflows
+      update_env
       puts(Paint["Cloud NAT is All Set!", :green])
       true
     rescue Thor::Error => e
@@ -21,6 +23,23 @@ module Souls
     end
 
     private
+
+    def update_env
+      instance_name = Souls.configuration.instance_name
+      private_instance_ip = `gcloud sql instances list | grep #{instance_name} | awk '{print $6}'`.strip
+      Dir.chdir(Souls.get_mother_path.to_s) do
+        file_path = ".env.production"
+        env_production = File.readlines(file_path)
+        env_production[0] = "SOULS_DB_HOST=#{private_instance_ip}\n"
+        File.open(file_path, "w") { |f| f.write(env_production.join) }
+      end
+      system("gh secret set DB_HOST -b #{private_instance_ip}")
+    end
+
+    def get_external_ip
+      app_name = Souls.configuration.app
+      `gcloud compute addresses list | grep #{app_name}-worker-ip | awk '{print $2}'`.strip
+    end
 
     def create_network
       app_name = Souls.configuration.app
