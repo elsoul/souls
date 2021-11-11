@@ -33,6 +33,11 @@ module Souls
         puts("before build")
         system("rake build")
         system("rake release")
+        system(
+          "git -c log.ShowSignature=false log v#{current_souls_ver}...v#{souls_new_ver}
+            --reverse --merges --grep='Merge pull request' --pretty=format:%B > ./CHANGELOG.md"
+        )
+        system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
         system("gsutil -m -q cp -r coverage gs://souls-bucket/souls-coverage")
         Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
       end
