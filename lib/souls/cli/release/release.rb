@@ -47,7 +47,7 @@ module Souls
       raise(StandardError, "You can only release to local with a clean working directory. Please commit your changes.") unless `git status`.include?("nothing to commit")
       system("gem install souls")
       sleep(3)
-      souls_local_ver = self.generate_local_version
+      souls_local_ver = generate_local_version
 
       status = Paint["Saving Repo...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
@@ -175,14 +175,14 @@ module Souls
       FileUtils.rm(file_path)
       FileUtils.mv(new_file_path, file_path)
     end
-  end
 
-  def generate_local_version
-    max = 99999999999
-    a = SecureRandom.random_number(max) + 9999
-    b = SecureRandom.random_number(max)
-    c = SecureRandom.random_number(max)
+    def generate_local_version
+      max = 99999999999
+      a = SecureRandom.random_number(max) + 9999
+      b = SecureRandom.random_number(max)
+      c = SecureRandom.random_number(max)
 
-    "#{a}.#{b}.#{c}"
+      "#{a}.#{b}.#{c}"
+    end
   end
 end
