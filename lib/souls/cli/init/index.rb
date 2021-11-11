@@ -116,7 +116,7 @@ module Souls
     def get_latest_gem(app_name)
       file_path = "./#{app_name}/Gemfile"
       souls_gem = "gem \"souls\", \"#{Souls::VERSION}\""
-      souls_gem = "gem \"souls\", \"#{Souls::VERSION}\", path: \"~/.local_souls/\"" if len(Souls::VERSION.to_s) > 20
+      souls_gem = "gem \"souls\", \"#{Souls::VERSION}\", path: \"~/.local_souls/\"" if Souls::VERSION.length > 20
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           source "https://rubygems.org"
