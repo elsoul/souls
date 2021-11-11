@@ -3,7 +3,7 @@ module Souls
     desc "setup_vpc_nat", "Set Up VPC Cloud Nat"
     method_option :range, default: "10.124.0.0/28", aliases: "--range", desc: "GCP VPC Network IP Range"
     def setup_vpc_nat
-      puts(Paint["Initializing NAT Setup This process might take about 5 min...", :yellow])
+      puts(Paint["Initializing NAT Setup This process might take about 10 min...", :yellow])
       Souls::Gcloud.new.config_set
       create_network
       create_firewall_tcp(range: options[:range])
@@ -17,6 +17,7 @@ module Souls
       update_workflows
       update_env
       puts(Paint["Cloud NAT is All Set!", :green])
+      puts(Paint["\nYou need to deploy to update production DB_HOST environment!", :yellow])
       true
     rescue Thor::Error => e
       raise(Thor::Error, e)
