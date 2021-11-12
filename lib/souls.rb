@@ -19,13 +19,11 @@ module Souls
     mutation
     type
     resolver
-    policy
     rspec_factory
     rspec_model
     rspec_query
     rspec_mutation
     rspec_resolver
-    rspec_policy
   ].freeze
   public_constant :SOULS_METHODS
   class Error < StandardError; end
