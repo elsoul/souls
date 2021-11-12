@@ -1,7 +1,7 @@
-require_relative "./output_scaffolds/scaffold_mutation_create"
-require_relative "./output_scaffolds/scaffold_mutation_update"
-require_relative "./output_scaffolds/scaffold_mutation_delete"
-require_relative "./output_scaffolds/scaffold_mutation_destroy_delete"
+require_relative "./scaffolds/scaffold_mutation_create"
+require_relative "./scaffolds/scaffold_mutation_update"
+require_relative "./scaffolds/scaffold_mutation_delete"
+require_relative "./scaffolds/scaffold_mutation_destroy_delete"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Mutation" do

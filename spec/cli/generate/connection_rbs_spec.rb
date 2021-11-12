@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_connection_rbs"
+require_relative "./scaffolds/scaffold_connection_rbs"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Connection RBS" do

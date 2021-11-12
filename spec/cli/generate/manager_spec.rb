@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_manager"
+require_relative "./scaffolds/scaffold_manager"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Manager" do

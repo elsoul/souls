@@ -5,15 +5,15 @@ module Souls
       file_dir = "./app/graphql/queries/"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       singularized_class_name = class_name.singularize
-      create_query(class_name: singularized_class_name)
-      create_queries(class_name: singularized_class_name)
+      create_individual_query(class_name: singularized_class_name)
+      create_index_query(class_name: singularized_class_name)
     rescue Thor::Error => e
       raise(Thor::Error, e)
     end
 
     private
 
-    def create_queries(class_name: "user")
+    def create_index_query(class_name: "user")
       file_path = "./app/graphql/queries/#{class_name.pluralize}.rb"
       return "Query already exist! #{file_path}" if File.exist?(file_path)
 
@@ -38,7 +38,7 @@ module Souls
       raise(StandardError, e)
     end
 
-    def create_query(class_name: "user")
+    def create_individual_query(class_name: "user")
       file_path = "./app/graphql/queries/#{class_name}.rb"
       return "Query already exist! #{file_path}" if File.exist?(file_path)
 

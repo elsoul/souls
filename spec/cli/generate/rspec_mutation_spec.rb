@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_rspec_mutation"
+require_relative "./scaffolds/scaffold_rspec_mutation"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Rspec Mutation" do

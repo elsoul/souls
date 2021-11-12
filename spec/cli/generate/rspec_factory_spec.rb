@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_rspec_factory"
+require_relative "./scaffolds/scaffold_rspec_factory"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Rspec Factory" do

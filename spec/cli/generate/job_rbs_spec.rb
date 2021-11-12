@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_job_rbs"
+require_relative "./scaffolds/scaffold_job_rbs"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Job RBS" do

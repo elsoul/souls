@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_query"
+require_relative "./scaffolds/scaffold_query"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Query" do
@@ -14,13 +14,13 @@ RSpec.describe(Souls::Generate) do
 
     it "creates query file" do
       file_path = "#{@file_dir}#{file_name.pluralize}.rb"
-      FakeFS.activate!
-      a1 = Souls::Generate.new.invoke(:query, ["user"], {})
-      file_output = File.read(file_path)
+      FakeFS.with_fresh do
+        a1 = Souls::Generate.new.invoke(:query, ["user"], {})
+        file_output = File.read(file_path)
 
-      expect(a1).to(eq(file_path))
-      expect(File.exists? file_path).to(eq(true))
-      FakeFS.deactivate!
+        expect(a1).to(eq(file_path))
+        expect(File.exists? file_path).to(eq(true))
+      end
 
       expect(file_output).to(eq(OutputScaffold.scaffold_query))
     end
