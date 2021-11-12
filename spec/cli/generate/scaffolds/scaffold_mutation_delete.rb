@@ -12,8 +12,6 @@ module Mutations
         user = ::User.find data_id
         user.update(is_deleted: true)
         { user: ::User.find(data_id) }
-      rescue StandardError => error
-        GraphQL::ExecutionError.new(error.message)
       end
     end
   end
