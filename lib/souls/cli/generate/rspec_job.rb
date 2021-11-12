@@ -25,13 +25,13 @@ module Souls
                 end
 
                 subject(:result) do
-                  SoulsApiSchema.execute(mutation).as_json
+                  SoulsApiSchema.execute(query).as_json
                 end
 
                 it "return #{singularized_class_name.camelize} response" do
                   stub_request(:post, "https://api.mailgun.net/v3/YOUR-MAILGUN-DOMAIN/messages")
                     .to_return(status: 200, body: "", headers: {})
-                  
+            #{'      '}
                   a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
                   expect(a1).not_to be_empty
                   expect(a1).to(include("response" => be_a(String)))
