@@ -53,15 +53,6 @@ module Mutations
       workers.filter { |n| n[:name] == worker_name }
     end
 
-    def check_user_permissions(user, obj, method)
-      raise(StandardError, "Invalid or Missing Token") unless user
-
-      policy_class = obj.class.name + "Policy"
-      policy_clazz = policy_class.constantize.new(user, obj)
-      permission = policy_clazz.public_send(method)
-      raise(Pundit::NotAuthorizedError, "permission error!") unless permission
-    end
-
     def auth_check(context)
       raise(GraphQL::ExecutionError, "You need to sign in!!") if context[:user].nil?
     end

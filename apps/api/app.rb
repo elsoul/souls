@@ -21,7 +21,6 @@ require "logger"
 require "base64"
 require "slack/ruby3"
 require "role_model"
-require "pundit"
 require "search_object"
 require "search_object/plugin/graphql"
 require "graphql/batch"
@@ -39,7 +38,6 @@ ActiveRecord::Base.default_timezone = :local
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{Dir.pwd}/app/models")
 loader.push_dir("#{Dir.pwd}/app/utils")
-loader.push_dir("#{Dir.pwd}/app/policies")
 
 loader.collapse("#{__dir__}/app/types")
 loader.collapse("#{__dir__}/app/mutations")
@@ -52,7 +50,6 @@ loader.push_dir("#{Dir.pwd}/app/graphql")
 loader.setup
 
 class SoulsApi < Sinatra::Base
-  include Pundit
   include SoulsHelper
 
   ::Logger.class_eval { alias_method :write, :<< }
