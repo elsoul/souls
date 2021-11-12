@@ -1,5 +1,9 @@
 module Souls
   class Sync < Thor
+    # rubocop:disable Style/StringHashKeys
+    map "models" => :model
+    # rubocop:enable Style/StringHashKeys
+
     desc "model", "Sync Model, DB, Factory Files with API"
     def model
       cp_dir = %w[db app/models spec/factories]
