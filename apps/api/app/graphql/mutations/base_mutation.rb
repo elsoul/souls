@@ -36,8 +36,6 @@ module Mutations
         mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {#{inputs}}) { response } })
       end
       mutation_string
-    rescue StandardError => e
-      raise(StandardError, e)
     end
 
     def post_to_dev(worker_name: "", mutation_string: "")

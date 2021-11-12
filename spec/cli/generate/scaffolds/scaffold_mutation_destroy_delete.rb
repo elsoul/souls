@@ -12,8 +12,6 @@ module Mutations
         user = ::User.find data_id
         user.destroy
         { user: user }
-      rescue StandardError => error
-        GraphQL::ExecutionError.new(error.message)
       end
     end
   end
