@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_rspec_mutation
     <<~RSPECMUTATION
 RSpec.describe "User Mutation テスト" do

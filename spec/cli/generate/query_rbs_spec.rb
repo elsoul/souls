@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_query_rbs"
+require_relative "./scaffolds/scaffold_query_rbs"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Query RBS" do
@@ -24,7 +24,7 @@ RSpec.describe(Souls::Generate) do
       expect(File.exists? file_path).to(eq(true))
       FakeFS.deactivate!
 
-      expect(file_output).to(eq(OutputScaffold.scaffold_query_rbs))
+      expect(file_output).to(eq(Scaffold.scaffold_query_rbs))
     end
   end
 end

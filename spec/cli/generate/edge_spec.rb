@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_edge"
+require_relative "./scaffolds/scaffold_edge"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Edge" do
@@ -21,7 +21,7 @@ RSpec.describe(Souls::Generate) do
       expect(File.exists? file_path).to(eq(true))
       FakeFS.deactivate!
 
-      expect(file_output).to(eq(OutputScaffold.scaffold_edge))
+      expect(file_output).to(eq(Scaffold.scaffold_edge))
     end
   end
 end

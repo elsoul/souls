@@ -4,7 +4,7 @@ require_relative "./scaffolds/scaffold_mutation_update"
 RSpec.describe(Souls::Update) do
   describe "create_mutation" do
     it "Should update create type from schema" do
-      mutation_create = Scaffold.scaffold_mutation_create
+      mutation_create = Scaffold.update_mutation_create
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
@@ -17,13 +17,13 @@ RSpec.describe(Souls::Update) do
         puts "#{file_dir}create_user.rb"
         output = File.read("#{file_dir}create_user.rb")
 
-        expected_output = Scaffold.scaffold_mutation_create_u
+        expected_output = Scaffold.update_mutation_create_u
         expect(output).to eq(expected_output)
       end
     end
 
     it "Should work even if 'argument' is somewhere else" do
-      mutation_create = Scaffold.scaffold_mutation_create_arg
+      mutation_create = Scaffold.update_mutation_create_arg
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
@@ -36,7 +36,7 @@ RSpec.describe(Souls::Update) do
         puts "#{file_dir}create_user.rb"
         output = File.read("#{file_dir}create_user.rb")
 
-        expected_output = Scaffold.scaffold_mutation_arg_u
+        expected_output = Scaffold.update_mutation_arg_u
         expect(output).to eq(expected_output)
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe(Souls::Update) do
   
   describe "update_mutation" do
     it "should update the update type from schema" do
-      mutation_create = Scaffold.scaffold_mutation_update
+      mutation_create = Scaffold.update_mutation_update
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
@@ -71,7 +71,7 @@ RSpec.describe(Souls::Update) do
         puts "#{file_dir}update_user.rb"
         output = File.read("#{file_dir}update_user.rb")
 
-        expected_output = Scaffold.scaffold_mutation_update_u
+        expected_output = Scaffold.update_mutation_update_u
         expect(output).to eq(expected_output)
       end
     end

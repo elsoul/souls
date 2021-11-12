@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_query_rbs
     <<~QUERYRBS
 module Queries

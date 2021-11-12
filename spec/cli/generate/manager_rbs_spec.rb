@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_manager_rbs"
+require_relative "./scaffolds/scaffold_manager_rbs"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Manager RBS" do
@@ -25,7 +25,7 @@ RSpec.describe(Souls::Generate) do
       expect(File.exists? file_path).to(eq(true))
       FakeFS.deactivate!
 
-      expect(file_output).to(eq(OutputScaffold.scaffold_manager_rbs))
+      expect(file_output).to(eq(Scaffold.scaffold_manager_rbs))
     end
   end
 end

@@ -1,28 +1,58 @@
-require_relative "./output_scaffolds/scaffold_query"
+require_relative "./scaffolds/scaffold_query"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Query" do
     let(:class_name) { "user" }
     let(:file_name) { "user" }
 
-    before do
-      FakeFS do
-        @file_dir = "./app/graphql/queries/"
-        FileUtils.mkdir_p(@file_dir) unless Dir.exist?(@file_dir)
+    it "runs methods to create both query files" do
+      FakeFS.with_fresh do
+        generate = Souls::Generate.new
+
+        allow(generate).to receive(:create_individual_query).and_return("")
+        allow(generate).to receive(:create_index_query).and_return("")
+
+        expect(generate).to receive(:create_individual_query)
+        expect(generate).to receive(:create_index_query)
+
+        generate.query(class_name)
       end
     end
 
-    it "creates query file" do
-      file_path = "#{@file_dir}#{file_name.pluralize}.rb"
-      FakeFS.activate!
-      a1 = Souls::Generate.new.invoke(:query, ["user"], {})
-      file_output = File.read(file_path)
+    it "creates index file" do
+      scaffold_output = Scaffold.scaffold_query
+      FakeFS.with_fresh do
+        file_dir = "./app/graphql/queries/"
+        FileUtils.mkdir_p(file_dir)
 
-      expect(a1).to(eq(file_path))
-      expect(File.exists? file_path).to(eq(true))
-      FakeFS.deactivate!
+        file_path = "#{file_dir}#{file_name.pluralize}.rb"
 
-      expect(file_output).to(eq(OutputScaffold.scaffold_query))
+        generate = Souls::Generate.new
+        a1 = generate.send(:create_index_query, class_name: "user")
+        file_output = File.read(file_path)
+
+        expect(a1).to(eq(file_path))
+        expect(File.exists? file_path).to(eq(true))
+        expect(file_output).to(eq(scaffold_output))
+      end
+    end
+
+    it "creates single query file" do
+      scaffold_output = Scaffold.scaffold_individual_query
+      FakeFS.with_fresh do
+        file_dir = "./app/graphql/queries/"
+        FileUtils.mkdir_p(file_dir)
+
+        file_path = "#{file_dir}#{file_name.singularize}.rb"
+
+        generate = Souls::Generate.new
+        a1 = generate.send(:create_individual_query, class_name: "user")
+        file_output = File.read(file_path)
+
+        expect(a1).to(eq(file_path))
+        expect(File.exists? file_path).to(eq(true))
+        expect(file_output).to(eq(scaffold_output))
+      end
     end
   end
 end

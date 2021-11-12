@@ -1,13 +1,16 @@
-module OutputScaffold
-  def self.scaffold_mutation_create
-    <<~MUTATIONCREATE
+module Scaffold
+  def self.scaffold_mutation_update
+    <<~MUTATIONUPDATE
 module Mutations
   module Base::User
-    class CreateUser < BaseMutation
+    class UpdateUser < BaseMutation
       field :user_edge, Types::UserType.edge_type, null: false
       field :error, String, null: true
 
-        data = ::User.new(args)
+      argument :id, String, required: true
+        new_record = args.except(:id)
+        data = ::User.find(data_id)
+        data.update(new_record)
         raise(StandardError, data.errors.full_messages) unless data.save
 
         { user_edge: { node: data } }
@@ -17,6 +20,6 @@ module Mutations
     end
   end
 end
-    MUTATIONCREATE
+    MUTATIONUPDATE
   end
 end

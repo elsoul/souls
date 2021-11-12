@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_connection
     <<~CONNECTION
 class Types::UserConnection < Types::BaseConnection

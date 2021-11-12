@@ -1,5 +1,5 @@
 module Scaffold
-  def self.scaffold_mutation_create
+  def self.update_mutation_create
     <<~USER
 module Mutations
   module Base::User
@@ -26,7 +26,7 @@ end
     USER
   end
 
-  def self.scaffold_mutation_create_u
+  def self.update_mutation_create_u
     <<~USERUPDATE
 module Mutations
   module Base::User
@@ -54,7 +54,7 @@ end
     USERUPDATE
   end
 
-  def self.scaffold_mutation_create_arg
+  def self.update_mutation_create_arg
     <<~USERWITHARGUMENT
 module Mutations
   module Base::Userargument
@@ -82,7 +82,7 @@ end
     USERWITHARGUMENT
   end
 
-  def self.scaffold_mutation_arg_u
+  def self.update_mutation_arg_u
     <<~USERUPDATE
 module Mutations
   module Base::Userargument
