@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_edge"
+require_relative "./scaffolds/scaffold_edge"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Edge" do

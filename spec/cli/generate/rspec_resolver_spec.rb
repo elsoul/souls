@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_rspec_resolver"
+require_relative "./scaffolds/scaffold_rspec_resolver"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Rspec Resolver" do
