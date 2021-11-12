@@ -25,7 +25,7 @@ RSpec.describe(Souls::Generate) do
       expect(File.exists? file_path).to(eq(true))
       FakeFS.deactivate!
 
-      expect(file_output).to(eq(OutputScaffold.scaffold_resolver_rbs))
+      expect(file_output).to(eq(Scaffold.scaffold_resolver_rbs))
     end
   end
 end
