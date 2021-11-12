@@ -1,18 +1,21 @@
-module OutputScaffold
-  def self.scaffold_mutation_create_rbs
-    <<~MUTATIONCREATERBS
-class Boolean
-end
+module Scaffold
+  def self.scaffold_mutation_update_rbs
+    <<~MUTATIONUPDATERBS
 module Mutations
   module Base
     module User
-      class CreateUser < BaseMutation
+      class UpdateUser < BaseMutation
         String: String
         Boolean: Boolean
         Integer: Integer
         def resolve:  ({
+                        id: String,
+                          website: String?,
+                          id: String?
                       }) -> ({ :user_edge => { :node => String } } | ::GraphQL::ExecutionError )
 
+        def self.argument: (:website, String, required: false ) -> String
+                         | (:id, String, required: true ) -> String
 
         def self.field: (*untyped) -> String
         attr_accessor context: {user:{
@@ -24,6 +27,6 @@ module Mutations
     end
   end
 end
-    MUTATIONCREATERBS
+    MUTATIONUPDATERBS
   end
 end

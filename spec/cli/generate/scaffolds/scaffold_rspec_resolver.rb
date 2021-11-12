@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_rspec_resolver
     <<~RSPECRESOLVER
 RSpec.describe "UserSearch Resolver テスト" do

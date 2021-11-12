@@ -1,7 +1,7 @@
-require_relative "./output_scaffolds/scaffold_mutation_create_rbs"
-require_relative "./output_scaffolds/scaffold_mutation_update_rbs"
-require_relative "./output_scaffolds/scaffold_mutation_delete_rbs"
-require_relative "./output_scaffolds/scaffold_mutation_destroy_delete_rbs"
+require_relative "./scaffolds/scaffold_mutation_create_rbs"
+require_relative "./scaffolds/scaffold_mutation_update_rbs"
+require_relative "./scaffolds/scaffold_mutation_delete_rbs"
+require_relative "./scaffolds/scaffold_mutation_destroy_delete_rbs"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Mutation" do
@@ -29,7 +29,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_create_rbs))
+        expect(file_output).to(eq(Scaffold.scaffold_mutation_create_rbs))
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_update_rbs))
+        expect(file_output).to(eq(Scaffold.scaffold_mutation_update_rbs))
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_delete_rbs))
+        expect(file_output).to(eq(Scaffold.scaffold_mutation_delete_rbs))
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe(Souls::Generate) do
         expect(File.exists? file_path).to(eq(true))
         FakeFS.deactivate!
 
-        expect(file_output).to(eq(OutputScaffold.scaffold_mutation_dd_rbs))
+        expect(file_output).to(eq(Scaffold.scaffold_mutation_dd_rbs))
       end
     end
   end

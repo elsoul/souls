@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_rspec_job
     <<~QUERYSPECJOB
 RSpec.describe("User") do

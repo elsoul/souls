@@ -1,4 +1,4 @@
-require_relative "./output_scaffolds/scaffold_rspec_resolver"
+require_relative "./scaffolds/scaffold_rspec_resolver"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Rspec Resolver" do
@@ -26,7 +26,7 @@ RSpec.describe(Souls::Generate) do
       expect(File.exists? file_path).to(eq(true))
       FakeFS.deactivate!
 
-      expect(file_output).to(eq(OutputScaffold.scaffold_rspec_resolver))
+      expect(file_output).to(eq(Scaffold.scaffold_rspec_resolver))
     end
   end
 end

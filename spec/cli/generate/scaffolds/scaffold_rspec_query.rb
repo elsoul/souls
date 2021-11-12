@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_rspec_query
     <<~RSPECQUERY
 RSpec.describe "User Query テスト" do
