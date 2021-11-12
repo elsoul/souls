@@ -22,7 +22,6 @@ end
 class StandardError
   def self.to_json: (*untyped) -> untyped
 end
-ENV: String
 
 module Souls
   def self.configuration: -> untyped
