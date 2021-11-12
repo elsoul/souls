@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_edge_rbs
     <<~EDGERBS
 module Types

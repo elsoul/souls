@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_mutation_dd
     <<~MUTATIONDD
 module Mutations

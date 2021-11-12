@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_job_rbs
     <<~JOBRBS
 module Mutations

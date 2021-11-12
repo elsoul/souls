@@ -5,7 +5,7 @@ RSpec.describe(Souls::Generate) do
     let(:class_name) { "some_job" }
 
     it "creates job file" do
-      file_scaffold = OutputScaffold.scaffold_job
+      file_scaffold = Scaffold.scaffold_job
 
       FakeFS.with_fresh do
         query_dir = "./app/graphql/queries/"
@@ -25,7 +25,7 @@ RSpec.describe(Souls::Generate) do
     end
 
     it "creates type file" do
-      file_scaffold = OutputScaffold.scaffold_job_type
+      file_scaffold = Scaffold.scaffold_job_type
 
       FakeFS.with_fresh do
         type_dir = "./app/graphql/types/"
@@ -45,7 +45,7 @@ RSpec.describe(Souls::Generate) do
     end
 
     it "creates mailer with correct argument" do
-      file_scaffold = OutputScaffold.scaffold_job_mailer
+      file_scaffold = Scaffold.scaffold_job_mailer
 
       FakeFS.with_fresh do
         query_dir = "./app/graphql/queries/"
@@ -65,7 +65,7 @@ RSpec.describe(Souls::Generate) do
     end
 
     it "creates mailer type file" do
-      file_scaffold = OutputScaffold.scaffold_job_mailer_type
+      file_scaffold = Scaffold.scaffold_job_mailer_type
 
       FakeFS.with_fresh do
         type_dir = "./app/graphql/types/"
@@ -86,8 +86,8 @@ RSpec.describe(Souls::Generate) do
     end
 
     it "adds appropriate routes" do
-      base_query_type = OutputScaffold.base_query_type
-      modified_query_type = OutputScaffold.modified_query_type
+      base_query_type = Scaffold.base_query_type
+      modified_query_type = Scaffold.modified_query_type
 
       FakeFS.with_fresh do
         type_dir = "./app/graphql/types/base/"

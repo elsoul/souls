@@ -1,4 +1,4 @@
-module OutputScaffold
+module Scaffold
   def self.scaffold_connection_rbs
     <<~CONNECTIONRBS
 module Types
