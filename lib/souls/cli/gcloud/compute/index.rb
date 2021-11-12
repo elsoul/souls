@@ -131,10 +131,11 @@ module Souls
         end
         puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [api_workflow_path.to_s, :white] }])
         worker_workflow_paths.each do |file_path|
-          File.open(file_path, "a") do |line|
-            line.write(" \\             --vpc-connector=#{app_name}-connector \\")
-            line.write("\n            --vpc-egress=all")
-          end
+          worker_workflow = File.readlines(file_path)
+          worker_workflow[worker_workflow.size - 1] = worker_workflow.last.chomp
+          worker_workflow << " \\ \n            --vpc-connector=#{app_name}-connector \\"
+          worker_workflow << "\n            --vpc-egress=all"
+          File.open(file_path, "w") { |f| f.write(worker_workflow.join) }
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
       end
