@@ -90,10 +90,10 @@ module Souls
       Dir.chdir(Souls.get_mother_path.to_s) do
         worker_paths.each do |worker|
           workers =
-            Dir["apps/#{worker}/app/graphql/mutations/*.rb"].map do |file|
-              file.gsub("apps/#{worker}/app/graphql/mutations/", "").gsub(".rb", "")
+            Dir["apps/#{worker}/app/graphql/queries/*.rb"].map do |file|
+              file.gsub("apps/#{worker}/app/graphql/queries/", "").gsub(".rb", "")
             end
-          workers.delete("base_mutation")
+          workers.delete("base_query")
           workers.each do |file|
             response[:"souls_#{worker}_#{file}"] = 1
           end
