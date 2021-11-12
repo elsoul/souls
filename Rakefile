@@ -41,17 +41,4 @@ namespace :task do
       FileUtils.touch("#{file_path}#{f}.rb")
     end
   end
-
-  task :clear do
-    file_paths = [
-      "./app",
-      "./spec/factories",
-      "./spec/models",
-      "./spec/mutations",
-      "./spec/queries",
-      "./spec/resolvers",
-      "./spec/policies"
-    ]
-    file_paths.each { |path| FileUtils.rm_rf(path) if Dir.exist?(path) }
-  end
 end
