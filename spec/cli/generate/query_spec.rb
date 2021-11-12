@@ -12,7 +12,7 @@ RSpec.describe(Souls::Generate) do
       end
     end
 
-    it "creates policy file" do
+    it "creates query file" do
       file_path = "#{@file_dir}#{file_name.pluralize}.rb"
       FakeFS.activate!
       a1 = Souls::Generate.new.invoke(:query, ["user"], {})

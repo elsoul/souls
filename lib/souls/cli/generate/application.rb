@@ -39,8 +39,6 @@ module Souls
       query_rbs(class_name)
       mutation(class_name)
       mutation_rbs(class_name)
-      policy(class_name)
-      policy_rbs(class_name)
       edge(class_name)
       edge_rbs(class_name)
       connection(class_name)
@@ -51,14 +49,12 @@ module Souls
       rspec_mutation(class_name)
       rspec_query(class_name)
       rspec_resolver(class_name)
-      rspec_policy(class_name)
     end
 
     def run_rbs_scaffold(class_name)
       type_rbs(class_name)
       query_rbs(class_name)
       mutation_rbs(class_name)
-      policy_rbs(class_name)
       edge_rbs(class_name)
       connection_rbs(class_name)
       resolver_rbs(class_name)
@@ -69,7 +65,6 @@ module Souls
       pluralized_class_name = class_name.pluralize.underscore
       [
         "./app/models/#{singularized_class_name}.rb",
-        "./app/policies/#{singularized_class_name}_policy.rb",
         "./app/graphql/mutations/create_#{singularized_class_name}.rb",
         "./app/graphql/mutations/delete_#{singularized_class_name}.rb",
         "./app/graphql/mutations/destroy_delete_#{singularized_class_name}.rb",
@@ -84,29 +79,8 @@ module Souls
         "./spec/mutations/#{singularized_class_name}_spec.rb",
         "./spec/models/#{singularized_class_name}_spec.rb",
         "./spec/queries/#{singularized_class_name}_spec.rb",
-        "./spec/policies/#{singularized_class_name}_policy_spec.rb",
         "./spec/resolvers/#{singularized_class_name}_search_spec.rb"
       ]
-    end
-
-    def test_dir
-      FileUtils.mkdir_p("./app/graphql/mutations")
-      FileUtils.mkdir_p("./app/graphql/queries")
-      FileUtils.mkdir_p("./app/graphql/types")
-      FileUtils.mkdir_p("./app/graphql/resolvers")
-      FileUtils.mkdir_p("./app/models")
-      FileUtils.mkdir_p("./app/policies")
-      FileUtils.mkdir_p("./spec/factories")
-      FileUtils.mkdir_p("./spec/queries")
-      FileUtils.mkdir_p("./spec/mutations")
-      FileUtils.mkdir_p("./spec/models")
-      FileUtils.mkdir_p("./spec/resolvers")
-      FileUtils.mkdir_p("./spec/policies")
-      FileUtils.mkdir_p("./config")
-      FileUtils.touch("./config/souls.rb")
-      FileUtils.mkdir_p("./db/")
-      FileUtils.touch("./db/schema.rb")
-      puts("test dir created!")
     end
   end
 end

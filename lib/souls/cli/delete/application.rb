@@ -39,8 +39,6 @@ module Souls
       query_rbs(class_name)
       mutation(class_name)
       mutation_rbs(class_name)
-      policy(class_name)
-      policy_rbs(class_name)
       edge(class_name)
       edge_rbs(class_name)
       connection(class_name)
@@ -51,14 +49,12 @@ module Souls
       rspec_mutation(class_name)
       rspec_query(class_name)
       rspec_resolver(class_name)
-      rspec_policy(class_name)
     end
 
     def run_rbs_scaffold(class_name: "user")
       type_rbs(class_name)
       query_rbs(class_name)
       mutation_rbs(class_name)
-      policy_rbs(class_name)
       edge_rbs(class_name)
       connection_rbs(class_name)
       resolver_rbs(class_name)
