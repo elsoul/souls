@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (1.7.6)
+    souls (1.7.7)
       activesupport (>= 6.1.4)
       foreman (>= 0.87.2)
       google-cloud-pubsub (>= 2.8.0)
