@@ -21,7 +21,6 @@ require "logger"
 require "base64"
 require "slack/ruby3"
 require "role_model"
-require "pundit"
 require "mailgun-ruby"
 require "search_object"
 require "search_object/plugin/graphql"
@@ -49,7 +48,6 @@ loader.push_dir("#{Dir.pwd}/app/graphql")
 loader.setup
 
 class SoulsApi < Sinatra::Base
-  include Pundit
   include SoulsHelper
   ::Logger.class_eval { alias_method :write, :<< }
   access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)), "log", "access.log")
