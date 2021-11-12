@@ -11,8 +11,6 @@ module Mutations
         raise(StandardError, data.errors.full_messages) unless data.save
 
         { user_edge: { node: data } }
-      rescue StandardError => error
-        GraphQL::ExecutionError.new(error.message)
       end
     end
   end

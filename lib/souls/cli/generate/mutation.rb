@@ -79,8 +79,6 @@ module Souls
                   raise(StandardError, data.errors.full_messages) unless data.save
 
                   { #{singularized_class_name}_edge: { node: data } }
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
@@ -152,8 +150,6 @@ module Souls
                   raise(StandardError, data.errors.full_messages) unless data.save
 
                   { #{singularized_class_name}_edge: { node: data } }
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
@@ -182,8 +178,6 @@ module Souls
                   #{class_name} = ::#{class_name.camelize}.find data_id
                   #{class_name}.update(is_deleted: true)
                   { #{class_name}: ::#{class_name.camelize}.find(data_id) }
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
@@ -212,8 +206,6 @@ module Souls
                   #{class_name} = ::#{class_name.camelize}.find data_id
                   #{class_name}.destroy
                   { #{class_name}: #{class_name} }
-                rescue StandardError => error
-                  GraphQL::ExecutionError.new(error.message)
                 end
               end
             end
