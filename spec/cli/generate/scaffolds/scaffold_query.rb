@@ -7,8 +7,6 @@ module Queries
 
     def resolve
       ::User.all
-    rescue StandardError => error
-      GraphQL::ExecutionError.new(error.message)
     end
   end
 end
@@ -25,8 +23,6 @@ module Queries
     def resolve args
       _, data_id = SoulsApiSchema.from_global_id args[:id]
       ::User.find(data_id)
-    rescue StandardError => error
-      GraphQL::ExecutionError.new(error.message)
     end
   end
 end
