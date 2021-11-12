@@ -47,10 +47,6 @@ class Sinatra
   end
 end
 
-module Pundit
-  def self.policy_scope!: (Hash[Symbol, untyped] user, Hash[Symbol, untyped] record) -> untyped
-end
-
 module Rack
   module JSONBodyParser
   end

@@ -6,7 +6,6 @@ require "rack/test"
 require "database_cleaner"
 require "capybara/rspec"
 require "webmock/rspec"
-require "pundit/matchers"
 
 abort("The Souls environment is running in production mode!") if ENV["RACK_ENV"] == "production"
 
@@ -21,10 +20,6 @@ end
 
 def app
   SoulsApi
-end
-
-Pundit::Matchers.configure do |config|
-  # config.user_alias = :user_role
 end
 
 RSpec.configure do |config|
