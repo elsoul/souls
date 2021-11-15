@@ -1,6 +1,10 @@
 module Souls
   class CLI < Thor
-    @bucket_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{::Souls::VERSION}"
+    def initialize(*_args)
+      super
+      @bucket_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{Souls::VERSION}"
+    end
+
     desc "new [APP_NAME]", "Create SOULs APP"
     def new(app_name)
       if app_name.nil?
