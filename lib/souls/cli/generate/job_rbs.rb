@@ -13,7 +13,6 @@ module Souls
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             module Queries
-              String: String
               class #{singularized_class_name.camelize} < BaseQuery
                 def self.description: (String) -> untyped
                 def self.field: (:response, String, null: false) -> untyped
