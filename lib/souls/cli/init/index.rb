@@ -1,5 +1,6 @@
 module Souls
   class CLI < Thor
+    @bucket_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{Souls::VERSION}"
     desc "new [APP_NAME]", "Create SOULs APP"
     def new(app_name)
       if app_name.nil?
@@ -84,7 +85,7 @@ module Souls
 
     def download_github_actions(app_name: "souls-app")
       file_name = "github.tgz"
-      url = "https://storage.googleapis.com/souls-bucket/boilerplates/github_actions/github.tgz"
+      url = "#{@bucket_url}/github_actions/github.tgz"
       system("curl -OL #{url}")
       FileUtils.mkdir_p("#{app_name}/github")
       system("tar -zxvf ./#{file_name} -C #{app_name}/")
@@ -146,23 +147,23 @@ module Souls
     def download_souls(app_name: "souls", service_name: "api")
       version = Souls.get_latest_version_txt(service_name: service_name).join(".")
       file_name = "#{service_name}-v#{version}.tgz"
-      url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
+      url = "#{@bucket_url}/#{service_name.pluralize}/#{file_name}"
       system("curl -OL #{url}")
       system("mkdir -p #{app_name}/apps/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
       FileUtils.rm(file_name)
 
       sig_name = "sig.tgz"
-      url = "https://storage.googleapis.com/souls-bucket/boilerplates/sig/#{sig_name}"
+      url = "#{@bucket_url}/sig/#{sig_name}"
       system("curl -OL #{url}")
       system("tar -zxvf ./#{sig_name} -C #{app_name}")
 
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/.rubocop.yml")
+      system("cd #{app_name} && curl -OL #{@bucket_url}/.rubocop.yml")
       get_latest_gem(app_name)
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile.dev")
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Procfile")
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/Steepfile")
-      system("cd #{app_name} && curl -OL https://storage.googleapis.com/souls-bucket/boilerplates/gitignore")
+      system("cd #{app_name} && curl -OL #{@bucket_url}/Procfile.dev")
+      system("cd #{app_name} && curl -OL #{@bucket_url}/Procfile")
+      system("cd #{app_name} && curl -OL #{@bucket_url}/Steepfile")
+      system("cd #{app_name} && curl -OL #{@bucket_url}/gitignore")
       system("cd #{app_name} && mv gitignore .gitignore")
       system("cd #{app_name} && bundle")
       system("cd #{app_name}/apps/api && bundle")
