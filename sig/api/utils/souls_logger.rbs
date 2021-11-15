@@ -1,0 +1,8 @@
+module SoulsLogger
+  def self.critical_log: (String) -> untyped
+  def self.warning_log: (String) -> untyped
+  def self.info_log: (String) -> untyped
+
+  private
+  def self.write_log: (String) -> untyped
+end
