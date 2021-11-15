@@ -147,7 +147,7 @@ module Souls
     def download_souls(app_name: "souls", service_name: "api")
       version = Souls.get_latest_version_txt(service_name: service_name).join(".")
       file_name = "#{service_name}-v#{version}.tgz"
-      url = "#{@bucket_url}/#{service_name.pluralize}/#{file_name}"
+      url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
       system("curl -OL #{url}")
       system("mkdir -p #{app_name}/apps/#{service_name}")
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
