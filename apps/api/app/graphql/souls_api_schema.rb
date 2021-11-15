@@ -45,6 +45,6 @@ class SoulsApiSchema < GraphQL::Schema
 
   rescue_from(StandardError) do |message|
     SoulsLogger.critical_log(message)
-    GraphQL::ExecutionError.new(message})
+    GraphQL::ExecutionError.new(message)
   end
 end
