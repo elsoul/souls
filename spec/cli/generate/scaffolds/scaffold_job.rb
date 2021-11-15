@@ -47,6 +47,7 @@ end
     <<~JOBTYPE
 module Types
   class SomeJobType < BaseObject
+    field :response, String, null: true
   end
 end
     JOBTYPE
