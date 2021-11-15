@@ -13,7 +13,7 @@ module Souls
         exit
       end
       file_dir = "./#{app_name}"
-      raise(StandardError, "Directory Already Exist!") if Dir.exist?(file_dir)
+      raise(StandardError, "Directory already exists and is not empty") if Dir.exist?(file_dir) && !Dir.empty?(file_dir)
 
       service_name = "api"
       download_souls(app_name: app_name, service_name: service_name)
