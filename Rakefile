@@ -10,17 +10,18 @@ RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
 
 namespace :upload do
+  @gs_bucket_url = "gs://souls-bucket/boilerplates/#{Souls::VERSION}"
   task :github do
     file_name = "./github.tgz"
     system("tar -czf #{file_name} github/")
-    system("gsutil cp #{file_name} gs://souls-bucket/boilerplates/github_actions/")
+    system("gsutil cp #{file_name} #{@gs_bucket_url}/github_actions/")
     system("rm -rf #{file_name}")
   end
 
   task :sig do
     file_name = "./sig.tgz"
     system("tar -czf #{file_name} sig/")
-    system("gsutil cp #{file_name} gs://souls-bucket/boilerplates/sig/")
+    system("gsutil cp #{file_name} #{@gs_bucket_url}/sig/")
     system("rm -rf #{file_name}")
   end
 
@@ -29,7 +30,7 @@ namespace :upload do
     Rake::Task["upload:sig"].invoke
     files = Dir["init_files/*"]
     files.each do |file|
-      system("gsutil cp #{file} gs://souls-bucket/boilerplates/")
+      system("gsutil cp #{file} #{@gs_bucket_url}/")
     end
   end
 end
