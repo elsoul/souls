@@ -38,7 +38,7 @@ module Souls
         write_changelog(current_souls_ver: current_souls_ver)
         system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
         system("gsutil -m -q cp -r coverage gs://souls-bucket/souls-coverage")
-        Rake::Task["upload:init_files"].invoke
+        system("bundle exec rake upload:init_files")
         Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
       end
     end
@@ -71,7 +71,7 @@ module Souls
 
         overwrite_version(new_version: souls_local_ver)
         system("gem build souls.gemspec --output #{local_dir}souls-#{souls_local_ver}.gem")
-        Rake::Task["upload:init_files"].invoke
+        system("bundle exec rake upload:init_files")
         Whirly.status = Paint["Done. Created gem at #{local_dir}souls-#{souls_local_ver}.gem"]
         Whirly.status = Paint["Removing previous versions...", :white]
         system("gem uninstall souls -x --force")
