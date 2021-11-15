@@ -9,18 +9,30 @@ module Souls
         file_dir = "./sig/#{worker_name}/app/graphql/queries/"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}#{singularized_class_name}.rbs"
+        type_file_path = "./sig/#{worker_name}/app/graphql/types/#{singularized_class_name}_type.rbs"
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
-            module Mutations
+            module Queries
               String: String
-              class #{singularized_class_name.camelize} < BaseMutation
+              class #{singularized_class_name.camelize} < BaseQuery
                 def self.description: (String) -> untyped
                 def self.field: (:response, String, null: false) -> untyped
+                def self.type: (untyped, null: false) -> untyped
+              end
+            end
+          TEXT
+        end
+        File.open(type_file_path, "w") do |f|
+          f.write(<<~TEXT)
+            module Types
+              class #{singularized_class_name.camelize}Type < BaseObject
+                def self.field: (:response, String, null: true) -> untyped
               end
             end
           TEXT
         end
         puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+        puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [type_file_path.to_s, :white] }])
       end
       file_path
     rescue Thor::Error => e
