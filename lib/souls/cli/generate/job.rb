@@ -32,6 +32,8 @@ module Souls
               type Types::#{class_name.camelize}Type, null: false
 
               def resolve
+                # Difine method here
+                { response: "Job done!" }
               end
             end
           end

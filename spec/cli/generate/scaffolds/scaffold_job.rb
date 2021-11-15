@@ -7,6 +7,8 @@ module Queries
     type Types::SomeJobType, null: false
 
     def resolve
+      # Difine method here
+      { response: "Job done!" }
     end
   end
 end
