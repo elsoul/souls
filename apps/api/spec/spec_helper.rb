@@ -76,22 +76,21 @@ class ActiveSupport::TestCase
 
   @@reserved_ivars = %w[@_implementation @_result @_proxy @_assigns_hash_proxy @_backtrace]
   DEFERRED_GC_THRESHOLD = (ENV["DEFER_GC"] || 1.0).to_f
-
+  public_constant :DEFERRED_GC_THRESHOLD
   @@last_gc_run = Time.now
 
   def begin_gc_deferment
-    GC.disable if DEFERRED_GC_THRESHOLD > 0
+    GC.disable if DEFERRED_GC_THRESHOLD.positive?
   end
 
   def reconsider_gc_deferment
-    if DEFERRED_GC_THRESHOLD > 0 && Time.now - @@last_gc_run >= DEFERRED_GC_THRESHOLD
+    return unless DEFERRED_GC_THRESHOLD.positive? && Time.now - @@last_gc_run >= DEFERRED_GC_THRESHOLD
 
-      GC.enable
-      GC.start
-      GC.disable
+    GC.enable
+    GC.start
+    GC.disable
 
-      @@last_gc_run = Time.now
-    end
+    @@last_gc_run = Time.now
   end
 
   def scrub_instance_variables
