@@ -3,6 +3,7 @@ require_relative "./pubsub/index"
 require_relative "./run/index"
 require_relative "./sql/index"
 require_relative "./compute/index"
+require_relative "../cli_exception"
 
 module Souls
   class Gcloud < Thor
@@ -26,6 +27,7 @@ module Souls
     desc "auth_login", "gcloud config set and gcloud auth login"
     def auth_login
       project_id = Souls.configuration.project_id
+      system("gcloud projects describe #{project_id}", out: :close) or raise(Souls::GcloudException)
       system("gcloud config set project #{project_id}")
       system("gcloud auth login")
     rescue Thor::Error => e
@@ -34,8 +36,8 @@ module Souls
 
     desc "config_set", "gcloud config set"
     def config_set
-      require("#{Souls.get_api_path}/config/souls")
       project_id = Souls.configuration.project_id
+      system("gcloud projects describe #{project_id}", out: :close) or raise(Souls::GcloudException)
       system("gcloud config set project #{project_id}")
     end
 
