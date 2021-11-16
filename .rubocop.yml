@@ -3,17 +3,14 @@ AllCops:
   SuggestExtensions: false
   EnabledByDefault: true
   Exclude:
-    - "app/**/*.rb"
-    - "app/**/**/*.rb"
     - "Gemfile.lock"
-    - "apps/**/*.rb"
     - "db/migrate/*.rb"
     - "db/schema.rb"
     - "spec/spec_helper.rb"
     - "spec/**/*.rb"
     - "lib/souls/api/generate/type.rb"
     - "tmp/**/*.rb"
-    - "vandor/**/*"
+    - "vendor/**/*"
 
 
 Style/Copyright:
