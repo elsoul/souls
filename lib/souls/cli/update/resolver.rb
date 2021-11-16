@@ -28,11 +28,14 @@ module Souls
                 type = Souls.type_check(col[:type])
                 type = "[#{type}]" if col[:array]
 
-                if type.include?("[")
-                  add_line = "      scope = scope.where('#{col[:column_name]} @> ARRAY[?]::#{col[:type]}[]', value[:#{col[:column_name]}]) if value[:#{col[:column_name]}]\n"
-                else
-                  add_line = "      scope = scope.where(#{col[:column_name]}: value[:#{col[:column_name]}]) if value[:#{col[:column_name]}]\n"
-                end
+                add_line =
+                  if type.include?("[")
+                    "      scope = scope.where('#{col[:column_name]} @> ARRAY[?]::#{col[:type]}[]', " \
+                    "value[:#{col[:column_name]}]) if value[:#{col[:column_name]}]\n"
+                  else
+                    "      scope = scope.where(#{col[:column_name]}: value[:#{col[:column_name]}]) if " \
+                    "value[:#{col[:column_name]}]\n"
+                  end
                 new_line.write(add_line) unless scope_args.include?(col[:column_name])
               end
               scope = true
