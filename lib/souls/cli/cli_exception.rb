@@ -18,7 +18,7 @@ module Souls
     end
   end
 
-  class GraphQLException < CLIException
+  class GcloudException < CLIException
     attr_reader :message
 
     def initialize
