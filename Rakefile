@@ -26,9 +26,11 @@ namespace :upload do
   end
 
   task :init_files do
+    system("gcloud config set project elsoul-nl")
     Rake::Task["upload:github"].invoke
     Rake::Task["upload:sig"].invoke
-    files = Dir["init_files/*"]
+    files = Dir.glob("init_files/*", File::FNM_DOTMATCH)
+    2.times { files.shift }
     files.each do |file|
       system("gsutil cp #{file} #{@gs_bucket_url}/")
     end
