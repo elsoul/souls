@@ -11,10 +11,10 @@ module Souls
     def migrate
       case options[:env]
       when "production"
-        system("rake db:migrate RACK_ENV=production")
+        db_system("rake db:migrate RACK_ENV=production")
       else
-        system("rake db:migrate")
-        system("rake db:migrate RACK_ENV=test")
+        db_system("rake db:migrate")
+        db_system("rake db:migrate RACK_ENV=test")
       end
       true
     rescue Thor::Error => e
@@ -26,9 +26,9 @@ module Souls
     def create
       case options[:env]
       when "production"
-        system("rake db:create RACK_ENV=production")
+        db_system("rake db:create RACK_ENV=production")
       else
-        system("rake db:create") or raise(Souls::PSQLException)
+        db_system("rake db:create")
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
@@ -39,10 +39,10 @@ module Souls
     def seed
       case options[:env]
       when "production"
-        system("rake db:seed RACK_ENV=production")
+        db_system("rake db:seed RACK_ENV=production")
       else
-        system("rake db:seed")
-        system("rake db:seed RACK_ENV=test")
+        db_system("rake db:seed")
+        db_system("rake db:seed RACK_ENV=test")
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
@@ -53,9 +53,9 @@ module Souls
     def migrate_reset
       case options[:env]
       when "production"
-        system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
+        db_system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
       else
-        system("rake db:migrate:reset")
+        db_system("rake db:migrate:reset")
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
@@ -126,6 +126,12 @@ module Souls
       system("rake db:create_migration NAME=drop_table_to_#{pluralized_class_name}")
     rescue Thor::Error => e
       raise(Thor::Error, e)
+    end
+
+    private
+
+    def db_system(cmd)
+      system(cmd) or raise(Souls::PSQLException)
     end
   end
 end
