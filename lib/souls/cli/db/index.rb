@@ -29,11 +29,11 @@ module Souls
         puts "test"
         system("rake db:create")
       end
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
-    rescue ActiveRecord::ConnectionNotEstablished => e
+    rescue PG::ConnectionBad => e
       puts "Test"
       raise Souls::CLIException("Connection to database could not be established. Please run 'souls docker psql'.")
+    rescue Thor::Error => e
+      raise(Thor::Error, e)
     end
 
     desc "seed", "Insert Seed Data"
