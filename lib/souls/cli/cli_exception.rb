@@ -4,11 +4,7 @@ module Souls
 
     def initialize(message)
       super
-      @message = message
-    end
-
-    def self.psql_exception
-      initialize("It looks like there was a problem with the DB. Make sure PSQL is running with 'souls docker psql'")
+      @message = "abc123"
     end
   end
 end

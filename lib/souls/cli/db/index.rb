@@ -28,7 +28,10 @@ module Souls
       when "production"
         system("rake db:create RACK_ENV=production")
       else
-        system("rake db:create") or raise(Souls::CLIException.psql_exception)
+        system("rake db:create") or raise(
+          Souls::CLIException,
+          "It looks like there was a problem with the DB. Make sure PSQL is running with 'souls docker psql'"
+        )
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
