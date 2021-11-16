@@ -17,4 +17,14 @@ module Souls
       @message = message
     end
   end
+
+  class GraphQLException < CLIException
+    attr_reader :message
+
+    def initialize
+      message = "You either haven't created or don't have access to a GCP project. Please create a GCP project with the same name as this app."
+      super(message)
+      @message = message
+    end
+  end
 end
