@@ -37,7 +37,7 @@ module Souls
         system("rake release")
         write_changelog(current_souls_ver: current_souls_ver)
         system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
-        system("gsutil -m -q cp -r coverage gs://souls-bucket/souls-coverage")
+        system("gsutil -m -q -o 'GSUtil:parallel_process_count=1' cp -r coverage gs://souls-bucket/souls-coverage")
         system("bundle exec rake upload:init_files")
         Whirly.status = Paint["soul-v#{souls_new_ver} successfully updated!"]
       end
