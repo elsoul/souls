@@ -11,9 +11,10 @@
 .env
 .irb_history
 /app/
-/vendor/rbs/gem_rbs_collection/
+vendor/
 /.idea/
 tmp/*
 /coverage/
 CHANGELOG.md
 souls-*.gem
+.gitmodules
