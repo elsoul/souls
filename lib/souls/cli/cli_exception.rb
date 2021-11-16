@@ -4,7 +4,16 @@ module Souls
 
     def initialize(message)
       super
-      @message = "abc123"
+      @message = message
+    end
+  end
+
+  class PSQLException < CLIException
+    attr_reader :message
+
+    def initialize
+      super
+      @message = "It looks like there was a problem with the DB. Make sure PSQL is running with 'souls docker psql'"
     end
   end
 end
