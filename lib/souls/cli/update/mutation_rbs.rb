@@ -27,11 +27,12 @@ module Souls
               type = "[#{type}]" if col[:array]
               next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
-              if i.zero?
-                write_txt += line
-              else
-                write_txt += "                          #{col[:column_name]}: #{type}?,\n"
-              end
+              write_txt +=
+                if i.zero?
+                  line
+                else
+                  "                          #{col[:column_name]}: #{type}?,\n"
+                end
             end
             resolve = true
           elsif line.include?("def self.argument:") && !argument

@@ -62,14 +62,23 @@ module Souls
             type = "[#{type}]" if param[:array]
             if i.zero?
               if param[:column_name].match?(/$*_id\z/)
-                f.write("        def self.argument: (:#{param[:column_name]}, String, required: false ) -> #{rbs_type}\n")
+                f.write(
+                  "        def self.argument: (:#{param[:column_name]}, String, " \
+                                    "required: false ) -> #{rbs_type}\n"
+                )
               else
-                f.write("        def self.argument: (:#{param[:column_name]}, #{type}, required: false ) -> #{rbs_type}\n")
+                f.write(
+                  "        def self.argument: (:#{param[:column_name]}, #{type}, " \
+                                    "required: false ) -> #{rbs_type}\n"
+                )
               end
             elsif param[:column_name].match?(/$*_id\z/)
               f.write("                         | (:#{param[:column_name]}, String, required: false ) -> String\n")
             else
-              f.write("                         | (:#{param[:column_name]}, #{type}, required: false ) -> #{rbs_type}\n")
+              f.write(
+                "                         | (:#{param[:column_name]}, #{type}, " \
+                                "required: false ) -> #{rbs_type}\n"
+              )
             end
           end
         end
