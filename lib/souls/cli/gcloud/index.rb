@@ -27,7 +27,7 @@ module Souls
     desc "auth_login", "gcloud config set and gcloud auth login"
     def auth_login
       project_id = Souls.configuration.project_id
-      system("gcloud projects describe #{project_id}", out: :close) or raise(Souls::GcloudException)
+      system("gcloud projects describe #{project_id}", out: File::NULL) or raise(Souls::GcloudException)
       system("gcloud config set project #{project_id}")
       system("gcloud auth login")
     rescue Thor::Error => e
@@ -37,7 +37,7 @@ module Souls
     desc "config_set", "gcloud config set"
     def config_set
       project_id = Souls.configuration.project_id
-      system("gcloud projects describe #{project_id}", out: :close) or raise(Souls::GcloudException)
+      system("gcloud projects describe #{project_id}", out: File::NULL) or raise(Souls::GcloudException)
       system("gcloud config set project #{project_id}")
     end
 
