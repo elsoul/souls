@@ -26,6 +26,7 @@ module Souls
       when "production"
         system("rake db:create RACK_ENV=production")
       else
+        puts "test"
         system("rake db:create")
       end
     rescue Thor::Error => e
