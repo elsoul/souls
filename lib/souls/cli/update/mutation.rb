@@ -8,8 +8,12 @@ module Souls
       new_cols = Souls.get_columns_num(class_name: singularized_class_name)
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/create_#{singularized_class_name}.rb"
-      raise Souls::CLIException.new("File #{file_path} is missing. Please recreate it and then run this command again.") unless
-        File.exist? file_path
+      unless File.exist?(file_path)
+        raise(
+          Souls::CLIException,
+          "File #{file_path} is missing. Please recreate it and then run this command again."
+        )
+      end
 
       mutation_argument = check_mutation_argument(class_name: "user", action: "create")
       overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
@@ -22,8 +26,12 @@ module Souls
       new_cols = Souls.get_columns_num(class_name: singularized_class_name)
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/update_#{singularized_class_name}.rb"
-      raise Souls::CLIException.new("File #{file_path} is missing. Please recreate it and then run this command again.") unless
-        File.exist? file_path
+      unless File.exist?(file_path)
+        raise(
+          Souls::CLIException,
+          "File #{file_path} is missing. Please recreate it and then run this command again."
+        )
+      end
 
       mutation_argument = check_mutation_argument(class_name: class_name, action: "update")
       overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
