@@ -29,7 +29,7 @@ module Souls
         puts "test"
         system("rake db:create")
       end
-    rescue PG::ConnectionBad => e
+    rescue Exception => e
       puts "Test"
       raise Souls::CLIException("Connection to database could not be established. Please run 'souls docker psql'.")
     rescue Thor::Error => e
