@@ -12,8 +12,9 @@ module Souls
     attr_reader :message
 
     def initialize
-      super
-      @message = "It looks like there was a problem with the DB. Make sure PSQL is running with 'souls docker psql'"
+      message = "It looks like there was a problem with the DB. Make sure PSQL is running with 'souls docker psql'"
+      super(message)
+      @message = message
     end
   end
 end
