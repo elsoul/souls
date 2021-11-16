@@ -30,6 +30,9 @@ module Souls
       end
     rescue Thor::Error => e
       raise(Thor::Error, e)
+    rescue ActiveRecord::ConnectionNotEstablished => e
+      puts "Test"
+      raise Souls::CLIException("Connection to database could not be established. Please run 'souls docker psql'.")
     end
 
     desc "seed", "Insert Seed Data"
