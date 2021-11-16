@@ -1,4 +1,4 @@
 module Souls
-  VERSION = "1.7.21".freeze
+  VERSION = "1.7.22".freeze
   public_constant :VERSION
 end
