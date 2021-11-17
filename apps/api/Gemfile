@@ -35,7 +35,7 @@ group :development, :test do
   gem "rspec", "3.10.0"
   gem "rubocop", "1.22.3"
   gem "solargraph", "0.44.0"
-  gem "souls", "1.7.34"
+  gem "souls", "1.7.35"
   gem "webmock", "3.14.0"
 end
 
