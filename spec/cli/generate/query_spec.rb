@@ -9,11 +9,11 @@ RSpec.describe(Souls::Generate) do
       FakeFS.with_fresh do
         generate = Souls::Generate.new
 
-        allow(generate).to receive(:create_individual_query).and_return("")
-        allow(generate).to receive(:create_index_query).and_return("")
+        allow(generate).to(receive(:create_individual_query).and_return(""))
+        allow(generate).to(receive(:create_index_query).and_return(""))
 
-        expect(generate).to receive(:create_individual_query)
-        expect(generate).to receive(:create_index_query)
+        expect(generate).to(receive(:create_individual_query))
+        expect(generate).to(receive(:create_index_query))
 
         generate.query(class_name)
       end
@@ -28,11 +28,11 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{file_dir}#{file_name.pluralize}.rb"
 
         generate = Souls::Generate.new
-        a1 = generate.send(:create_index_query, class_name: "user")
+        a1 = generate.__send__(:create_index_query, class_name: "user")
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
         expect(file_output).to(eq(scaffold_output))
       end
     end
@@ -46,11 +46,11 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{file_dir}#{file_name.singularize}.rb"
 
         generate = Souls::Generate.new
-        a1 = generate.send(:create_individual_query, class_name: "user")
+        a1 = generate.__send__(:create_individual_query, class_name: "user")
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
         expect(file_output).to(eq(scaffold_output))
       end
     end

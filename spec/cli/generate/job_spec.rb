@@ -14,11 +14,11 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{query_dir}#{class_name.singularize}.rb"
 
         generate = Souls::Generate.new
-        a1 = generate.send(:create_job, class_name)
+        a1 = generate.__send__(:create_job, class_name)
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
 
         expect(file_output).to(eq(file_scaffold))
       end
@@ -31,14 +31,14 @@ RSpec.describe(Souls::Generate) do
         type_dir = "./app/graphql/types/"
         FileUtils.mkdir_p(type_dir)
 
-          file_path = "#{type_dir}#{class_name.singularize}_type.rb"
+        file_path = "#{type_dir}#{class_name.singularize}_type.rb"
 
         generate = Souls::Generate.new
-        a1 = generate.send(:create_job_type, class_name)
+        a1 = generate.__send__(:create_job_type, class_name)
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
 
         expect(file_output).to(eq(file_scaffold))
       end
@@ -54,11 +54,11 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{query_dir}#{class_name.singularize}.rb"
 
         generate = Souls::Generate.new
-        a1 = generate.send(:mailgun_mailer, class_name)
+        a1 = generate.__send__(:mailgun_mailer, class_name)
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
 
         expect(file_output).to(eq(file_scaffold))
       end
@@ -74,12 +74,12 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{type_dir}#{class_name.singularize}_type.rb"
 
         generate = Souls::Generate.new
-        allow(Souls).to receive(:get_mother_path).and_return("")
-        a1 = generate.send(:create_job_mailer_type, class_name)
+        allow(Souls).to(receive(:get_mother_path).and_return(""))
+        a1 = generate.__send__(:create_job_mailer_type, class_name)
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
 
         expect(file_output).to(eq(file_scaffold))
       end
