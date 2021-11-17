@@ -33,7 +33,7 @@ module Mutations
               "#{key.to_s.underscore.camelize(:lower)}: #{value} "
             end
         end
-        query_string = %(query { #{query.to_s.underscore.camelize(:lower)}(input: {#{inputs}}) { response } })
+        query_string = %(query { #{query.to_s.underscore.camelize(:lower)}(#{inputs}) { response } })
       end
       query_string
     end
