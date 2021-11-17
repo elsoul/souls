@@ -73,10 +73,12 @@ module Souls
     def update_github_actions(key:)
       Dir.chdir(Souls.get_mother_path.to_s) do
         file_paths = Dir[".github/workflows/*.yml"]
+        file_paths.delete(".github/workflows/api.yml")
         file_paths.each do |file_path|
-          File.open(file_path, "a") do |line|
-            line.write(" \\ \n            --set-env-vars=\"#{key.upcase}=${{ secrets.#{key.upcase} }}\"")
-          end
+          worker_workflow = File.readlines(file_path)
+          worker_workflow[worker_workflow.size - 1] = worker_workflow.last.chomp
+          worker_workflow << " \\ \n            --set-env-vars=\"#{key.upcase}=${{ secrets.#{key.upcase} }}\""
+          File.open(file_path, "w") { |f| f.write(worker_workflow.join) }
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
       end
