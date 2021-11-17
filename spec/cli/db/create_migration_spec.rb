@@ -9,13 +9,13 @@ RSpec.describe(Souls::DB) do
         FileUtils.mkdir_p(file_dir)
         FileUtils.touch("#{file_dir}/create_users.rb")
 
-        allow(Souls).to receive(:get_mother_path).and_return("./")
+        allow(Souls).to(receive(:get_mother_path).and_return("./"))
 
         cli.create_migration("user")
         output = File.read("#{file_dir}/create_users.rb")
 
         expected_output = Scaffold.scaffold_create_migration
-        expect(output).to eq(expected_output)
+        expect(output).to(eq(expected_output))
       end
     end
   end

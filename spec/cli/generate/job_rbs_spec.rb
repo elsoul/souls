@@ -14,13 +14,13 @@ RSpec.describe(Souls::Generate) do
     it "creates job.rbs file" do
       file_path = "#{@file_dir}#{class_name.singularize}.rbs"
       FakeFS.activate!
-      allow(Souls).to receive(:get_mother_path).and_return("")
-      allow(FileUtils).to receive(:pwd).and_return("api")
+      allow(Souls).to(receive(:get_mother_path).and_return(""))
+      allow(FileUtils).to(receive(:pwd).and_return("api"))
       a1 = Souls::Generate.new.job_rbs(class_name)
       file_output = File.read(file_path)
 
       expect(a1).to(eq(file_path))
-      expect(File.exists? file_path).to(eq(true))
+      expect(File.exist?(file_path)).to(eq(true))
       FakeFS.deactivate!
 
       expect(file_output).to(eq(Scaffold.scaffold_job_rbs))

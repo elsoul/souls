@@ -2,7 +2,6 @@ require_relative "./scaffolds/scaffold_rspec_job"
 
 RSpec.describe(Souls::Generate) do
   describe "Generate Rspec Job" do
-
     let(:class_name) { "user" }
     let(:file_name) { "users" }
 
@@ -18,11 +17,10 @@ RSpec.describe(Souls::Generate) do
     it "creates job file" do
       file_path = "#{@file_dir}#{class_name}_spec.rb"
       FakeFS.activate!
-      File.open("#{@schema_dir}schema.rb", "w") {}
-      a1 = Souls::Generate.new.rspec_job("user")
+      Souls::Generate.new.rspec_job("user")
       file_output = File.read(file_path)
 
-      expect(File.exists? file_path).to(eq(true))
+      expect(File.exist?(file_path)).to(eq(true))
       FakeFS.deactivate!
 
       expect(file_output).to(eq(Scaffold.scaffold_rspec_job))

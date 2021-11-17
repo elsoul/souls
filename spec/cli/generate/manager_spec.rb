@@ -15,12 +15,12 @@ RSpec.describe(Souls::Generate) do
       file_path = "#{@file_dir}#{class_name.singularize}_manager/#{class_name}.rb"
       FakeFS.activate!
       generate = Souls::Generate.new
-      allow(Souls).to receive(:get_mother_path).and_return("")
-      a1 = generate.send(:create_manager, class_name, "user")
+      allow(Souls).to(receive(:get_mother_path).and_return(""))
+      a1 = generate.__send__(:create_manager, class_name, "user")
       file_output = File.read(file_path)
 
       expect(a1).to(eq(file_path))
-      expect(File.exists? file_path).to(eq(true))
+      expect(File.exist?(file_path)).to(eq(true))
       FakeFS.deactivate!
 
       expect(file_output).to(eq(Scaffold.scaffold_manager))
