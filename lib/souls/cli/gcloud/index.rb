@@ -30,8 +30,6 @@ module Souls
       system("gcloud projects describe #{project_id}", out: File::NULL) or raise(Souls::GcloudException)
       system("gcloud config set project #{project_id}")
       system("gcloud auth login")
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "config_set", "gcloud config set"
@@ -52,8 +50,6 @@ module Souls
       system("gcloud services enable containerregistry.googleapis.com")
       system("gcloud services enable run.googleapis.com")
       system("gcloud services enable vpcaccess.googleapis.com")
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end

@@ -13,8 +13,6 @@ module Souls
       Souls::Delete.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
       Souls::Delete.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
       file_path
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end

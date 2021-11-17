@@ -27,8 +27,6 @@ module Souls
         end
       end
       file_path
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end

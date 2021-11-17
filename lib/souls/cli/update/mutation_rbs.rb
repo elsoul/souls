@@ -57,8 +57,6 @@ module Souls
       end
       File.open(file_path, "w") { |f| f.write(write_txt) }
       puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "update_mutation [CLASS_NAME]", "Update GraphQL Type from schema.rb"
@@ -123,8 +121,6 @@ module Souls
       FileUtils.rm(file_path)
       FileUtils.mv(new_file_path, file_path)
       puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end
