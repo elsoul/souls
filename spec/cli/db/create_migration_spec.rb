@@ -13,7 +13,6 @@ RSpec.describe(Souls::DB) do
 
         cli.create_migration("user")
         output = File.read("#{file_dir}/create_users.rb")
-        puts output
 
         expected_output = Scaffold.scaffold_create_migration
         expect(output).to eq(expected_output)
