@@ -30,8 +30,9 @@ module Souls
 
     desc "watch", "Watch GitHub Actions Workflow"
     def watch
-      run_id = `gh run list | grep Mailer | awk '{print $7}'`.strip
-      raise(StandardError, "No workflow is running.") if run_id.include?("push")
+      run_list = `gh run list | grep in_progress | awk '{print $8}'`
+      run_id = run_list.split("\n")
+      raise(StandardError, "No workflow is running.") if run_id.empty?
 
       system("gh run watch #{run_id}")
     end
