@@ -34,7 +34,7 @@ module Souls
     end
 
     def cp_env_files
-      return unless system("cat ./apps/api/.env", out: File::NULL, chdir: Souls.get_mother_path)
+      return unless File.exist?("./apps/api/.env")
 
       worker_paths = Souls.configuration.workers.map { |n| n[:name].split("-").last }
       worker_paths.each do |path|
