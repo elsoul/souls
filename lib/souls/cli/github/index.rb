@@ -9,7 +9,7 @@ module Souls
             key_and_value = line.match(/([A-Z_]+)="?([^"]*)"?/)
             next if key_and_value.nil?
 
-            system("gh secret set #{key_and_value[1]} -b \"#{key_and_value[2]}\"")
+            system("gh secret set #{key_and_value[1]} -b \"#{key_and_value[2].strip}\"")
           end
         end
       end
