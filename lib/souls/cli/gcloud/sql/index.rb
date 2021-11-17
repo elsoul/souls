@@ -24,6 +24,7 @@ module Souls
         file_path = ".env"
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
+            GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1
             SOULS_DB_HOST=#{instance_ip}
             SOULS_DB_PW=#{password}
             SOULS_DB_USER=postgres
