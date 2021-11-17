@@ -39,7 +39,7 @@ module Souls
       worker_paths = Souls.configuration.workers.map { |n| n[:name].split("-").last }
       worker_paths.each do |path|
         system("rm ./apps/#{path}/.env", chdir: Souls.get_mother_path)
-        system("cp ./apps/api/.env #{apps}/path/.env", chdir: Souls.get_mother_path)
+        system("cp -f ./apps/api/.env ./apps/#{path}/.env", chdir: Souls.get_mother_path)
       end
     end
   end
