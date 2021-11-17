@@ -16,7 +16,7 @@
     <img alt="" src="https://badgen.net/rubygems/dt/souls">
   </a>
    <a aria-label="Test" href="https://rubygems.org/gems/souls">
-    <img alt="" src="https://github.com/elsoul/souls/actions/workflows/gem-test.yml/badge.svg">
+    <img alt="" src="https://github.com/elsoul/souls/actions/workflows/test.yml/badge.svg">
   </a>
   <a aria-label="License" href="https://github.com/elsoul/souls/blob/master/LICENSE.txt">
     <img alt="" src="https://badgen.net/badge/license/Apache/blue">
