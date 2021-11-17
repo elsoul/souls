@@ -5,8 +5,6 @@ module Souls
       Souls::Gcloud.new.config_set
       get_topics(workers: get_workers)
       puts(Paint["All Jobs Synced with PubSub Subscription!", :green])
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private

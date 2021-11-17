@@ -7,8 +7,6 @@ module Souls
       update_rbs_mutation(class_name: singularized_class_name)
       delete_rbs_mutation(class_name: singularized_class_name)
       destroy_delete_rbs_mutation(class_name: singularized_class_name)
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private
@@ -101,8 +99,6 @@ module Souls
       end
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     def update_rbs_mutation(class_name: "user")
@@ -211,8 +207,6 @@ module Souls
         puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       end
       file_path
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     def destroy_delete_rbs_mutation(class_name: "user")
@@ -242,8 +236,6 @@ module Souls
         puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       end
       file_path
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end

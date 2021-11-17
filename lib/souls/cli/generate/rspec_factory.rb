@@ -11,8 +11,6 @@ module Souls
       rspec_factory_end(class_name: singularized_class_name)
       puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private

@@ -12,8 +12,6 @@ module Souls
       rescue StandardError
         export_key_to_console
       end
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private
