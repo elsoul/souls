@@ -6,8 +6,10 @@ module Souls
         file_path = ".env.production"
         File.open(file_path, "r") do |file|
           file.each_line do |line|
-            key_and_value = line.split("=")
-            system("gh secret set #{key_and_value[0]} -b \"#{key_and_value[1].strip}\"")
+            key_and_value = line.match(/([A-Z_]+)="?([^"]*)"?/)
+            next if key_and_value.nil?
+
+            system("gh secret set #{key_and_value[1]} -b \"#{key_and_value[2]}\"")
           end
         end
       end
