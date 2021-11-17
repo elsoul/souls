@@ -1,4 +1,4 @@
-require 'simplecov'
+require "simplecov"
 
 SimpleCov.start do
   add_filter "spec/"
@@ -20,15 +20,12 @@ RSpec.configure do |config|
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
 
-  config.expect_with :rspec do |c|
+  config.expect_with(:rspec) do |c|
     c.syntax = :expect
   end
 
-
-  config.after :all do
-    file_paths = [
-      "./app"
-    ]
+  config.after(:all) do
+    file_paths = ["./app"]
     file_paths.each { |path| FileUtils.rm_rf(path) if Dir.exist?(path) }
   end
 end

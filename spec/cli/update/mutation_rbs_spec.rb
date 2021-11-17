@@ -8,19 +8,19 @@ RSpec.describe(Souls::Update) do
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./sig/api/app/graphql/mutations/base/user/"
-        FileUtils.mkdir_p("#{file_dir}")
+        FileUtils.mkdir_p(file_dir.to_s)
         FileUtils.mkdir_p("config")
         FileUtils.mkdir_p("/souls/apps/api")
 
         File.open("#{file_dir}create_user.rbs", "w") { |f| f.write(mutation_create) }
-        allow(Souls).to receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }])
+        allow(Souls).to(receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }]))
 
         cli.create_mutation_rbs("user")
         puts "#{file_dir}create_user.rbs"
         output = File.read("#{file_dir}create_user.rbs")
 
         expected_output = Scaffold.scaffold_mutation_create_rbs_u
-        expect(output).to eq(expected_output)
+        expect(output).to(eq(expected_output))
       end
     end
   end
@@ -31,19 +31,19 @@ RSpec.describe(Souls::Update) do
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./sig/api/app/graphql/mutations/base/user/"
-        FileUtils.mkdir_p("#{file_dir}")
+        FileUtils.mkdir_p(file_dir.to_s)
         FileUtils.mkdir_p("config")
         FileUtils.mkdir_p("/souls/apps/api")
 
         File.open("#{file_dir}update_user.rbs", "w") { |f| f.write(mutation_create) }
-        allow(Souls).to receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }])
+        allow(Souls).to(receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }]))
 
         cli.update_mutation_rbs("user")
         puts "#{file_dir}update_user.rbs"
         output = File.read("#{file_dir}update_user.rbs")
 
         expected_output = Scaffold.update_mutation_update_rbs_u
-        expect(output).to eq(expected_output)
+        expect(output).to(eq(expected_output))
       end
     end
   end

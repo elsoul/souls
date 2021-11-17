@@ -8,17 +8,17 @@ RSpec.describe(Souls::Update) do
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
-        FileUtils.mkdir_p("#{file_dir}")
+        FileUtils.mkdir_p(file_dir.to_s)
 
         File.open("#{file_dir}create_user.rb", "w") { |f| f.write(mutation_create) }
-        allow(Souls).to receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }])
+        allow(Souls).to(receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }]))
 
         cli.create_mutation("user")
         puts "#{file_dir}create_user.rb"
         output = File.read("#{file_dir}create_user.rb")
 
         expected_output = Scaffold.update_mutation_create_u
-        expect(output).to eq(expected_output)
+        expect(output).to(eq(expected_output))
       end
     end
 
@@ -27,17 +27,17 @@ RSpec.describe(Souls::Update) do
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
-        FileUtils.mkdir_p("#{file_dir}")
+        FileUtils.mkdir_p(file_dir.to_s)
 
         File.open("#{file_dir}create_user.rb", "w") { |f| f.write(mutation_create) }
-        allow(Souls).to receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }])
+        allow(Souls).to(receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }]))
 
         cli.create_mutation("user")
         puts "#{file_dir}create_user.rb"
         output = File.read("#{file_dir}create_user.rb")
 
         expected_output = Scaffold.update_mutation_arg_u
-        expect(output).to eq(expected_output)
+        expect(output).to(eq(expected_output))
       end
     end
 
@@ -45,34 +45,37 @@ RSpec.describe(Souls::Update) do
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
-        FileUtils.mkdir_p("#{file_dir}")
-        allow(Souls).to receive(:get_columns_num).and_return(2)
+        FileUtils.mkdir_p(file_dir.to_s)
+        allow(Souls).to(receive(:get_columns_num).and_return(2))
 
-        expect {
-          cli.create_mutation("user")
-        }.to raise_error(Souls::CLIException)
+        expect_result =
+          expect do
+            cli.create_mutation("user")
+          end
+
+        expect_result.to(raise_error(Souls::CLIException))
       end
     end
   end
-  
+
   describe "update_mutation" do
     it "should update the update type from schema" do
       mutation_create = Scaffold.update_mutation_update
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
-        FileUtils.mkdir_p("#{file_dir}")
+        FileUtils.mkdir_p(file_dir.to_s)
         FileUtils.mkdir_p("tmp")
 
         File.open("#{file_dir}update_user.rb", "w") { |f| f.write(mutation_create) }
-        allow(Souls).to receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }])
+        allow(Souls).to(receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }]))
 
         cli.update_mutation("user")
         puts "#{file_dir}update_user.rb"
         output = File.read("#{file_dir}update_user.rb")
 
         expected_output = Scaffold.update_mutation_update_u
-        expect(output).to eq(expected_output)
+        expect(output).to(eq(expected_output))
       end
     end
 
@@ -80,12 +83,15 @@ RSpec.describe(Souls::Update) do
       FakeFS.with_fresh do
         cli = Souls::Update.new
         file_dir = "./app/graphql/mutations/base/user/"
-        FileUtils.mkdir_p("#{file_dir}")
-        allow(Souls).to receive(:get_columns_num).and_return(2)
+        FileUtils.mkdir_p(file_dir.to_s)
+        allow(Souls).to(receive(:get_columns_num).and_return(2))
 
-        expect {
-          cli.update_mutation("user")
-        }.to raise_error(Souls::CLIException)
+        expect_result =
+          expect do
+            cli.update_mutation("user")
+          end
+
+        expect_result.to(raise_error(Souls::CLIException))
       end
     end
   end

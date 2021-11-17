@@ -20,12 +20,12 @@ RSpec.describe(Souls::Generate) do
 
         FakeFS.activate!
         generate = Souls::Generate.new
-        allow(Souls).to receive(:get_relation_params).and_return({:params => {}})
-        a1 = generate.send(:create_mutation, **{ class_name: class_name})
+        allow(Souls).to(receive(:get_relation_params).and_return({ params: {} }))
+        a1 = generate.__send__(:create_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
         FakeFS.deactivate!
 
         expect(file_output).to(eq(Scaffold.scaffold_mutation_create))
@@ -38,12 +38,12 @@ RSpec.describe(Souls::Generate) do
 
         FakeFS.activate!
         generate = Souls::Generate.new
-        allow(Souls).to receive(:get_relation_params).and_return({:params => {}})
-        a1 = generate.send(:update_mutation, **{ class_name: class_name})
+        allow(Souls).to(receive(:get_relation_params).and_return({ params: {} }))
+        a1 = generate.__send__(:update_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
         FakeFS.deactivate!
 
         expect(file_output).to(eq(Scaffold.scaffold_mutation_update))
@@ -56,11 +56,11 @@ RSpec.describe(Souls::Generate) do
 
         FakeFS.activate!
         generate = Souls::Generate.new
-        a1 = generate.send(:delete_mutation, **{ class_name: class_name})
+        a1 = generate.__send__(:delete_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
         FakeFS.deactivate!
 
         expect(file_output).to(eq(Scaffold.scaffold_mutation_delete))
@@ -73,11 +73,11 @@ RSpec.describe(Souls::Generate) do
 
         FakeFS.activate!
         generate = Souls::Generate.new
-        a1 = generate.send(:destroy_delete_mutation, **{ class_name: class_name})
+        a1 = generate.__send__(:destroy_delete_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
-        expect(File.exists? file_path).to(eq(true))
+        expect(File.exist?(file_path)).to(eq(true))
         FakeFS.deactivate!
 
         expect(file_output).to(eq(Scaffold.scaffold_mutation_dd))
