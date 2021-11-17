@@ -9,7 +9,9 @@ module Souls
         file_dir = "./sig/#{worker_name}/app/graphql/queries/"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}#{singularized_class_name}.rbs"
-        type_file_path = "./sig/#{worker_name}/app/graphql/types/#{singularized_class_name}_type.rbs"
+        sig_type_path = "./sig/#{worker_name}/app/graphql/types"
+        FileUtils.mkdir_p(sig_type_path) unless Dir.exist?(sig_type_path)
+        type_file_path = "#{sig_type_path}/#{singularized_class_name}_type.rbs"
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             module Queries
