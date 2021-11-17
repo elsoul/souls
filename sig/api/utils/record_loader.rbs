@@ -5,4 +5,5 @@ class RecordLoader
   def perform: (untyped ids) -> untyped
   def fulfill: (untyped, untyped) -> untyped
   def fulfilled?: (untyped) -> untyped
+  def self.for: (untyped) -> untyped
 end

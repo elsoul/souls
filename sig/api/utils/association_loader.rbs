@@ -15,6 +15,7 @@ class AssociationLoader < GraphQL::Batch::Loader
   def cache_key: (untyped record) -> untyped
   def perform: (untyped records) -> untyped
   def fulfill: (untyped, untyped) -> untyped
+  def self.for: (*untyped) -> untyped
 
   private
   def validate: -> nil

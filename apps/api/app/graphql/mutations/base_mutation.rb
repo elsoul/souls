@@ -20,9 +20,9 @@ module Mutations
       topic.publish(message)
     end
 
-    def make_graphql_mutation(mutation: "newCommentMailer", args: {})
+    def make_graphql_query(query: "newCommentMailer", args: {})
       if args.blank?
-        mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {}) { response } })
+        query_string = %(query { #{query.to_s.underscore.camelize(:lower)} { response } })
       else
         inputs = ""
         args.each do |key, value|
@@ -33,16 +33,16 @@ module Mutations
               "#{key.to_s.underscore.camelize(:lower)}: #{value} "
             end
         end
-        mutation_string = %(mutation { #{mutation.to_s.underscore.camelize(:lower)}(input: {#{inputs}}) { response } })
+        query_string = %(query { #{query.to_s.underscore.camelize(:lower)}(input: {#{inputs}}) { response } })
       end
-      mutation_string
+      query_string
     end
 
-    def post_to_dev(worker_name: "", mutation_string: "")
+    def post_to_dev(worker_name: "", query_string: "")
       app = Souls.configuration.app
       port = get_worker(worker_name: "souls-#{app}-#{worker_name}")[0][:port]
       endpoint = Souls.configuration.endpoint
-      res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: mutation_string })
+      res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: query_string })
       res.body
     end
 
