@@ -14,12 +14,12 @@ RSpec.describe(Souls::Generate) do
     it "creates connection.rbs file" do
       file_path = "#{@file_dir}#{class_name.singularize}_connection.rbs"
       FakeFS.activate!
-      allow(Souls).to receive(:get_mother_path).and_return("")
+      allow(Souls).to(receive(:get_mother_path).and_return(""))
       a1 = Souls::Generate.new.connection_rbs(class_name)
       file_output = File.read(file_path)
 
       expect(a1).to(eq(file_path))
-      expect(File.exists? file_path).to(eq(true))
+      expect(File.exist?(file_path)).to(eq(true))
       FakeFS.deactivate!
 
       expect(file_output).to(eq(Scaffold.scaffold_connection_rbs))

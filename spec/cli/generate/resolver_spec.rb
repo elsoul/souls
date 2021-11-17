@@ -17,16 +17,15 @@ RSpec.describe(Souls::Generate) do
     it "creates resolver file" do
       file_path = "#{@file_dir}#{file_name.singularize}.rb"
       FakeFS.activate!
-      File.open("#{@schema_dir}schema.rb", "w") {}
+      FileUtils.touch("#{@schema_dir}schema.rb")
 
       a1 = Souls::Generate.new.resolver("user")
       file_output = File.read(file_path)
 
       expect(a1).to(eq(file_path))
-      expect(File.exists? file_path).to(eq(true))
+      expect(File.exist?(file_path)).to(eq(true))
       FakeFS.deactivate!
 
-      example_file_path = File.join(File.dirname(__FILE__), "output_scaffolds/scaffold_resolver.rb")
       expect(file_output).to(eq(Scaffold.scaffold_resolver))
     end
   end

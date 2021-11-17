@@ -8,13 +8,13 @@ RSpec.describe(Souls::DB) do
         file_dir = "./sig/api/app/models"
         FileUtils.mkdir_p(file_dir)
 
-        allow(Souls).to receive(:get_mother_path).and_return("./")
+        allow(Souls).to(receive(:get_mother_path).and_return("./"))
 
         cli.model_rbs("user")
         output = File.read("#{file_dir}/user.rbs")
-        
+
         expected_output = Scaffold.scaffold_model_rbs
-        expect(output).to eq(expected_output)
+        expect(output).to(eq(expected_output))
       end
     end
   end
