@@ -4,8 +4,8 @@ module Mutations
 
     def fb_auth: (token: String) -> Hash[Symbol, String]
     def publish_pubsub_queue: (?topic_name: String, ?message: String) -> untyped
-    def make_graphql_mutation: (?mutation: String, ?args: Hash[untyped, untyped]) -> String
-    def post_to_dev: (?worker_name: String, ?mutation_string: String) -> untyped
+    def make_graphql_query: (?query: String, ?args: Hash[untyped, untyped]) -> String
+    def post_to_dev: (?worker_name: String, ?query_string: String) -> untyped
     def get_worker:  (?worker_name: String) -> Array[Hash[Symbol, (String | Integer)]]
     def check_user_permissions: (untyped user, untyped obj, untyped method) -> nil
     def auth_check: (untyped context) -> nil
