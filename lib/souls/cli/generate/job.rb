@@ -77,7 +77,7 @@ module Souls
 
               def resolve
                 # First, instantiate the Mailgun Client with your API key
-                mg_client = ::Mailgun::Client.new("YOUR-API-KEY")
+                mg_client = ::Mailgun::Client.new(ENV['MAILGUN_KEY'])
 
                 # Define your message parameters
                 message_params = {
@@ -88,7 +88,7 @@ module Souls
                 }
 
                 # Send your message through the client
-                mg_client.send_message("YOUR-MAILGUN-DOMAIN", message_params)
+                mg_client.send_message(ENV['MAILGUN_DOMAIN'], message_params)
                 { response: "Job done!" }
               rescue StandardError => e
                 GraphQL::ExecutionError.new(e.to_s)
