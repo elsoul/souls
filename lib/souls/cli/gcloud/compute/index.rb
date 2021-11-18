@@ -123,19 +123,13 @@ module Souls
     def update_workflows
       app_name = Souls.configuration.app
       Dir.chdir(Souls.get_mother_path.to_s) do
-        api_workflow_path = ".github/workflows/api.yml"
-        worker_workflow_paths = Dir[".github/workflows/*.yml"]
-        worker_workflow_paths.delete(api_workflow_path)
-        File.open(api_workflow_path, "a") do |line|
-          line.write(" \\ \n            --vpc-connector=#{app_name}-connector")
-        end
-        puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [api_workflow_path.to_s, :white] }])
-        worker_workflow_paths.each do |file_path|
-          worker_workflow = File.readlines(file_path)
-          worker_workflow[worker_workflow.size - 1] = worker_workflow.last.chomp
-          worker_workflow << " \\ \n            --vpc-connector=#{app_name}-connector \\"
-          worker_workflow << "\n            --vpc-egress=all"
-          File.open(file_path, "w") { |f| f.write(worker_workflow.join) }
+        workflow_paths = Dir[".github/workflows/*.yml"]
+        workflow_paths.each do |file_path|
+          workflow = File.readlines(file_path)
+          index = workflow.index { |e| e =~ /.*--memory=4Gi.*/ } + 1
+          workflow.insert(index, "            --vpc-egress=all \\\n") unless file_path.end_with?("/api.yml")
+          workflow.insert(index, "            --vpc-connector=#{app_name}-connector \\\n")
+          File.open(file_path, "w") { |f| f.write(workflow.join) }
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
       end
