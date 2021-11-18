@@ -7,15 +7,11 @@ module Souls
                   desc: "Google Cloud Pubsub Topic Name"
     def create_topic
       system("gcloud pubsub topics create #{options[:topic_name]}")
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "topic_list", "Show Google Cloud Topic List"
     def topic_list
       system("gcloud pubsub topics list")
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end

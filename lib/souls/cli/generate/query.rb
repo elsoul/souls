@@ -7,8 +7,6 @@ module Souls
       singularized_class_name = class_name.singularize
       create_individual_query(class_name: singularized_class_name)
       create_index_query(class_name: singularized_class_name)
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private

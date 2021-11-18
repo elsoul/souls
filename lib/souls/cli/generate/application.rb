@@ -10,8 +10,6 @@ module Souls
         run_scaffold(singularized_class_name)
       end
       true
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "scaffold_all", "Generate Scaffold All Tables from schema.rb"
@@ -26,8 +24,6 @@ module Souls
         end
       end
       true
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private

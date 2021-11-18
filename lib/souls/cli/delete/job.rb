@@ -10,8 +10,6 @@ module Souls
       end
       Souls::Delete.new.invoke(:job_rbs, [class_name], {})
       Souls::Delete.new.invoke(:rspec_job, [class_name], {})
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private
