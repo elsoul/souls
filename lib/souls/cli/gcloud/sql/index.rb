@@ -51,15 +51,11 @@ module Souls
         end
       end
       Souls::Github.new
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "list", "Show Cloud SQL Instances List"
     def list
       system("gcloud sql instances list")
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "setup_private_ip", "Enable Private IP"
@@ -67,8 +63,6 @@ module Souls
       create_ip_range
       create_vpc_connector
       assign_network
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "assign_network", "Assign Network"
@@ -77,8 +71,6 @@ module Souls
       instance_name = Souls.configuration.instance_name
       project_id = Souls.configuration.project_id
       system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --network=#{app_name}")
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "create_ip_range", "Create VPC Adress Range"
@@ -95,8 +87,6 @@ module Souls
               --network=#{app_name} \
               --project=#{project_id}"
       )
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "create_vpc_connector", "Create VPC-PEERING Connect"
@@ -112,8 +102,6 @@ module Souls
               --project=#{project_id}
             "
       )
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     desc "assgin_ip", "Add Current Grobal IP to White List"
@@ -129,8 +117,6 @@ module Souls
               --authorized-networks=#{ip}
             "
       )
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private

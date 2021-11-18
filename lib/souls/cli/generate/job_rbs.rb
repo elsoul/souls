@@ -36,8 +36,6 @@ module Souls
         puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [type_file_path.to_s, :white] }])
       end
       file_path
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end

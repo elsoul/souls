@@ -12,8 +12,6 @@ module Souls
         cp_env_files
       end
       puts(Paint % ["Synced! : %{white_text}", :green, { white_text: [cp_dir.to_s, :white] }])
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private

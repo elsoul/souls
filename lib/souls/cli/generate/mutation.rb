@@ -15,8 +15,6 @@ module Souls
         delete_mutation(class_name: singularized_class_name)
         destroy_delete_mutation(class_name: singularized_class_name)
       end
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private

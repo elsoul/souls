@@ -39,8 +39,6 @@ module Souls
       FileUtils.rm(file_path)
       FileUtils.mv(new_file_path, file_path)
       puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
   end
 end

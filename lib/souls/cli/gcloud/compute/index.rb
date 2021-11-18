@@ -27,8 +27,6 @@ module Souls
       puts(Paint["\nYou can add this IP to third party white list", :white])
       puts(Paint["\nPlease git push to update your github workflow now!", :yellow])
       true
-    rescue Thor::Error => e
-      raise(Thor::Error, e)
     end
 
     private
