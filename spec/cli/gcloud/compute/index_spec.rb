@@ -35,6 +35,20 @@ RSpec.describe(Souls::Compute) do
           expect(output).to(eq(Scaffold.scaffold_api_yml_worker))
         end
       end
+
+      it "should not add extra lines to file" do
+        FakeFS.with_fresh do
+          FileUtils.mkdir_p(".github/workflows/")
+          File.open(".github/workflows/worker.yml", "w") { |f| f.write(Scaffold.scaffold_api_yml_worker) }
+
+          cli = Souls::Compute.new
+          cli.__send__(:update_workflows)
+
+          output = File.read(".github/workflows/worker.yml")
+
+          expect(output).to(eq(Scaffold.scaffold_api_yml_worker))
+        end
+      end
     end
   end
 end

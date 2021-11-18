@@ -126,9 +126,14 @@ module Souls
         workflow_paths = Dir[".github/workflows/*.yml"]
         workflow_paths.each do |file_path|
           workflow = File.readlines(file_path)
-          index = workflow.index { |e| e =~ /.*--memory=4Gi.*/ } + 1
-          workflow.insert(index, "            --vpc-egress=all \\\n") unless file_path.end_with?("/api.yml")
-          workflow.insert(index, "            --vpc-connector=#{app_name}-connector \\\n")
+          index = workflow.index { |e| e =~ /.*--memory=.*/ } + 1
+          egress_index = workflow.index { |e| e =~ /.*--vpc-egress=.*/ }
+          connector_index = workflow.index { |e| e =~ /.*--vpc-connector=.*/ }
+
+          if !file_path.end_with?("/api.yml") && egress_index.nil?
+            workflow.insert(index, "            --vpc-egress=all \\\n")
+          end
+          workflow.insert(index, "            --vpc-connector=#{app_name}-connector \\\n") if connector_index.nil?
           File.open(file_path, "w") { |f| f.write(workflow.join) }
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
