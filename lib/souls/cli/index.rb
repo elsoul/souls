@@ -1,3 +1,4 @@
+require_relative "./cli_exception"
 require_relative "./console/index"
 require_relative "./generate/index"
 require_relative "./github/index"
