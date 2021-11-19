@@ -7,9 +7,8 @@ module Souls
       singularized_class_name = class_name.underscore.singularize
       Dir.chdir(Souls.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/managers/#{singularized_class_name}_manager"
-        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/#{options[:mutation]}.rbs"
-        FileUtils.rm(file_path)
+        FileUtils.rm_f(file_path)
         puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
       end
       file_path
