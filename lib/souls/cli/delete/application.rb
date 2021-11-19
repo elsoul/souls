@@ -17,11 +17,7 @@ module Souls
     def scaffold_all
       puts(Paint["Delete All Scaffold Files!\n", :cyan])
       Souls.get_tables.each do |table|
-        if options[:rbs]
-          Souls::Delete.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
-        else
-          Souls::Delete.new.invoke(:scaffold, [table.singularize], {})
-        end
+        Souls::Delete.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
       end
       true
     end
@@ -30,21 +26,16 @@ module Souls
 
     def run_scaffold(class_name: "user")
       type(class_name)
-      type_rbs(class_name)
       query(class_name)
-      query_rbs(class_name)
       mutation(class_name)
-      mutation_rbs(class_name)
       edge(class_name)
-      edge_rbs(class_name)
       connection(class_name)
-      connection_rbs(class_name)
       resolver(class_name)
-      resolver_rbs(class_name)
       rspec_factory(class_name)
       rspec_mutation(class_name)
       rspec_query(class_name)
       rspec_resolver(class_name)
+      run_rbs_scaffold(class_name: class_name)
     end
 
     def run_rbs_scaffold(class_name: "user")
