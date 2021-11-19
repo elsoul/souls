@@ -5,10 +5,17 @@ module Souls
     def server
       if options[:all]
         Dir.chdir(Souls.get_mother_path.to_s) do
+          front_path = "apps/console/package.json"
           system("foreman start -f Procfile.dev")
+          system("cd apps/console && yarn dev") if File.exist?(front_path)
         end
       else
-        system("foreman start -f Procfile.dev")
+        package_json_path = "package.json"
+        if File.exist?(package_json_path)
+          system("yarn dev")
+        else
+          system("foreman start -f Procfile.dev")
+        end
       end
     end
   end
