@@ -27,7 +27,7 @@ module Scaffold
               scope = ::User.all
             scope = scope.where("created_at >= ?", value[:start_date]) if value[:start_date]
             scope = scope.where("created_at <= ?", value[:end_date]) if value[:end_date]
-            branches << scope
+            branches << scope.order(created_at: :desc)
             value[:OR].inject(branches) { |s, v| normalize_filters(v, s) } if value[:OR].present?
             branches
           end
