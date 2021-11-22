@@ -15,12 +15,12 @@ module Scaffold
         "workflow_runs": [
           {
             "id": 11916875,
-            "state": "in_progress",
+            "status": "in_progress",
             "name": "Worker"
           },
           {
             "id": 11916875,
-            "state": "active",
+            "status": "active",
             "name": "Worker"
           }
         ]
@@ -35,12 +35,12 @@ module Scaffold
         "workflow_runs": [
           {
             "id": 11916874,
-            "state": "in_progress",
+            "status": "in_progress",
             "name": "Api"
           },
           {
             "id": 11916875,
-            "state": "in_progress",
+            "status": "in_progress",
             "name": "Worker"
           }
         ]
