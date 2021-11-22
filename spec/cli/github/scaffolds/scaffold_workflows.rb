@@ -1,4 +1,13 @@
 module Scaffold
+  def self.scaffold_no_workflows
+    <<~ONEWORKFLOW
+      {
+        "total_count": 2,
+        "workflow_runs": []
+      }
+    ONEWORKFLOW
+  end
+
   def self.scaffold_one_workflow
     <<~ONEWORKFLOW
       {
