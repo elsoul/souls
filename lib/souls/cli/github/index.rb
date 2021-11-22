@@ -39,9 +39,6 @@ module Souls
       api_request = "gh api -X GET 'repos/#{split_url[2]}/actions/runs'"
       workflows = JSON.parse(`#{api_request}`)
 
-      puts(api_request)
-      puts(workflows)
-
       if workflows.nil? || !workflows.key?("workflow_runs")
         raise(CLIException, "Failed to parse JSON response from Github")
       end
@@ -50,8 +47,6 @@ module Souls
         workflows["workflow_runs"].filter_map do |wf|
           { wf["name"].to_sym => wf["id"] } if wf["status"] == "in_progress"
         end
-
-      puts(wf_info)
 
       wf_id =
         case wf_info.size
