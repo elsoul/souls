@@ -84,6 +84,7 @@ module Scaffold
                   --set-env-vars="SOULS_DB_USER=${{ secrets.SOULS_DB_USER }}" \\
                   --set-env-vars="SOULS_DB_PW=${{ secrets.SOULS_DB_PW }}" \\
                   --set-env-vars="SOULS_DB_HOST=${{ secrets.SOULS_DB_HOST }}" \\
+                  --set-env-vars="GITHUB_REPOSITORY=$GITHUB_REPOSITORY" \\
                   --set-env-vars="SOULS_TZ=${{ secrets.SOULS_TZ }}" \\
                   --set-env-vars="SOULS_SECRET_KEY_BASE=${{ secrets.SOULS_SECRET_KEY_BASE }}" \\
                   --set-env-vars="SOULS_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}"
