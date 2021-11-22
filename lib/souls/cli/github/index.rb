@@ -30,11 +30,25 @@ module Souls
 
     desc "watch", "Watch GitHub Actions Workflow"
     def watch
-      run_list = `gh run list | grep in_progress | awk '{print $8}'`
-      run_id = run_list.split("\n")
-      raise(StandardError, "No workflow is running.") if run_id.empty?
+      workflows = JSON.parse(`gh api -X GET 'repos/#{ENV["GITHUB_REPOSITORY"]}/actions/runs'`)
 
-      system("gh run watch #{run_id}")
+      wf_info =
+        workflows["workflow_runs"].filter_map do |wf|
+          { wf["name"].to_sym => wf["id"] } if wf["state"] == "in_progress"
+        end
+
+      wf_id =
+        case wf_info.size
+        when 0
+          raise(CLIException, "No workflow is running.")
+        when 1
+          wf_info[0].values[0]
+        else
+          prompt = TTY::Prompt.new
+          prompt.select("Which workflow would you like to watch?", wf_info.inject(:merge))
+        end
+
+      system("gh run watch #{wf_id}")
     end
 
     private
