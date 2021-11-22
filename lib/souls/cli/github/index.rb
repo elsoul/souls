@@ -30,10 +30,18 @@ module Souls
 
     desc "watch", "Watch GitHub Actions Workflow"
     def watch
-      api_request = "gh api -X GET 'repos/#{ENV['GITHUB_REPOSITORY']}/actions/runs'"
+      remote_url = `git remote get-url origin`
+      split_url = %r{\A(git@github.com:)(.+/.+)(\.git)}.match(remote_url)
+      if split_url.nil? || split_url.size != 4
+        raise(CLIException, "Cannot access Github, please check your credentials")
+      end
+
+      api_request = "gh api -X GET 'repos/#{split_url[2]}/actions/runs'"
       workflows = JSON.parse(`#{api_request}`)
 
-      puts(api_request)
+      if workflows.nil? || !workflows.key?("workflow_runs")
+        raise(CLIException, "Failed to parse JSON response from Github")
+      end
 
       wf_info =
         workflows["workflow_runs"].filter_map do |wf|
@@ -43,7 +51,7 @@ module Souls
       wf_id =
         case wf_info.size
         when 0
-          raise(CLIException, "No workflow is running.")
+          raise(CLIException, "No workflow is running")
         when 1
           wf_info[0].values[0]
         else
