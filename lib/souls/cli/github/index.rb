@@ -30,7 +30,10 @@ module Souls
 
     desc "watch", "Watch GitHub Actions Workflow"
     def watch
-      workflows = JSON.parse(`gh api -X GET 'repos/#{ENV["GITHUB_REPOSITORY"]}/actions/runs'`)
+      api_request = "gh api -X GET 'repos/#{ENV['GITHUB_REPOSITORY']}/actions/runs'"
+      workflows = JSON.parse(`#{api_request}`)
+
+      puts(api_request)
 
       wf_info =
         workflows["workflow_runs"].filter_map do |wf|
