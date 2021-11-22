@@ -45,7 +45,7 @@ module Souls
 
       wf_info =
         workflows["workflow_runs"].filter_map do |wf|
-          { wf["name"].to_sym => wf["id"] } if wf["state"] == "in_progress"
+          { wf["name"].to_sym => wf["id"] } if wf["status"] == "in_progress"
         end
 
       wf_id =
