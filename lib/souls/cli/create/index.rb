@@ -224,8 +224,6 @@ end
           end
         TEXT
       end
-    rescue StandardError => e
-      puts(e)
     end
 
     def souls_helper_rbs(worker_name: "mailer")
@@ -273,11 +271,12 @@ end
       version = Souls.get_latest_version_txt(service_name: "worker").join(".")
       file_name = "worker-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
+      puts(url)
       system("curl -OL #{url}")
       system("tar -zxvf ./#{file_name}")
       system("mv ./worker apps/#{worker_name}")
       system("cp ./apps/api/config/database.yml ./apps/#{worker_name}/config/")
-      FileUtils.rm(file_name)
+      FileUtils.rm_f(file_name)
     end
 
     def souls_worker_credit(worker_name: "mailer")

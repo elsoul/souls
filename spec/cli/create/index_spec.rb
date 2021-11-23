@@ -4,6 +4,42 @@ require_relative "./scaffolds/scaffold_workflow"
 require_relative "./scaffolds/scaffold_souls_helper"
 
 RSpec.describe(Souls::CLI) do
+  describe "worker" do
+    before :each do
+      allow(Souls).to(receive(:get_mother_path).and_return("./"))
+    end
+
+    it "should raise error if same worker exists" do
+      cli = Souls::Create.new
+      allow(Dir).to(receive(:exist?).and_return(true))
+      cli_result =
+        expect do
+          cli.worker
+        end
+
+      cli_result.to(raise_error(StandardError))
+    end
+
+    it "should call all the private methods and return true" do
+      cli = Souls::Create.new
+      FakeFS.with_fresh do
+        allow(cli).to(receive(:download_worker).and_return(true))
+        allow(cli).to(receive(:souls_conf_update).and_return(true))
+        allow(cli).to(receive(:souls_conf_update).and_return(true))
+        allow(cli).to(receive(:workflow).and_return(true))
+        allow(cli).to(receive(:procfile).and_return(true))
+        allow(cli).to(receive(:mother_procfile).and_return(true))
+        allow(cli).to(receive(:souls_config_init).and_return(true))
+        allow(cli).to(receive(:steepfile).and_return(true))
+        allow(cli).to(receive(:souls_helper_rbs).and_return(true))
+        allow(cli).to(receive(:system).and_return(true))
+        allow(cli).to(receive(:souls_worker_credit).and_return(true))
+
+        expect(cli.worker).to(eq(true))
+      end
+    end
+  end
+
   describe "steepfile" do
     it "should move Steepfile contents" do
       cli = Souls::Create.new
@@ -128,6 +164,27 @@ RSpec.describe(Souls::CLI) do
 
         expect(output).to(eq(expected_output))
       end
+    end
+  end
+
+  describe "download_worker" do
+    it "should call system with correct url" do
+      cli = Souls::Create.new
+      allow(cli).to(receive(:system).and_return(true))
+      allow(Souls).to(receive(:get_latest_version_txt).and_return(%w[1 5]))
+
+      expect(cli.__send__(:download_worker)).to(eq(["worker-v1.5.tgz"]))
+    end
+  end
+
+  describe "souls_worker_credit" do
+    before :each do
+      allow($stdout).to(receive(:write))
+    end
+
+    it "should print a bunch of text" do
+      cli = Souls::Create.new
+      expect(cli.__send__(:souls_worker_credit)).to(eq(nil))
     end
   end
 end
