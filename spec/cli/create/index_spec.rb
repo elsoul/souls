@@ -12,9 +12,12 @@ RSpec.describe(Souls::CLI) do
     it "should raise error if same worker exists" do
       cli = Souls::Create.new
       allow(Dir).to(receive(:exist?).and_return(true))
-      expect do
-        cli.worker
-      end.to(raise_error(StandardError))
+      cli_result =
+        expect do
+          cli.worker
+        end
+
+      cli_result.to(raise_error(StandardError))
     end
 
     it "should call all the private methods and return true" do
