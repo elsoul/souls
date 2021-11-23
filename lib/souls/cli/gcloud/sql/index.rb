@@ -30,7 +30,6 @@ module Souls
             SOULS_DB_USER=postgres
             SOULS_GCP_PROJECT_ID=#{project_id}
             SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-            GITHUB_REPOSITORY='elsoul/souls'
             TZ="#{region_to_timezone(region: region)}"
           TEXT
         end
@@ -47,7 +46,6 @@ module Souls
             SOULS_GCP_REGION=#{region}
             SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
             SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-            GITHUB_REPOSITORY='elsoul/souls'
             TZ="#{region_to_timezone(region: region)}"
           TEXT
         end

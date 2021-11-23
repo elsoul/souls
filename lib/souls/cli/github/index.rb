@@ -31,12 +31,12 @@ module Souls
     desc "watch", "Watch GitHub Actions Workflow"
     def watch
       remote_url = `git remote get-url origin`
-      split_url = %r{\A(git@github.com:)(.+/.+)(\.git)}.match(remote_url)
-      if split_url.nil? || split_url.size != 4
+      split_url = %r{\A(https://|git@)(github.com)(:|/)([^.]+/[^.]+)(\.git)?\z}.match(remote_url)
+      if split_url.nil? || split_url.size != 6
         raise(CLIException, "Cannot access Github, please check your credentials")
       end
 
-      api_request = "gh api -X GET 'repos/#{split_url[2]}/actions/runs'"
+      api_request = "gh api -X GET 'repos/#{split_url[4]}/actions/runs'"
       workflows = JSON.parse(`#{api_request}`)
 
       if workflows.nil? || !workflows.key?("workflow_runs")
