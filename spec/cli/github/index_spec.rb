@@ -51,6 +51,18 @@ RSpec.describe(Souls::Github) do
 
         expect(cli.watch).to(eq(true))
       end
+
+      it "should work with https" do
+        cli = Souls::Github.new
+        allow(cli).to(receive(:`).and_return(Scaffold.scaffold_two_workflows))
+        allow(cli).to(receive(:`).with("git remote get-url origin").and_return("https://github.com/elsoul/souls-rubyworld.git"))
+
+        allow(cli).to(receive(:system).and_return(true))
+        allow_any_instance_of(TTY::Prompt).to(receive(:select).and_return("11916874"))
+        expect(cli).to(receive(:system).with("gh run watch 11916874"))
+
+        expect(cli.watch).to(eq(true))
+      end
     end
   end
 end
