@@ -17,7 +17,8 @@ module Souls
         system(
           "gcloud scheduler jobs create pubsub #{k}
               --schedule #{v}
-              --topic=#{k}"
+              --topic=#{k}
+              --message-body=\"#{k}\""
         )
       end
     end
