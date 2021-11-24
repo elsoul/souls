@@ -3,7 +3,6 @@ module Souls
     desc "awake", "Set Ping Every 15min by Google Cloud Scheduler"
     method_option :url, default: "https://souls.souls.nl", aliases: "--url", desc: "Set URL"
     def awake
-      Souls::Gcloud.new.config_set
       app_name = Souls.configuration.app
       system(
         "gcloud scheduler jobs create http #{app_name}-awake
