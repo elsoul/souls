@@ -12,6 +12,7 @@ module Souls
 
     desc "sync_schedules", "Collect schedules from queries and sync with GCloud"
     def sync_schedules
+      require("./app")
       puts(Queries::BaseQuery.all_schedules)
     end
   end
