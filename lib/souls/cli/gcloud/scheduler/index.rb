@@ -16,7 +16,7 @@ module Souls
       Souls::Gcloud.new.config_set
       project_id = Souls.configuration.project_id
       region = Souls.configuration.region
-      Souls.Queries::BaseQuery.all_schedules.each do |k, v|
+      Queries::BaseQuery.all_schedules.each do |k, v|
         worker_name = FileUtils.pwd.split("/").last
         job_name = "#{worker_name}_#{k.to_s.underscore}"
         system("gcloud scheduler jobs delete #{job_name} -q >/dev/null 2>&1")
