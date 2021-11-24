@@ -16,12 +16,13 @@ module Souls
       Queries::BaseQuery.all_schedules.each do |k, v|
         puts("gcloud scheduler jobs create pubsub #{k.to_s.underscore} --schedule #{v} --topic=#{k} --message-body=\"#{k}\"")
         system(
-          "gcloud scheduler jobs create pubsub #{k.to_s.underscore}
-              --schedule #{v}
-              --topic=#{k}
-              --attributes=""
-              --message-body=\"#{k}\""
-        )
+          <<~COMMAND)
+            gcloud scheduler jobs create pubsub #{k.to_s.underscore}
+                --schedule="#{v}"
+                --topic="#{k}"
+                --attributes=""
+                --message-body="#{k}"
+          COMMAND
       end
     end
   end
