@@ -32,7 +32,7 @@ module Souls
     def auth_login
       project_id = Souls.configuration.project_id
       system("gcloud projects describe #{project_id}", out: File::NULL) or raise(Souls::GcloudException)
-      system("gcloud config set project #{project_id}")
+      system("gcloud config set project #{project_id} >/dev/null 2>&1")
       system("gcloud auth login")
     end
 
@@ -40,7 +40,7 @@ module Souls
     def config_set
       project_id = Souls.configuration.project_id
       system("gcloud projects describe #{project_id}", out: File::NULL) or raise(Souls::GcloudException)
-      system("gcloud config set project #{project_id}")
+      system("gcloud config set project #{project_id} >/dev/null 2>&1")
     end
 
     desc "enable_permissions", "Enable Google Cloud APIs for SOULs Framework"
@@ -54,6 +54,7 @@ module Souls
       system("gcloud services enable containerregistry.googleapis.com")
       system("gcloud services enable run.googleapis.com")
       system("gcloud services enable vpcaccess.googleapis.com")
+      system("gcloud services enable cloudscheduler.googleapis.com")
     end
   end
 end
