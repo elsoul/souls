@@ -7,7 +7,6 @@ gemspec
 gem "activesupport", "6.1.4.1"
 gem "foreman", "0.87.2"
 gem "google-cloud-pubsub", "2.8.1"
-gem "google-cloud-scheduler-v1", "0.4.4"
 gem "paint", "2.2.1"
 gem "parser", "3.0.2.0"
 gem "pg", "1.2.3"
