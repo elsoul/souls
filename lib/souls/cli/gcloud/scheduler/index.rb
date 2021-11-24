@@ -19,7 +19,7 @@ module Souls
         system("gcloud scheduler jobs delete #{job_name} -q >/dev/null 2>&1")
         system(
           <<~COMMAND)
-            gcloud scheduler jobs create pubsub #{job_name} --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}" --time-zone="#{ENV['SOULS_TZ']}"
+            gcloud scheduler jobs create pubsub #{job_name} --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
           COMMAND
       end
     end
