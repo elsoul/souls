@@ -3,6 +3,7 @@ require_relative "./pubsub/index"
 require_relative "./run/index"
 require_relative "./sql/index"
 require_relative "./compute/index"
+require_relative "./scheduler/index"
 require_relative "../cli_exception"
 
 module Souls
@@ -21,6 +22,9 @@ module Souls
 
     desc "run [COMMAND]", "souls gcloud run Commands"
     subcommand "cloud_run", CloudRun
+
+    desc "scheduler [COMMAND]", "souls gcloud schedluer Commands"
+    subcommand "scheduler", CloudScheduler
 
     map run: "cloud_run"
 
