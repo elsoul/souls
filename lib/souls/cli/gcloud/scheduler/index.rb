@@ -14,8 +14,9 @@ module Souls
     def sync_schedules
       require("./app")
       Queries::BaseQuery.all_schedules.each do |k, v|
+        puts("gcloud scheduler jobs create pubsub #{k.underscore} --schedule #{v} --topic=#{k} --message-body=\"#{k}\"")
         system(
-          "gcloud scheduler jobs create pubsub #{k}
+          "gcloud scheduler jobs create pubsub #{k.underscore}
               --schedule #{v}
               --topic=#{k}
               --message-body=\"#{k}\""
