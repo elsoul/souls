@@ -14,7 +14,8 @@ module Souls
     def sync_schedules
       require("./app")
       Queries::BaseQuery.all_schedules.each do |k, v|
-        job_name = k.to_s.underscore
+        worker_name = FileUtils.pwd.split("/").last
+        job_name = "#{worker_name}_#{k.to_s.underscore}"
         system("gcloud scheduler jobs delete #{job_name} -q >/dev/null 2>&1")
         system(
           <<~COMMAND)
