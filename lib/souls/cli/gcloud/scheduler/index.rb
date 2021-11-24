@@ -3,6 +3,7 @@ module Souls
     desc "awake", "Set Ping Every 15min by Google Cloud Scheduler"
     method_option :url, default: "https://souls.souls.nl", aliases: "--url", desc: "Set URL"
     def awake
+      Souls::Gcloud.new.config_set
       app_name = Souls.configuration.app
       system(
         "gcloud scheduler jobs create http #{app_name}-awake
@@ -13,13 +14,14 @@ module Souls
     desc "sync_schedules", "Collect schedules from queries and sync with GCloud"
     def sync_schedules
       require("./app")
+      Souls::Gcloud.new.config_set
       Queries::BaseQuery.all_schedules.each do |k, v|
         worker_name = FileUtils.pwd.split("/").last
         job_name = "#{worker_name}_#{k.to_s.underscore}"
         system("gcloud scheduler jobs delete #{job_name} -q >/dev/null 2>&1")
         system(
           <<~COMMAND)
-            gcloud scheduler jobs create pubsub #{job_name} --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
+            gcloud scheduler jobs create pubsub #{job_name} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
           COMMAND
       end
     end
