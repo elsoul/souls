@@ -3,6 +3,7 @@ require_relative "./pubsub/index"
 require_relative "./run/index"
 require_relative "./sql/index"
 require_relative "./compute/index"
+require_relative "./scheduler/index"
 require_relative "../cli_exception"
 
 module Souls
