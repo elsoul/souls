@@ -19,6 +19,7 @@ module Souls
           "gcloud scheduler jobs create pubsub #{k.to_s.underscore}
               --schedule #{v}
               --topic=#{k}
+              --attributes=""
               --message-body=\"#{k}\""
         )
       end
