@@ -10,7 +10,7 @@ module Souls
       )
     end
 
-    desc "sync schedules", "Collect schedules from queries and sync with GCloud"
+    desc "sync_schedules", "Collect schedules from queries and sync with GCloud"
     def sync_schedules
       puts(Queries::BaseQuery.all_schedules)
     end

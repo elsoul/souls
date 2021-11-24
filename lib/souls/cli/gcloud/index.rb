@@ -23,6 +23,9 @@ module Souls
     desc "run [COMMAND]", "souls gcloud run Commands"
     subcommand "cloud_run", CloudRun
 
+    desc "scheduler [COMMAND]", "souls gcloud schedluer Commands"
+    subcommand "scheduler", CloudScheduler
+
     map run: "cloud_run"
 
     desc "auth_login", "gcloud config set and gcloud auth login"
