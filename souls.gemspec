@@ -6,9 +6,9 @@ Gem::Specification.new do |gem|
   gem.authors       = ["POPPIN-FUMI", "KishiTheMechanic", "James Neve"]
   gem.email         = ["f.kawasaki@elsoul.nl", "s.kishi@elsoul.nl", "jamesoneve@gmail.com"]
 
-  gem.summary       = "Build Serverless Apps faster like Rails.
+  gem.summary       = "Ruby Serverless Framework 'SOULs'. The SOULs project was launched with the goal of reducing software development, operation and maintenance costs. Build Serverless Apps faster like Rails.
   Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cloud. "
-  gem.description = "Build Serverless Apps faster like Rails.
+  gem.description = "Ruby Serverless Framework 'SOULs'. The SOULs project was launched with the goal of reducing software development, operation and maintenance costs. Build Serverless Apps faster like Rails.
   Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cloud. "
   gem.homepage      = "https://souls.elsoul.nl"
   gem.license       = "Apache-2.0"
