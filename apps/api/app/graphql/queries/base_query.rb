@@ -1,4 +1,4 @@
 module Queries
-  class BaseQuery < GraphQL::Schema::Resolver
+  class BaseQuery < Souls::SoulsQuery
   end
 end
