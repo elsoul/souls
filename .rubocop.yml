@@ -150,3 +150,8 @@ Naming/PredicateName:
 
 Bundler/GemComment:
   Enabled: false
+
+GraphQL/ObjectDescription:
+  Exclude:
+    - "spec/app/**/*"
+    - "lib/souls/app/**/*"
