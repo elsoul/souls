@@ -30,7 +30,7 @@ RSpec.describe(Souls::SoulsQuery) do
   describe "self.all_schedules" do
     it "should get all schedules that have cron" do
       expected = { ExampleQuery: "1 0 * * *", ExampleQuery3: "1 5 * * *" }
-      expect(Queries::ExampleQuery.all_schedules).to(eq(expected))
+      expect(Souls::SoulsQuery.all_schedules).to(eq(expected))
     end
   end
 end
