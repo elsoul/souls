@@ -5,12 +5,10 @@ module Souls
       attr_accessor :schedule
     end
 
-    desc "hello"
     def self.cron(schedule)
       self.schedule = schedule
     end
 
-    desc "hello"
     def self.all_schedules
       schedule_list = {}
       Queries.constants.select { |c| Queries.const_get(c).is_a?(Class) }
