@@ -21,7 +21,7 @@
   <a aria-label="License" href="https://github.com/elsoul/souls/blob/master/LICENSE.txt">
     <img alt="" src="https://badgen.net/badge/license/Apache/blue">
   </a>
-    <a aria-label="Code of Conduct" href="https://github.com/elsoul/souls/blob/master/code_of_conduct.md">
+    <a aria-label="Code of Conduct" href="https://github.com/elsoul/souls/blob/master/CODE_OF_CONDUCT.md">
     <img alt="" src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg">
   </a>
 </p>
