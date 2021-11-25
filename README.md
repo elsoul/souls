@@ -21,22 +21,27 @@
   <a aria-label="License" href="https://github.com/elsoul/souls/blob/master/LICENSE.txt">
     <img alt="" src="https://badgen.net/badge/license/Apache/blue">
   </a>
+    <a aria-label="Code of Conduct" href="https://github.com/elsoul/souls/blob/master/code_of_conduct.md">
+    <img alt="" src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg">
+  </a>
 </p>
 
 
-## SOULs Serverless Application Framework Document
+## Ruby Serverless Application Framework SOULs Document
 
 - [Go to SOULs Document](https://souls.elsoul.nl/)
 
 <p>
-  <a aria-label="SOULs Document" href="https://souls.elsoul.nl/">
+  <a aria-label="Ruby Serverless Application Framework SOULs Document" href="https://souls.elsoul.nl/">
     <img src="https://souls.elsoul.nl/imgs/gifs/souls-new-video.gif">
   </a>
 </p>
 
 ## What's SOULs?
 
-Welcome to SOULs Serverless Application Framework!
+Ruby Serverless Framework 'SOULs'. 
+
+The SOULs project was launched with the goal of reducing software development, operation and maintenance costs. 
 
 Build Serverless Apps faster like Rails.
 Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cloud. 
