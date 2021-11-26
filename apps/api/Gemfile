@@ -8,7 +8,7 @@ gem "google-cloud-firestore", "2.6.5"
 gem "google-cloud-logging", "2.2.2"
 gem "google-cloud-pubsub", "2.9.0"
 gem "google-cloud-storage", "1.34.1"
-gem "graphql", "1.12.19"
+gem "graphql", "1.13.0"
 gem "graphql-batch", "0.4.3"
 gem "jwt", "2.3.0"
 gem "pg", "1.2.3"
@@ -33,15 +33,15 @@ group :development, :test do
   gem "graphql_playground", "0.0.1"
   gem "rack-test", "1.1.0"
   gem "rspec", "3.10.0"
-  gem "rubocop", "1.22.3"
-  gem "solargraph", "0.44.0"
+  gem "rubocop", "1.23.0"
+  gem "solargraph", "0.44.2"
   gem "souls", "1.9.8"
   gem "webmock", "3.14.0"
 end
 
 group :development do
   gem "listen", "3.7.0"
-  gem "rubocop-graphql", "0.10.2"
+  gem "rubocop-graphql", "0.11.0"
   gem "spring", "2.1.1"
   gem "spring-watcher-listen", "2.0.1"
 end
