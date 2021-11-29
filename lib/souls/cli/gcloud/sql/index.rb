@@ -110,18 +110,26 @@ module Souls
       project_id = Souls.configuration.project_id
       instance_name = Souls.configuration.instance_name
       ips = []
-      ips << options[:ip].blank? ? `curl inet-ip.info` : options[:ip]
+      ip =
+        if options[:ip].blank?
+          `curl inet-ip.info`.strip
+        else
+          options[:ip].strip
+        end
+      ips << ip
       cloud_sql = JSON.parse(
         `curl -X GET \
         -H "Authorization: Bearer "$(gcloud auth print-access-token) \
         "https://sqladmin.googleapis.com/v1/projects/#{project_id}/instances/#{instance_name}?fields=settings"`
       )
-      white_ips =
-        cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].map do |sql_ips|
-          sql_ips["value"]
-        end
-      ips = (ips + white_ips).uniq
-      ips << (ips.size > 1) ? ips : ips[0]
+      unless cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].blank?
+        white_ips =
+          cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].map do |sql_ips|
+            sql_ips["value"]
+          end
+        ips = (ips + white_ips).uniq
+      end
+      ips = ips.join(",")
       system(
         "
             gcloud sql instances patch #{instance_name} \
