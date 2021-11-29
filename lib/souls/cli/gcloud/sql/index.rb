@@ -130,7 +130,7 @@ module Souls
         ips = (ips + white_ips).uniq
       end
       ips = ips[0] if ips.size == 1
-      puts(ips)
+      p(ips)
       system(
         "
             gcloud sql instances patch #{instance_name} \
