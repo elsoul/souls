@@ -29,7 +29,7 @@ module Souls
 
           system(
             <<~COMMAND)
-              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
+              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --message-body="#{k}"
             COMMAND
         else
           system(
