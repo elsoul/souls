@@ -22,6 +22,7 @@ gem "sinatra", "2.1.0"
 gem "sinatra-activerecord", "2.0.23"
 gem "sinatra-contrib", "2.1.0"
 gem "slack-ruby3", "0.1.2"
+gem "souls", "1.9.11"
 gem "zeitwerk", "2.5.1"
 
 group :development, :test do
@@ -35,7 +36,6 @@ group :development, :test do
   gem "rspec", "3.10.0"
   gem "rubocop", "1.23.0"
   gem "solargraph", "0.44.2"
-  gem "souls", "1.9.11"
   gem "webmock", "3.14.0"
 end
 
