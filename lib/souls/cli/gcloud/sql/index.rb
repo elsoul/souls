@@ -121,7 +121,7 @@ module Souls
           sql_ips["value"]
         end
       ips = (ips + white_ips).uniq
-      ips << (white_ips.size > 1) ? white_ips.join(",") : white_ips[0]
+      ips << (ips.size > 1) ? ips : ips[0]
       system(
         "
             gcloud sql instances patch #{instance_name} \
