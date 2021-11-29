@@ -25,9 +25,6 @@ module Souls
         if schedules_list.include?(job_name)
           schedule = schedules_list[job_name]
           schedules_list.delete(job_name)
-          puts("Schedule V")
-          puts(schedule)
-          puts(v)
           next if schedule == v
 
           system(
@@ -41,8 +38,6 @@ module Souls
             COMMAND
         end
       end
-
-      puts(schedules_list)
 
       schedules_list.each do |k, _|
         system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
