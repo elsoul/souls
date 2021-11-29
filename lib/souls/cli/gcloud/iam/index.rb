@@ -92,6 +92,8 @@ module Souls
         "roles/run.admin",
         "roles/storage.admin",
         "roles/storage.objectAdmin",
+        "roles/cloudscheduler.admin",
+        "roles/appengine.appCreator",
         "roles/cloudscheduler.admin"
       ]
       roles.each do |role|
