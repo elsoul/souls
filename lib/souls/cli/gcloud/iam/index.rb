@@ -2,11 +2,13 @@ module Souls
   class Iam < Thor
     desc "setup_key", "Create Google Cloud IAM Service Account Key And Set All Permissions"
     def setup_key
+      region = Souls.configuration.region
       Souls::Gcloud.new.auth_login
       create_service_account
       create_service_account_key
       Souls::Gcloud.new.enable_permissions
       add_permissions
+      system("gcloud app create --region=#{region} --quiet")
       begin
         set_gh_secret_json
       rescue StandardError
