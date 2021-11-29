@@ -22,7 +22,7 @@ module Souls
         system("gcloud scheduler jobs delete #{job_name} -q >/dev/null 2>&1")
         system(
           <<~COMMAND)
-            gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}" --location=#{region}
+            gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
           COMMAND
       end
     end
