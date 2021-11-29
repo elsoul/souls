@@ -105,10 +105,11 @@ module Souls
     end
 
     desc "assgin_ip", "Add Current Grobal IP to White List"
-    def assign_ip(instance_name: "", ip: "")
-      app = Souls.configuration.app
+    method_option :ip, default: "", aliases: "--ip", desc: "Adding IP to Google Cloud SQL White List: e.g.'11.11.1.1'"
+    def assign_ip
       ips = []
-      ips << ip.blank? ? `curl inet-ip.info` : ip
+      ips << options[:ip].blank? ? `curl inet-ip.info` : options[:ip]
+      app = Souls.configuration.app
       cloud_sql = JSON.parse(
         `curl -X GET \
         -H "Authorization: Bearer "$(gcloud auth print-access-token) \
@@ -118,6 +119,7 @@ module Souls
         cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].map do |sql_ips|
           sql_ips["value"]
         end
+      ips = (ips + white_ips).uniq
       ips << (white_ips.size > 1) ? white_ips.join(",") : white_ips[0]
       project_id = Souls.configuration.project_id if instance_name.blank?
       instance_name = Souls.configuration.instance_name if instance_name.blank?
