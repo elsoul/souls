@@ -112,9 +112,9 @@ module Souls
       ips = []
       ip =
         if options[:ip].blank?
-          `curl inet-ip.info`
+          `curl inet-ip.info`.strip
         else
-          options[:ip]
+          options[:ip].strip
         end
       ips << ip
       cloud_sql = JSON.parse(
