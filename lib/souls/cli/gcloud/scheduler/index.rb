@@ -29,7 +29,7 @@ module Souls
 
           system(
             <<~COMMAND)
-              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
+              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --message-body="#{k}"
             COMMAND
         else
           system(
@@ -39,7 +39,7 @@ module Souls
         end
       end
 
-      schedule_list.each do |k, _|
+      schedules_list.each do |k, _|
         system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
       end
     end
@@ -54,6 +54,8 @@ module Souls
         crontab = columns[2].split(" (")[0]
         current_schedules[job_name] = crontab
       end
+
+      current_schedules
     end
   end
 end
