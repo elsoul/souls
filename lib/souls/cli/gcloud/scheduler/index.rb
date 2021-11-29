@@ -15,14 +15,13 @@ module Souls
       require("./app")
       Souls::Gcloud.new.config_set
       project_id = Souls.configuration.project_id
-      region = Souls.configuration.region
       Queries::BaseQuery.all_schedules.each do |k, v|
         worker_name = FileUtils.pwd.split("/").last
         job_name = "#{worker_name}_#{k.to_s.underscore}"
         system("gcloud scheduler jobs delete #{job_name} -q >/dev/null 2>&1")
         system(
           <<~COMMAND)
-            gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}" --location=#{region}
+            gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
           COMMAND
       end
     end
