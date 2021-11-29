@@ -23,8 +23,9 @@ module Souls
         job_name = "#{worker_name}_#{k.to_s.underscore}".to_sym
 
         if schedules_list.include?(job_name)
+          schedule = schedules_list[job_name]
           schedules_list.delete(job_name)
-          next if schedules_list[job_name] == v
+          next if schedule == v
 
           system(
             <<~COMMAND)
@@ -36,10 +37,10 @@ module Souls
               gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
             COMMAND
         end
+      end
 
-        schedule_list.each do |k, _|
-          system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
-        end
+      schedule_list.each do |k, _|
+        system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
       end
     end
 
