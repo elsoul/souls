@@ -139,9 +139,9 @@ module Souls
           write_txt +=
             if gem[0] == "souls"
               if local
-                " gem \"souls\", \"#{version}\", path: \"~/.local_souls/\"\n"
+                "gem \"souls\", \"#{version}\", path: \"~/.local_souls/\"\n"
               else
-                " gem \"souls\", \"#{version}\"\n"
+                "gem \"souls\", \"#{version}\"\n"
               end
             else
               line
