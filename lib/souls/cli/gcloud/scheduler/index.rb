@@ -25,9 +25,9 @@ module Souls
         if schedules_list.include?(job_name)
           schedule = schedules_list[job_name]
           schedules_list.delete(job_name)
-          puts "Schedule V"
-          puts schedule
-          puts v
+          puts("Schedule V")
+          puts(schedule)
+          puts(v)
           next if schedule == v
 
           system(
@@ -59,6 +59,8 @@ module Souls
         crontab = columns[2].split(" (")[0]
         current_schedules[job_name] = crontab
       end
+
+      current_schedules
     end
   end
 end
