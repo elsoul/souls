@@ -106,7 +106,19 @@ module Souls
 
     desc "assgin_ip", "Add Current Grobal IP to White List"
     def assign_ip(instance_name: "", ip: "")
-      ip = `curl inet-ip.info` if ip.blank?
+      app = Souls.configuration.app
+      ips = []
+      ips << ip.blank? ? `curl inet-ip.info` : ip
+      cloud_sql = JSON.parse(
+        `curl -X GET \
+        -H "Authorization: Bearer "$(gcloud auth print-access-token) \
+        "https://sqladmin.googleapis.com/v1/projects/#{app}/instances/souls-#{app}-db?fields=settings"`
+      )
+      white_ips =
+        cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].map do |sql_ips|
+          sql_ips["value"]
+        end
+      ips << (white_ips.size > 1) ? white_ips.join(",") : white_ips[0]
       project_id = Souls.configuration.project_id if instance_name.blank?
       instance_name = Souls.configuration.instance_name if instance_name.blank?
       system(
@@ -114,7 +126,8 @@ module Souls
             gcloud sql instances patch #{instance_name} \
               --project=#{project_id} \
               --assign-ip \
-              --authorized-networks=#{ip}
+              --authorized-networks=#{ips} \
+              --quiet
             "
       )
     end
