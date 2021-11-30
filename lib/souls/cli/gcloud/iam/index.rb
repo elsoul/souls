@@ -71,7 +71,7 @@ module Souls
           { yellow_text: [github_secret_url, :yellow], yellow_text2: [souls_doc_url, :yellow] }
         ]
       )
-      FileUtils.rm(file_path)
+      FileUtils.rm_f(file_path)
     end
 
     def add_service_account_role(role: "roles/firebase.admin")
