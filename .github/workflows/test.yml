@@ -11,7 +11,7 @@ jobs:
         uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
         with:
           bundler-cache: true
-          ruby-version: 3.0.1
+          ruby-version: 3.0.3
       - name: Install dependencies
         run: bundle install
       - name: Run tests
