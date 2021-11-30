@@ -18,8 +18,7 @@ module Souls
             --topic-project #{project_id} \
             --push-auth-service-account #{service_account} \
             --push-endpoint #{options[:endpoint]} \
-            --expiration-period never
-            "
+            --expiration-period never"
       )
     end
 
