@@ -18,7 +18,7 @@ jobs:
         run: bundle exec rspec
       - name: Run rubocop
         run: bundle exec rubocop
-      - name: Check Gem Build
+      - name: Check gem build
         run: |
           bundle exec rake build
       - name: Check gem install
