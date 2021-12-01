@@ -18,3 +18,4 @@ tmp/*
 CHANGELOG.md
 souls-*.gem
 .gitmodules
+dump.rdb
