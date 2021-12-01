@@ -4,6 +4,7 @@ module Souls
     def psql
       system(
         "docker run --rm -d \
+          --name souls-psql \
           -p 5433:5432 \
           -v postgres-tmp:/var/lib/postgresql/data \
           -e POSTGRES_USER=postgres \
@@ -18,6 +19,7 @@ module Souls
     def mysql
       system(
         "docker run --rm -d \
+          --name souls-mysql \
           -p 3306:3306 \
           -v mysql-tmp:/var/lib/mysql \
           -e MYSQL_USER=mysql \
@@ -25,6 +27,12 @@ module Souls
           -e MYSQL_DB=souls_test \
           mysql:latest"
       )
+      system("docker ps")
+    end
+
+    desc "redis", "Run Redis Docker Container"
+    def redis
+      system("docker run --rm -d --name souls-redis -p 6379:6379 redis:latest")
       system("docker ps")
     end
   end
