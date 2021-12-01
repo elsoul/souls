@@ -30,6 +30,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.add_runtime_dependency("activesupport", ">= 6.1.4")
   gem.add_runtime_dependency("foreman", ">= 0.87.2")
+  gem.add_runtime_dependency("firebase_id_token", ">= 2.4.0")
   gem.add_runtime_dependency("google-cloud-pubsub", ">= 2.8.0")
   gem.add_runtime_dependency("graphql", ">= 1.12.19")
   gem.add_runtime_dependency("paint", ">= 2.2.1")
