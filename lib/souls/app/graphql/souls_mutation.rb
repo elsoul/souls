@@ -1,12 +1,12 @@
 module Souls
   class SoulsMutation < GraphQL::Schema::RelayClassicMutation
-    def fb_auth(token:)
+    def souls_fb_auth(token:)
       FirebaseIdToken::Certificates.request!
       sleep(3) if ENV["RACK_ENV"] == "development"
-      @payload = FirebaseIdToken::Signature.verify(token)
-      raise(ArgumentError, "Invalid or Missing Token") if @payload.blank?
+      user = FirebaseIdToken::Signature.verify(token)
+      raise(ArgumentError, "Invalid or Missing Token") if user.blank?
 
-      @payload
+      user
     end
 
     def publish_pubsub_queue(topic_name: "send-mail-job", message: "text!")
