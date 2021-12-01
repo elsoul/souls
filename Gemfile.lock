@@ -35,6 +35,8 @@ GEM
     docile (1.4.0)
     e2mmap (0.1.0)
     fakefs (1.4.0)
+    fakeredis (0.8.0)
+      redis (~> 4.1)
     faraday (1.8.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -251,10 +253,12 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
+    webrick (1.7.0)
     whirly (0.3.0)
       unicode-display_width (>= 1.1)
     wisper (2.0.1)
-    yard (0.9.26)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
     zeitwerk (2.5.1)
 
 PLATFORMS
@@ -264,6 +268,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (= 6.1.4.1)
   fakefs (= 1.4.0)
+  fakeredis (= 0.8.0)
   firebase_id_token (= 2.4.0)
   foreman (= 0.87.2)
   google-cloud-pubsub (= 2.8.1)

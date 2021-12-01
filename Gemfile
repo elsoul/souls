@@ -20,6 +20,7 @@ gem "whirly", "0.3.0"
 
 group :test, :development do
   gem "fakefs", "1.4.0", require: "fakefs/safe"
+  gem "fakeredis", "0.8.0", require: "fakeredis/rspec"
   gem "rspec", "3.10.0"
   gem "rubocop", "1.22.2"
   gem "rubocop-graphql", "0.10.2"

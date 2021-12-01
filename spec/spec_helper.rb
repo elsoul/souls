@@ -12,6 +12,7 @@ require "bundler/gem_tasks"
 require "rspec/core/rake_task"
 require "./config/souls"
 require "fakefs/safe"
+require "fakeredis"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -27,5 +28,7 @@ RSpec.configure do |config|
   config.after(:all) do
     file_paths = ["./app"]
     file_paths.each { |path| FileUtils.rm_rf(path) if Dir.exist?(path) }
+
+    @redis = Redis.new
   end
 end
