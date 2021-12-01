@@ -3,6 +3,17 @@ on:
   push:
 
 jobs:
+  build_gem:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Build Gem
+        run: |
+          rake build
+          ls pkg | { read gemname; gem install pkg/$gemname }
+      - name: Check version
+        run: |
+          souls -v
   test:
     runs-on: ubuntu-latest
     steps:
