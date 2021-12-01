@@ -52,7 +52,7 @@ Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cl
 
 ![SOULs Architecture](https://souls.elsoul.nl/imgs/docs/SOULs-architecture.jpg)
 
-SOULs creates 2 types of APP.
+SOULs creates 2 types of App.
 
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Messaging Worker API (Ruby) - Cloud Run
