@@ -35,5 +35,6 @@ jobs:
       - name: Check gem install
         run: |
           gem uninstall -aIx
-          ls pkg | { read gemname; gem install pkg/$gemname }
+          export gemname=$(ls pkg)
+          gem install pkg/$gemname
           souls -v
