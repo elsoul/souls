@@ -31,7 +31,7 @@ jobs:
         run: bundle exec rubocop
       - name: Check Gem Build
         run: |
-          rake build gem
+          bundle exec rake build
       - name: Check gem install
         run: |
           gem uninstall -aIx
