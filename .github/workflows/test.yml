@@ -14,7 +14,7 @@ jobs:
           ruby-version: 3.0.1
       - name: Build Gem
         run: |
-          rake build
+          rake build gem
           ls pkg | { read gemname; gem install pkg/$gemname }
       - name: Check version
         run: |
