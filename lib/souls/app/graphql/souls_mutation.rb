@@ -50,10 +50,6 @@ module Souls
       raise(GraphQL::ExecutionError, "You need to sign in!!") if context[:user].nil?
     end
 
-    def get_token(token)
-      JsonWebToken.decode(token)
-    end
-
     def production?
       ENV["RACK_ENV"] == "production"
     end
