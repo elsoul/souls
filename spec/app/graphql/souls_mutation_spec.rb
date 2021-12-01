@@ -1,5 +1,5 @@
 RSpec.describe(Souls::SoulsMutation) do
-  describe "fb_auth" do
+  describe "souls_fb_auth" do
     it "should raise ArgumentError with no payload" do
       cli = Souls::SoulsMutation.new(object: [], context: [], field: [])
       allow_any_instance_of(FirebaseIdToken::Certificates).to(receive(:request!).and_return(true))
@@ -7,7 +7,7 @@ RSpec.describe(Souls::SoulsMutation) do
 
       expectval =
         expect do
-          cli.fb_auth(token: "abc")
+          cli.souls_fb_auth(token: "abc")
         end
 
       expectval.to(raise_error(ArgumentError))
@@ -18,7 +18,7 @@ RSpec.describe(Souls::SoulsMutation) do
       allow_any_instance_of(FirebaseIdToken::Certificates).to(receive(:request!).and_return(true))
       allow_any_instance_of(FirebaseIdToken::Signature).to(receive(:verify).and_return("abc123"))
 
-      result = cli.fb_auth(token: "test")
+      result = cli.souls_fb_auth(token: "test")
       expect(result).to(eq("abc123"))
     end
   end
