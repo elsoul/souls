@@ -26,7 +26,7 @@ RSpec.describe(Souls::SoulsMutation) do
   describe "publish_pubsub_queue" do
     it "should call publish" do
       cli = Souls::SoulsMutation.new(object: [], context: [], field: [])
-      allow_any_instance_of(Google::Cloud::Pubsub::Project).to(receive(:topic).and_return(Google::Cloud::Pubsub.new))
+      allow_any_instance_of(Google::Cloud::Pubsub::Project).to(receive(:topic).and_return(Google::Cloud::Pubsub::Project.new))
       allow_any_instance_of(Google::Cloud::Pubsub::Project).to(receive(:publish).and_return(true))
       result = cli.publish_pubsub_queue(topic_name: "send-mail-job", message: "text!")
       expect(result).to(eq(true))
