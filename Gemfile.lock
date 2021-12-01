@@ -3,6 +3,7 @@ PATH
   specs:
     souls (1.9.16)
       activesupport (>= 6.1.4)
+      firebase_id_token (>= 2.4.0)
       foreman (>= 0.87.2)
       google-cloud-pubsub (>= 2.8.0)
       graphql (>= 1.12.19)
