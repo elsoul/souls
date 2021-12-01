@@ -10,15 +10,10 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
         with:
-          bundler-cache: false
+          bundler-cache: true
           ruby-version: 3.0.1
-      - name: Build Gem
-        run: |
-          rake build gem
-          ls pkg | { read gemname; gem install pkg/$gemname }
-      - name: Check version
-        run: |
-          souls -v
+        
+      
   test:
     runs-on: ubuntu-latest
     steps:
@@ -34,3 +29,11 @@ jobs:
         run: bundle exec rspec
       - name: Run rubocop
         run: bundle exec rubocop
+      - name: Check Gem Build
+        run: |
+          rake build gem
+      - name: Check gem install
+        run: |
+          gem uninstall -aIx
+          ls pkg | { read gemname; gem install pkg/$gemname }
+          souls -v
