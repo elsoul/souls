@@ -5,7 +5,6 @@ PATH
       activesupport (>= 6.1.4)
       foreman (>= 0.87.2)
       google-cloud-pubsub (>= 2.8.0)
-      graphql (>= 1.12.19)
       paint (>= 2.2.1)
       thor (>= 1.1.0)
       tty-prompt (>= 0.23.1)
