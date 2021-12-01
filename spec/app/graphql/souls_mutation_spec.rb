@@ -94,7 +94,11 @@ RSpec.describe(Souls::SoulsMutation) do
     it "should curl instance ID" do
       cli = Souls::SoulsMutation.new(object: [], context: [], field: [])
       allow(cli).to(receive(:`).and_return(true))
-      expect(cli).to(receive(:`).with("curl http://metadata.google.internal/computeMetadata/v1/instance/id -H Metadata-Flavor:Google"))
+      expect(cli).to(
+        receive(:`).with(
+          "curl http://metadata.google.internal/computeMetadata/v1/instance/id -H Metadata-Flavor:Google"
+        )
+      )
 
       expect(cli.get_instance_id).to(eq(true))
     end
