@@ -1,5 +1,5 @@
 module Types
-  class MutationType < Types::BaseObject
+  class MutationType < Souls::Types::BaseObject
     workers =
       Dir["./app/graphql/mutations/*.rb"].map do |file|
         file.gsub("./app/graphql/mutations/", "").gsub(".rb", "")
