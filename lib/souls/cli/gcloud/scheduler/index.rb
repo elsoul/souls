@@ -48,7 +48,8 @@ module Souls
 
     def current_schedules
       current_schedules = {}
-      `gcloud scheduler jobs list`.split("\n")[1..].each do |line|
+      jobs = `gcloud scheduler jobs list`
+      jobs.split("\n")[1..].each do |line|
         columns = line.split(/\t| {2,}/)
         job_name = columns[0].to_sym
         crontab = columns[2].split(" (")[0]
