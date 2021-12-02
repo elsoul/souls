@@ -2,7 +2,7 @@ module Scaffold
   def self.scaffold_resolver
     <<~RESOLVER
       module Resolvers
-        class UserSearch < Base
+        class UserSearch < BaseResolver
           include SearchObject.module(:graphql)
           scope { ::User.all }
           type Types::UserType.connection_type, null: false
@@ -15,8 +15,6 @@ module Scaffold
             end
 
             option :filter, type: UserFilter, with: :apply_filter
-            option :first, type: types.Int, with: :apply_first
-            option :skip, type: types.Int, with: :apply_skip
 
             def apply_filter(scope, value)
               branches = normalize_filters(value).inject { |a, b| a.or(b) }

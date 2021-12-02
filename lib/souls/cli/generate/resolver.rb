@@ -24,7 +24,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Resolvers
-            class #{class_name.camelize}Search < Base
+            class #{class_name.camelize}Search < BaseResolver
               include SearchObject.module(:graphql)
               scope { ::#{class_name.camelize}.all }
               type Types::#{class_name.camelize}Type.connection_type, null: false
@@ -78,8 +78,6 @@ module Souls
       end
 
       option :filter, type: #{class_name.camelize}Filter, with: :apply_filter
-      option :first, type: types.Int, with: :apply_first
-      option :skip, type: types.Int, with: :apply_skip
 
       def apply_filter(scope, value)
         branches = normalize_filters(value).inject { |a, b| a.or(b) }

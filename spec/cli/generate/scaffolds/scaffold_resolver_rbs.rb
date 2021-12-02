@@ -1,15 +1,13 @@
 module Scaffold
   def self.scaffold_resolver_rbs
     <<~RESOLVERRBS
-      class Base
+      class BaseResolver
       end
-      class UserSearch < Base
+      class UserSearch < BaseResolver
         include SearchObject
         def self.scope: () ?{ () -> nil } -> [Hash[Symbol, untyped]]
         def self.type: (*untyped) -> String
         def self.option: (:filter, type: untyped, with: :apply_filter) -> String
-                        | (:first, type: untyped, with: :apply_first) -> String
-                        | (:skip, type: untyped, with: :apply_skip) -> String
         def self.description: (String) -> String
         def self.types: (*untyped) -> String
         def decode_global_key: (String value) -> Integer

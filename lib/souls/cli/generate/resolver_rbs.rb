@@ -12,15 +12,13 @@ module Souls
 
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
-            class Base
+            class BaseResolver
             end
-            class #{singularized_class_name.camelize}Search < Base
+            class #{singularized_class_name.camelize}Search < BaseResolver
               include SearchObject
               def self.scope: () ?{ () -> nil } -> [Hash[Symbol, untyped]]
               def self.type: (*untyped) -> String
               def self.option: (:filter, type: untyped, with: :apply_filter) -> String
-                              | (:first, type: untyped, with: :apply_first) -> String
-                              | (:skip, type: untyped, with: :apply_skip) -> String
               def self.description: (String) -> String
               def self.types: (*untyped) -> String
               def decode_global_key: (String value) -> Integer
