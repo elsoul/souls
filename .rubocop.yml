@@ -155,3 +155,6 @@ GraphQL/ObjectDescription:
   Exclude:
     - "spec/app/**/*"
     - "lib/souls/app/**/*"
+
+GraphQL/ExtractType:
+  Enabled: false
