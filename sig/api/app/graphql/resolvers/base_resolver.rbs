@@ -5,7 +5,7 @@ module SearchObject
   def self.module: (Symbol) -> untyped
 end
 module Resolvers
-  class Base
+  class BaseResolver
     def self.scope: () {(untyped) -> nil } -> untyped
     def self.type: (untyped, null: false) -> untyped
     def self.types: () -> untyped
@@ -16,9 +16,4 @@ module Resolvers
   end
 end
 class Boolean
-end
-module Types
-  class BaseInputObject
-    def self.argument: (untyped, untyped, untyped) -> untyped
-  end
 end
