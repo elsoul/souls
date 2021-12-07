@@ -97,9 +97,43 @@ RSpec.describe(Souls::Sql) do
     it "should call system with correct command" do
       cli = Souls::Sql.new
       allow(cli).to(receive(:system).and_return(true))
+      allow(cli).to(receive(:options).and_return({ ip: "11.11.1.1" }))
+      cloud_sql = { settings: { ipConfiguration: { authorizedNetworks: [{ value: "12.34.5" }] } } }.to_json
+      allow(cli).to(receive(:`).and_return(cloud_sql))
+
+      expect(cli).to(
+        receive(:system).with(
+          "
+            gcloud sql instances patch souls-souls-db \
+              --project=el-quest \
+              --assign-ip \
+              --authorized-networks=11.11.1.1,12.34.5 \
+              --quiet
+            "
+        )
+      )
+
+      cli.assign_ip
     end
   end
 
   describe "region_to_timezone" do
+    it "should return asia tokyo with asia" do
+      cli = Souls::Sql.new
+      result = cli.__send__(:region_to_timezone, **{ region: "asia-northeast" })
+      expect(result).to(eq("Asia/Tokyo"))
+    end
+
+    it "shouuld return europe amsterdam with europe" do
+      cli = Souls::Sql.new
+      result = cli.__send__(:region_to_timezone, **{ region: "123-europe" })
+      expect(result).to(eq("Europe/Amsterdam"))
+    end
+
+    it "shouuld return america la otherwise" do
+      cli = Souls::Sql.new
+      result = cli.__send__(:region_to_timezone, **{ region: "brazil" })
+      expect(result).to(eq("America/Los_Angeles"))
+    end
   end
 end
