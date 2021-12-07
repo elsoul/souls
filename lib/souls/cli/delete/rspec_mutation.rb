@@ -7,8 +7,6 @@ module Souls
       FileUtils.rm_f(file_path)
       puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
       file_path
-    rescue StandardError => e
-      raise(StandardError, e)
     end
   end
 end
