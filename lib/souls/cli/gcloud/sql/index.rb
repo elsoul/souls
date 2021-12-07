@@ -95,12 +95,12 @@ module Souls
       project_id = Souls.configuration.project_id
       system(
         "
-            gcloud services vpc-peerings connect \
-              --service=servicenetworking.googleapis.com \
-              --ranges=#{app_name}-ip-range \
-              --network=#{app_name} \
-              --project=#{project_id}
-            "
+          gcloud services vpc-peerings connect \
+            --service=servicenetworking.googleapis.com \
+            --ranges=#{app_name}-ip-range \
+            --network=#{app_name} \
+            --project=#{project_id}
+      "
       )
     end
 
