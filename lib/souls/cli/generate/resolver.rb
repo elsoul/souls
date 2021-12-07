@@ -30,7 +30,7 @@ module Souls
               type Types::#{class_name.camelize}Type.connection_type, null: false
               description "Search #{class_name.camelize}"
 
-              class #{class_name.camelize}Filter < ::Types::BaseInputObject
+              class #{class_name.camelize}Filter < Souls::Types::BaseInputObject
                 argument :OR, [self], required: false
         TEXT
       end
