@@ -97,7 +97,7 @@ RSpec.describe(Souls::Sql) do
     it "should call system with correct command" do
       cli = Souls::Sql.new
       allow(cli).to(receive(:system).and_return(true))
-      allow(cli).to(receive(:options).and_return({ ip: "11.11.1.1" }))
+      allow(cli).to(receive(:options).and_return({ ip: "11.11.1" }))
       cloud_sql = { settings: { ipConfiguration: { authorizedNetworks: [{ value: "12.34.5" }] } } }.to_json
       allow(cli).to(receive(:`).and_return(cloud_sql))
 
@@ -107,7 +107,7 @@ RSpec.describe(Souls::Sql) do
             gcloud sql instances patch souls-souls-db \
               --project=el-quest \
               --assign-ip \
-              --authorized-networks=11.11.1.1,12.34.5 \
+              --authorized-networks=11.11.1,12.34.5 \
               --quiet
             "
         )
