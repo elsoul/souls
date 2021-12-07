@@ -21,3 +21,6 @@ module Types
     end
   end
 end
+class Object
+  def self.argument: (untyped, untyped, untyped) -> untyped
+end
