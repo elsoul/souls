@@ -115,13 +115,6 @@ Or install it yourself as:
 And Create Your APP
 
     $ souls new app_name
-    $ cd apps/api/app_name
-    $ souls s
-
-Check your GraphQL PlayGround
-
-[localhost:4000/playground](localhost:4000/playground)
-
 
 
 ## Development
