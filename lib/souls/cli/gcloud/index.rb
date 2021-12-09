@@ -55,6 +55,7 @@ module Souls
       system("gcloud services enable run.googleapis.com")
       system("gcloud services enable vpcaccess.googleapis.com")
       system("gcloud services enable cloudscheduler.googleapis.com")
+      system("gcloud services enable cloudresourcemanager.googleapis.com")
     end
   end
 end
