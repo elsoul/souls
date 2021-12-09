@@ -50,7 +50,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Types
-            class #{class_name.camelize}Type < BaseObject
+            class #{class_name.camelize}Type < Souls::Types::BaseObject
               field :response, String, null: true
             end
           end
