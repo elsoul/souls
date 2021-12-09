@@ -49,7 +49,7 @@ module Scaffold
     <<~JOBTYPE
       module Types
         class SomeJobType < Souls::Types::BaseObject
-          type Types::SomeJobType, null: false
+          field :response, String, null: true
         end
       end
     JOBTYPE
