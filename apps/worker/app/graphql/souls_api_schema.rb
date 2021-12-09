@@ -18,21 +18,6 @@ class SoulsApiSchema < GraphQL::Schema
     Object.const_get(class_name).find(item_id)
   end
 
-  def self.resolve_type(_type, obj, _ctx)
-    case obj
-    when Article
-      Types::ArticleType
-    when User
-      Types::UserType
-    when ArticleCategory
-      Types::ArticleCategoryType
-    when JobConsole
-      Types::JobConsoleType
-    else
-      GraphQL::ExecutionError.new("Unexpected object: #{obj}")
-    end
-  end
-
   def self.to_global_id(class_name, item_id)
     Base64.strict_encode64("#{class_name}:#{item_id}")
   end
