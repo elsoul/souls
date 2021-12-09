@@ -49,6 +49,8 @@ module Souls
     def current_schedules
       current_schedules = {}
       jobs = `gcloud scheduler jobs list`
+      return {} if jobs.blank?
+
       jobs.split("\n")[1..].each do |line|
         columns = line.split(/\t| {2,}/)
         job_name = columns[0].to_sym
