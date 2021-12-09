@@ -51,7 +51,7 @@ module Souls
         f.write(<<~TEXT)
           module Types
             class #{class_name.camelize}Type < Souls::Types::BaseObject
-              type Types::#{class_name.camelize}Type, null: false
+              field :response, String, null: true
             end
           end
         TEXT
