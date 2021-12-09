@@ -14,7 +14,22 @@ RSpec.describe(Souls::Generate) do
       end
     end
 
-    it "creates job file" do
+    it "creates mailer if mailer" do
+      cli = Souls::Generate.new
+      allow(cli).to(receive(:options).and_return({ mailer: true }))
+
+      file_path = "#{@file_dir}mailer_spec.rb"
+      FakeFS.activate!
+      cli.rspec_job("mailer")
+      file_output = File.read(file_path)
+
+      expect(File.exist?(file_path)).to(eq(true))
+      FakeFS.deactivate!
+
+      expect(file_output).to(eq(Scaffold.scaffold_rspec_job_mailer))
+    end
+
+    it "otherwise creates job file" do
       file_path = "#{@file_dir}#{class_name}_spec.rb"
       FakeFS.activate!
       Souls::Generate.new.rspec_job("user")
