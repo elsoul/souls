@@ -48,7 +48,7 @@ module Scaffold
   def self.scaffold_job_type
     <<~JOBTYPE
       module Types
-        class SomeJobType < BaseObject
+        class SomeJobType < Souls::Types::BaseObject
           field :response, String, null: true
         end
       end
