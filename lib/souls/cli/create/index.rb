@@ -171,7 +171,7 @@ end
                   export_default_credentials: true
 
               - name: Sync Tasks
-                run: cd apps/#{worker_name} && souls gcloud scheduler sync_schedules
+                run: cd apps/#{worker_name} && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
 
               - name: Configure Docker
                 run: gcloud auth configure-docker --quiet

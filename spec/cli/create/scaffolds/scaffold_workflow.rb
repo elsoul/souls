@@ -60,7 +60,7 @@ module Scaffold
               export_default_credentials: true
 
           - name: Sync Tasks
-            run: cd apps/mailer && souls gcloud scheduler sync_schedules
+            run: cd apps/mailer && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
 
           - name: Configure Docker
             run: gcloud auth configure-docker --quiet
