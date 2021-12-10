@@ -11,6 +11,7 @@ module Souls
     end
 
     desc "sync_schedules", "Collect schedules from queries and sync with GCloud"
+    method_option :timezone, default: "Asia/Tokyo", aliases: "--timezone", desc: "Timezone e.g. Europe/Amsterdam"
     def sync_schedules
       require("./app")
       Souls::Gcloud.new.config_set
@@ -31,12 +32,12 @@ module Souls
 
           system(
             <<~COMMAND)
-              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --message-body="#{message_body}" --time-zone="#{ENV['TZ']}"
+              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --message-body="#{message_body}" --time-zone="#{options[:timezone]}"
             COMMAND
         else
           system(
             <<~COMMAND)
-              gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --attributes="" --message-body="#{message_body}" --time-zone="#{ENV['TZ']}"
+              gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --attributes="" --message-body="#{message_body}" --time-zone="#{options[:timezone]}"
             COMMAND
         end
       end
