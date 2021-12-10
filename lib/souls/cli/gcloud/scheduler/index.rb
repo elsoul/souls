@@ -18,7 +18,7 @@ module Souls
       project_id = Souls.configuration.project_id
 
       schedules_list = current_schedules
-
+      worker_name = FileUtils.pwd.split("/").last
       Queries::BaseQuery.all_schedules.each do |k, v|
         worker_name = FileUtils.pwd.split("/").last
         job_name = "souls_#{worker_name}_#{k.to_s.underscore}".to_sym
