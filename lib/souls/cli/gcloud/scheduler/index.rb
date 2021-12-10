@@ -43,7 +43,7 @@ module Souls
       end
 
       schedules_list.each do |k, _|
-        next unless k.match?(/^souls_/)
+        next unless k.match?(/^souls_#{worker_name}/)
 
         system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
       end
