@@ -20,7 +20,9 @@ module Souls
 
       Queries::BaseQuery.all_schedules.each do |k, v|
         worker_name = FileUtils.pwd.split("/").last
-        job_name = "#{worker_name}_#{k.to_s.underscore}".to_sym
+        job_name = "souls_#{worker_name}_#{k.to_s.underscore}".to_sym
+        topic = "souls_#{worker_name}_#{k.to_s.underscore}"
+        message_body = "{'query':'query { #{k.to_s.camelize(:lower)} { response }}'}"
 
         if schedules_list.include?(job_name)
           schedule = schedules_list[job_name]
@@ -29,17 +31,19 @@ module Souls
 
           system(
             <<~COMMAND)
-              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --message-body="#{k}"
+              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --message-body="#{message_body}"
             COMMAND
         else
           system(
             <<~COMMAND)
-              gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{k}" --attributes="" --message-body="#{k}"
+              gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --attributes="" --message-body="#{message_body}"
             COMMAND
         end
       end
 
       schedules_list.each do |k, _|
+        next unless k.match?(/^souls_/)
+
         system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
       end
     end
