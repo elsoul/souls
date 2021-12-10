@@ -42,7 +42,7 @@ RSpec.describe(Souls::CloudScheduler) do
 
       allow(cli).to(receive(:system).and_return(true))
 
-      expect(cli.sync_schedules).to(eq({ souls_b: 2 }))
+      expect(cli.sync_schedules).to(eq({ souls_a: 1, souls_b: 2 }))
     end
   end
 
