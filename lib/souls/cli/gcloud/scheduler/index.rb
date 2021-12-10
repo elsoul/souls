@@ -22,7 +22,7 @@ module Souls
         worker_name = FileUtils.pwd.split("/").last
         job_name = "souls_#{worker_name}_#{k.to_s.underscore}".to_sym
         topic = "souls_#{worker_name}_#{k.to_s.underscore}"
-        message_body = "{'query':'query { #{k.to_s.camelize(:lower)} { response }}'}"
+        message_body = "query { #{k.to_s.camelize(:lower)} { response }}"
 
         if schedules_list.include?(job_name)
           schedule = schedules_list[job_name]
@@ -31,12 +31,12 @@ module Souls
 
           system(
             <<~COMMAND)
-              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --message-body="#{message_body}"
+              gcloud scheduler jobs update pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --message-body="#{message_body}" --time-zone="#{ENV['TZ']}"
             COMMAND
         else
           system(
             <<~COMMAND)
-              gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --attributes="" --message-body="#{message_body}"
+              gcloud scheduler jobs create pubsub #{job_name} --project=#{project_id} --quiet --schedule="#{v}" --topic="#{topic}" --attributes="" --message-body="#{message_body}" --time-zone="#{ENV['TZ']}"
             COMMAND
         end
       end
