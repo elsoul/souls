@@ -2,8 +2,7 @@ module Souls
   class Sync < Thor
     desc "pubsub", "Sync Worker Jobs & Google Cloud Pubsub Subscriptions"
     def pubsub
-      return unless worker_endpoint_exist?
-
+      get_worker_endpoints
       Souls::Gcloud.new.config_set
       get_topics(workers: get_workers)
       puts(Paint["All Jobs Synced with PubSub Subscription!", :green])
@@ -11,14 +10,15 @@ module Souls
 
     private
 
-    def worker_endpoint_exist?
+    def get_worker_endpoints
       require("#{Souls.get_mother_path}/config/souls")
       worker_paths = Souls.configuration.workers
       worker_paths.each do |worker|
         endpoint = worker[:endpoint]
-        return false unless endpoint.include?("https://")
+        unless endpoint.include?("https://")
+          raise(StandardError, "You need to set endpoint.\nPlease Run:\n\n$ souls sync conf\n\n")
+        end
       end
-      true
     end
 
     def get_topics(workers: {})
