@@ -104,7 +104,7 @@ module Souls
         file_paths.each do |file_path|
           worker_workflow = File.readlines(file_path)
           worker_workflow[worker_workflow.size - 1] = worker_workflow.last.chomp
-          worker_workflow << "\\ \n            --set-env-vars=\"#{key.upcase}=${{ secrets.#{key.upcase} }}\""
+          worker_workflow << " \\\n            --set-env-vars=\"#{key.upcase}=${{ secrets.#{key.upcase} }}\""
           File.open(file_path, "w") { |f| f.write(worker_workflow.join) }
           puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
         end
