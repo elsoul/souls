@@ -18,7 +18,7 @@ module Souls
       project_id = Souls.configuration.project_id
 
       schedules_list = current_schedules
-
+      worker_name = FileUtils.pwd.split("/").last
       Queries::BaseQuery.all_schedules.each do |k, v|
         worker_name = FileUtils.pwd.split("/").last
         job_name = "souls_#{worker_name}_#{k.to_s.underscore}".to_sym
@@ -43,7 +43,7 @@ module Souls
       end
 
       schedules_list.each do |k, _|
-        next unless k.match?(/^souls_/)
+        next unless k.match?(/^souls_#{worker_name}/)
 
         system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
       end
