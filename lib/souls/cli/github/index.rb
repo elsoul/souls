@@ -25,7 +25,7 @@ module Souls
       update_api_env(key: key, value: value, dqm: options[:dqm])
       update_workers_env(key: key, value: value, dqm: options[:dqm])
       update_github_actions(key: key)
-      Souls::Github.new.invoke(:secret_set)
+      system("gh secret set #{key} -b \"#{value.strip}\"")
     end
 
     desc "watch", "Watch GitHub Actions Workflow"
