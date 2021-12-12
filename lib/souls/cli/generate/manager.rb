@@ -4,9 +4,11 @@ module Souls
     method_option :mutation, aliases: "--mutation", required: true, desc: "Mutation File Name"
     def manager(class_name)
       singularized_class_name = class_name.underscore.singularize
-      create_manager(class_name, options[:mutation])
-      Souls::Generate.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
-      Souls::Generate.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
+      Dir.chdir(Souls.get_api_path.to_s) do
+        create_manager(class_name, options[:mutation])
+        Souls::Generate.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
+        Souls::Generate.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
+      end
     end
 
     private
@@ -25,15 +27,13 @@ module Souls
               class #{mutation.underscore.camelize} < BaseMutation
                 description "#{mutation} description"
                 ## Edit `argument` and `field`
-                argument :argument, String, required: true
+                argument :argument, String, required: false
 
                 field :response, String, null: false
 
                 def resolve(args)
                   # Define Here
                   { response: "success!" }
-                rescue StandardError => e
-                  GraphQL::ExecutionError.new(e.message)
                 end
               end
             end
