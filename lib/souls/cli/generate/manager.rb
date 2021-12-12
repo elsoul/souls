@@ -4,11 +4,13 @@ module Souls
     method_option :mutation, aliases: "--mutation", required: true, desc: "Mutation File Name"
     def manager(class_name)
       singularized_class_name = class_name.underscore.singularize
-      Dir.chdir(Souls.get_api_path.to_s) do
-        create_manager(class_name, options[:mutation])
-        Souls::Generate.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
-        Souls::Generate.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
+      unless FileUtils.pwd.split("/").last == "api"
+        raise(StandardError, "You Are at Wrong Directory! Please Go to Api Directory!")
       end
+
+      create_manager(class_name, options[:mutation])
+      Souls::Generate.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
+      Souls::Generate.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
     end
 
     private
