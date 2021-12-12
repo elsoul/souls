@@ -25,5 +25,8 @@ module Souls
         File.open(api_conf_path, "w") { |f| f.write(api_conf.join) }
       end
     end
+    # rubocop:disable Style/StringHashKeys
+    map "conf" => "config"
+    # rubocop:enable Style/StringHashKeys
   end
 end
