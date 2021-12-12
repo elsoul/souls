@@ -4,11 +4,16 @@ module Souls
     def setup_key
       region = Souls.configuration.region
       Souls::Gcloud.new.auth_login
+      Souls::Upgrade.new.config
       create_service_account
       create_service_account_key
       Souls::Gcloud.new.enable_permissions
       add_permissions
-      system("gcloud app create --region=#{region} --quiet")
+      begin
+        system("gcloud app create --region=#{region} --quiet")
+      rescue StandardError, error
+        puts("gcloud app region is Already exist! - Souls::Gcloud::Iam.setup_key")
+      end
       begin
         set_gh_secret_json
       rescue StandardError

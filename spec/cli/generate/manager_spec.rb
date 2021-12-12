@@ -7,12 +7,10 @@ RSpec.describe(Souls::Generate) do
     describe "manager" do
       it "calls create manager" do
         cli = Souls::Generate.new
-
         allow(cli).to(receive(:create_manager).and_return(true))
         allow_any_instance_of(Souls::Generate).to(receive(:invoke).and_return(true))
 
         expect(cli).to(receive(:create_manager))
-
         cli.manager(class_name)
       end
     end

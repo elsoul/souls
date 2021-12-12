@@ -1,6 +1,7 @@
 RSpec.describe(Souls::Iam) do
   describe "setup_key" do
     before :each do
+      allow_any_instance_of(Souls::Upgrade).to(receive(:config).and_return(true))
       allow($stdout).to(receive(:write))
     end
 
