@@ -4,7 +4,8 @@ module Souls
     method_option :mutation, aliases: "--mutation", required: true, desc: "Mutation File Name"
     def manager(class_name)
       singularized_class_name = class_name.underscore.singularize
-      unless FileUtils.pwd.split("/").last == "api"
+      current_path = FileUtils.pwd
+      unless current_path.split("/").last == "api" || current_path.split("/").last == "souls"
         raise(StandardError, "You Are at Wrong Directory! Please Go to Api Directory!")
       end
 
