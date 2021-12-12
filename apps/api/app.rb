@@ -27,7 +27,7 @@ require "search_object/plugin/graphql"
 require "graphql/batch"
 require "souls"
 require "./config/souls"
-require_relative "app/utils/souls_logger"
+require "./app/utils/souls_logger"
 
 ENV["RACK_ENV"] ||= "development"
 Dir["./config/*.rb"].each { |f| require f unless f.include?("souls.rb") }
