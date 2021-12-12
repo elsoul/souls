@@ -106,7 +106,7 @@ RSpec.describe(Souls::Iam) do
       cli = Souls::Iam.new
       allow(cli).to(receive(:add_service_account_role).and_return(true))
 
-      expect(cli).to(receive(:add_service_account_role).exactly(10).times)
+      expect(cli).to(receive(:add_service_account_role).exactly(11).times)
       cli.__send__(:add_permissions)
     end
   end

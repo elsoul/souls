@@ -100,7 +100,8 @@ module Souls
         "roles/storage.admin",
         "roles/storage.objectAdmin",
         "roles/cloudscheduler.admin",
-        "roles/appengine.appCreator"
+        "roles/appengine.appCreator",
+        "roles/logging.admin"
       ]
       roles.each do |role|
         add_service_account_role(role: role)
