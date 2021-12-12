@@ -13,7 +13,7 @@ module Souls
       db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
 
       zone = "#{region}-b"
-      system("gcloud config set project #{project_id}")
+      system("gcloud config set project #{project_id} >/dev/null 2>&1")
       system(
         "gcloud sql instances create #{instance_name} \
               --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
