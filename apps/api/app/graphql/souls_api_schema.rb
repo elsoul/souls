@@ -29,7 +29,7 @@ class SoulsApiSchema < GraphQL::Schema
   end
 
   rescue_from(StandardError) do |message|
-    SoulsLogger.critical_log(message)
+    Souls::SoulsLogger.critical_log(message)
     GraphQL::ExecutionError.new(message)
   end
 end
