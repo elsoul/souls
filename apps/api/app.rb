@@ -27,7 +27,8 @@ require "search_object/plugin/graphql"
 require "graphql/batch"
 require "souls"
 require "./config/souls"
-require_relative "app/utils/souls_logger"
+## Uncomment below line to enable Google Cloud Logging ## Also app/graphql/souls_api_schema.rb
+# require "./app/utils/souls_logger"
 
 ENV["RACK_ENV"] ||= "development"
 Dir["./config/*.rb"].each { |f| require f unless f.include?("souls.rb") }
