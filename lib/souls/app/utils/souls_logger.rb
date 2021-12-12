@@ -43,7 +43,7 @@ module Souls
 
     def self.write_log(message)
       entry = configuration.logger.entry
-      entry.payload = "#{message}\n #{message.backtrace.join("\n")}"
+      entry.payload = message.backtrace.nil? ? "#{message}\n" : "#{message}\n #{message.backtrace.join("\n")}"
       entry.log_name = "error"
       entry.resource.type = "cloud_run_revision"
       entry.resource.labels[:service_name] = "souls"
