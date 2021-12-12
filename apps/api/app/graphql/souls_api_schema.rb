@@ -29,7 +29,7 @@ class SoulsApiSchema < GraphQL::Schema
   end
 
   rescue_from(StandardError) do |message|
-    ## Uncomment below line to enable Google Cloud Logging
+    ## Uncomment below line to enable Google Cloud Logging ## Also app.rb
     # Souls::SoulsLogger.critical_log(message)
     GraphQL::ExecutionError.new(message)
   end
