@@ -9,7 +9,7 @@ RSpec.describe(Souls::Github) do
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("abc123"))
         expect(JSON).not_to(receive(:parse))
         expect(Souls::Painter).to(receive(:error))
-        cli.watch
+        expect(cli.watch).to(eq(nil))
       end
 
       it "should print error with malformed json" do
@@ -18,7 +18,7 @@ RSpec.describe(Souls::Github) do
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("git@github.com:elsoul/souls.git"))
         expect(JSON).to(receive(:parse))
         expect(Souls::Painter).to(receive(:error))
-        cli.watch
+        expect(cli.watch).to(eq(nil))
       end
 
       it "should print error with no workflows" do

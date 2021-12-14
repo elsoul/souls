@@ -4,7 +4,7 @@ module Souls
     def pubsub
       get_worker_endpoints
       Souls::Gcloud.new.config_set
-      topics = get_topics(workers: get_workers)
+      get_topics(workers: get_workers)
       Souls::Painter.sync("All Jobs with PubSub Subscription!")
     end
 
