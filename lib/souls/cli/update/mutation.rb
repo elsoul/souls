@@ -9,10 +9,8 @@ module Souls
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/create_#{singularized_class_name}.rb"
       unless File.exist?(file_path)
-        raise(
-          Souls::CLIException,
-          "File #{file_path} is missing. Please recreate it and then run this command again."
-        )
+        Souls::Painter.error("File #{file_path} is missing. Please recreate it and then run this command again.")
+        return
       end
 
       mutation_argument = check_mutation_argument(class_name: "user", action: "create")
@@ -27,10 +25,8 @@ module Souls
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/update_#{singularized_class_name}.rb"
       unless File.exist?(file_path)
-        raise(
-          Souls::CLIException,
-          "File #{file_path} is missing. Please recreate it and then run this command again."
-        )
+        Souls::Painter.error("File #{file_path} is missing. Please recreate it and then run this command again.")
+        return
       end
 
       mutation_argument = check_mutation_argument(class_name: class_name, action: "update")
