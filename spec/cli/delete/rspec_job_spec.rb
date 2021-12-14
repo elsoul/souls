@@ -10,7 +10,7 @@ RSpec.describe(Souls::Delete) do
       FakeFS.with_fresh do
         cli = Souls::Delete.new
 
-        file_dir = "./spec/jobs/"
+        file_dir = "./spec/queries/jobs/"
         file_name = "#{file_dir}user_spec.rb"
         FileUtils.mkdir_p(file_dir)
         File.open(file_name, "w") { |f| f.write(Scaffold.scaffold_delete) }
