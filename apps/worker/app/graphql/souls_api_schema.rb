@@ -28,7 +28,7 @@ class SoulsApiSchema < GraphQL::Schema
   end
 
   rescue_from(StandardError) do |message|
-    Souls::SoulsLogger.critical_log(message)
+    Souls::SoulsLogger.critical_log(message) if ENV["RACK_ENV"] == "production"
     GraphQL::ExecutionError.new(message)
   end
 end
