@@ -8,8 +8,9 @@ RSpec.describe(Souls::Sql) do
       allow(Souls).to(receive(:get_api_path).and_return("./"))
       allow(Souls).to(receive(:get_mother_path).and_return("./"))
       allow_any_instance_of(Souls::Github).to(receive(:secret_set))
-
-      expect(cli.create_instance).to(eq(true))
+      FakeFS.with_fresh do
+        expect(cli.create_instance).to(eq(true))
+      end
     end
   end
 
