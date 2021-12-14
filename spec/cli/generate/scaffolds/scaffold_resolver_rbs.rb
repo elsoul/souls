@@ -13,7 +13,7 @@ module Scaffold
         def decode_global_key: (String value) -> Integer
         def apply_filter: (untyped scope, untyped value) -> untyped
 
-        class UserFilter
+        class UserFilter < Souls::Types::BaseInputObject
           String: String
           Boolean: Boolean
           Integer: Integer
