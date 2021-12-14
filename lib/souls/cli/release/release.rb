@@ -4,7 +4,7 @@ module Souls
   class CLI < Thor
     desc "release", "Release Gem"
     def release
-      raise(StandardError, "hey! It's Broken!") unless system("rspec")
+      Souls::Painter.error("hey! It's Broken!") unless system("rspec")
 
       system("gem install souls")
       sleep(3)

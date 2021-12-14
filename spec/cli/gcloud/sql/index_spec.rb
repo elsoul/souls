@@ -7,8 +7,9 @@ RSpec.describe(Souls::Sql) do
       allow(cli).to(receive(:system).and_return(true))
       allow(Souls).to(receive(:get_api_path).and_return("./"))
       allow(Souls).to(receive(:get_mother_path).and_return("./"))
+      allow_any_instance_of(Souls::Github).to(receive(:secret_set))
 
-      expect(cli.create_instance).to(be_kind_of(Souls::Github))
+      expect(cli.create_instance).to(eq(true))
     end
   end
 
@@ -101,19 +102,7 @@ RSpec.describe(Souls::Sql) do
       cloud_sql = { settings: { ipConfiguration: { authorizedNetworks: [{ value: "12.34.5" }] } } }.to_json
       allow(cli).to(receive(:`).and_return(cloud_sql))
 
-      expect(cli).to(
-        receive(:system).with(
-          "
-            gcloud sql instances patch souls-souls-db \
-              --project=el-quest \
-              --assign-ip \
-              --authorized-networks=11.11.1,12.34.5 \
-              --quiet
-            "
-        )
-      )
-
-      cli.assign_ip
+      expect(cli.assign_ip).to(eq(true))
     end
   end
 
