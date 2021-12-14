@@ -69,7 +69,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Queries
-            class #{class_name.camelize}  < BaseQuery
+            class #{class_name.camelize} < BaseQuery
               description ""
               type Types::#{class_name.camelize}Type, null: false
 
