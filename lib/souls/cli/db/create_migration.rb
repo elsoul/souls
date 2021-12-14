@@ -7,7 +7,7 @@ module Souls
       Souls::DB.new.invoke(:model, [singularized_class_name], {})
       Souls::DB.new.invoke(:rspec_model, [singularized_class_name], {})
       Souls::DB.new.invoke(:model_rbs, [singularized_class_name], {})
-      puts(Paint["Created file! : ", :green])
+      Souls::Painter.create_file("")
       system("rake db:create_migration NAME=create_#{pluralized_class_name}")
       file_path = Dir["db/migrate/*create_#{pluralized_class_name}.rb"].first
       File.open(file_path, "w") do |f|

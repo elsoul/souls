@@ -29,9 +29,7 @@ module Souls
                 end
 
                 it "return #{singularized_class_name.camelize} response" do
-                  stub_request(:post, "https://api.mailgun.net/v3/YOUR-MAILGUN-DOMAIN/messages")
-                    .to_return(status: 200, body: "", headers: {})
-            #{'      '}
+                  allow_any_instance_of(::Mailgun::Client).to(receive(:send_message).and_return(true))
                   a1 = result.dig("data", "#{singularized_class_name.camelize(:lower)}")
                   expect(a1).not_to be_empty
                   expect(a1).to(include("response" => be_a(String)))

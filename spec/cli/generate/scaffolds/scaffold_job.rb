@@ -18,7 +18,7 @@ module Scaffold
   def self.scaffold_job_mailer
     <<~JOBMAILER
       module Queries
-        class SomeJob < BaseQuery
+        class SomeJob < Souls::Types::BaseObject
           description ""
           type Types::SomeJobType, null: false
 
