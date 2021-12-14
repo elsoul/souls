@@ -3,7 +3,7 @@ module Scaffold
     <<~MANAGERRBS
       module Mutations
         module Managers
-          module UserManager
+          module UserManager < BaseMutation
             class User
               def self.description: (String)-> untyped
               def self.argument: (untyped, untyped, untyped)-> untyped
