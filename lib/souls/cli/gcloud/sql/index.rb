@@ -54,6 +54,7 @@ module Souls
         Souls::Github.new.secret_set
         Whirly.status = Paint["Cloud SQL #{instance_name} is successfully created! You can push to deploy!", :green]
       end
+      true
     end
 
     desc "list", "Show Cloud SQL Instances List"
