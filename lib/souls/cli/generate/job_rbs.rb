@@ -26,14 +26,13 @@ module Souls
         File.open(type_file_path, "w") do |f|
           f.write(<<~TEXT)
             module Types
-              class #{singularized_class_name.camelize}Type < BaseObject
+              class #{singularized_class_name.camelize}Type < Souls::Types::BaseObject
                 def self.field: (:response, String, null: true) -> untyped
               end
             end
           TEXT
         end
         Souls::Painter.create_file(file_path.to_s)
-        puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [type_file_path.to_s, :white] }])
       end
       file_path
     end
