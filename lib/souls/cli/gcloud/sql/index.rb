@@ -146,6 +146,7 @@ module Souls
         )
         Whirly.status = Paint["Your IP is successfully added!", :green]
       end
+      true
     end
 
     private
