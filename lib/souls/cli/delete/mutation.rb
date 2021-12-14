@@ -8,7 +8,7 @@ module Souls
         file_path = "./app/graphql/mutations/base/#{singularized_class_name}/"
         FileUtils.rm_rf(file_path)
       end
-      puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.delete_file(file_path.to_s)
       file_path
     end
   end

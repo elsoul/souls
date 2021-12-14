@@ -16,7 +16,7 @@ module Souls
       Souls::Sql.new.invoke(:setup_private_ip)
       update_workflows
       update_env
-      puts(Paint["Cloud NAT is All Set!\n", :white])
+      Souls::Painter.success("Cloud NAT is All Set!")
       puts(
         Paint % [
           "Your Worker's External IP:  %{white_text}",
@@ -133,7 +133,7 @@ module Souls
           end
           workflow.insert(index, "            --vpc-connector=#{app_name}-connector \\\n") if connector_index.nil?
           File.open(file_path, "w") { |f| f.write(workflow.join) }
-          puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+          Souls::Painter.update_file(file_path.to_s)
         end
       end
     end

@@ -33,14 +33,16 @@ module Souls
       remote_url = `git remote get-url origin`
       split_url = %r{(https://|git@)(github.com)(:|/)([^.]+/[^.]+)(\.git)?}.match(remote_url)
       if split_url.nil? || split_url.size != 6
-        raise(CLIException, "Cannot access Github, please check your credentials")
+        Souls::Painter.error("Cannot access Github, please check your credentials")
+        return
       end
 
       api_request = "gh api -X GET 'repos/#{split_url[4]}/actions/runs'"
       workflows = JSON.parse(`#{api_request}`)
 
       if workflows.nil? || !workflows.key?("workflow_runs")
-        raise(CLIException, "Failed to parse JSON response from Github")
+        Souls::Painter.error("Failed to parse JSON response from Github")
+        return
       end
 
       wf_info =
@@ -51,7 +53,8 @@ module Souls
       wf_id =
         case wf_info.size
         when 0
-          raise(CLIException, "No workflow is running")
+          Souls::Painter.error("No workflow is running")
+          return
         when 1
           wf_info[0].values[0]
         else
@@ -70,7 +73,7 @@ module Souls
         File.open(file_path, "a") do |line|
           dqm ? line.write("\n#{key.upcase}=\"#{value}\"") : line.write("\n#{key.upcase}=#{value}")
         end
-        puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+        Souls::Painter.update_file(file_path.to_s)
       end
     end
 
@@ -80,7 +83,7 @@ module Souls
         File.open(file_path, "a") do |line|
           dqm ? line.write("\n#{key.upcase}=\"#{value}\"") : line.write("\n#{key.upcase}=#{value}")
         end
-        puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+        Souls::Painter.update_file(file_path.to_s)
       end
     end
 
@@ -93,7 +96,7 @@ module Souls
           File.open(file_path, "a") do |line|
             dqm ? line.write("\n#{key.upcase}=\"#{value}\"") : line.write("\n#{key.upcase}=#{value}")
           end
-          puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+          Souls::Painter.update_file(file_path.to_s)
         end
       end
     end
@@ -106,7 +109,7 @@ module Souls
           worker_workflow[worker_workflow.size - 1] = worker_workflow.last.chomp
           worker_workflow << " \\\n            --set-env-vars=\"#{key.upcase}=${{ secrets.#{key.upcase} }}\""
           File.open(file_path, "w") { |f| f.write(worker_workflow.join) }
-          puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+          Souls::Painter.update_file(file_path.to_s)
         end
       end
     end

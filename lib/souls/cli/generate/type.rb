@@ -9,7 +9,7 @@ module Souls
       create_type_head(class_name: singularized_class_name)
       create_type_params(class_name: singularized_class_name)
       create_type_end(class_name: singularized_class_name)
-      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.create_file(file_path.to_s)
       file_path
     end
 
