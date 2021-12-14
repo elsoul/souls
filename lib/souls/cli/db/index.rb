@@ -51,6 +51,7 @@ module Souls
         db_system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
       else
         db_system("rake db:migrate:reset")
+        db_system("rake db:migrate RACK_ENV=test")
       end
     end
 
