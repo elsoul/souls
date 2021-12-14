@@ -34,19 +34,6 @@ module Scaffold
             uses: ruby/setup-ruby@v1
             with:
               ruby-version: 3.0
-          - name: Build and test with Rake
-            env:
-              PGHOST: 127.0.0.1
-              PGUSER: postgres
-              RACK_ENV: test
-            run: |
-              sudo apt-get -yqq install libpq-dev
-              cd apps/mailer
-              gem install bundler
-              bundle install --jobs 4 --retry 3
-              bundle exec rake db:create RACK_ENV=test
-              bundle exec rake db:migrate RACK_ENV=test
-              bundle exec rspec
 
           - name: Checkout the repository
             uses: actions/checkout@v2
@@ -58,6 +45,21 @@ module Scaffold
               project_id: ${{ secrets.SOULS_GCP_PROJECT_ID }}
               service_account_key: ${{ secrets.SOULS_GCP_SA_KEY }}
               export_default_credentials: true
+
+          - name: Build and test with Rake
+            env:
+              PGHOST: 127.0.0.1
+              PGUSER: postgres
+              RACK_ENV: test
+              SOULS_GCP_PROJECT_ID: ${{ secrets.SOULS_GCP_PROJECT_ID }}
+            run: |
+              sudo apt-get -yqq install libpq-dev
+              cd apps/mailer
+              gem install bundler
+              bundle install --jobs 4 --retry 3
+              bundle exec rake db:create RACK_ENV=test
+              bundle exec rake db:migrate RACK_ENV=test
+              bundle exec rspec
 
           - name: Sync Tasks
             run: cd apps/mailer && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
