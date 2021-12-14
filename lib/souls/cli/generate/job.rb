@@ -69,7 +69,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Queries
-            class #{class_name.camelize} < Souls::Types::BaseObject
+            class #{class_name.camelize}  < BaseQuery
               description ""
               type Types::#{class_name.camelize}Type, null: false
 
@@ -108,7 +108,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Types
-            class #{class_name.camelize}Type < BaseObject
+            class #{class_name.camelize}Type < Souls::Types::BaseObject
               field :response, String, null: true
             end
           end
