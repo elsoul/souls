@@ -14,11 +14,19 @@ module Souls
       end
 
       def error(text)
-        puts(Paint["🚨 #{text}", :white])
+        puts(Paint["🚨 #{text}", :red])
+      end
+
+      def warning(text)
+        puts(Paint["🚨 #{text}", :yellow])
       end
 
       def success(text)
-        puts(Paint["🎉 #{text}", :white])
+        puts(Paint["🎉 #{text}", :green])
+      end
+
+      def sync(text)
+        puts(Paint % ["✓ %{white_text}", :blue, { white_text: ["Synced #{text}", :white] }])
       end
     end
   end

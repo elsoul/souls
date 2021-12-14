@@ -8,7 +8,7 @@ module Souls
       file_path = "#{file_dir}/#{options[:mutation]}.rb"
 
       FileUtils.rm_f(file_path)
-      puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.delete_file(file_path.to_s)
       Souls::Delete.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
       Souls::Delete.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
       file_path

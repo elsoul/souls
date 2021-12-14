@@ -5,7 +5,7 @@ module Souls
       singularized_class_name = class_name.singularize
       file_path = "./app/graphql/queries/#{singularized_class_name}*.rb"
       FileUtils.rm_f(file_path)
-      puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.delete_file(file_path.to_s)
       file_path
     end
   end

@@ -11,7 +11,7 @@ module Souls
         cp_and_dl_files(dir: dir)
         cp_env_files
       end
-      puts(Paint % ["Synced! : %{white_text}", :green, { white_text: [cp_dir.to_s, :white] }])
+      Souls::Painter.sync(cp_dir.to_s)
     end
 
     private

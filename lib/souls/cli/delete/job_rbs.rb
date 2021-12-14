@@ -14,7 +14,7 @@ module Souls
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}#{singularized_class_name}.rbs"
         FileUtils.rm_f(file_path)
-        puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
+        Souls::Painter.delete_file(file_path.to_s)
       end
       file_path
     end
