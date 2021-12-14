@@ -102,9 +102,7 @@ RSpec.describe(Souls::Sql) do
       cloud_sql = { settings: { ipConfiguration: { authorizedNetworks: [{ value: "12.34.5" }] } } }.to_json
       allow(cli).to(receive(:`).and_return(cloud_sql))
 
-      expect(cli).to(receive(:system))
-
-      cli.assign_ip
+      expect(cli.assign_ip).to(eq(true))
     end
   end
 
