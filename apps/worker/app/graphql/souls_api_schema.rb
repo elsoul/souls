@@ -26,4 +26,9 @@ class SoulsApiSchema < GraphQL::Schema
     token = Base64.decode64(global_id)
     token.split(":")
   end
+
+  rescue_from(StandardError) do |message|
+    Souls::SoulsLogger.critical_log(message)
+    GraphQL::ExecutionError.new(message)
+  end
 end
