@@ -4,7 +4,7 @@ module Souls
     def rspec_factory(class_name)
       file_path = "./spec/factories/#{class_name.pluralize}.rb"
       FileUtils.rm_f(file_path)
-      puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.delete_file(file_path.to_s)
       file_path
     end
   end

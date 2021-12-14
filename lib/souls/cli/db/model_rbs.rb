@@ -14,7 +14,7 @@ module Souls
             end
           TEXT
         end
-        puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+        Souls::Painter.create_file(file_path.to_s)
       end
       file_path
     end

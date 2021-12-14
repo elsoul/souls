@@ -5,7 +5,7 @@ module Souls
       get_worker_endpoints
       Souls::Gcloud.new.config_set
       get_topics(workers: get_workers)
-      puts(Paint["All Jobs Synced with PubSub Subscription!", :green])
+      Souls::Painter.sync("All Jobs with PubSub Subscription!")
     end
 
     private

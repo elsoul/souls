@@ -17,7 +17,7 @@ module Souls
 
       mutation_argument = check_mutation_argument(class_name: "user", action: "create")
       overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
-      puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.update_file(file_path.to_s)
     end
 
     desc "update_mutation [CLASS_NAME]", "Update GraphQL Type from schema.rb"
@@ -36,7 +36,7 @@ module Souls
       mutation_argument = check_mutation_argument(class_name: class_name, action: "update")
       overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
 
-      puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.update_file(file_path.to_s)
     end
 
     private

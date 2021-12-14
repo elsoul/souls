@@ -10,7 +10,7 @@ module Souls
       rspec_resolver_after_head(singularized_class_name)
       rspec_resolver_params(singularized_class_name)
       rspec_resolver_end(singularized_class_name)
-      puts(Paint % ["Created file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.create_file(file_path.to_s)
       file_path
     end
 
