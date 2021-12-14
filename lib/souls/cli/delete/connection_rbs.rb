@@ -8,7 +8,7 @@ module Souls
         file_dir = "./sig/api/app/graphql/types/connections/"
         file_path = "#{file_dir}#{singularized_class_name}_connection.rbs"
         FileUtils.rm_f(file_path)
-        puts(Paint % ["Deleted file! : %{white_text}", :yellow, { white_text: [file_path.to_s, :white] }])
+        Souls::Painter.delete_file(file_path.to_s)
       end
       file_path
     end

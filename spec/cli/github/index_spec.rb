@@ -3,30 +3,30 @@ require_relative "scaffolds/scaffold_workflows"
 RSpec.describe(Souls::Github) do
   describe "index" do
     describe "watch" do
-      it "should raise error with no connection to github " do
+      it "should print error with no connection to github " do
         cli = Souls::Github.new
         allow(cli).to(receive(:`).and_return("{}"))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("abc123"))
         expect(JSON).not_to(receive(:parse))
-        expect { cli.watch }
-          .to(raise_error(Souls::CLIException))
+        expect(Souls::Painter).to(receive(:error))
+        expect(cli.watch).to(eq(nil))
       end
 
-      it "should raise error with malformed json" do
+      it "should print error with malformed json" do
         cli = Souls::Github.new
         allow(cli).to(receive(:`).and_return("{}"))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("git@github.com:elsoul/souls.git"))
         expect(JSON).to(receive(:parse))
-        expect { cli.watch }
-          .to(raise_error(Souls::CLIException))
+        expect(Souls::Painter).to(receive(:error))
+        expect(cli.watch).to(eq(nil))
       end
 
-      it "should raise error with no workflows" do
+      it "should print error with no workflows" do
         cli = Souls::Github.new
         allow(cli).to(receive(:`).and_return(Scaffold.scaffold_no_workflows))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("git@github.com:elsoul/souls.git"))
-        expect { cli.watch }
-          .to(raise_error(Souls::CLIException))
+        expect(Souls::Painter).to(receive(:error))
+        expect(cli.watch).to(eq(nil))
       end
 
       it "should call gh run watch with one workflow" do

@@ -45,7 +45,7 @@ module Souls
       end
       FileUtils.rm(file_path)
       FileUtils.mv(new_file_path, file_path)
-      puts(Paint % ["Updated file! : %{white_text}", :green, { white_text: [file_path.to_s, :white] }])
+      Souls::Painter.update_file(file_path.to_s)
     end
 
     private

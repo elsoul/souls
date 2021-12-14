@@ -5,14 +5,12 @@ module Souls
       Souls::Gcloud.new.config_set
       update_conf
       update_conf(strain: "api")
-      puts(
-        Paint % [
-          "Synced! : %{white_text}",
-          :green,
-          { white_text: ["`config/souls.rb`, `apps/api/config/souls.rb`", :white] }
-        ]
-      )
+      Souls::Painter.sync("`config/souls.rb`, `apps/api/config/souls.rb`")
     end
+
+    # rubocop:disable Style/StringHashKeys
+    map "config" => "conf"
+    # rubocop:enable Style/StringHashKeys
 
     private
 
