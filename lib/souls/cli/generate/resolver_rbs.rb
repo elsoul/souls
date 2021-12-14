@@ -24,7 +24,7 @@ module Souls
               def decode_global_key: (String value) -> Integer
               def apply_filter: (untyped scope, untyped value) -> untyped
 
-              class #{singularized_class_name.camelize}Filter
+              class #{singularized_class_name.camelize}Filter < Souls::Types::BaseInputObject
                 String: String
                 Boolean: Boolean
                 Integer: Integer
