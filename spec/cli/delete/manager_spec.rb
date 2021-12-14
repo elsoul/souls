@@ -1,7 +1,7 @@
 require_relative "./scaffolds/scaffold_delete"
 
 RSpec.describe(Souls::Delete) do
-  describe "manager" do
+  describe "migration" do
     before do
       allow($stdout).to(receive(:write))
     end
