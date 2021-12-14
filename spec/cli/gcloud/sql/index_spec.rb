@@ -7,8 +7,9 @@ RSpec.describe(Souls::Sql) do
       allow(cli).to(receive(:system).and_return(true))
       allow(Souls).to(receive(:get_api_path).and_return("./"))
       allow(Souls).to(receive(:get_mother_path).and_return("./"))
+      allow_any_instance_of(Souls::Github).to(receive(:secret_set))
 
-      expect(cli.create_instance).to(be_kind_of(Souls::Github))
+      expect(cli.create_instance).to(eq(true))
     end
   end
 

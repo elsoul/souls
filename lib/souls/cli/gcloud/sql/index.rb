@@ -14,43 +14,46 @@ module Souls
 
       zone = "#{region}-b"
       system("gcloud config set project #{project_id} >/dev/null 2>&1")
-      system(
-        "gcloud sql instances create #{instance_name} \
-              --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
-              --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
-      )
-      instance_ip = `gcloud sql instances list | grep #{instance_name} | awk '{print $5}'`.strip
-      Dir.chdir(Souls.get_api_path.to_s) do
-        file_path = ".env"
-        File.open(file_path, "w") do |line|
-          line.write(<<~TEXT)
-            GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1
-            SOULS_DB_HOST=#{instance_ip}
-            SOULS_DB_PW=#{password}
-            SOULS_DB_USER=postgres
-            SOULS_GCP_PROJECT_ID=#{project_id}
-            SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-            TZ="#{region_to_timezone(region: region)}"
-          TEXT
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        system(
+          "gcloud sql instances create #{instance_name} \
+                --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
+                --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
+        )
+        instance_ip = `gcloud sql instances list | grep #{instance_name} | awk '{print $5}'`.strip
+        Dir.chdir(Souls.get_api_path.to_s) do
+          file_path = ".env"
+          File.open(file_path, "w") do |line|
+            line.write(<<~TEXT)
+              GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1
+              SOULS_DB_HOST=#{instance_ip}
+              SOULS_DB_PW=#{password}
+              SOULS_DB_USER=postgres
+              SOULS_GCP_PROJECT_ID=#{project_id}
+              SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
+              TZ="#{region_to_timezone(region: region)}"
+            TEXT
+          end
         end
-      end
-      Dir.chdir(Souls.get_mother_path.to_s) do
-        file_path = ".env.production"
-        File.open(file_path, "w") do |line|
-          line.write(<<~TEXT)
-            SOULS_DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
-            SOULS_DB_PW=#{password}
-            SOULS_DB_USER=postgres
-            SOULS_APP_NAME=#{app_name}
-            SOULS_GCP_PROJECT_ID=#{project_id}
-            SOULS_GCP_REGION=#{region}
-            SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
-            SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-            TZ="#{region_to_timezone(region: region)}"
-          TEXT
+        Dir.chdir(Souls.get_mother_path.to_s) do
+          file_path = ".env.production"
+          File.open(file_path, "w") do |line|
+            line.write(<<~TEXT)
+              SOULS_DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
+              SOULS_DB_PW=#{password}
+              SOULS_DB_USER=postgres
+              SOULS_APP_NAME=#{app_name}
+              SOULS_GCP_PROJECT_ID=#{project_id}
+              SOULS_GCP_REGION=#{region}
+              SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
+              SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
+              TZ="#{region_to_timezone(region: region)}"
+            TEXT
+          end
         end
+        Souls::Github.new.secret_set
+        Whirly.status = Paint["Cloud SQL #{instance_name} is successfully created! You can push to deploy!", :green]
       end
-      Souls::Github.new
     end
 
     desc "list", "Show Cloud SQL Instances List"
@@ -130,15 +133,18 @@ module Souls
         ips = (ips + white_ips).uniq
       end
       ips = ips.join(",")
-      system(
-        "
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        system(
+          "
             gcloud sql instances patch #{instance_name} \
               --project=#{project_id} \
               --assign-ip \
               --authorized-networks=#{ips} \
               --quiet
             "
-      )
+        )
+        Whirly.status = Paint["Your IP is successfully added!", :green]
+      end
     end
 
     private

@@ -52,8 +52,8 @@ RSpec.describe(Souls::Update) do
           expect do
             cli.create_mutation("user")
           end
-
-        expect_result.to(raise_error(Souls::CLIException))
+        expect(Souls::Painter).to(receive(:error))
+        expect(cli.update_mutation("user")).to(eq(nil))
       end
     end
   end
@@ -86,12 +86,8 @@ RSpec.describe(Souls::Update) do
         FileUtils.mkdir_p(file_dir.to_s)
         allow(Souls).to(receive(:get_columns_num).and_return(2))
 
-        expect_result =
-          expect do
-            cli.update_mutation("user")
-          end
-
-        expect_result.to(raise_error(Souls::CLIException))
+        expect(Souls::Painter).to(receive(:error))
+        expect(cli.update_mutation("user")).to(eq(nil))
       end
     end
   end
