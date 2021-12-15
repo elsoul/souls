@@ -34,7 +34,7 @@ module Souls
                 rescue StandardError
                   raise(StandardError, result)
                 end
-                expect(a1).to(include("response" => be_a(String)))
+                expect(a1).to(eq("success!"))
               end
             end
           end

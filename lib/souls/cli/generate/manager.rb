@@ -36,6 +36,7 @@ module Souls
 
                 def resolve(args)
                   # Define Here
+                  puts(args)
                   { response: "success!" }
                 end
               end
