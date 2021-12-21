@@ -9,8 +9,9 @@ RSpec.describe(Souls::DB) do
     it "should raise an exception with false" do
       db = Souls::DB.new
       allow(db).to(receive(:system).and_return(false))
-      expect { db.migrate }
-        .to(raise_error(Souls::PSQLException))
+      allow(Souls::Painter).to(receive(:error).and_return(true))
+      expect(Souls::Painter).to(receive(:error))
+      db.migrate
     end
   end
 
@@ -24,8 +25,9 @@ RSpec.describe(Souls::DB) do
     it "should raise an exception with false" do
       db = Souls::DB.new
       allow(db).to(receive(:system).and_return(false))
-      expect { db.create }
-        .to(raise_error(Souls::PSQLException))
+      allow(Souls::Painter).to(receive(:error).and_return(true))
+      expect(Souls::Painter).to(receive(:error))
+      db.create
     end
   end
 
@@ -39,8 +41,9 @@ RSpec.describe(Souls::DB) do
     it "should raise an exception with false" do
       db = Souls::DB.new
       allow(db).to(receive(:system).and_return(false))
-      expect { db.seed }
-        .to(raise_error(Souls::PSQLException))
+      allow(Souls::Painter).to(receive(:error).and_return(true))
+      expect(Souls::Painter).to(receive(:error))
+      db.seed
     end
   end
 
@@ -54,8 +57,9 @@ RSpec.describe(Souls::DB) do
     it "should raise an exception with false" do
       db = Souls::DB.new
       allow(db).to(receive(:system).and_return(false))
-      expect { db.migrate_reset }
-        .to(raise_error(Souls::PSQLException))
+      allow(Souls::Painter).to(receive(:error).and_return(true))
+      expect(Souls::Painter).to(receive(:error))
+      db.migrate_reset
     end
   end
 
@@ -114,8 +118,9 @@ RSpec.describe(Souls::DB) do
     it "should raise an exception with false" do
       db = Souls::DB.new
       allow(db).to(receive(:system).and_return(false))
-      expect { db.__send__(:db_system, "ls") }
-        .to(raise_error(Souls::PSQLException))
+      allow(Souls::Painter).to(receive(:error).and_return(true))
+      expect(Souls::Painter).to(receive(:error))
+      db.__send__(:db_system, "ls")
     end
   end
 end
