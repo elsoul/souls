@@ -88,7 +88,7 @@ module Souls
     private
 
     def db_system(cmd)
-      system(cmd) or raise(Souls::PSQLException)
+      system(cmd) or Souls::Painter.error("DB is not running. Please run `souls docker psql`")
     end
   end
 end
