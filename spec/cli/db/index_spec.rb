@@ -63,6 +63,22 @@ RSpec.describe(Souls::DB) do
     end
   end
 
+  describe "migrate_reset" do
+    it "should receive db:migrate with true" do
+      db = Souls::DB.new
+      allow(db).to(receive(:system).and_return(true))
+      expect(db.reset).to(eq(true))
+    end
+
+    it "should raise an exception with false" do
+      db = Souls::DB.new
+      allow(db).to(receive(:system).and_return(false))
+      allow(Souls::Painter).to(receive(:error).and_return(true))
+      expect(Souls::Painter).to(receive(:error))
+      db.reset
+    end
+  end
+
   describe "add_column" do
     it "should create migration with correct file" do
       db = Souls::DB.new
