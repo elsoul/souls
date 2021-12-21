@@ -13,27 +13,8 @@ RSpec.describe(Souls::Generate) do
         allow(generate).to(receive(:create_index_query).and_return(""))
 
         expect(generate).to(receive(:create_individual_query))
-        expect(generate).to(receive(:create_index_query))
 
         generate.query(class_name)
-      end
-    end
-
-    it "creates index file" do
-      scaffold_output = Scaffold.scaffold_query
-      FakeFS.with_fresh do
-        file_dir = "./app/graphql/queries/"
-        FileUtils.mkdir_p(file_dir)
-
-        file_path = "#{file_dir}#{file_name.pluralize}.rb"
-
-        generate = Souls::Generate.new
-        a1 = generate.__send__(:create_index_query, class_name: "user")
-        file_output = File.read(file_path)
-
-        expect(a1).to(eq(file_path))
-        expect(File.exist?(file_path)).to(eq(true))
-        expect(file_output).to(eq(scaffold_output))
       end
     end
 

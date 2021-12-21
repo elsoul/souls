@@ -9,9 +9,6 @@ module Types
       field t.pluralize.underscore.to_s.to_sym,
             Object.const_get("Types::#{t.singularize.camelize}Type").connection_type,
             null: true
-      define_method t do
-        Object.const_get(t.singularize.camelize.to_s).all.order(id: :desc)
-      end
     end
   end
 end
