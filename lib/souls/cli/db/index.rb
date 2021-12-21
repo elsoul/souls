@@ -55,6 +55,20 @@ module Souls
       end
     end
 
+    desc "reset", "Reset Database and Seed"
+    method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
+    def reset
+      case options[:env]
+      when "production"
+        db_system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
+        db_system("rake db seed RACK_ENV=production")
+      else
+        db_system("rake db:migrate:reset")
+        db_system("rake db:migrate RACK_ENV=test")
+        db_system("rake db seed")
+      end
+    end
+
     desc "add_column [CLASS_NAME]", "Create ActiveRecord Migration File"
     def add_column(class_name)
       pluralized_class_name = class_name.underscore.pluralize
