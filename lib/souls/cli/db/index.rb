@@ -61,11 +61,11 @@ module Souls
       case options[:env]
       when "production"
         db_system("rake db:migrate:reset RACK_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1")
-        db_system("rake db seed RACK_ENV=production")
+        db_system("rake db:seed RACK_ENV=production")
       else
         db_system("rake db:migrate:reset")
         db_system("rake db:migrate RACK_ENV=test")
-        db_system("rake db seed")
+        db_system("rake db:seed")
       end
     end
 
