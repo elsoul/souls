@@ -16,7 +16,9 @@ module Souls
 
               let(:mutation) do
                 %(mutation {
-                  #{options[:mutation].singularize.camelize(:lower)}(input: {}) {
+                  #{options[:mutation].singularize.camelize(:lower)}(input: {
+                    argument: "argument test!"
+                  }) {
                       response
                     }
                   }
