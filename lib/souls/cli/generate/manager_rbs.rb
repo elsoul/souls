@@ -13,8 +13,8 @@ module Souls
           f.write(<<~TEXT)
             module Mutations
               module Managers
-                module #{singularized_class_name.camelize}Manager < BaseMutation
-                  class #{options[:mutation].singularize.camelize}
+                module #{singularized_class_name.camelize}Manager
+                  class #{options[:mutation].singularize.camelize} < BaseMutation
                     def self.description: (String)-> untyped
                     def self.argument: (untyped, untyped, untyped)-> untyped
                     def self.field: (untyped, untyped, untyped)-> untyped
