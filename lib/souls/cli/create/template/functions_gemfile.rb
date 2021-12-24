@@ -6,6 +6,7 @@ module Template
       gem "dotenv", "2.7.6"
       gem "functions_framework", "~> 0.7"
       gem "sinatra", "2.1.0"
+      gem "souls", "#{Souls::VERSION}"
 
     GEMFILE
   end

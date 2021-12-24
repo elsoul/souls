@@ -4,6 +4,7 @@ module Template
       require "functions_framework"
       require "sinatra/base"
       require "dotenv/load"
+      require "souls"
 
       class App < Sinatra::Base
         get "/souls-functions-get/:name" do

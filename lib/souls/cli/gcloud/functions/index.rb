@@ -2,17 +2,15 @@ module Souls
   class Functions < Thor
     desc "deploy", "Deploy Cloud Functions"
     def deploy
+      require(Souls.get_mother_path.to_s + "/config/souls")
       project_id = Souls.configuration.project_id
-      Souls::Gcloud.new.config_set
-      require(Souls.get_mother_path.to_s + "config/souls")
-      Dir.chdir(Souls.get_mother_path.to_s) do
-        puts(Souls.configuration.app)
-        # system(
-        #   "
-        #   gcloud functions deploy souls_functions --project=#{project_id} \
-        #   --runtime ruby27 --trigger-http --allow-unauthenticated
-        #   "
-        # )
+      Dir.chdir(Souls.get_functions_path.to_s) do
+        system(
+          "
+          gcloud functions deploy souls_functions --project=#{project_id} \
+          --runtime ruby27 --trigger-http --allow-unauthenticated
+          "
+        )
       end
     end
 
