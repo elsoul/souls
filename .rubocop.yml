@@ -38,6 +38,9 @@ Style/HashSyntax:
     - "**/*.rake"
     - "Rakefile"
 
+Style/FileWrite:
+  Enabled: false
+
 Style/Semicolon:
   Exclude:
     - "spec/**/*"
