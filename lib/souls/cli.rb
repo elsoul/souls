@@ -31,6 +31,9 @@ module Souls
     desc "upgrade [COMMAND]", "SOULs Upgrade Commands"
     subcommand "upgrade", Upgrade
 
+    desc "functions [COMMAND]", "SOULs functions Commands"
+    subcommand "functions", Functions
+
     # rubocop:disable Style/StringHashKeys
     map "c" => :console
     map "s" => :server
