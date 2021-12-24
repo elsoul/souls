@@ -23,7 +23,7 @@ gem "sinatra", "2.1.0"
 gem "sinatra-activerecord", "2.0.23"
 gem "sinatra-contrib", "2.1.0"
 gem "slack-ruby3", "0.1.2"
-gem "souls", "1.14.3"
+gem "souls", "1.15.0"
 gem "zeitwerk", "2.5.1"
 
 group :development, :test do
