@@ -85,6 +85,7 @@ It is a development environment where you can immediately notice the mistakes th
 ## Cloud Infrastructure
 
 - [Google Cloud Run](https://cloud.google.com/run)
+- [Google Cloud Functions](https://cloud.google.com/functions)
 - [Google Cloud SQL](https://cloud.google.com/sql)
 - [Google Cloud Pub/Sub](https://cloud.google.com/pubsub)
 - [Google Cloud Storage](https://cloud.google.com/run)
