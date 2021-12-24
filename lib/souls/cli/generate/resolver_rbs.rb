@@ -12,22 +12,24 @@ module Souls
 
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
-            class BaseResolver
-            end
-            class #{singularized_class_name.camelize}Search < BaseResolver
-              include SearchObject
-              def self.scope: () ?{ () -> nil } -> [Hash[Symbol, untyped]]
-              def self.type: (*untyped) -> String
-              def self.option: (:filter, type: untyped, with: :apply_filter) -> String
-              def self.description: (String) -> String
-              def self.types: (*untyped) -> String
-              def decode_global_key: (String value) -> Integer
-              def apply_filter: (untyped scope, untyped value) -> untyped
+            module Resolvers
+              class BaseResolver
+              end
+              class #{singularized_class_name.camelize}Search < BaseResolver
+                include SearchObject
+                def self.scope: () ?{ () -> nil } -> [Hash[Symbol, untyped]]
+                def self.type: (*untyped) -> String
+                def self.option: (:filter, type: untyped, with: :apply_filter) -> String
+                def self.description: (String) -> String
+                def self.types: (*untyped) -> String
+                def decode_global_key: (String value) -> Integer
+                def apply_filter: (untyped scope, untyped value) -> untyped
 
-              class #{singularized_class_name.camelize}Filter < Souls::Types::BaseInputObject
-                String: String
-                Boolean: Boolean
-                Integer: Integer
+                class #{singularized_class_name.camelize}Filter
+                  String: String
+                  Boolean: Boolean
+                  Integer: Integer
+                end
               end
             end
           TEXT
