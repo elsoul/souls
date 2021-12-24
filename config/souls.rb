@@ -4,6 +4,6 @@ Souls.configure do |config|
   config.region = "asia-northeast1"
   config.endpoint = "/endpoint"
   config.strain = "mother"
-  config.fixed_gems = ["spring", "activesupport"]
+  config.fixed_gems = %w[spring activesupport]
   config.workers = []
 end
