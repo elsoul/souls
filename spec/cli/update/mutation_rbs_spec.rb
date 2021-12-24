@@ -11,6 +11,7 @@ RSpec.describe(Souls::Update) do
         FileUtils.mkdir_p(file_dir.to_s)
         FileUtils.mkdir_p("config")
         FileUtils.mkdir_p("/souls/apps/api")
+        allow(Souls).to(receive(:get_api_path).and_return("/souls/apps/api"))
 
         File.open("#{file_dir}create_user.rbs", "w") { |f| f.write(mutation_create) }
         allow(Souls).to(receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }]))
@@ -34,6 +35,7 @@ RSpec.describe(Souls::Update) do
         FileUtils.mkdir_p(file_dir.to_s)
         FileUtils.mkdir_p("config")
         FileUtils.mkdir_p("/souls/apps/api")
+        allow(Souls).to(receive(:get_api_path).and_return("/souls/apps/api"))
 
         File.open("#{file_dir}update_user.rbs", "w") { |f| f.write(mutation_create) }
         allow(Souls).to(receive(:get_columns_num).and_return([{ column_name: "test", type: "String", array: false }]))
