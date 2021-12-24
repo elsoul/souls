@@ -31,5 +31,9 @@ module Souls
       Souls::Painter.create_file(file_path)
       file_path
     end
+
+    def copy_souls_conf
+      
+    end
   end
 end

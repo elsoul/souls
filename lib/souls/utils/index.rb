@@ -1,11 +1,17 @@
 module Souls
   module Utils
     def get_mother_path
-      Dir.pwd.split(Souls.configuration.app)[0] + Souls.configuration.app
+      file_array = Dir.pwd.split("/")
+      mother_dir_num = file_array.rindex("apps")
+      file_array.each_slice(mother_dir_num).to_a[0].join("/")
+    end
+
+    def get_functions_path
+      get_mother_path + "/apps/functions"
     end
 
     def get_api_path
-      Dir.pwd.split(Souls.configuration.app)[0] + Souls.configuration.app + "/apps/api"
+      get_mother_path + "/apps/api"
     end
 
     def type_check(type)
