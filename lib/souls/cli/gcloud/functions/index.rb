@@ -8,7 +8,7 @@ module Souls
         system(
           "
           gcloud functions deploy souls_functions --project=#{project_id} \
-          --runtime ruby27 --trigger-http --allow-unauthenticated
+          --runtime ruby27 --trigger-http --allow-unauthenticated --env-vars-file .env.yaml
           "
         )
       end
