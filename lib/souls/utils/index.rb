@@ -1,9 +1,10 @@
 module Souls
   module Utils
     def get_mother_path
-      file_array = Dir.pwd.split("/")
+      current_dir = Dir.pwd
+      file_array = current_dir.split("/")
       mother_dir_num = file_array.rindex("apps")
-      mother_dir_num ? file_array.slice(mother_dir_num).join("/") : file_array.join("/")
+      mother_dir_num ? file_array.each_slice(mother_dir_num).to_a[0].join("/") : current_dir
     end
 
     def get_functions_path
