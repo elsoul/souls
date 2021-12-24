@@ -4,6 +4,7 @@ require_relative "./run/index"
 require_relative "./sql/index"
 require_relative "./compute/index"
 require_relative "./scheduler/index"
+require_relative "./functions/index"
 require_relative "../cli_exception"
 
 module Souls
@@ -25,6 +26,9 @@ module Souls
 
     desc "scheduler [COMMAND]", "souls gcloud schedluer Commands"
     subcommand "scheduler", CloudScheduler
+
+    desc "functions [COMMAND]", "souls gcloud functions Commands"
+    subcommand "functions", Functions
 
     map run: "cloud_run"
 
@@ -56,6 +60,8 @@ module Souls
       system("gcloud services enable vpcaccess.googleapis.com")
       system("gcloud services enable cloudscheduler.googleapis.com")
       system("gcloud services enable cloudresourcemanager.googleapis.com")
+      system("gcloud services enable cloudfunctions.googleapis.com")
+      system("gcloud services enable cloudbuild.googleapis.com")
     end
   end
 end

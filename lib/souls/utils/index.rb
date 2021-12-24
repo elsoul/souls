@@ -8,6 +8,10 @@ module Souls
       Dir.pwd.split(Souls.configuration.app)[0] + Souls.configuration.app + "/apps/api"
     end
 
+    def get_functions_path
+      Dir.pwd.split(Souls.configuration.app)[0] + Souls.configuration.app + "/apps/functions"
+    end
+
     def type_check(type)
       {
         bigint: "Integer",

@@ -1,3 +1,4 @@
+require_relative "./functions"
 module Souls
   class Create < Thor
     desc "worker", "Create SOULs Worker"
