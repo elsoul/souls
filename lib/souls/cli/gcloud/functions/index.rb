@@ -14,6 +14,20 @@ module Souls
       end
     end
 
+    desc "describe", "Describe SOULs Functions"
+    def describe
+      require(Souls.get_mother_path.to_s + "/config/souls")
+      project_id = Souls.configuration.project_id
+      system("gcloud functions describe souls_functions --project=#{project_id}")
+    end
+
+    desc "url", "Get SOULs Functions URL"
+    def url
+      require(Souls.get_mother_path.to_s + "/config/souls")
+      project_id = Souls.configuration.project_id
+      system("gcloud functions describe souls_functions --project=#{project_id}| grep url")
+    end
+
     desc "dev", "Check SOULs Functions dev"
     def dev
       Dir.chdir(Souls.get_functions_path.to_s) do
