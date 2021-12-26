@@ -15,17 +15,16 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (6.1.4.1)
-      activesupport (= 6.1.4.1)
-    activerecord (6.1.4.1)
-      activemodel (= 6.1.4.1)
-      activesupport (= 6.1.4.1)
-    activesupport (6.1.4.1)
+    activemodel (7.0.0)
+      activesupport (= 7.0.0)
+    activerecord (7.0.0)
+      activemodel (= 7.0.0)
+      activesupport (= 7.0.0)
+    activesupport (7.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
@@ -207,7 +206,7 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
-    sinatra-activerecord (2.0.23)
+    sinatra-activerecord (2.0.25)
       activerecord (>= 4.1)
       sinatra (>= 1.0)
     solargraph (0.44.2)
@@ -257,7 +256,6 @@ GEM
     wisper (2.0.1)
     yard (0.9.27)
       webrick (~> 1.7.0)
-    zeitwerk (2.5.1)
 
 PLATFORMS
   x86_64-darwin-20
@@ -265,7 +263,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activesupport (= 6.1.4.1)
+  activesupport (= 7.0.0)
   fakefs (= 1.4.0)
   fakeredis (= 0.8.0)
   firebase_id_token (= 2.4.0)
@@ -281,7 +279,7 @@ DEPENDENCIES
   rubocop (= 1.24.0)
   rubocop-graphql (= 0.11.3)
   simplecov (= 0.21.2)
-  sinatra-activerecord (= 2.0.23)
+  sinatra-activerecord (= 2.0.25)
   solargraph (= 0.44.2)
   souls!
   steep (= 0.47.0)

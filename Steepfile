@@ -1,5 +1,5 @@
 target :app do
-  repo_path "vendor/rbs/gem_rbs_collection/gems"
+  repo_path ".gem_rbs_collection"
   library "pathname"
   library "logger"
   library "mutex_m"

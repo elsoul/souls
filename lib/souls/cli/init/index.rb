@@ -126,7 +126,7 @@ module Souls
         f.write(<<~TEXT)
           source "https://rubygems.org"
 
-          gem "activesupport", "6.1.4.1"
+          gem "activesupport", "7.0.0"
           gem "foreman", "0.87.2"
           gem "google-cloud-pubsub", "2.9.0"
           gem "paint", "2.2.1"
@@ -135,7 +135,7 @@ module Souls
           gem "rake", "13.0.6"
           gem "rspec", "3.10.0"
           gem "rubocop", "1.22.3"
-          gem "sinatra-activerecord", "2.0.23"
+          gem "sinatra-activerecord", "2.0.25"
           gem "solargraph", "0.44.0"
           #{souls_gem}
           gem "steep", "0.46.0"
