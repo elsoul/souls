@@ -31,7 +31,7 @@ module Souls
               SOULS_DB_USER=postgres
               SOULS_GCP_PROJECT_ID=#{project_id}
               SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-              TZ="#{region_to_timezone(region: region)}"
+              TZ="#{region_to_timezone(region:)}"
             TEXT
           end
         end
@@ -47,7 +47,7 @@ module Souls
               SOULS_GCP_REGION=#{region}
               SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
               SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-              TZ="#{region_to_timezone(region: region)}"
+              TZ="#{region_to_timezone(region:)}"
             TEXT
           end
         end

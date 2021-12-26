@@ -63,7 +63,7 @@ module Souls
                 new_line.write("      argument :#{name}, #{field}, required: false\n")
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if Souls.table_check(line:, class_name:)
           end
         end
       end
@@ -128,7 +128,7 @@ module Souls
                 end
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if Souls.table_check(line:, class_name:)
           end
         end
       end

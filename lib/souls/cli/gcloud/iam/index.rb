@@ -104,7 +104,7 @@ module Souls
         "roles/logging.admin"
       ]
       roles.each do |role|
-        add_service_account_role(role: role)
+        add_service_account_role(role:)
       end
     end
 

@@ -17,7 +17,7 @@ module Souls
         souls_conf_update(worker_name: souls_worker_name)
         souls_conf_update(worker_name: souls_worker_name, strain: "api")
         workflow(worker_name: options[:name])
-        procfile(worker_name: options[:name], port: port)
+        procfile(worker_name: options[:name], port:)
         mother_procfile(worker_name: options[:name])
         souls_config_init(worker_name: options[:name])
         steepfile(worker_name: options[:name])
@@ -300,7 +300,7 @@ end
       red2 = ["/ ___/", :red]
       red3 = ["(__  )", :red]
       red4 = ["/____/", :red]
-      ms = Paint % [txt2, :blue, { red1: red1, red2: red2, red3: red3, red4: red4 }]
+      ms = Paint % [txt2, :blue, { red1:, red2:, red3:, red4: }]
       puts(ms)
       puts(line)
       welcome = Paint["SOULs Worker is Ready!", :white]

@@ -32,12 +32,12 @@ module Souls
                     "          #{col[:column_name].camelize(:lower)}" \
                     ": \#{#{class_name}[:#{col[:column_name].underscore}]}\n"
                   end
-                args = check_rspec_mutation_argument(class_name: class_name)
+                args = check_rspec_mutation_argument(class_name:)
                 new_line.write(type_line) unless args.include?(col[:column_name].underscore)
               end
               argument = true
             elsif node_res && !line.include?("{")
-              node_args = check_rspec_mutation_argument(class_name: class_name, action: "node_args")
+              node_args = check_rspec_mutation_argument(class_name:, action: "node_args")
               new_cols.each do |col|
                 unless node_args.include?(col[:column_name])
                   new_line.write("              #{col[:column_name].camelize(:lower)}\n")
@@ -45,7 +45,7 @@ module Souls
               end
               node_res = false
             elsif test_res && line.include?("=> be_")
-              test_args = check_rspec_mutation_argument(class_name: class_name, action: "test_args")
+              test_args = check_rspec_mutation_argument(class_name:, action: "test_args")
               new_cols.each do |col|
                 type = Souls.type_check(col[:type])
                 text =

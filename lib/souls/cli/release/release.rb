@@ -18,7 +18,7 @@ module Souls
       choice_num = prompt.select("Select Version: ", choices)[0].to_i
       update_kinds = %w[patch minor major]
       update_kind = update_kinds[choice_num - 1]
-      souls_new_ver = Souls.version_detector(current_ver: current_souls_ver, update_kind: update_kind)
+      souls_new_ver = Souls.version_detector(current_ver: current_souls_ver, update_kind:)
       status = Paint["Saving Repo...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
@@ -35,7 +35,7 @@ module Souls
         puts("before build")
         system("rake build")
         system("rake release")
-        write_changelog(current_souls_ver: current_souls_ver)
+        write_changelog(current_souls_ver:)
         system("gh release create v#{souls_new_ver} -t v#{souls_new_ver} -F ./CHANGELOG.md")
         system("gsutil -m -q -o 'GSUtil:parallel_process_count=1' cp -r coverage gs://souls-bucket/souls-coverage")
         system("bundle exec rake upload:init_files")
@@ -166,7 +166,7 @@ module Souls
           end
         TEXT
       end
-      overwrite_gemfile_lock(new_version: new_version)
+      overwrite_gemfile_lock(new_version:)
       true
     rescue StandardError, e
       raise(StandardError, e)

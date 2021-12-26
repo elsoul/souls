@@ -14,7 +14,7 @@ module Souls
       end
 
       mutation_argument = check_mutation_argument(class_name: "user", action: "create")
-      overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
+      overwrite_class_file(mutation_argument:, file_path:, new_cols:)
       Souls::Painter.update_file(file_path.to_s)
     end
 
@@ -29,8 +29,8 @@ module Souls
         return
       end
 
-      mutation_argument = check_mutation_argument(class_name: class_name, action: "update")
-      overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
+      mutation_argument = check_mutation_argument(class_name:, action: "update")
+      overwrite_class_file(mutation_argument:, file_path:, new_cols:)
 
       Souls::Painter.update_file(file_path.to_s)
     end

@@ -7,8 +7,8 @@ module Souls
       dir_name = "./app/graphql/resolvers"
       new_file_path = "tmp/update_resolver.rb"
       file_path = "#{dir_name}/#{singularized_class_name}_search.rb"
-      args = check_resolver_argument(class_name: class_name)
-      scope_args = check_resolver_argument(class_name: class_name, action: "scope")
+      args = check_resolver_argument(class_name:)
+      scope_args = check_resolver_argument(class_name:, action: "scope")
       argument = false
       scope = false
       File.open(file_path) do |f|

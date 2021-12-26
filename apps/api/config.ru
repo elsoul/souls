@@ -4,7 +4,7 @@ require "graphql_playground"
 
 map "/playground" do
   endpoint = Souls.configuration.endpoint
-  use GraphQLPlayground, endpoint: endpoint
+  use GraphQLPlayground, endpoint:
 end
 
 run SoulsApi

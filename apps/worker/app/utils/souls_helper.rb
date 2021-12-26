@@ -80,7 +80,7 @@ module SoulsHelper
       options.add_argument("--disable-popup-blocking")
       options.add_argument("--disable-translate")
       options.add_argument("-headless") if ENV["RACK_ENV"] == "production"
-      Selenium::WebDriver.for(:chrome, options: options)
+      Selenium::WebDriver.for(:chrome, options:)
     end
   end
 

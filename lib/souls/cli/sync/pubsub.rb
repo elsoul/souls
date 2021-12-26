@@ -23,7 +23,7 @@ module Souls
 
     def get_topics(workers: {})
       project_id = Souls.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       topics = pubsub.topics
 
       topic_names =
@@ -51,14 +51,14 @@ module Souls
 
     def create_topic(topic_id: "mailer")
       project_id = Souls.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       topic = pubsub.create_topic(topic_id.to_s)
       puts("Topic #{topic.name} created.")
     end
 
     def delete_topic(topic_id: "mailer")
       project_id = Souls.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       topic = pubsub.topic(topic_id.to_s)
       topic.delete
       puts("Topic #{topic_id} deleted.")
@@ -66,7 +66,7 @@ module Souls
 
     def delete_subscription(topic_id: "mailer")
       project_id = Souls.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       subscription_id = "#{topic_id}_sub"
       subscription = pubsub.subscription(subscription_id)
       subscription.delete
@@ -85,10 +85,10 @@ module Souls
       end
 
       project_id = Souls.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
 
       topic = pubsub.topic(topic_id)
-      sub = topic.subscribe(subscription_id, endpoint: endpoint, deadline: 20)
+      sub = topic.subscribe(subscription_id, endpoint:, deadline: 20)
       sub.expires_in = nil
       puts("Push subscription #{subscription_id} created.")
     end

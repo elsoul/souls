@@ -122,9 +122,9 @@ module Souls
       Dir.chdir(Souls.get_api_path.to_s) do
         cols =
           if col == "mutation"
-            get_columns_num_no_timestamp(class_name: class_name)
+            get_columns_num_no_timestamp(class_name:)
           else
-            get_columns_num(class_name: class_name)
+            get_columns_num(class_name:)
           end
         relation_params = cols.select { |n| n[:column_name].match?(/_id$/) }
         user_check =
@@ -132,7 +132,7 @@ module Souls
             param[:column_name] == "user_id"
           end
         user_exist = user_check.include?(true)
-        return { user_exist: user_exist, params: cols, relation_params: relation_params }
+        return { user_exist:, params: cols, relation_params: }
       end
     end
 
@@ -149,7 +149,7 @@ module Souls
 
             types = Souls.get_type_and_name(line)
             array = line.include?("array: true")
-            cols << { column_name: types[1], type: types[0], array: array }
+            cols << { column_name: types[1], type: types[0], array: }
           end
         end
       end
@@ -169,7 +169,7 @@ module Souls
 
             types = Souls.get_type_and_name(line)
             array = line.include?("array: true")
-            cols << { column_name: types[1], type: types[0], array: array } unless %w[
+            cols << { column_name: types[1], type: types[0], array: } unless %w[
               created_at
               updated_at
             ].include?(types[1])
@@ -197,7 +197,7 @@ module Souls
           types = Souls.get_type_and_name(line)
           types.map { |n| n.gsub!(":", "") }
           array = line.include?("array: true")
-          response << { column_name: types[1], type: types[0], array: array }
+          response << { column_name: types[1], type: types[0], array: }
         end
       end
     end
@@ -208,7 +208,7 @@ module Souls
 
       new_columns =
         file_paths.map do |file_path|
-          get_col_name_and_type(class_name: class_name, file_path: file_path, action: action)
+          get_col_name_and_type(class_name:, file_path:, action:)
         end
       new_columns.flatten
     end
@@ -230,17 +230,17 @@ module Souls
             raise(StandardError, "Wrong class_name!Please Check your migration file!")
           end
 
-          response << { column_name: types[1], type: types[2], array: array }
+          response << { column_name: types[1], type: types[2], array: }
         end
       end
       response
     end
 
     def check_schema(class_name: "user")
-      schema_data = get_columns_num(class_name: class_name)
-      create_migration_data = get_create_migration_type(class_name: class_name)
-      add_migration_data = get_migration_type(class_name: class_name, action: "add")
-      remove_migration_data = get_migration_type(class_name: class_name, action: "remove")
+      schema_data = get_columns_num(class_name:)
+      create_migration_data = get_create_migration_type(class_name:)
+      add_migration_data = get_migration_type(class_name:, action: "add")
+      remove_migration_data = get_migration_type(class_name:, action: "remove")
       migration_data = create_migration_data + add_migration_data - remove_migration_data
       return "Already Up to date!" if schema_data.size == migration_data.size
 
