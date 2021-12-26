@@ -37,7 +37,7 @@ Dir["./constants/*.rb"].each { |f| require f }
 @app_name = Souls.configuration.app
 db_conf = YAML.safe_load(ERB.new(File.read("./config/database.yml")).result, permitted_classes: [Date], aliases: true)
 ActiveRecord::Base.establish_connection(db_conf[ENV["RACK_ENV"]])
-ActiveRecord::Base.default_timezone = :local
+ActiveRecord.default_timezone = :local
 
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{Dir.pwd}/app/models")
