@@ -36,6 +36,7 @@ group :development, :test do
   gem "rspec", "3.10.0"
   gem "rubocop", "1.23.0"
   gem "solargraph", "0.44.2"
+  gem "steep", github: "williamcotton/steep", branch: "issue-466"
   gem "webmock", "3.14.0"
 end
 

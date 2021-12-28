@@ -22,12 +22,7 @@ module Souls
       initial_config_init(app_name: app_name, service_name: service_name)
       system("cd #{app_name} && git init --initial-branch=main")
 
-      system(
-        "
-        cd #{app_name} &&
-        git submodule add -f https://github.com/ruby/gem_rbs_collection.git vendor/rbs/gem_rbs_collection
-        "
-      )
+      system(" cd #{app_name} && rbs collection init && rbs collection install ")
       souls_api_credit(app_name)
     end
 
