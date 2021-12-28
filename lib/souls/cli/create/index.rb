@@ -145,7 +145,7 @@ end
               - name: Set up Ruby 3.0
                 uses: ruby/setup-ruby@v1
                 with:
-                  ruby-version: 3.0
+                  ruby-version: "3.0"
 
               - name: Checkout the repository
                 uses: actions/checkout@v2
