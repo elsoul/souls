@@ -21,6 +21,18 @@ module Souls
       end
     end
 
+    desc "add_service_account_role", "Add IAM Service Account Role"
+    method_option :role, default: "", aliases: "--role", desc: "roles/datastore.owner"
+    def add_service_account_role
+      app_name = Souls.configuration.app
+      project_id = Souls.configuration.project_id
+      system(
+        "gcloud projects add-iam-policy-binding #{project_id} \
+          --member='serviceAccount:#{app_name}@#{project_id}.iam.gserviceaccount.com' \
+          --role=#{options[:role]}"
+      )
+    end
+
     private
 
     desc "create_service_account", "Create Google Cloud IAM Service Account"
@@ -77,16 +89,6 @@ module Souls
         ]
       )
       FileUtils.rm_f(file_path)
-    end
-
-    def add_service_account_role(role: "roles/firebase.admin")
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
-      system(
-        "gcloud projects add-iam-policy-binding #{project_id} \
-          --member='serviceAccount:#{app_name}@#{project_id}.iam.gserviceaccount.com' \
-          --role=#{role}"
-      )
     end
 
     def add_permissions
