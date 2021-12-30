@@ -1,0 +1,26 @@
+module Types
+  String: String
+  Boolean: Boolean
+  Integer: Integer
+  class GraphQL
+    class Schema
+      class Argument
+      end
+      class Union
+      end
+      class Scalar
+      end
+      class Object
+      end
+      class InputObject
+      end
+      class Field
+      end
+      class Enum
+      end
+    end
+  end
+end
+class Object
+  def self.argument: (untyped, untyped, untyped) -> untyped
+end

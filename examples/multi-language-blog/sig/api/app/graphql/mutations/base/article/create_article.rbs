@@ -1,0 +1,39 @@
+class Boolean
+end
+module Mutations
+  module Base
+    module Article
+      class CreateArticle < BaseMutation
+        String: String
+        Boolean: Boolean
+        Integer: Integer
+        def resolve:  ({
+                          user_id: String?,
+                          title: String?,
+                          body: String?,
+                          category: String?,
+                          tags: [String]?,
+                          slug: String?,
+                          published: bool?,
+                          is_deleted: bool?
+                      }) -> ({ :article_edge => { :node => String } } | ::GraphQL::ExecutionError )
+
+        def self.argument: (:user_id, String, required: false ) -> Integer
+                         | (:title, String, required: false ) -> String
+                         | (:body, String, required: false ) -> String
+                         | (:category, String, required: false ) -> String
+                         | (:tags, [String], required: false ) -> String
+                         | (:slug, String, required: false ) -> String
+                         | (:published, Boolean, required: false ) -> bool
+                         | (:is_deleted, Boolean, required: false ) -> bool
+
+        def self.field: (*untyped) -> String
+        attr_accessor context: {user:{
+          id: Integer,
+          username: String,
+          email: String
+        }}
+      end
+    end
+  end
+end

@@ -1,0 +1,12 @@
+module Types
+  class GraphQL
+    class Types
+      class Relay
+        class BaseEdge
+        end
+      end
+    end
+  end
+  class BaseEdge < GraphQL::Types::Relay::BaseEdge
+  end
+end

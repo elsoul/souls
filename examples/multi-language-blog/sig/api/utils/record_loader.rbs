@@ -1,0 +1,9 @@
+class RecordLoader
+  @model: untyped
+
+  def initialize: (untyped model) -> void
+  def perform: (untyped ids) -> untyped
+  def fulfill: (untyped, untyped) -> untyped
+  def fulfilled?: (untyped) -> untyped
+  def self.for: (untyped) -> untyped
+end

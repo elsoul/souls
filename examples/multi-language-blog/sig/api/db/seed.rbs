@@ -1,0 +1,5 @@
+class Object
+  private
+  def create_article: (?user_id: Integer, ?article_category_id: Integer) -> untyped
+  def create_comment: (?article_id: Integer) -> untyped
+end

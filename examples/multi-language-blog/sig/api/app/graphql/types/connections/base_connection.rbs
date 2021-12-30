@@ -1,0 +1,8 @@
+module Types
+  class BaseConnection
+    def total_count: -> untyped
+    def total_pages: -> untyped
+    def object: (*untyped) -> untyped
+    def self.field: (*untyped) -> untyped
+  end
+end

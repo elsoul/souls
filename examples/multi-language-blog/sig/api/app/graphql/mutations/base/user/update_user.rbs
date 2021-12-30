@@ -1,0 +1,34 @@
+module Mutations
+  module Base
+    module User
+      class UpdateUser < BaseMutation
+        String: String
+        Boolean: Boolean
+        Integer: Integer
+        def resolve:  ({
+                        id: String,
+                          uid: String?,
+                          username: String?,
+                          email: String?,
+                          lang: String?,
+                          is_deleted: bool?,
+                          id: String?
+                      }) -> ({ :user_edge => { :node => String } } | ::GraphQL::ExecutionError )
+
+        def self.argument: (:uid, String, required: false ) -> String
+                         | (:username, String, required: false ) -> String
+                         | (:email, String, required: false ) -> String
+                         | (:lang, String, required: false ) -> String
+                         | (:is_deleted, Boolean, required: false ) -> bool
+                         | (:id, String, required: true ) -> String
+
+        def self.field: (*untyped) -> String
+        attr_accessor context: {user:{
+          id: Integer,
+          username: String,
+          email: String
+        }}
+      end
+    end
+  end
+end
