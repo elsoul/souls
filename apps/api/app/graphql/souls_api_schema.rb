@@ -24,7 +24,7 @@ class SoulsApiSchema < GraphQL::Schema
   end
 
   def self.from_global_id(global_id)
-    token = Base64.decode64(global_id)
+    token = Base64.strict_decode64(global_id)
     token.split(":")
   end
 
