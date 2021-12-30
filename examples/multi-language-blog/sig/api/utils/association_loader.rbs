@@ -1,0 +1,25 @@
+module GraphQL
+  class Batch
+    class Loader
+    end
+  end
+end
+
+class AssociationLoader < GraphQL::Batch::Loader
+  @model: untyped
+  @association_name: String
+
+  def self.validate: (untyped model, untyped association_name) -> nil
+  def initialize: (untyped model, untyped association_name) -> void
+  def load: (untyped record) -> bool
+  def cache_key: (untyped record) -> untyped
+  def perform: (untyped records) -> untyped
+  def fulfill: (untyped, untyped) -> untyped
+  def self.for: (*untyped) -> untyped
+
+  private
+  def validate: -> nil
+  def preload_association: (untyped records) -> untyped
+  def read_association: (untyped record) -> untyped
+  def association_loaded?: (untyped record) -> untyped
+end

@@ -1,0 +1,21 @@
+module Mutations
+  class BaseMutation
+    @payload: untyped
+
+    def fb_auth: (token: String) -> Hash[Symbol, String]
+    def publish_pubsub_queue: (?topic_name: String, ?message: String) -> untyped
+    def make_graphql_query: (?query: String, ?args: Hash[untyped, untyped]) -> String
+    def post_to_dev: (?worker_name: String, ?query_string: String) -> untyped
+    def get_worker:  (?worker_name: String) -> Array[Hash[Symbol, (String | Integer)]]
+    def check_user_permissions: (untyped user, untyped obj, untyped method) -> nil
+    def auth_check: (untyped context) -> nil
+    def get_token: (untyped token) -> untyped
+    def production?: -> bool
+    def get_instance_id: -> String
+    def self.argument_class: (*untyped) -> untyped
+    def self.field_class: (*untyped) -> untyped
+    def self.input_object_class: (*untyped) -> untyped
+    def self.object_class: (*untyped) -> untyped
+                           
+  end
+end

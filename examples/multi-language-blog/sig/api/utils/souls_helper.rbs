@@ -1,0 +1,3 @@
+module SoulsHelper
+  def self.get_tables: () -> Array[String]
+end

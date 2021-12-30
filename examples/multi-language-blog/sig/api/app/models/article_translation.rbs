@@ -1,0 +1,2 @@
+class ArticleTranslation < ActiveRecord::Base
+end

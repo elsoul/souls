@@ -1,0 +1,15 @@
+module Types
+  class UserType < BaseObject
+    def self.implements: (*untyped) -> untyped
+    def self.global_id_field: (:id) -> String
+    def self.field: (:uid, String, null: true) -> String
+                  | (:username, String, null: true) -> String
+                  | (:email, String, null: true) -> String
+                  | (:lang, String, null: true) -> String
+                  | (:is_deleted, Boolean, null: true) -> bool
+                  | (:created_at, String, null: true) -> String
+                  | (:updated_at, String, null: true) -> String
+  def self.edge_type: () -> untyped
+    def self.connection_type: () -> untyped
+  end
+end

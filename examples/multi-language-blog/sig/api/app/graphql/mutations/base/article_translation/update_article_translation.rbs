@@ -1,0 +1,32 @@
+module Mutations
+  module Base
+    module ArticleTranslation
+      class UpdateArticleTranslation < BaseMutation
+        String: String
+        Boolean: Boolean
+        Integer: Integer
+        def resolve:  ({
+                        id: String,
+                          article_id: String?,
+                          title: String?,
+                          body: String?,
+                          is_deleted: bool?,
+                          id: String?
+                      }) -> ({ :article_translation_edge => { :node => String } } | ::GraphQL::ExecutionError )
+
+        def self.argument: (:article_id, String, required: false ) -> String
+                         | (:title, String, required: false ) -> String
+                         | (:body, String, required: false ) -> String
+                         | (:is_deleted, Boolean, required: false ) -> bool
+                         | (:id, String, required: true ) -> String
+
+        def self.field: (*untyped) -> String
+        attr_accessor context: {user:{
+          id: Integer,
+          username: String,
+          email: String
+        }}
+      end
+    end
+  end
+end

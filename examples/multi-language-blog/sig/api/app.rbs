@@ -1,0 +1,52 @@
+class SoulsApi
+  def self.params: (*untyped) -> untyped
+  def self.login_auth: (token: untyped) -> untyped
+  def self.use: (*untyped) -> untyped
+  def self.set: (*untyped) -> untyped
+  def self.enable: (*untyped) -> untyped
+  def self.env: (*untyped) -> untyped
+  def self.json: (*untyped) -> untyped
+  def json: (*untyped) -> untyped
+  def self.request: (*untyped) -> untyped
+  def self.get:(*untyped) {(*untyped) -> untyped} -> untyped
+  def self.before: (*untyped) {(*untyped) -> untyped} -> untyped
+  def self.register: (*untyped) -> untyped
+  def self.configure: (*untyped) {(*untyped) -> untyped} -> untyped
+  def self.error: (*untyped) {(*untyped) -> untyped} -> untyped
+  def self.post: (*untyped) {(*untyped) -> untyped} -> untyped
+end
+
+class User
+  def self.first: (*untyped) -> untyped
+end
+class StandardError
+  def self.to_json: (*untyped) -> untyped
+end
+
+module Souls
+  def self.configuration: -> untyped
+end
+
+module YAML
+  def self.safe_load: (*untyped) -> untyped
+end
+
+module Zeitwerk
+  class Loader
+    def push_dir: (String) -> untyped
+    def collapse: (String) -> untyped
+    def setup: () -> void
+  end
+end
+
+class Sinatra
+  class Base
+  end
+  module ActiveRecordExtension
+  end
+end
+
+module Rack
+  module JSONBodyParser
+  end
+end

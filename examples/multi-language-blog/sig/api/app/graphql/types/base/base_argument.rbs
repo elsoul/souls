@@ -1,0 +1,5 @@
+module Types
+  class BaseArgument < GraphQL::Schema::Argument
+    def self.argument_class: (*untyped) -> untyped
+  end
+end

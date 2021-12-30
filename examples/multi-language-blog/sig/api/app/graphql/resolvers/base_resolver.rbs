@@ -1,0 +1,19 @@
+class String
+  def Int: (*untyped) -> Integer
+end
+module SearchObject
+  def self.module: (Symbol) -> untyped
+end
+module Resolvers
+  class BaseResolver
+    def self.scope: () {(untyped) -> nil } -> untyped
+    def self.type: (untyped, null: false) -> untyped
+    def self.types: () -> untyped
+    def self.description: (String) -> untyped
+    def self.option: (untyped, type: untyped, with: Symbol) -> untyped
+    def normalize_filters: (untyped value, ?Array[untyped] branches) -> Array[untyped]
+    def decode_global_key: (String) -> Integer
+  end
+end
+class Boolean
+end

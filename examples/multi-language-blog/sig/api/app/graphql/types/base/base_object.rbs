@@ -1,0 +1,6 @@
+module Types
+  class BaseObject < GraphQL::Schema::Object
+    def self.field_class: (*untyped) -> untyped
+    def self.connection_type_class: (*untyped) -> untyped
+  end
+end

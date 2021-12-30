@@ -1,0 +1,14 @@
+module Mutations
+  module Base
+    module Article
+      class DeleteArticle
+        def resolve:  ({
+                          id: String
+                       }) -> ( Hash[Symbol, untyped] | ::GraphQL::ExecutionError )
+        
+        def self.argument: (*untyped) -> String
+        def self.field: (*untyped) -> String
+      end
+    end
+  end
+end

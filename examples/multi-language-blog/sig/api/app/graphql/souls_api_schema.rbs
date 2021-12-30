@@ -1,0 +1,11 @@
+class SoulsApiSchema < GraphQL::Schema
+  def self.default_max_page_size: (Integer) -> untyped
+  def self.max_complexity: (Integer) -> untyped
+  def self.max_depth: (Integer) -> untyped
+  def self.use: (untyped) -> untyped
+  def self.to_global_id: (String, String) -> String
+  def self.from_global_id: (String | nil) -> [String, Integer]
+  def self.id_from_object: (untyped object, untyped _type_definition, untyped _query_ctx) -> untyped
+  def self.object_from_id: (untyped id, untyped _query_ctx) -> untyped
+  def self.execute: (*untyped) -> untyped
+end
