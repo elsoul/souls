@@ -10,6 +10,7 @@ AllCops:
     - "lib/souls/api/generate/type.rb"
     - "tmp/**/*.rb"
     - "vendor/**/*"
+    - "examples"
 
 
 Style/Copyright:
