@@ -150,16 +150,14 @@ module Souls
                 next
               else
                 case type
-                when "text", "date", "datetime"
+                when "bigint", "integer", "float", "string", "text", "date", "datetime"
                   if array_true
-                    new_line.write("       \"#{name.camelize(:lower)}\" => be_all(String),\n")
+                    new_line.write("       \"#{name.camelize(:lower)}\" => be_all(#{field}),\n")
                   else
-                    new_line.write("       \"#{name.camelize(:lower)}\" => be_a(String),\n")
+                    new_line.write("       \"#{name.camelize(:lower)}\" => be_a(#{field}),\n")
                   end
                 when "boolean"
-                  new_line.write("       \"#{name.singularize.camelize(:lower)}\" => be_in([true, false]),\n")
-                when "string", "bigint", "integer", "float"
-                  new_line.write("       \"#{name.singularize.camelize(:lower)}\" => be_a(#{field}),\n")
+                  new_line.write("       \"#{name.camelize(:lower)}\" => be_in([true, false]),\n")
                 end
               end
             end
