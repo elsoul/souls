@@ -9,7 +9,7 @@ WORKDIR /myapp
 
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
-RUN gem install bundler:2.2.32
+RUN gem install bundler:2.3.4
 RUN bundle
 COPY . /myapp
 
