@@ -7,7 +7,8 @@ gem "google-cloud-firestore", "2.6.5", require: "google/cloud/firestore"
 gem "google-cloud-logging", "2.2.2", require: "google/cloud/logging"
 gem "google-cloud-pubsub", "2.9.0", require: "google/cloud/pubsub"
 gem "google-cloud-storage", "1.35.0", require: "google/cloud/storage"
-gem "graphql", "1.13.1"
+gem "google-cloud-translate", "3.2.2", require: "google/cloud/translate"
+gem "graphql", "1.13.2"
 gem "graphql-batch", "0.4.3"
 gem "grpc", "1.41.1"
 gem "jwt", "2.3.0"
@@ -36,7 +37,7 @@ group :development, :test do
   gem "graphql_playground", "0.0.1"
   gem "rack-test", "1.1.0"
   gem "rspec", "3.10.0"
-  gem "rubocop", "1.23.0"
+  gem "rubocop", "1.24.1"
   gem "solargraph", "0.44.2"
   gem "steep", github: "williamcotton/steep", branch: "issue-466"
   gem "webmock", "3.14.0"
@@ -44,7 +45,7 @@ end
 
 group :development do
   gem "listen", "3.7.0"
-  gem "rubocop-graphql", "0.11.2"
+  gem "rubocop-graphql", "0.12.0"
   gem "spring", "2.1.1"
   gem "spring-watcher-listen", "2.0.1"
 end

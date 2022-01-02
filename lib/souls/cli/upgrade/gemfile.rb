@@ -17,8 +17,8 @@ module Souls
       tmp_file = "./config/Gemfile"
       new_gems = gemfile_latest_version
       logs = []
-      message = Paint["\nAlready Up to date!", :green]
-      return "Already Up to date!" && puts(message) if new_gems[:gems].blank?
+      message = "Already Up to date!"
+      return "Already Up to date!" && Souls::Painter.warning(message) if new_gems[:gems].blank?
 
       @i = 0
       File.open(file_path, "r") do |f|
@@ -72,8 +72,7 @@ module Souls
       FileUtils.rm("./Gemfile.lock")
       FileUtils.mv("./config/Gemfile", "./Gemfile")
       system("bundle update")
-      success = Paint["\n\nSuccessfully Updated These Gems!\n", :green]
-      puts(success)
+      Souls::Painter.success("\n\nSuccessfully Updated These Gems!\n")
       logs.each do |line|
         puts(line)
       end
@@ -89,6 +88,7 @@ module Souls
         f.each_line do |line|
           from_dev = true if line.include?("group")
           next unless line.include?("gem ")
+          next if line.include?("require: ")
 
           gem = line.gsub("gem ", "").gsub("\"", "").gsub("\n", "").gsub(" ", "").split(",")
           url = URI("https://rubygems.org/api/v1/versions/#{gem[0]}/latest.json")
