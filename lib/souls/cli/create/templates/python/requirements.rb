@@ -4,7 +4,7 @@ module Template
       <<~PACKAGEJSON
         # Function dependencies, for example:
         # package>=version
-      
+
       PACKAGEJSON
     end
   end
