@@ -3,7 +3,6 @@ require_relative "souls/cli"
 require "active_support/core_ext/string/inflections"
 require "date"
 require "json"
-require "fileutils"
 require "net/http"
 require "paint"
 require "whirly"
@@ -13,19 +12,6 @@ require "resolv"
 
 module Souls
   extend Souls::Utils
-  SOULS_METHODS = %w[
-    model
-    query
-    mutation
-    type
-    resolver
-    rspec_factory
-    rspec_model
-    rspec_query
-    rspec_mutation
-    rspec_resolver
-  ].freeze
-  public_constant :SOULS_METHODS
   class Error < StandardError; end
   class << self
     attr_accessor :configuration

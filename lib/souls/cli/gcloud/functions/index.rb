@@ -3,15 +3,19 @@ module Souls
     desc "deploy", "Deploy Cloud Functions"
     def deploy
       require(Souls.get_mother_path.to_s + "/config/souls")
-      project_id = Souls.configuration.project_id
-      Dir.chdir(Souls.get_functions_path.to_s) do
-        system(
-          "
-          gcloud functions deploy souls_functions --project=#{project_id} \
-          --runtime ruby27 --trigger-http --allow-unauthenticated --env-vars-file .env.yaml
-          "
-        )
+      current_dir = FileUtils.pwd.split("/").last
+      unless current_dir.match?(/^cf_/)
+        Souls::Painter.error("You are at wrong dir!\nPlease go to `apps/functions` dir!")
+        return false
       end
+
+      runtime = current_dir.match(/cf_(\D+\d+)_/)[1]
+      system(
+        "
+          gcloud functions deploy #{current_dir} --project=#{project_id} \
+          --runtime #{runtime} --trigger-http --allow-unauthenticated --env-vars-file .env.yaml
+          "
+      )
     end
 
     desc "describe", "Describe SOULs Functions"
