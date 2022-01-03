@@ -36,12 +36,3 @@ namespace :upload do
     end
   end
 end
-
-namespace :task do
-  task :g do
-    file_path = "./lib/souls/generate/"
-    Souls::SOULS_METHODS.each do |f|
-      FileUtils.touch("#{file_path}#{f}.rb")
-    end
-  end
-end

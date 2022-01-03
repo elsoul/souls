@@ -1,0 +1,2 @@
+module Go
+end
