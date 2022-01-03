@@ -8,6 +8,7 @@ gem "google-cloud-firestore", "2.6.5", require: "google/cloud/firestore"
 gem "google-cloud-logging", "2.2.2", require: "google/cloud/logging"
 gem "google-cloud-pubsub", "2.9.0", require: "google/cloud/pubsub"
 gem "google-cloud-storage", "1.35.0", require: "google/cloud/storage"
+gem "google-cloud-translate", "3.2.2", require: "google/cloud/translate"
 gem "graphql", "1.13.1"
 gem "graphql-batch", "0.4.3"
 gem "grpc", "1.41.1"
@@ -23,7 +24,7 @@ gem "sinatra", "2.1.0"
 gem "sinatra-activerecord", "2.0.25", require: "sinatra/activerecord"
 gem "sinatra-contrib", "2.1.0", require: false
 gem "slack-ruby3", "0.1.2"
-gem "souls", "1.16.0"
+gem "souls", "1.16.1"
 gem "zeitwerk", "2.5.1"
 
 group :development, :test do
