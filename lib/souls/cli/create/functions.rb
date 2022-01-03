@@ -27,7 +27,7 @@ module Souls
           when "python"
             method == "requirements" ? "txt" : "py"
           when "go"
-            "go"
+            method == "go" ? "mod" : "go"
           else
             "rb"
           end
