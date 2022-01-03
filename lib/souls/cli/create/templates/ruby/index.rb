@@ -1,6 +1,6 @@
 module Template
-  module Ruby::Ruby27
-    def self.cf_index
+  module Ruby
+    def self.index
       <<~APP
         require "functions_framework"
         require "sinatra/base"

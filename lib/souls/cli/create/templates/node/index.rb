@@ -1,6 +1,6 @@
 module Template
-  module Node::Node16
-    def self.cf_index
+  module Node
+    def self.index
       <<~APP
         const express = require('express');
         const bodyParser = require('body-parser');

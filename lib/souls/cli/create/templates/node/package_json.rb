@@ -1,6 +1,6 @@
 module Template
-  module Node::Node16
-    def self.cf_package_json
+  module Node
+    def self.package_json
       <<~PACKAGEJSON
         {
           "name": "souls-cf-node16",
@@ -9,7 +9,7 @@ module Template
             "express": "4.17.2",
             "body-parser": "1.19.1"
           }
-        }#{'    '}
+        }
       PACKAGEJSON
     end
   end
