@@ -3,6 +3,7 @@ module Souls
     desc "deploy", "Deploy Cloud Functions"
     def deploy
       require(Souls.get_mother_path.to_s + "/config/souls")
+      project_id = Souls.configuration.project_id
       current_dir = FileUtils.pwd.split("/").last
       unless current_dir.match?(/^cf_/)
         Souls::Painter.error("You are at wrong dir!\nPlease go to `apps/functions` dir!")
