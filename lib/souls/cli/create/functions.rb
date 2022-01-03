@@ -8,7 +8,12 @@ module Souls
   class Create < Thor
     desc "functions", "Create SOULs functions"
     def functions(function_name)
-      supported_languages = { ruby: %w[2.6 2.7], node: %w[16 14 12 10], python: %w[3.9 3.8 3.7], go: ["1.16", "1.13"] }
+      supported_languages = {
+        ruby: %w[2.6 2.7],
+        nodejs: %w[16 14 12 10],
+        python: %w[3.9 3.8 3.7],
+        go: ["1.16", "1.13"]
+      }
 
       prompt = TTY::Prompt.new
       runtime = prompt.select("Select Runtime?", supported_languages.keys.map(&:to_s).map(&:camelize))
@@ -22,7 +27,7 @@ module Souls
       runtime_methods.each do |method|
         file_extension =
           case runtime_downcased
-          when "node"
+          when "nodejs"
             method == "package" ? "json" : "js"
           when "python"
             method == "requirements" ? "txt" : "py"
@@ -37,7 +42,8 @@ module Souls
           else
             "#{file_dir}/#{method}.#{file_extension}"
           end
-        File.write(file_path, Object.const_get("Template::#{runtime}").__send__(method))
+        file_name = file_dir.gsub("./apps/", "")
+        File.write(file_path, Object.const_get("Template::#{runtime}").__send__(method, file_name))
         Souls::Painter.create_file(file_path)
       end
       create_env_yaml(file_dir: file_dir)

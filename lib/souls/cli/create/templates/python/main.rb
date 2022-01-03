@@ -1,8 +1,8 @@
 module Template
   module Python
-    def self.main
+    def self.main(file_name)
       <<~APP
-        def hello_world(request):
+        def #{file_name}(request):
           """Responds to any HTTP request.
           Args:
               request (flask.Request): HTTP request object.

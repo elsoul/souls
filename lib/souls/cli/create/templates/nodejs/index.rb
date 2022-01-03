@@ -1,6 +1,6 @@
 module Template
-  module Node
-    def self.index
+  module Nodejs
+    def self.index(file_name)
       <<~APP
         const express = require('express');
         const bodyParser = require('body-parser');
@@ -19,7 +19,7 @@ module Template
         app.post('/souls-functions-post', (req, res)=>{
           res.json(req.body)
         });
-        exports.soulsApp = app;
+        exports.#{file_name} = app;
       APP
     end
   end

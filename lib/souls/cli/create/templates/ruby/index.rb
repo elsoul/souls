@@ -1,6 +1,6 @@
 module Template
   module Ruby
-    def self.index
+    def self.index(file_name)
       <<~APP
         require "functions_framework"
         require "sinatra/base"
@@ -17,7 +17,7 @@ module Template
           end
         end
 
-        FunctionsFramework.http("souls_functions") do |request|
+        FunctionsFramework.http(\"#{file_name}\") do |request|
           App.call(request.env)
         end
       APP

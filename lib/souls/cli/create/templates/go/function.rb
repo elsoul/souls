@@ -1,6 +1,6 @@
 module Template
   module Go
-    def self.function
+    def self.function(file_name)
       <<~APP
         // Package p contains an HTTP Cloud Function.
         package p
@@ -16,7 +16,7 @@ module Template
 
         // HelloWorld prints the JSON encoded "message" field in the body
         // of the request or "Hello, World!" if there isn't one.
-        func HelloWorld(w http.ResponseWriter, r *http.Request) {
+        func #{file_name}(w http.ResponseWriter, r *http.Request) {
           var d struct {
             Message string `json:"message"`
           }

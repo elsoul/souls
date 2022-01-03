@@ -12,7 +12,7 @@ module Souls
       runtime = current_dir.match(/cf_(\D+\d+)_/)[1]
       system(
         "
-          gcloud functions deploy souls_functions --project=#{project_id} \
+          gcloud functions deploy #{current_dir} --project=#{project_id} \
           --runtime #{runtime} --trigger-http --allow-unauthenticated --env-vars-file .env.yaml
           "
       )

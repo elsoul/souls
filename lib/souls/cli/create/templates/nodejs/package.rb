@@ -1,6 +1,6 @@
 module Template
-  module Node
-    def self.package
+  module Nodejs
+    def self.package(_args)
       <<~PACKAGEJSON
         {
           "name": "souls-cf-node16",

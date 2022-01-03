@@ -1,6 +1,6 @@
 module Template
-  module Node
-    def self.requirements
+  module Python
+    def self.requirements(_args)
       <<~PACKAGEJSON
         # Function dependencies, for example:
         # package>=version
