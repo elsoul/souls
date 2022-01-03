@@ -1,6 +1,6 @@
 module Template
   module Ruby
-    def self.index(file_name)
+    def self.app(file_name)
       <<~APP
         require "functions_framework"
         require "sinatra/base"
