@@ -29,13 +29,28 @@ module Souls
     def url
       require(Souls.get_mother_path.to_s + "/config/souls")
       project_id = Souls.configuration.project_id
-      system("gcloud functions describe souls_functions --project=#{project_id}| grep url")
+      current_dir = FileUtils.pwd.split("/").last
+      Souls::Painter.success(`gcloud functions describe #{current_dir} --project=#{project_id}| grep url`)
+    end
+
+    desc "all_url", "Get SOULs Functions All URL"
+    def all_url
+      require(Souls.get_mother_path.to_s + "/config/souls")
+      project_id = Souls.configuration.project_id
+      Dir.chdir(Souls.get_mother_path.to_s) do
+        souls_functions = Dir["apps/cf_*"]
+        cf_dir = souls_functions.map { |n| n.split("/").last }
+        cf_dir.each do |dir|
+          Souls::Painter.success(`gcloud functions describe #{dir} --project=#{project_id}| grep url`)
+        end
+      end
     end
 
     desc "dev", "Check SOULs Functions dev"
     def dev
       Dir.chdir(Souls.get_functions_path.to_s) do
-        system("bundle exec functions-framework-ruby --target souls_functions")
+        current_dir = FileUtils.pwd.split("/").last
+        system("bundle exec functions-framework-ruby --target #{current_dir}")
       end
     end
   end
