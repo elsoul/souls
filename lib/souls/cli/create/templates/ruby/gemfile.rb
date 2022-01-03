@@ -1,6 +1,6 @@
 module Template
   module Ruby
-    def self.Gemfile
+    def self.gemfile
       <<~GEMFILE
         source "https://rubygems.org"
 

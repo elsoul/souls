@@ -22,18 +22,21 @@ module Souls
       runtime_methods.each do |method|
         file_extension =
           case runtime_downcased
-          when "ruby"
-            "rb"
           when "node"
-            "js"
+            method == "package" ? "json" : "js"
           when "python"
-            "py"
+            method == "requirements" ? "txt" : "py"
           when "go"
             "go"
           else
             "rb"
           end
-        file_path = "#{file_dir}/#{method}.#{file_extension}"
+        file_path =
+          if method == "gemfile"
+            "#{file_dir}/Gemfile"
+          else
+            "#{file_dir}/#{method}.#{file_extension}"
+          end
         File.write(file_path, Object.const_get("Template::#{runtime}").__send__(method))
         Souls::Painter.create_file(file_path)
       end
