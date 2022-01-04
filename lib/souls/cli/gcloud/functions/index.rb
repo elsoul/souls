@@ -31,6 +31,10 @@ module Souls
       require(Souls.get_mother_path.to_s + "/config/souls")
       project_id = Souls.configuration.project_id
       system("gcloud functions delete #{name} --project=#{project_id}")
+      Dir.chdir(Souls.get_mother_path.to_s) do
+        FileUtils.rm_rf("apps/#{name}")
+      end
+      Souls::Painter.success("Deleted #{name} functions!")
     end
 
     desc "url", "Get SOULs Functions URL"
