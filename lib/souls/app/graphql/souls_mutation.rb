@@ -1,6 +1,15 @@
 module SOULs
   class SOULsMutation < GraphQL::Schema::RelayClassicMutation
-    def souls_fb_auth(token:)
+    def self.souls_check_user_permissions(user, obj, method)
+      raise(StandardError, "Invalid or Missing Token") unless user
+
+      policy_class = obj.class.name + "Policy"
+      policy_clazz = policy_class.constantize.new(user, obj)
+      permission = policy_clazz.public_send(method)
+      raise(Pundit::NotAuthorizedError, "permission error!") unless permission
+    end
+
+    def self.souls_fb_auth(token:)
       FirebaseIdToken::Certificates.request!
       sleep(3) if ENV["RACK_ENV"] == "development"
       user = FirebaseIdToken::Signature.verify(token)
@@ -9,13 +18,13 @@ module SOULs
       user
     end
 
-    def publish_pubsub_queue(topic_name: "send-mail-job", message: "text!")
+    def self.souls_publish_pubsub_queue(topic_name: "send-mail-job", message: "text!")
       pubsub = Google::Cloud::Pubsub.new(project: ENV["SOULS_GCP_PROJECT_ID"])
       topic = pubsub.topic(topic_name)
       topic.publish(message)
     end
 
-    def make_graphql_query(query: "newCommentMailer", args: {})
+    def self.souls_make_graphql_query(query: "newCommentMailer", args: {})
       if args.blank?
         query_string = %(query { #{query.to_s.underscore.camelize(:lower)} { response } })
       else
@@ -33,7 +42,7 @@ module SOULs
       query_string
     end
 
-    def post_to_dev(worker_name: "", query_string: "")
+    def self.souls_post_to_dev(worker_name: "", query_string: "")
       app = SOULs.configuration.app
       port = get_worker(worker_name: "souls-#{app}-#{worker_name}")[0][:port]
       endpoint = SOULs.configuration.endpoint
@@ -41,12 +50,12 @@ module SOULs
       res.body
     end
 
-    def get_worker(worker_name: "")
+    def self.get_worker(worker_name: "")
       workers = SOULs.configuration.workers
       workers.filter { |n| n[:name] == worker_name }
     end
 
-    def auth_check(context)
+    def self.auth_check(context)
       raise(GraphQL::ExecutionError, "You need to sign in!!") if context[:user].nil?
     end
 
