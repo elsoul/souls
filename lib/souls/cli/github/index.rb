@@ -89,8 +89,7 @@ module Souls
 
     def update_workers_env(key:, value:, dqm: false)
       Dir.chdir(Souls.get_mother_path.to_s) do
-        workers = Dir["apps/*"]
-        workers.delete("apps/api")
+        workers = Dir["apps/worker-*"]
         workers.each do |worker_path|
           file_path = "#{worker_path}/.env"
           File.open(file_path, "a") do |line|

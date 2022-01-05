@@ -6,7 +6,7 @@ end
 
 module Souls
   class Create < Thor
-    desc "functions", "Create SOULs functions"
+    desc "functions [name]", "Create SOULs functions"
     def functions(function_name)
       supported_languages = {
         ruby: %w[2.6 2.7],

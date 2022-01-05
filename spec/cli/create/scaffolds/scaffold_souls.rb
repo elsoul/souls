@@ -24,8 +24,7 @@ module Scaffold
         config.fixed_gems = ["spring"]
         config.workers = [
           {
-            name: "mailer",
-            endpoint: "",
+            name: "worker-mailer",
             port: 3000
           }
         ]
