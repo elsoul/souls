@@ -1,10 +1,10 @@
-module Souls
+module SOULs
   class Compute < Thor
     desc "setup_vpc_nat", "Set Up VPC Cloud Nat"
     method_option :range, default: "10.124.0.0/28", aliases: "--range", desc: "GCP VPC Network IP Range"
     def setup_vpc_nat
       puts(Paint["Initializing NAT Setup This process might take about 10 min...", :yellow])
-      Souls::Gcloud.new.config_set
+      SOULs::Gcloud.new.config_set
       create_network
       create_firewall_tcp(range: options[:range])
       create_firewall_ssh
@@ -13,10 +13,10 @@ module Souls
       create_router
       create_external_ip
       create_nat
-      Souls::Sql.new.invoke(:setup_private_ip)
+      SOULs::Sql.new.invoke(:setup_private_ip)
       update_workflows
       update_env
-      Souls::Painter.success("Cloud NAT is All Set!")
+      SOULs::Painter.success("Cloud NAT is All Set!")
       puts(
         Paint % [
           "Your Worker's External IP:  %{white_text}",
@@ -32,9 +32,9 @@ module Souls
     private
 
     def update_env
-      instance_name = Souls.configuration.instance_name
+      instance_name = SOULs.configuration.instance_name
       private_instance_ip = `gcloud sql instances list | grep #{instance_name} | awk '{print $6}'`.strip
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_path = ".env.production"
         env_production = File.readlines(file_path)
         env_production[0] = "SOULS_DB_HOST=#{private_instance_ip}\n"
@@ -44,17 +44,17 @@ module Souls
     end
 
     def get_external_ip
-      app_name = Souls.configuration.app
+      app_name = SOULs.configuration.app
       `gcloud compute addresses list | grep #{app_name}-worker-ip | awk '{print $2}'`.strip
     end
 
     def create_network
-      app_name = Souls.configuration.app
+      app_name = SOULs.configuration.app
       system("gcloud compute networks create #{app_name}")
     end
 
     def create_firewall_tcp(range: "10.124.0.0/28")
-      app_name = Souls.configuration.app
+      app_name = SOULs.configuration.app
       system(
         "gcloud compute firewall-rules create #{app_name} \
                   --network #{app_name} --allow tcp,udp,icmp --source-ranges #{range}"
@@ -62,7 +62,7 @@ module Souls
     end
 
     def create_firewall_ssh
-      app_name = Souls.configuration.app
+      app_name = SOULs.configuration.app
       system(
         "gcloud compute firewall-rules create #{app_name}-ssh --network #{app_name} \
             --allow tcp:22,tcp:3389,icmp"
@@ -70,8 +70,8 @@ module Souls
     end
 
     def create_subnet(range: "10.124.0.0/28")
-      app_name = Souls.configuration.app
-      region = Souls.configuration.region
+      app_name = SOULs.configuration.app
+      region = SOULs.configuration.region
       system(
         "gcloud compute networks subnets create #{app_name}-subnet \
             --range=#{range} --network=#{app_name} --region=#{region}"
@@ -79,9 +79,9 @@ module Souls
     end
 
     def create_connector
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
-      region = Souls.configuration.region
+      app_name = SOULs.configuration.app
+      project_id = SOULs.configuration.project_id
+      region = SOULs.configuration.region
       system(
         "gcloud compute networks vpc-access connectors create #{app_name}-connector \
               --region=#{region} \
@@ -91,20 +91,20 @@ module Souls
     end
 
     def create_router
-      app_name = Souls.configuration.app
-      region = Souls.configuration.region
+      app_name = SOULs.configuration.app
+      region = SOULs.configuration.region
       system("gcloud compute routers create #{app_name}-router --network=#{app_name} --region=#{region}")
     end
 
     def create_external_ip
-      app_name = Souls.configuration.app
-      region = Souls.configuration.region
+      app_name = SOULs.configuration.app
+      region = SOULs.configuration.region
       system("gcloud compute addresses create #{app_name}-worker-ip --region=#{region}")
     end
 
     def create_nat
-      app_name = Souls.configuration.app
-      region = Souls.configuration.region
+      app_name = SOULs.configuration.app
+      region = SOULs.configuration.region
       system(
         "gcloud compute routers nats create #{app_name}-worker-nat \
                   --router=#{app_name}-router \
@@ -119,8 +119,8 @@ module Souls
     end
 
     def update_workflows
-      app_name = Souls.configuration.app
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      app_name = SOULs.configuration.app
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         workflow_paths = Dir[".github/workflows/*.yml"]
         workflow_paths.each do |file_path|
           workflow = File.readlines(file_path)
@@ -133,7 +133,7 @@ module Souls
           end
           workflow.insert(index, "            --vpc-connector=#{app_name}-connector \\\n") if connector_index.nil?
           File.open(file_path, "w") { |f| f.write(workflow.join) }
-          Souls::Painter.update_file(file_path.to_s)
+          SOULs::Painter.update_file(file_path.to_s)
         end
       end
     end

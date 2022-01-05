@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   module Utils
     def get_mother_path
       current_dir = Dir.pwd
@@ -107,9 +107,9 @@ module Souls
     def get_latest_version_txt(service_name: "api")
       case service_name
       when "gem"
-        return Souls::VERSION.split(".").map(&:to_i)
+        return SOULs::VERSION.split(".").map(&:to_i)
       when "api", "worker", "console", "admin", "media"
-        file_path = "#{Gem.dir}/gems/souls-#{Souls::VERSION}/lib/souls/versions/.souls_#{service_name}_version"
+        file_path = "#{Gem.dir}/gems/souls-#{SOULs::VERSION}/lib/souls/versions/.souls_#{service_name}_version"
       else
         raise(StandardError, "You are at wrong directory!")
       end
@@ -119,7 +119,7 @@ module Souls
     end
 
     def get_relation_params(class_name: "user", col: "")
-      Dir.chdir(Souls.get_api_path.to_s) do
+      Dir.chdir(SOULs.get_api_path.to_s) do
         cols =
           if col == "mutation"
             get_columns_num_no_timestamp(class_name: class_name)
@@ -147,7 +147,7 @@ module Souls
           if class_check_flag == true && !line.include?("create_table")
             return cols if line.include?("t.index") || line.strip == "end"
 
-            types = Souls.get_type_and_name(line)
+            types = SOULs.get_type_and_name(line)
             array = line.include?("array: true")
             cols << { column_name: types[1], type: types[0], array: array }
           end
@@ -167,7 +167,7 @@ module Souls
           if class_check_flag == true && !line.include?("create_table")
             return cols if line.include?("t.index") || line.strip == "end"
 
-            types = Souls.get_type_and_name(line)
+            types = SOULs.get_type_and_name(line)
             array = line.include?("array: true")
             cols << { column_name: types[1], type: types[0], array: array } unless %w[
               created_at
@@ -194,7 +194,7 @@ module Souls
           next unless class_check_flag == true && !line.include?("create_table")
           return response if line.include?("t.timestamps") || line.strip == "end"
 
-          types = Souls.get_type_and_name(line)
+          types = SOULs.get_type_and_name(line)
           types.map { |n| n.gsub!(":", "") }
           array = line.include?("array: true")
           response << { column_name: types[1], type: types[0], array: array }

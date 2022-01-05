@@ -1,12 +1,12 @@
 require_relative "./scaffolds/scaffold_delete"
 
-RSpec.describe(Souls::Delete) do
+RSpec.describe(SOULs::Delete) do
   describe "connection_rbs" do
     it "should delete file" do
       FakeFS.with_fresh do
-        cli = Souls::Delete.new
+        cli = SOULs::Delete.new
 
-        allow(Souls).to(receive(:get_mother_path).and_return("./"))
+        allow(SOULs).to(receive(:get_mother_path).and_return("./"))
         file_dir = "./sig/api/app/graphql/types/connections/"
         file_name = "#{file_dir}user_connection.rbs"
         FileUtils.mkdir_p(file_dir)
@@ -20,9 +20,9 @@ RSpec.describe(Souls::Delete) do
 
     it "should not error if directory doesn't exist" do
       FakeFS.with_fresh do
-        cli = Souls::Delete.new
+        cli = SOULs::Delete.new
 
-        allow(Souls).to(receive(:get_mother_path).and_return("./"))
+        allow(SOULs).to(receive(:get_mother_path).and_return("./"))
         file_dir = "./sig/api/app/graphql/types/connections/"
         file_name = "#{file_dir}user_connection.rbs"
 

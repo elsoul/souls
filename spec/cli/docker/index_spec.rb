@@ -1,7 +1,7 @@
-RSpec.describe(Souls::Docker) do
+RSpec.describe(SOULs::Docker) do
   describe "psql" do
     it "should send the docker commad for psql" do
-      cli = Souls::Docker.new
+      cli = SOULs::Docker.new
       allow(cli).to(receive(:system).and_return(true))
 
       expect(cli).to(
@@ -23,7 +23,7 @@ RSpec.describe(Souls::Docker) do
 
   describe "mysql" do
     it "should send the docker command for mysql" do
-      cli = Souls::Docker.new
+      cli = SOULs::Docker.new
       allow(cli).to(receive(:system).and_return(true))
 
       expect(cli).to(
@@ -45,7 +45,7 @@ RSpec.describe(Souls::Docker) do
 
   describe "redis" do
     it "should send the docker command for redis" do
-      cli = Souls::Docker.new
+      cli = SOULs::Docker.new
       allow(cli).to(receive(:system).and_return(true))
 
       expect(cli).to(receive(:system).with("docker run --rm -d --name souls-redis -p 6379:6379 redis:latest"))

@@ -1,16 +1,16 @@
 require_relative "./functions"
-module Souls
+module SOULs
   class Create < Thor
     desc "worker [name]", "Create SOULs Worker"
     def worker(name)
-      require("#{Souls.get_mother_path}/config/souls")
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      require("#{SOULs.get_mother_path}/config/souls")
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         worker_name = "worker-#{name}"
         file_dir = "apps/worker-#{name}"
         raise(StandardError, "Same Worker Already Exist!") if Dir.exist?(file_dir)
 
-        workers = Souls.configuration.workers
-        app = Souls.configuration.app
+        workers = SOULs.configuration.workers
+        app = SOULs.configuration.app
         port = 3000 + workers.size
         souls_worker_name = "souls-#{app}-#{worker_name}"
         download_worker(worker_name: worker_name)
@@ -64,7 +64,7 @@ module Souls
     end
 
     def souls_conf_update(worker_name: "worker-mailer", strain: "mother")
-      workers = Souls.configuration.workers
+      workers = SOULs.configuration.workers
       port = 3000 + workers.size
       file_path = strain == "mother" ? "config/souls.rb" : "apps/api/config/souls.rb"
 
@@ -206,20 +206,20 @@ end
                       --set-env-vars="SOULS_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}"
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
     def souls_config_init(worker_name: "worker-mailer")
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
+      app_name = SOULs.configuration.app
+      project_id = SOULs.configuration.project_id
       config_dir = "apps/#{worker_name}/config"
       FileUtils.mkdir_p(config_dir) unless Dir.exist?(config_dir)
       FileUtils.touch("#{config_dir}/souls.rb")
       file_path = "#{config_dir}/souls.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          Souls.configure do |config|
+          SOULs.configure do |config|
             config.app = "#{app_name}"
             config.project_id = "#{project_id}"
             config.region = "asia-northeast1"
@@ -238,7 +238,7 @@ end
       file_path = "#{file_dir}/souls_helper.rbs"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          module SoulsHelper
+          module SOULsHelper
             def self.export_csv: (untyped model_name) -> (String? | StandardError )
             def self.export_model_to_csv: (untyped model_name) -> (untyped | StandardError )
             def self.upload_to_gcs: (String file_path, String upload_path) -> untyped
@@ -274,7 +274,7 @@ end
     end
 
     def download_worker(worker_name: "worker-mailer")
-      version = Souls.get_latest_version_txt(service_name: "worker").join(".")
+      version = SOULs.get_latest_version_txt(service_name: "worker").join(".")
       file_name = "worker-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
       puts(url)
@@ -305,7 +305,7 @@ end
       puts(line)
       welcome = Paint["SOULs Worker is Ready!", :white]
       puts(welcome)
-      souls_ver = Paint["SOULs Version: #{Souls::VERSION}", :white]
+      souls_ver = Paint["SOULs Version: #{SOULs::VERSION}", :white]
       puts(souls_ver)
       puts(line)
       endroll = <<~TEXT

@@ -7,7 +7,7 @@ require_relative "./scheduler/index"
 require_relative "./functions/index"
 require_relative "../cli_exception"
 
-module Souls
+module SOULs
   class Gcloud < Thor
     desc "iam [COMMAND]", "souls gcloud iam Commands"
     subcommand "iam", Iam
@@ -34,16 +34,16 @@ module Souls
 
     desc "auth_login", "gcloud config set and gcloud auth login"
     def auth_login
-      project_id = Souls.configuration.project_id
-      system("gcloud projects describe #{project_id}", out: File::NULL) or raise(Souls::GcloudException)
+      project_id = SOULs.configuration.project_id
+      system("gcloud projects describe #{project_id}", out: File::NULL) or raise(SOULs::GcloudException)
       system("gcloud config set project #{project_id} >/dev/null 2>&1")
       system("gcloud auth login")
     end
 
     desc "config_set", "gcloud config set"
     def config_set
-      project_id = Souls.configuration.project_id
-      system("gcloud projects describe #{project_id}", out: File::NULL) or raise(Souls::GcloudException)
+      project_id = SOULs.configuration.project_id
+      system("gcloud projects describe #{project_id}", out: File::NULL) or raise(SOULs::GcloudException)
       system("gcloud config set project #{project_id} >/dev/null 2>&1")
     end
 

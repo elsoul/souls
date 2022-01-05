@@ -1,6 +1,6 @@
 require_relative "./scaffolds/scaffold_rspec_query"
 
-RSpec.describe(Souls::Generate) do
+RSpec.describe(SOULs::Generate) do
   describe "Generate Rspec Query" do
     let(:class_name) { "user" }
     let(:file_name) { "user_spec" }
@@ -19,7 +19,7 @@ RSpec.describe(Souls::Generate) do
       FakeFS.activate!
       FileUtils.touch("#{@schema_dir}schema.rb")
 
-      a1 = Souls::Generate.new.rspec_query("user")
+      a1 = SOULs::Generate.new.rspec_query("user")
       file_output = File.read(file_path)
 
       expect(a1).to(eq(file_path))

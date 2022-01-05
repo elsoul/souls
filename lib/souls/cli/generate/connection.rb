@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "connection [CLASS_NAME]", "Generate GraphQL Connection from schema.rb"
     def connection(class_name)
@@ -13,7 +13,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

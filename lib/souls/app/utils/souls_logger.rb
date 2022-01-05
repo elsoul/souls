@@ -1,5 +1,5 @@
-module Souls
-  module SoulsLogger
+module SOULs
+  module SOULsLogger
     class Configuration
       attr_accessor :logger
 
@@ -47,7 +47,7 @@ module Souls
       entry.log_name = "error"
       entry.resource.type = "cloud_run_revision"
       entry.resource.labels[:service_name] = "souls"
-      entry.resource.labels[:revision_name] = Souls::VERSION
+      entry.resource.labels[:revision_name] = SOULs::VERSION
 
       entry
     end

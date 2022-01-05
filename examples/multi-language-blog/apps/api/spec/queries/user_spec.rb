@@ -18,7 +18,7 @@ RSpec.describe("User Query テスト") do
     end
 
     subject(:result) do
-      SoulsApiSchema.execute(query).as_json
+      SOULsApiSchema.execute(query).as_json
     end
 
     it "return User Data" do

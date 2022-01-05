@@ -33,7 +33,7 @@ require_relative "app/utils/souls_logger"
 ENV["RACK_ENV"] ||= "development"
 Dir["./config/*.rb"].each { |f| require f unless f.include?("souls.rb") }
 Dir["./constants/*.rb"].each { |f| require f }
-@app_name = Souls.configuration.app
+@app_name = SOULs.configuration.app
 db_conf = YAML.safe_load(ERB.new(File.read("./config/database.yml")).result, permitted_classes: [Date], aliases: true)
 ActiveRecord::Base.establish_connection(db_conf[ENV["RACK_ENV"]])
 ActiveRecord.default_timezone = :local
@@ -52,8 +52,8 @@ loader.collapse("#{__dir__}/app/graphql/types/base")
 loader.push_dir("#{Dir.pwd}/app/graphql")
 loader.setup
 
-class SoulsApi < Sinatra::Base
-  include SoulsHelper
+class SOULsApi < Sinatra::Base
+  include SOULsHelper
 
   ::Logger.class_eval { alias_method :write, :<< }
   access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)), "log", "access.log")
@@ -63,7 +63,7 @@ class SoulsApi < Sinatra::Base
 
   use Rack::JSONBodyParser
   register Sinatra::ActiveRecordExtension
-  endpoint = Souls.configuration.endpoint
+  endpoint = SOULs.configuration.endpoint
 
   configure :production, :development do
     set :logger, Logger.new($stdout)
@@ -95,7 +95,7 @@ class SoulsApi < Sinatra::Base
 
     user = token ? login_auth(token: token) : nil
     context = { user: user }
-    result = SoulsApiSchema.execute(params[:query], variables: params[:variables], context: context)
+    result = SOULsApiSchema.execute(params[:query], variables: params[:variables], context: context)
     json(result)
   rescue StandardError => e
     message = { error: e }

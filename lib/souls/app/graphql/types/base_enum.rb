@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   module Types
     class BaseEnum < GraphQL::Schema::Enum
     end

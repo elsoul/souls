@@ -1,10 +1,10 @@
 require_relative "./scaffolds/scaffold_delete"
 
-RSpec.describe(Souls::Delete) do
+RSpec.describe(SOULs::Delete) do
   describe "edge" do
     it "should delete file" do
       FakeFS.with_fresh do
-        cli = Souls::Delete.new
+        cli = SOULs::Delete.new
 
         file_dir = "./app/graphql/types/edges/"
         file_name = "#{file_dir}user_edge.rb"
@@ -19,7 +19,7 @@ RSpec.describe(Souls::Delete) do
 
     it "should not error if directory doesn't exist" do
       FakeFS.with_fresh do
-        cli = Souls::Delete.new
+        cli = SOULs::Delete.new
 
         file_dir = "./app/graphql/types/edges/"
         file_name = "#{file_dir}user_edge.rb"

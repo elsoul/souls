@@ -1,14 +1,14 @@
 require_relative "./scaffolds/scaffold_create_migration_rbs"
 
-RSpec.describe(Souls::DB) do
+RSpec.describe(SOULs::DB) do
   describe "create_migration_rbs" do
     it "should create correct file" do
       FakeFS.with_fresh do
-        cli = Souls::DB.new
+        cli = SOULs::DB.new
         file_dir = "./sig/api/db/migrate"
         FileUtils.mkdir_p(file_dir)
 
-        allow(Souls).to(receive(:get_mother_path).and_return("./"))
+        allow(SOULs).to(receive(:get_mother_path).and_return("./"))
 
         cli.create_migration_rbs("user")
         output = File.read("#{file_dir}/create_users.rbs")

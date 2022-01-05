@@ -7,7 +7,7 @@ require_relative "./rspec_factory"
 require_relative "./rspec_mutation"
 require_relative "./rspec_resolver"
 
-module Souls
+module SOULs
   class Update < Thor
     desc "scaffold [CLASS_NAME]", "Update Scaffold Params"
     def scaffold(class_name)
@@ -18,7 +18,7 @@ module Souls
       rspec_factory(class_name)
       rspec_mutation(class_name)
       rspec_resolver(class_name)
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         create_mutation_rbs(class_name)
         update_mutation_rbs(class_name)
         type_rbs(class_name)

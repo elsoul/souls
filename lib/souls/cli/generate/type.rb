@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "type [CLASS_NAME]", "Generate GraphQL Type from schema.rb"
     def type(class_name)
@@ -9,7 +9,7 @@ module Souls
       create_type_head(class_name: singularized_class_name)
       create_type_params(class_name: singularized_class_name)
       create_type_end(class_name: singularized_class_name)
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -22,7 +22,7 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Types
-            class #{class_name.camelize}Type < Souls::Types::BaseObject
+            class #{class_name.camelize}Type < SOULs::Types::BaseObject
               implements GraphQL::Types::Relay::Node
 
         TEXT
@@ -40,7 +40,7 @@ module Souls
               new_line.write("\n" && break) if line.include?("t.index") || line.strip == "end"
               field = "[String]" if line.include?("array: true")
               type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-              field ||= Souls.type_check(type)
+              field ||= SOULs.type_check(type)
               case name
               when /$*_id\z/
                 new_line.write(
@@ -53,7 +53,7 @@ module Souls
                 new_line.write("    field :#{name}, #{field}, null: true\n")
               end
             end
-            if Souls.table_check(line: line, class_name: class_name)
+            if SOULs.table_check(line: line, class_name: class_name)
               @on = true
               new_line.write("    global_id_field :id\n")
             end

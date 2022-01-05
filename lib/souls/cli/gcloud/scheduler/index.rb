@@ -1,9 +1,9 @@
-module Souls
+module SOULs
   class CloudScheduler < Thor
     desc "awake", "Set Ping Every 15min by Google Cloud Scheduler"
     method_option :url, default: "https://souls.souls.nl", aliases: "--url", desc: "Set URL"
     def awake
-      app_name = Souls.configuration.app
+      app_name = SOULs.configuration.app
       system(
         "gcloud scheduler jobs create http #{app_name}-awake
             --schedule '0,10,20,30,40,50 * * * *' --uri #{options[:url]} --http-method GET"
@@ -14,8 +14,8 @@ module Souls
     method_option :timezone, default: "Asia/Tokyo", aliases: "--timezone", desc: "Timezone e.g. Europe/Amsterdam"
     def sync_schedules
       require("./app")
-      Souls::Gcloud.new.config_set
-      project_id = Souls.configuration.project_id
+      SOULs::Gcloud.new.config_set
+      project_id = SOULs.configuration.project_id
 
       schedules_list = current_schedules
       worker_name = FileUtils.pwd.split("/").last

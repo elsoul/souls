@@ -1,10 +1,10 @@
 require "fileutils"
-module Souls
+module SOULs
   SOULS_PATH =
     if FileUtils.pwd.split("/").last == "souls"
       ".".freeze
     else
-      "#{Gem.dir}/gems/souls-#{Souls::VERSION}".freeze
+      "#{Gem.dir}/gems/souls-#{SOULs::VERSION}".freeze
     end
   public_constant :SOULS_PATH
 end

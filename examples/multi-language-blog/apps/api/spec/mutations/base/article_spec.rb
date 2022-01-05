@@ -33,7 +33,7 @@ RSpec.describe("Article Mutation テスト") do
 
     subject(:result) do
       context = { user: user }
-      SoulsApiSchema.execute(mutation, context: context).as_json
+      SOULsApiSchema.execute(mutation, context: context).as_json
     end
 
     it "return Article Data" do

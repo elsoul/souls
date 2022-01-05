@@ -1,24 +1,24 @@
 require "securerandom"
 
-module Souls
+module SOULs
   class CLI < Thor
     desc "release", "Release Gem"
     def release
-      Souls::Painter.error("hey! It's Broken!") unless system("rspec")
+      SOULs::Painter.error("hey! It's Broken!") unless system("rspec")
 
       system("gem install souls")
       sleep(3)
-      current_souls_ver = Souls::VERSION.strip.split(".").map(&:to_i)
+      current_souls_ver = SOULs::VERSION.strip.split(".").map(&:to_i)
       prompt = TTY::Prompt.new
       choices = [
-        "1. Patch(#{Souls.version_detector(current_ver: current_souls_ver, update_kind: 'patch')})",
-        "2. Minor(#{Souls.version_detector(current_ver: current_souls_ver, update_kind: 'minor')})",
-        "3. Major(#{Souls.version_detector(current_ver: current_souls_ver, update_kind: 'major')})"
+        "1. Patch(#{SOULs.version_detector(current_ver: current_souls_ver, update_kind: 'patch')})",
+        "2. Minor(#{SOULs.version_detector(current_ver: current_souls_ver, update_kind: 'minor')})",
+        "3. Major(#{SOULs.version_detector(current_ver: current_souls_ver, update_kind: 'major')})"
       ]
       choice_num = prompt.select("Select Version: ", choices)[0].to_i
       update_kinds = %w[patch minor major]
       update_kind = update_kinds[choice_num - 1]
-      souls_new_ver = Souls.version_detector(current_ver: current_souls_ver, update_kind: update_kind)
+      souls_new_ver = SOULs.version_detector(current_ver: current_souls_ver, update_kind: update_kind)
       status = Paint["Saving Repo...", :yellow]
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
         Whirly.status = status
@@ -160,7 +160,7 @@ module Souls
       file_path = "./lib/souls/version.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          module Souls
+          module SOULs
             VERSION = "#{new_version}".freeze
             public_constant :VERSION
           end

@@ -10,7 +10,7 @@ RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
 
 namespace :upload do
-  @gs_bucket_url = "gs://souls-bucket/boilerplates/#{Souls::VERSION}"
+  @gs_bucket_url = "gs://souls-bucket/boilerplates/#{SOULs::VERSION}"
   task :github do
     file_name = "./github.tgz"
     system("tar -czf #{file_name} github/")

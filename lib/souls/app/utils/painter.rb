@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   module Painter
     class << self
       def create_file(text)

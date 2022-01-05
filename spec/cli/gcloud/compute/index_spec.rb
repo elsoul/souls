@@ -1,7 +1,7 @@
 require_relative "scaffolds/api_yml_scaffold"
 require_relative "scaffolds/env_scaffold"
 
-RSpec.describe(Souls::Compute) do
+RSpec.describe(SOULs::Compute) do
   describe "index" do
     describe "setup_vpc_nat" do
       before :each do
@@ -9,7 +9,7 @@ RSpec.describe(Souls::Compute) do
       end
 
       it "should call a bunch of methods" do
-        cli = Souls::Compute.new
+        cli = SOULs::Compute.new
         allow(cli).to(receive(:create_network).and_return(true))
         allow(cli).to(receive(:create_firewall_tcp).and_return(true))
         allow(cli).to(receive(:create_firewall_ssh).and_return(true))
@@ -21,8 +21,8 @@ RSpec.describe(Souls::Compute) do
         allow(cli).to(receive(:update_workflows).and_return(true))
         allow(cli).to(receive(:update_env).and_return(true))
 
-        allow_any_instance_of(Souls::Sql).to(receive(:setup_private_ip).and_return(true))
-        allow_any_instance_of(Souls::Gcloud).to(receive(:config_set).and_return(true))
+        allow_any_instance_of(SOULs::Sql).to(receive(:setup_private_ip).and_return(true))
+        allow_any_instance_of(SOULs::Gcloud).to(receive(:config_set).and_return(true))
 
         expect(cli.setup_vpc_nat).to(eq(true))
       end
@@ -30,10 +30,10 @@ RSpec.describe(Souls::Compute) do
 
     describe "update_env" do
       it "should update env file from .env.production" do
-        cli = Souls::Compute.new
+        cli = SOULs::Compute.new
         FakeFS.with_fresh do
-          allow(Souls.configuration).to(receive(:instance_name).and_return("abc"))
-          allow(Souls).to(receive(:get_mother_path).and_return("./"))
+          allow(SOULs.configuration).to(receive(:instance_name).and_return("abc"))
+          allow(SOULs).to(receive(:get_mother_path).and_return("./"))
           allow(cli).to(receive(:`).and_return("111.222.333.44"))
           allow(cli).to(receive(:system).and_return(true))
 
@@ -48,8 +48,8 @@ RSpec.describe(Souls::Compute) do
 
     describe "get_external_ip" do
       it "should call compute addresses list" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
         allow(cli).to(receive(:`)).and_return("")
         expect(cli).to(receive(:`).with("gcloud compute addresses list | grep test-app-worker-ip | awk '{print $2}'"))
         expect(cli.__send__(:get_external_ip)).to(eq(""))
@@ -58,8 +58,8 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_network" do
       it "should call compute networks" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(receive(:system).with("gcloud compute networks create test-app"))
 
@@ -69,8 +69,8 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_firewall_tcp" do
       it "should run firewall-rules create" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(
           receive(:system).with(
@@ -85,8 +85,8 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_firewall_ssh" do
       it "should run firewall-rules create" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(
           receive(:system).with(
@@ -101,9 +101,9 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_subnet" do
       it "shouuld call subnets create" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
-        allow(Souls.configuration).to(receive(:region).and_return("japan"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
+        allow(SOULs.configuration).to(receive(:region).and_return("japan"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(
           receive(:system).with(
@@ -118,10 +118,10 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_connector" do
       it "should call vpc-access" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
-        allow(Souls.configuration).to(receive(:project_id).and_return("123"))
-        allow(Souls.configuration).to(receive(:region).and_return("japan"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
+        allow(SOULs.configuration).to(receive(:project_id).and_return("123"))
+        allow(SOULs.configuration).to(receive(:region).and_return("japan"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(
           receive(:system).with(
@@ -138,9 +138,9 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_router" do
       it "should call routers create" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
-        allow(Souls.configuration).to(receive(:region).and_return("japan"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
+        allow(SOULs.configuration).to(receive(:region).and_return("japan"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(
           receive(:system).with(
@@ -154,9 +154,9 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_external_ip" do
       it "should call compute addresses create" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
-        allow(Souls.configuration).to(receive(:region).and_return("japan"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
+        allow(SOULs.configuration).to(receive(:region).and_return("japan"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(receive(:system).with("gcloud compute addresses create test-app-worker-ip --region=japan"))
 
@@ -166,9 +166,9 @@ RSpec.describe(Souls::Compute) do
 
     describe "create_nat" do
       it "should call nats create" do
-        cli = Souls::Compute.new
-        allow(Souls.configuration).to(receive(:app).and_return("test-app"))
-        allow(Souls.configuration).to(receive(:region).and_return("japan"))
+        cli = SOULs::Compute.new
+        allow(SOULs.configuration).to(receive(:app).and_return("test-app"))
+        allow(SOULs.configuration).to(receive(:region).and_return("japan"))
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(
           receive(:system).with(
@@ -186,7 +186,7 @@ RSpec.describe(Souls::Compute) do
 
     describe "network_list" do
       it "should call networks list" do
-        cli = Souls::Compute.new
+        cli = SOULs::Compute.new
         allow(cli).to(receive(:system).and_return(true))
         expect(cli).to(receive(:system).with("gcloud compute networks list"))
 
@@ -196,8 +196,8 @@ RSpec.describe(Souls::Compute) do
 
     describe "update_workflows" do
       before(:each) do
-        allow(Souls.configuration).to(receive(:app).and_return("app"))
-        allow(Souls).to(receive(:get_mother_path).and_return("./"))
+        allow(SOULs.configuration).to(receive(:app).and_return("app"))
+        allow(SOULs).to(receive(:get_mother_path).and_return("./"))
       end
 
       it "should add connector to api" do
@@ -205,7 +205,7 @@ RSpec.describe(Souls::Compute) do
           FileUtils.mkdir_p(".github/workflows/")
           File.open(".github/workflows/api.yml", "w") { |f| f.write(Scaffold.scaffold_api_yml) }
 
-          cli = Souls::Compute.new
+          cli = SOULs::Compute.new
           cli.__send__(:update_workflows)
 
           output = File.read(".github/workflows/api.yml")
@@ -219,7 +219,7 @@ RSpec.describe(Souls::Compute) do
           FileUtils.mkdir_p(".github/workflows/")
           File.open(".github/workflows/worker.yml", "w") { |f| f.write(Scaffold.scaffold_api_yml) }
 
-          cli = Souls::Compute.new
+          cli = SOULs::Compute.new
           cli.__send__(:update_workflows)
 
           output = File.read(".github/workflows/worker.yml")
@@ -233,7 +233,7 @@ RSpec.describe(Souls::Compute) do
           FileUtils.mkdir_p(".github/workflows/")
           File.open(".github/workflows/worker.yml", "w") { |f| f.write(Scaffold.scaffold_api_yml_worker) }
 
-          cli = Souls::Compute.new
+          cli = SOULs::Compute.new
           cli.__send__(:update_workflows)
 
           output = File.read(".github/workflows/worker.yml")

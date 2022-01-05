@@ -1,25 +1,25 @@
-RSpec.describe(Souls::Delete) do
+RSpec.describe(SOULs::Delete) do
   before do
     allow($stdout).to(receive(:write))
   end
 
   describe "scaffold" do
     it "Should call run_rbs_scaffold with rbs" do
-      cli = Souls::Delete.new
+      cli = SOULs::Delete.new
 
-      allow_any_instance_of(Souls::Delete).to(receive(:run_rbs_scaffold).and_return(true))
+      allow_any_instance_of(SOULs::Delete).to(receive(:run_rbs_scaffold).and_return(true))
 
-      expect_any_instance_of(Souls::Delete).to(receive(:run_rbs_scaffold).with({ class_name: "user" }))
+      expect_any_instance_of(SOULs::Delete).to(receive(:run_rbs_scaffold).with({ class_name: "user" }))
 
       cli.invoke(:scaffold, ["users"], { rbs: true })
     end
 
     it "Should call run_scaffold without rbs" do
-      cli = Souls::Delete.new
+      cli = SOULs::Delete.new
 
-      allow_any_instance_of(Souls::Delete).to(receive(:run_scaffold).and_return(true))
+      allow_any_instance_of(SOULs::Delete).to(receive(:run_scaffold).and_return(true))
 
-      expect_any_instance_of(Souls::Delete).to(receive(:run_scaffold).with({ class_name: "user" }))
+      expect_any_instance_of(SOULs::Delete).to(receive(:run_scaffold).with({ class_name: "user" }))
 
       cli.invoke(:scaffold, ["users"], { rbs: false })
     end
@@ -27,23 +27,23 @@ RSpec.describe(Souls::Delete) do
 
   describe "scaffold_all" do
     it "should call scaffold for each table" do
-      cli = Souls::Delete.new
+      cli = SOULs::Delete.new
 
-      allow(Souls).to(receive(:get_tables)).and_return(%w[apple])
-      allow_any_instance_of(Souls::Delete).to(receive(:run_scaffold).and_return(true))
+      allow(SOULs).to(receive(:get_tables)).and_return(%w[apple])
+      allow_any_instance_of(SOULs::Delete).to(receive(:run_scaffold).and_return(true))
 
-      expect_any_instance_of(Souls::Delete).to(receive(:run_scaffold))
+      expect_any_instance_of(SOULs::Delete).to(receive(:run_scaffold))
 
       cli.invoke(:scaffold_all, [], { rbs: false })
     end
 
     it "should only call _rbs with rbs option" do
-      cli = Souls::Delete.new
+      cli = SOULs::Delete.new
 
-      allow(Souls).to(receive(:get_tables)).and_return(%w[apple])
-      allow_any_instance_of(Souls::Delete).to(receive(:run_rbs_scaffold).and_return(true))
+      allow(SOULs).to(receive(:get_tables)).and_return(%w[apple])
+      allow_any_instance_of(SOULs::Delete).to(receive(:run_rbs_scaffold).and_return(true))
 
-      expect_any_instance_of(Souls::Delete).to(receive(:run_rbs_scaffold))
+      expect_any_instance_of(SOULs::Delete).to(receive(:run_rbs_scaffold))
 
       cli.invoke(:scaffold_all, [], { rbs: true })
     end
@@ -51,7 +51,7 @@ RSpec.describe(Souls::Delete) do
 
   describe "run_scaffold" do
     it "should call a bunch of methods" do
-      cli = Souls::Delete.new
+      cli = SOULs::Delete.new
       allow(cli).to(receive(:type).and_return(true))
       allow(cli).to(receive(:type_rbs).and_return(true))
       allow(cli).to(receive(:query).and_return(true))
@@ -92,7 +92,7 @@ RSpec.describe(Souls::Delete) do
 
   describe "run_rbs_scaffold" do
     it "should call rbs methods" do
-      cli = Souls::Delete.new
+      cli = SOULs::Delete.new
       allow(cli).to(receive(:type_rbs).and_return(true))
       allow(cli).to(receive(:query_rbs).and_return(true))
       allow(cli).to(receive(:mutation_rbs).and_return(true))

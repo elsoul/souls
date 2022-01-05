@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "job [CLASS_NAME]", "Generate Job File in Worker"
     method_option :mailer, type: :boolean, aliases: "--mailer", default: false, desc: "Mailer Option"
@@ -10,8 +10,8 @@ module Souls
         create_job_type(class_name)
         create_job(class_name)
       end
-      Souls::Generate.new.invoke(:job_rbs, [class_name], {})
-      Souls::Generate.new.invoke(:rspec_job, [class_name], { mailer: options[:mailer] })
+      SOULs::Generate.new.invoke(:job_rbs, [class_name], {})
+      SOULs::Generate.new.invoke(:rspec_job, [class_name], { mailer: options[:mailer] })
     end
 
     private
@@ -37,7 +37,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -50,13 +50,13 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Types
-            class #{class_name.camelize}Type < Souls::Types::BaseObject
+            class #{class_name.camelize}Type < SOULs::Types::BaseObject
               field :response, String, null: true
             end
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -95,7 +95,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -108,13 +108,13 @@ module Souls
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Types
-            class #{class_name.camelize}Type < Souls::Types::BaseObject
+            class #{class_name.camelize}Type < SOULs::Types::BaseObject
               field :response, String, null: true
             end
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

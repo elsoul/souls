@@ -1,6 +1,6 @@
 module Types
-  class MutationType < Souls::Types::BaseObject
-    SoulsHelper.get_tables.each do |t|
+  class MutationType < SOULs::Types::BaseObject
+    SOULsHelper.get_tables.each do |t|
       %w[create update delete destroy_delete].each do |a|
         field "#{a}_#{t.singularize.underscore}".to_sym,
               mutation: Object.const_get(

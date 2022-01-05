@@ -1,5 +1,5 @@
 require "souls"
-Souls.configure do |config|
+SOULs.configure do |config|
   config.app = "souls-app"
   config.project_id = "souls-app"
   config.region = "asia-northeast1"

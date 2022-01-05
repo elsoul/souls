@@ -1,4 +1,4 @@
-class SoulsApiSchema < GraphQL::Schema
+class SOULsApiSchema < GraphQL::Schema
   default_max_page_size 100
   max_complexity 3000
   max_depth 20
@@ -29,7 +29,7 @@ class SoulsApiSchema < GraphQL::Schema
   end
 
   rescue_from(StandardError) do |message|
-    Souls::SoulsLogger.critical_log(message) if ENV["RACK_ENV"] == "production"
+    SOULs::SOULsLogger.critical_log(message) if ENV["RACK_ENV"] == "production"
     GraphQL::ExecutionError.new(message)
   end
 end

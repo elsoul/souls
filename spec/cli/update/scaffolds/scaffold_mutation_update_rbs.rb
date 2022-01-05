@@ -12,7 +12,7 @@ module Scaffold
             argument :username, String, required: false
 
             def resolve(args)
-              _, data_id = SoulsApiSchema.from_global_id(args[:id])
+              _, data_id = SOULsApiSchema.from_global_id(args[:id])
               new_record = { **args }
               data = ::User.find(data_id)
               data.update(new_record)
@@ -42,7 +42,7 @@ module Scaffold
             argument :username, String, required: false
 
             def resolve(args)
-              _, data_id = SoulsApiSchema.from_global_id(args[:id])
+              _, data_id = SOULsApiSchema.from_global_id(args[:id])
               new_record = { **args }
               data = ::User.find(data_id)
               data.update(new_record)

@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "rspec_mutation [CLASS_NAME]", "Generate Rspec Mutation Test from schema.rb"
     def rspec_mutation(class_name)
@@ -11,7 +11,7 @@ module Souls
       rspec_mutation_params(class_name: singularized_class_name)
       rspec_mutation_params_response(class_name: singularized_class_name)
       rspec_mutation_end(class_name: singularized_class_name)
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     rescue StandardError => e
       raise(StandardError, e)
@@ -75,7 +75,7 @@ module Souls
                 new_line.write("    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n")
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end
@@ -130,7 +130,7 @@ module Souls
                 end
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end
@@ -158,7 +158,7 @@ module Souls
       context = {
         user: user
       }
-      SoulsApiSchema.execute(mutation, context: context).as_json
+      SOULsApiSchema.execute(mutation, context: context).as_json
     end
 
     it "return #{class_name.camelize} Data" do
@@ -181,7 +181,7 @@ module Souls
     end
 
     subject(:result) do
-      SoulsApiSchema.execute(mutation).as_json
+      SOULsApiSchema.execute(mutation).as_json
     end
 
     it "return #{class_name.camelize} Data" do
@@ -210,7 +210,7 @@ module Souls
                 end
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end
@@ -234,7 +234,7 @@ module Souls
                 break
               end
               type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-              field ||= Souls.type_check(type)
+              field ||= SOULs.type_check(type)
               array_true = line.include?("array: true")
               case name
               when "user_id", "created_at", "updated_at", /$*_id\z/
@@ -262,7 +262,7 @@ module Souls
                 end
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end

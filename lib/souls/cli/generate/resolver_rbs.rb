@@ -1,10 +1,10 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "resolver_rbs [CLASS_NAME]", "Generate GraphQL Resolver RBS from schema.rb"
     def resolver_rbs(class_name)
       singularized_class_name = class_name.underscore.singularize
       file_path = ""
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/resolvers"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/#{singularized_class_name}_search.rbs"
@@ -35,7 +35,7 @@ module Souls
           TEXT
         end
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

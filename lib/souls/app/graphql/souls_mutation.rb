@@ -1,5 +1,5 @@
-module Souls
-  class SoulsMutation < GraphQL::Schema::RelayClassicMutation
+module SOULs
+  class SOULsMutation < GraphQL::Schema::RelayClassicMutation
     def souls_fb_auth(token:)
       FirebaseIdToken::Certificates.request!
       sleep(3) if ENV["RACK_ENV"] == "development"
@@ -34,15 +34,15 @@ module Souls
     end
 
     def post_to_dev(worker_name: "", query_string: "")
-      app = Souls.configuration.app
+      app = SOULs.configuration.app
       port = get_worker(worker_name: "souls-#{app}-#{worker_name}")[0][:port]
-      endpoint = Souls.configuration.endpoint
+      endpoint = SOULs.configuration.endpoint
       res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: query_string })
       res.body
     end
 
     def get_worker(worker_name: "")
-      workers = Souls.configuration.workers
+      workers = SOULs.configuration.workers
       workers.filter { |n| n[:name] == worker_name }
     end
 

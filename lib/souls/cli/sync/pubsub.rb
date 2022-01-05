@@ -1,11 +1,11 @@
-module Souls
+module SOULs
   class Sync < Thor
     desc "pubsub", "Sync Worker Jobs & Google Cloud Pubsub Topics/Subscriptions"
     def pubsub
       worker_name = FileUtils.pwd.split("/").last
 
       unless worker_name.match(/^worker-(\d|\w)+(-)*(\d|\w)+$/)
-        Souls::Painter.error("You are at wrong dir!\nPlease go to worker-* dir!")
+        SOULs::Painter.error("You are at wrong dir!\nPlease go to worker-* dir!")
         return false
       end
 
@@ -16,13 +16,13 @@ module Souls
       return false if worker_file_names.blank?
 
       sync_pubsub_topics_and_subscriptions(workers: worker_file_names, worker_url: url)
-      Souls::Painter.sync("All Jobs with PubSub Subscription!")
+      SOULs::Painter.sync("All Jobs with PubSub Subscription!")
     end
 
     private
 
     def sync_pubsub_topics_and_subscriptions(worker_url:, workers: {})
-      project_id = Souls.configuration.project_id
+      project_id = SOULs.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       topics = pubsub.topics
       worker_name = FileUtils.pwd.split("/").last
@@ -52,14 +52,14 @@ module Souls
     end
 
     def create_topic(topic_id: "worker-mailer")
-      project_id = Souls.configuration.project_id
+      project_id = SOULs.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       topic = pubsub.create_topic(topic_id.to_s)
       puts("Topic #{topic.name} created.")
     end
 
     def delete_topic(topic_id: "worker-mailer")
-      project_id = Souls.configuration.project_id
+      project_id = SOULs.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       topic = pubsub.topic(topic_id.to_s)
       topic.delete
@@ -67,7 +67,7 @@ module Souls
     end
 
     def delete_subscription(topic_id: "worker-mailer")
-      project_id = Souls.configuration.project_id
+      project_id = SOULs.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       subscription_id = "#{topic_id}-sub"
       subscription = pubsub.subscription(subscription_id)
@@ -75,11 +75,11 @@ module Souls
     end
 
     def create_push_subscription(worker_url:, topic_id: "worker-mailer")
-      souls_endpoint = Souls.configuration.endpoint
+      souls_endpoint = SOULs.configuration.endpoint
       subscription_id = "#{topic_id}-sub"
       endpoint = "#{worker_url}/#{souls_endpoint}"
 
-      project_id = Souls.configuration.project_id
+      project_id = SOULs.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
 
       topic = pubsub.topic(topic_id)

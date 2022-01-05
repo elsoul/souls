@@ -5,7 +5,7 @@ module Resolvers
     type Types::ArticleTranslationType.connection_type, null: false
     description "Search ArticleTranslation"
 
-    class ArticleTranslationFilter < Souls::Types::BaseInputObject
+    class ArticleTranslationFilter < SOULs::Types::BaseInputObject
       argument :OR, [self], required: false
       argument :article_id, String, required: false
       argument :body, String, required: false

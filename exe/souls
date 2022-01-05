@@ -3,7 +3,7 @@ require "souls"
 require "thor"
 begin
   souls_command = ARGV[0]
-  require(Souls.get_mother_path.to_s + "/config/souls") unless [
+  require(SOULs.get_mother_path.to_s + "/config/souls") unless [
     "new",
     "docker",
     "-v",
@@ -15,4 +15,4 @@ rescue StandardError
   raise(StandardError, "No config! Please make `./config/souls.rb` File!")
 end
 
-Souls::CLI.start
+SOULs::CLI.start

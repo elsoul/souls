@@ -27,7 +27,7 @@ RSpec.describe("ArticleTranslation Mutation テスト") do
     end
 
     subject(:result) do
-      SoulsApiSchema.execute(mutation).as_json
+      SOULsApiSchema.execute(mutation).as_json
     end
 
     it "return ArticleTranslation Data" do

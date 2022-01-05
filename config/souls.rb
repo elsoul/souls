@@ -1,4 +1,4 @@
-Souls.configure do |config|
+SOULs.configure do |config|
   config.app = "souls"
   config.project_id = "el-quest"
   config.region = "asia-northeast1"

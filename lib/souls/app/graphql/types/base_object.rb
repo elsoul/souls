@@ -1,8 +1,8 @@
-module Souls
+module SOULs
   module Types
     class BaseObject < GraphQL::Schema::Object
-      field_class Souls::Types::BaseField
-      connection_type_class Souls::SoulsConnection
+      field_class SOULs::Types::BaseField
+      connection_type_class SOULs::SOULsConnection
     end
   end
 end

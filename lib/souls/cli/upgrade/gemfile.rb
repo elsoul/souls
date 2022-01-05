@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Upgrade < Thor
     desc "gemfile", "Update Gemfile/Gemfile.lock Version"
     def gemfile
@@ -18,7 +18,7 @@ module Souls
       new_gems = gemfile_latest_version
       logs = []
       message = "Already Up to date!"
-      return "Already Up to date!" && Souls::Painter.warning(message) if new_gems[:gems].blank?
+      return "Already Up to date!" && SOULs::Painter.warning(message) if new_gems[:gems].blank?
 
       @i = 0
       File.open(file_path, "r") do |f|
@@ -72,7 +72,7 @@ module Souls
       FileUtils.rm("./Gemfile.lock")
       FileUtils.mv("./config/Gemfile", "./Gemfile")
       system("bundle update")
-      Souls::Painter.success("\n\nSuccessfully Updated These Gems!\n")
+      SOULs::Painter.success("\n\nSuccessfully Updated These Gems!\n")
       logs.each do |line|
         puts(line)
       end
@@ -94,7 +94,7 @@ module Souls
           url = URI("https://rubygems.org/api/v1/versions/#{gem[0]}/latest.json")
           res = Net::HTTP.get_response(url)
           data = JSON.parse(res.body)
-          next if Souls.configuration.fixed_gems.include?(gem[0].to_s)
+          next if SOULs.configuration.fixed_gems.include?(gem[0].to_s)
           next if data["version"].to_s == gem[1].to_s
 
           updated_lines << if from_dev

@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "resolver [CLASS_NAME]", "Generate GraphQL Resolver from schema.rb"
     def resolver(class_name)
@@ -11,7 +11,7 @@ module Souls
       resolver_after_params(class_name: singularized_class_name)
       resolver_before_end(class_name: singularized_class_name)
       resolver_end(class_name: singularized_class_name)
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -30,7 +30,7 @@ module Souls
               type Types::#{class_name.camelize}Type.connection_type, null: false
               description "Search #{class_name.camelize}"
 
-              class #{class_name.camelize}Filter < Souls::Types::BaseInputObject
+              class #{class_name.camelize}Filter < SOULs::Types::BaseInputObject
                 argument :OR, [self], required: false
         TEXT
       end
@@ -49,8 +49,8 @@ module Souls
               break if line.include?("t.index") || line.strip == "end"
 
               field = "[String]" if line.include?("array: true")
-              type, name = Souls.get_type_and_name(line)
-              field ||= Souls.type_check(type)
+              type, name = SOULs.get_type_and_name(line)
+              field ||= SOULs.type_check(type)
               case name
               when "user_id"
                 @user_exist = true
@@ -63,7 +63,7 @@ module Souls
                 new_line.write("      argument :#{name}, #{field}, required: false\n")
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end
@@ -102,7 +102,7 @@ module Souls
             if @on
               break if line.include?("t.index") || line.strip == "end"
 
-              type, name = Souls.get_type_and_name(line)
+              type, name = SOULs.get_type_and_name(line)
               if line.include?("array: true")
                 new_line.write(
                   "      scope = scope.where(\"#{name} @> ARRAY[?]::text[]\", value[:#{name}]) if value[:#{name}]\n"
@@ -128,7 +128,7 @@ module Souls
                 end
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end

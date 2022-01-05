@@ -1,7 +1,7 @@
-RSpec.describe(Souls::CLI) do
+RSpec.describe(SOULs::CLI) do
   describe "console" do
     it "Should start the console for production with production" do
-      cli = Souls::CLI.new
+      cli = SOULs::CLI.new
       cli.options = { env: "production" }
       allow(cli).to(receive(:system).with("RACK_ENV=production bundle exec irb").and_return(true))
       result = cli.console
@@ -9,7 +9,7 @@ RSpec.describe(Souls::CLI) do
     end
 
     it "Should start the console with other arguments" do
-      cli = Souls::CLI.new
+      cli = SOULs::CLI.new
       cli.options = { env: "development" }
       allow(cli).to(receive(:system).with("bundle exec irb").and_return(true))
       result = cli.console

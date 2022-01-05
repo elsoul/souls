@@ -1,4 +1,4 @@
-class SoulsApiSchema < GraphQL::Schema
+class SOULsApiSchema < GraphQL::Schema
   def self.default_max_page_size: (Integer) -> untyped
   def self.max_complexity: (Integer) -> untyped
   def self.max_depth: (Integer) -> untyped

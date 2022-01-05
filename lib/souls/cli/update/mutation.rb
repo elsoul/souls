@@ -1,38 +1,38 @@
 require_relative "../cli_exception"
 
-module Souls
+module SOULs
   class Update < Thor
     desc "create_mutation [CLASS_NAME]", "Update GraphQL Type from schema.rb"
     def create_mutation(class_name)
       singularized_class_name = class_name.singularize.underscore
-      new_cols = Souls.get_columns_num(class_name: singularized_class_name)
+      new_cols = SOULs.get_columns_num(class_name: singularized_class_name)
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/create_#{singularized_class_name}.rb"
       unless File.exist?(file_path)
-        Souls::Painter.error("File #{file_path} is missing. Please recreate it and then run this command again.")
+        SOULs::Painter.error("File #{file_path} is missing. Please recreate it and then run this command again.")
         return
       end
 
       mutation_argument = check_mutation_argument(class_name: "user", action: "create")
       overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
-      Souls::Painter.update_file(file_path.to_s)
+      SOULs::Painter.update_file(file_path.to_s)
     end
 
     desc "update_mutation [CLASS_NAME]", "Update GraphQL Type from schema.rb"
     def update_mutation(class_name)
       singularized_class_name = class_name.singularize.underscore
-      new_cols = Souls.get_columns_num(class_name: singularized_class_name)
+      new_cols = SOULs.get_columns_num(class_name: singularized_class_name)
       dir_name = "./app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/update_#{singularized_class_name}.rb"
       unless File.exist?(file_path)
-        Souls::Painter.error("File #{file_path} is missing. Please recreate it and then run this command again.")
+        SOULs::Painter.error("File #{file_path} is missing. Please recreate it and then run this command again.")
         return
       end
 
       mutation_argument = check_mutation_argument(class_name: class_name, action: "update")
       overwrite_class_file(mutation_argument: mutation_argument, file_path: file_path, new_cols: new_cols)
 
-      Souls::Painter.update_file(file_path.to_s)
+      SOULs::Painter.update_file(file_path.to_s)
     end
 
     private
@@ -46,7 +46,7 @@ module Souls
 
           until new_cols.empty?
             col = new_cols.pop
-            type = Souls.type_check(col[:type])
+            type = SOULs.type_check(col[:type])
             type = "[#{type}]" if col[:array]
             args = mutation_argument
             next if args.include?(col[:column_name])

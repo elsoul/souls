@@ -1,5 +1,5 @@
-module Souls
-  class SoulsQuery < GraphQL::Schema::Resolver
+module SOULs
+  class SOULsQuery < GraphQL::Schema::Resolver
     @schedule = nil
     class << self
       attr_accessor :schedule

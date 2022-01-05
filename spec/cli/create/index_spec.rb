@@ -3,14 +3,14 @@ require_relative "./scaffolds/scaffold_souls"
 require_relative "./scaffolds/scaffold_workflow"
 require_relative "./scaffolds/scaffold_souls_helper"
 
-RSpec.describe(Souls::CLI) do
+RSpec.describe(SOULs::CLI) do
   describe "worker" do
     before :each do
-      allow(Souls).to(receive(:get_mother_path).and_return("./"))
+      allow(SOULs).to(receive(:get_mother_path).and_return("./"))
     end
 
     it "should raise error if same worker exists" do
-      cli = Souls::Create.new
+      cli = SOULs::Create.new
       allow(Dir).to(receive(:exist?).and_return(true))
       cli_result =
         expect do
@@ -21,7 +21,7 @@ RSpec.describe(Souls::CLI) do
     end
 
     it "should call all the private methods and return true" do
-      cli = Souls::Create.new
+      cli = SOULs::Create.new
       FakeFS.with_fresh do
         allow(cli).to(receive(:download_worker).and_return(true))
         allow(cli).to(receive(:souls_conf_update).and_return(true))
@@ -42,7 +42,7 @@ RSpec.describe(Souls::CLI) do
 
   describe "steepfile" do
     it "should move Steepfile contents" do
-      cli = Souls::Create.new
+      cli = SOULs::Create.new
 
       FakeFS.with_fresh do
         FakeFS::FileSystem.clone(
@@ -60,7 +60,7 @@ RSpec.describe(Souls::CLI) do
   describe "procfile" do
     it "should write procfile contents" do
       FakeFS.with_fresh do
-        cli = Souls::Create.new
+        cli = SOULs::Create.new
         FileUtils.mkdir_p("apps/worker-mailer") unless Dir.exist?("apps/worker-mailer")
 
         cli.__send__(:procfile, **{ worker_name: "worker-mailer", port: "123" })
@@ -74,7 +74,7 @@ RSpec.describe(Souls::CLI) do
   describe "mother_procfile" do
     it "should write mother procfile contents" do
       FakeFS.with_fresh do
-        cli = Souls::Create.new
+        cli = SOULs::Create.new
 
         cli.__send__(:mother_procfile, **{ worker_name: "worker-mailer" })
         output = File.readlines("Procfile.dev")[1]
@@ -88,7 +88,7 @@ RSpec.describe(Souls::CLI) do
   describe "souls_conf_update" do
     it "should write souls conf with mother" do
       FakeFS.with_fresh do
-        cli = Souls::Create.new
+        cli = SOULs::Create.new
         FileUtils.mkdir_p("config") unless Dir.exist?("config")
         File.open("config/souls.rb", "w") { |file| file.write(Scaffold.scaffold_souls) }
 
@@ -102,7 +102,7 @@ RSpec.describe(Souls::CLI) do
 
     it "should write souls conf to other location without mother" do
       FakeFS.with_fresh do
-        cli = Souls::Create.new
+        cli = SOULs::Create.new
         file_dir = "apps/api/config"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         File.open("#{file_dir}/souls.rb", "w") { |file| file.write(Scaffold.scaffold_souls) }
@@ -119,7 +119,7 @@ RSpec.describe(Souls::CLI) do
   describe "workflow" do
     it "should write workflows" do
       FakeFS.with_fresh do
-        cli = Souls::Create.new
+        cli = SOULs::Create.new
         file_dir = ".github/workflows"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
@@ -136,7 +136,7 @@ RSpec.describe(Souls::CLI) do
   describe "souls_config_init" do
     it "should write config file" do
       FakeFS.with_fresh do
-        cli = Souls::Create.new
+        cli = SOULs::Create.new
         file_dir = "apps/worker-mailer/config"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
@@ -153,7 +153,7 @@ RSpec.describe(Souls::CLI) do
   describe "souls_helper_rbs" do
     it "should write config file" do
       FakeFS.with_fresh do
-        cli = Souls::Create.new
+        cli = SOULs::Create.new
         file_dir = "./sig/worker-mailer/app/utils"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
@@ -169,9 +169,9 @@ RSpec.describe(Souls::CLI) do
 
   describe "download_worker" do
     it "should call system with correct url" do
-      cli = Souls::Create.new
+      cli = SOULs::Create.new
       allow(cli).to(receive(:system).and_return(true))
-      allow(Souls).to(receive(:get_latest_version_txt).and_return(%w[1 5]))
+      allow(SOULs).to(receive(:get_latest_version_txt).and_return(%w[1 5]))
 
       expect(cli.__send__(:download_worker)).to(eq(["worker-v1.5.tgz"]))
     end
@@ -183,7 +183,7 @@ RSpec.describe(Souls::CLI) do
     end
 
     it "should print a bunch of text" do
-      cli = Souls::Create.new
+      cli = SOULs::Create.new
       expect(cli.__send__(:souls_worker_credit)).to(eq(nil))
     end
   end

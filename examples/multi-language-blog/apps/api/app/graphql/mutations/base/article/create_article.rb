@@ -14,7 +14,7 @@ module Mutations
       argument :user_id, String, required: false
 
       def resolve(args)
-        _, user_id = SoulsApiSchema.from_global_id(args[:user_id])
+        _, user_id = SOULsApiSchema.from_global_id(args[:user_id])
         new_record = { **args, user_id: user_id }
         title_en = translate(text: args[:title], lang: "en")
         body_en = translate(text: args[:body], lang: "en")

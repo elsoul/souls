@@ -3,11 +3,11 @@ require "rack/cors"
 require "graphql_playground"
 
 map "/playground" do
-  endpoint = Souls.configuration.endpoint
+  endpoint = SOULs.configuration.endpoint
   use GraphQLPlayground, endpoint: endpoint
 end
 
-run SoulsApi
+run SOULsApi
 
 use Rack::Cors do
   allowed_headers = %i[get post put patch delete options head]

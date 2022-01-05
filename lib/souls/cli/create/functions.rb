@@ -1,10 +1,10 @@
 require_relative "./templates/functions_env_yaml"
 
-Dir["#{Souls::SOULS_PATH}/lib/souls/cli/create/templates/*/*.rb"].map do |f|
+Dir["#{SOULs::SOULS_PATH}/lib/souls/cli/create/templates/*/*.rb"].map do |f|
   require f
 end
 
-module Souls
+module SOULs
   class Create < Thor
     desc "functions [name]", "Create SOULs functions"
     def functions(function_name)
@@ -44,7 +44,7 @@ module Souls
           end
         file_name = file_dir.gsub("./apps/", "")
         File.write(file_path, Object.const_get("Template::#{runtime}").__send__(method, file_name))
-        Souls::Painter.create_file(file_path)
+        SOULs::Painter.create_file(file_path)
       end
       create_env_yaml(file_dir: file_dir)
     end
@@ -57,12 +57,12 @@ module Souls
       raise(StandardError, "Already Exist!") if File.exist?(file_path)
 
       File.write(file_path, Template.functions_env_yaml)
-      Souls::Painter.create_file(file_path)
+      SOULs::Painter.create_file(file_path)
       file_path
     end
 
     def get_runtime_create_method(runtime:)
-      Dir["#{Souls::SOULS_PATH}/lib/souls/cli/create/templates/#{runtime}/*"].map do |n|
+      Dir["#{SOULs::SOULS_PATH}/lib/souls/cli/create/templates/#{runtime}/*"].map do |n|
         n.split("/").last.gsub(".rb", "")
       end
     end

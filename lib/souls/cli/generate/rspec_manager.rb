@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "rspec_manager [CLASS_NAME]", "Generate Rspec Manager Test Template"
     method_option :mutation, aliases: "--mutation", required: true, desc: "Mutation File Name"
@@ -26,7 +26,7 @@ module Souls
               end
 
               subject(:result) do
-                SoulsApiSchema.execute(mutation).as_json
+                SOULsApiSchema.execute(mutation).as_json
               end
 
               it "return User response" do
@@ -42,7 +42,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

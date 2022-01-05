@@ -1,5 +1,5 @@
 module Types
-  class UserType < Souls::Types::BaseObject
+  class UserType < SOULs::Types::BaseObject
     implements GraphQL::Types::Relay::Node
 
     global_id_field :id

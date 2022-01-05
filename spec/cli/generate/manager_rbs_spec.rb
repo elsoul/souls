@@ -1,6 +1,6 @@
 require_relative "./scaffolds/scaffold_manager_rbs"
 
-RSpec.describe(Souls::Generate) do
+RSpec.describe(SOULs::Generate) do
   describe "Generate Manager RBS" do
     let(:class_name) { "user" }
 
@@ -14,9 +14,9 @@ RSpec.describe(Souls::Generate) do
     it "creates manager.rbs file" do
       file_path = "#{@file_dir}#{class_name.singularize}_manager/#{class_name}.rbs"
       FakeFS.activate!
-      generate = Souls::Generate.new
+      generate = SOULs::Generate.new
       generate.options = { mutation: class_name }
-      allow(Souls).to(receive(:get_mother_path).and_return(""))
+      allow(SOULs).to(receive(:get_mother_path).and_return(""))
       allow(FileUtils).to(receive(:pwd).and_return("api"))
       a1 = generate.manager_rbs(class_name)
       file_output = File.read(file_path)

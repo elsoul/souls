@@ -1,13 +1,13 @@
 require_relative "./scaffolds/scaffold_query"
 
-RSpec.describe(Souls::Generate) do
+RSpec.describe(SOULs::Generate) do
   describe "Generate Query" do
     let(:class_name) { "user" }
     let(:file_name) { "user" }
 
     it "runs methods to create both query files" do
       FakeFS.with_fresh do
-        generate = Souls::Generate.new
+        generate = SOULs::Generate.new
 
         allow(generate).to(receive(:create_individual_query).and_return(""))
         allow(generate).to(receive(:create_index_query).and_return(""))
@@ -26,7 +26,7 @@ RSpec.describe(Souls::Generate) do
 
         file_path = "#{file_dir}#{file_name.singularize}.rb"
 
-        generate = Souls::Generate.new
+        generate = SOULs::Generate.new
         a1 = generate.__send__(:create_individual_query, class_name: "user")
         file_output = File.read(file_path)
 

@@ -1,11 +1,11 @@
-module Souls
+module SOULs
   class Update < Thor
     desc "create_mutation_rbs [CLASS_NAME]", "Update GraphQL Type from schema.rb"
     def create_mutation_rbs(class_name)
       singularized_class_name = class_name.singularize.underscore
       new_cols = ""
-      Dir.chdir(Souls.get_api_path.to_s) do
-        new_cols = Souls.get_columns_num(class_name: singularized_class_name)
+      Dir.chdir(SOULs.get_api_path.to_s) do
+        new_cols = SOULs.get_columns_num(class_name: singularized_class_name)
       end
       dir_name = "./sig/api/app/graphql/mutations/base/#{singularized_class_name}"
       file_path = "#{dir_name}/create_#{singularized_class_name}.rbs"
@@ -23,7 +23,7 @@ module Souls
             next
           elsif line.include?("def resolve:") && !resolve
             new_cols.each_with_index do |col, i|
-              type = Souls.type_check(col[:type])
+              type = SOULs.type_check(col[:type])
               type = "[#{type}]" if col[:array]
               next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
@@ -37,7 +37,7 @@ module Souls
             resolve = true
           elsif line.include?("def self.argument:") && !argument
             new_cols.each_with_index do |col, i|
-              type = Souls.type_check(col[:type])
+              type = SOULs.type_check(col[:type])
               type = "[#{type}]" if col[:array]
               next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
@@ -56,15 +56,15 @@ module Souls
         end
       end
       File.open(file_path, "w") { |f| f.write(write_txt) }
-      Souls::Painter.update_file(file_path.to_s)
+      SOULs::Painter.update_file(file_path.to_s)
     end
 
     desc "update_mutation [CLASS_NAME]", "Update GraphQL Type from schema.rb"
     def update_mutation_rbs(class_name)
       singularized_class_name = class_name.singularize.underscore
       new_cols = ""
-      Dir.chdir(Souls.get_api_path.to_s) do
-        new_cols = Souls.get_columns_num(class_name: singularized_class_name)
+      Dir.chdir(SOULs.get_api_path.to_s) do
+        new_cols = SOULs.get_columns_num(class_name: singularized_class_name)
       end
       dir_name = "./sig/api/app/graphql/mutations/base/#{singularized_class_name}"
       new_file_path = "config/update_mutation.rbs"
@@ -83,7 +83,7 @@ module Souls
               next
             elsif line.include?("def resolve:") && !resolve
               new_cols.each_with_index do |col, i|
-                type = Souls.type_check(col[:type])
+                type = SOULs.type_check(col[:type])
                 type = "[#{type}]" if col[:array]
                 next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
@@ -97,7 +97,7 @@ module Souls
               resolve = true
             elsif line.include?("def self.argument:") && !argument
               new_cols.each_with_index do |col, i|
-                type = Souls.type_check(col[:type])
+                type = SOULs.type_check(col[:type])
                 type = "[#{type}]" if col[:array]
                 next if col[:column_name] == "created_at" || col[:column_name] == "updated_at"
 
@@ -120,7 +120,7 @@ module Souls
       end
       FileUtils.rm(file_path)
       FileUtils.mv(new_file_path, file_path)
-      Souls::Painter.update_file(file_path.to_s)
+      SOULs::Painter.update_file(file_path.to_s)
     end
   end
 end

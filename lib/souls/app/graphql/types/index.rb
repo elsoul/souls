@@ -7,5 +7,5 @@ require_relative "base_object"
 require_relative "base_scalar"
 require_relative "base_union"
 
-module Souls
+module SOULs
 end

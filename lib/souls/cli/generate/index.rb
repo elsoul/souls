@@ -12,7 +12,7 @@ require_paths.each do |path|
   require_relative "./#{path}"
 end
 
-module Souls
+module SOULs
   class Generate < Thor
   end
 end

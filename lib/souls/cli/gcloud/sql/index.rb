@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Sql < Thor
     desc "create_instance", "Create Google Cloud SQL - PostgreSQL13"
     method_option :region, default: "", aliases: "--region", desc: "Google Cloud Platform Region"
@@ -6,10 +6,10 @@ module Souls
     def create_instance
       prompt = TTY::Prompt.new
       password = prompt.mask("Set DB PassWord:")
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
-      instance_name = Souls.configuration.instance_name
-      region = Souls.configuration.region if options[:region].blank?
+      app_name = SOULs.configuration.app
+      project_id = SOULs.configuration.project_id
+      instance_name = SOULs.configuration.instance_name
+      region = SOULs.configuration.region if options[:region].blank?
       db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
 
       zone = "#{region}-b"
@@ -21,7 +21,7 @@ module Souls
                 --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
         )
         instance_ip = `gcloud sql instances list | grep #{instance_name} | awk '{print $5}'`.strip
-        Dir.chdir(Souls.get_api_path.to_s) do
+        Dir.chdir(SOULs.get_api_path.to_s) do
           file_path = ".env"
           File.open(file_path, "w") do |line|
             line.write(<<~TEXT)
@@ -35,7 +35,7 @@ module Souls
             TEXT
           end
         end
-        Dir.chdir(Souls.get_mother_path.to_s) do
+        Dir.chdir(SOULs.get_mother_path.to_s) do
           file_path = ".env.production"
           File.open(file_path, "w") do |line|
             line.write(<<~TEXT)
@@ -51,7 +51,7 @@ module Souls
             TEXT
           end
         end
-        Souls::Github.new.secret_set
+        SOULs::Github.new.secret_set
         Whirly.status = Paint["Cloud SQL #{instance_name} is successfully created! You can push to deploy!", :green]
       end
       true
@@ -71,16 +71,16 @@ module Souls
 
     desc "assign_network", "Assign Network"
     def assign_network
-      app_name = Souls.configuration.app
-      instance_name = Souls.configuration.instance_name
-      project_id = Souls.configuration.project_id
+      app_name = SOULs.configuration.app
+      instance_name = SOULs.configuration.instance_name
+      project_id = SOULs.configuration.project_id
       system("gcloud beta sql instances patch #{instance_name} --project=#{project_id} --network=#{app_name}")
     end
 
     desc "create_ip_range", "Create VPC Adress Range"
     def create_ip_range
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
+      app_name = SOULs.configuration.app
+      project_id = SOULs.configuration.project_id
       system(
         "
             gcloud compute addresses create #{app_name}-ip-range \
@@ -95,8 +95,8 @@ module Souls
 
     desc "create_vpc_connector", "Create VPC-PEERING Connect"
     def create_vpc_connector
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
+      app_name = SOULs.configuration.app
+      project_id = SOULs.configuration.project_id
       system(
         "
           gcloud services vpc-peerings connect \
@@ -111,8 +111,8 @@ module Souls
     desc "assgin_ip", "Add Current Grobal IP to White List"
     method_option :ip, default: "", aliases: "--ip", desc: "Adding IP to Google Cloud SQL White List: e.g.'11.11.1.1'"
     def assign_ip
-      project_id = Souls.configuration.project_id
-      instance_name = Souls.configuration.instance_name
+      project_id = SOULs.configuration.project_id
+      instance_name = SOULs.configuration.instance_name
       ips = []
       ip =
         if options[:ip].blank?

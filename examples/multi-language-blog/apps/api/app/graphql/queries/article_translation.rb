@@ -4,7 +4,7 @@ module Queries
     argument :id, String, required: true
 
     def resolve(args)
-      _, data_id = SoulsApiSchema.from_global_id(args[:id])
+      _, data_id = SOULsApiSchema.from_global_id(args[:id])
       ::ArticleTranslation.find(data_id)
     end
   end

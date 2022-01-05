@@ -1,7 +1,7 @@
-RSpec.describe(Souls::CloudRun) do
+RSpec.describe(SOULs::CloudRun) do
   describe "list" do
     it "should call gcloud" do
-      cli = Souls::CloudRun.new
+      cli = SOULs::CloudRun.new
       allow(cli).to(receive(:system).and_return(true))
       expect(cli).to(receive(:system).with("gcloud run services list --platform managed"))
 
@@ -11,7 +11,7 @@ RSpec.describe(Souls::CloudRun) do
 
   describe "get_endpoint" do
     it "should call gcloud" do
-      cli = Souls::CloudRun.new
+      cli = SOULs::CloudRun.new
       allow(cli).to(receive(:`).and_return(true))
       expect(cli).to(receive(:`).with("gcloud run services list  --platform managed | grep worker | awk '{print $4}'"))
 

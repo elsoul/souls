@@ -8,7 +8,7 @@ module Scaffold
             argument :id, String, required: true
 
             def resolve args
-              _, data_id = SoulsApiSchema.from_global_id args[:id]
+              _, data_id = SOULsApiSchema.from_global_id args[:id]
               user = ::User.find data_id
               user.update(is_deleted: true)
               { user: ::User.find(data_id) }

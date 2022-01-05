@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "rspec_resolver [CLASS_NAME]", "Generate Rspec Resolver Test from schema.rb"
     def rspec_resolver(class_name)
@@ -10,7 +10,7 @@ module Souls
       rspec_resolver_after_head(singularized_class_name)
       rspec_resolver_params(singularized_class_name)
       rspec_resolver_end(singularized_class_name)
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -78,7 +78,7 @@ module Souls
                 new_line.write("    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n")
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end
@@ -111,7 +111,7 @@ module Souls
     end
 
     subject(:result) do
-      SoulsApiSchema.execute(query).as_json
+      SOULsApiSchema.execute(query).as_json
     end
 
     it "return #{class_name.camelize} Data" do
@@ -134,7 +134,7 @@ module Souls
                 new_line.write("              #{name.camelize(:lower)}\n")
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end
@@ -158,7 +158,7 @@ module Souls
                 break
               end
               type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-              field ||= Souls.type_check(type)
+              field ||= SOULs.type_check(type)
               array_true = line.include?("array: true")
               case name
               when "user_id", "created_at", "updated_at", /$*_id\z/
@@ -186,7 +186,7 @@ module Souls
                 end
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end

@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Delete < Thor
     desc "manager [MANAGER_NAME]", "Delete GraphQL Mutation Template"
     method_option :mutation, aliases: "--mutation", required: true, desc: "Mutation File Name"
@@ -8,9 +8,9 @@ module Souls
       file_path = "#{file_dir}/#{options[:mutation]}.rb"
 
       FileUtils.rm_f(file_path)
-      Souls::Painter.delete_file(file_path.to_s)
-      Souls::Delete.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
-      Souls::Delete.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
+      SOULs::Painter.delete_file(file_path.to_s)
+      SOULs::Delete.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
+      SOULs::Delete.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
       file_path
     end
   end

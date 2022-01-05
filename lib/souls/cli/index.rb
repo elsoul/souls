@@ -14,5 +14,5 @@ require_relative "./sync/index"
 require_relative "./upgrade/index"
 require_relative "./server/index"
 
-module Souls
+module SOULs
 end

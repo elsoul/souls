@@ -1,13 +1,13 @@
 require_relative "./scaffolds/scaffold_job"
 
-RSpec.describe(Souls::Generate) do
+RSpec.describe(SOULs::Generate) do
   let(:class_name) { "some_job" }
 
   describe "job" do
     it "calls mailer if mailer" do
-      cli = Souls::Generate.new
+      cli = SOULs::Generate.new
 
-      allow_any_instance_of(Souls::Generate).to(receive(:invoke).and_return(true))
+      allow_any_instance_of(SOULs::Generate).to(receive(:invoke).and_return(true))
       allow(cli).to(receive(:options).and_return({ mailer: true }))
 
       allow(cli).to(receive(:create_job_mailer_type).and_return(true))
@@ -20,9 +20,9 @@ RSpec.describe(Souls::Generate) do
     end
 
     it "calls create job if not mailer" do
-      cli = Souls::Generate.new
+      cli = SOULs::Generate.new
 
-      allow_any_instance_of(Souls::Generate).to(receive(:invoke).and_return(true))
+      allow_any_instance_of(SOULs::Generate).to(receive(:invoke).and_return(true))
       allow(cli).to(receive(:options).and_return({}))
 
       allow(cli).to(receive(:create_job_type).and_return(true))
@@ -45,7 +45,7 @@ RSpec.describe(Souls::Generate) do
 
         file_path = "#{query_dir}#{class_name.singularize}.rb"
 
-        generate = Souls::Generate.new
+        generate = SOULs::Generate.new
         a1 = generate.__send__(:create_job, class_name)
         file_output = File.read(file_path)
 
@@ -67,7 +67,7 @@ RSpec.describe(Souls::Generate) do
 
         file_path = "#{type_dir}#{class_name.singularize}_type.rb"
 
-        generate = Souls::Generate.new
+        generate = SOULs::Generate.new
         a1 = generate.__send__(:create_job_type, class_name)
         file_output = File.read(file_path)
 
@@ -89,7 +89,7 @@ RSpec.describe(Souls::Generate) do
 
         file_path = "#{query_dir}#{class_name.singularize}.rb"
 
-        generate = Souls::Generate.new
+        generate = SOULs::Generate.new
         a1 = generate.__send__(:mailgun_mailer, class_name)
         file_output = File.read(file_path)
 
@@ -111,8 +111,8 @@ RSpec.describe(Souls::Generate) do
 
         file_path = "#{type_dir}#{class_name.singularize}_type.rb"
 
-        generate = Souls::Generate.new
-        allow(Souls).to(receive(:get_mother_path).and_return(""))
+        generate = SOULs::Generate.new
+        allow(SOULs).to(receive(:get_mother_path).and_return(""))
         a1 = generate.__send__(:create_job_mailer_type, class_name)
         file_output = File.read(file_path)
 

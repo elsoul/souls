@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "mutation_rbs [CLASS_NAME]", "Generate GraphQL Mutation RBS from schema.rb"
     def mutation_rbs(class_name)
@@ -13,13 +13,13 @@ module Souls
 
     def create_rbs_mutation(class_name: "user")
       file_path = ""
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/create_#{class_name}.rbs"
         raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-        params = Souls.get_relation_params(class_name: class_name, col: "mutation")
+        params = SOULs.get_relation_params(class_name: class_name, col: "mutation")
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
             class Boolean
@@ -36,7 +36,7 @@ module Souls
         end
         File.open(file_path, "a") do |f|
           params[:params].each_with_index do |param, i|
-            type = Souls.rbs_type_check(param[:type])
+            type = SOULs.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
             if i == params[:params].size - 1
               f.write("                          #{param[:column_name]}: #{type}?\n")
@@ -55,8 +55,8 @@ module Souls
 
         File.open(file_path, "a") do |f|
           params[:params].each_with_index do |param, i|
-            type = Souls.type_check(param[:type])
-            rbs_type = Souls.rbs_type_check(param[:type])
+            type = SOULs.type_check(param[:type])
+            rbs_type = SOULs.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
             if i.zero?
               if param[:column_name].match?(/$*_id\z/)
@@ -97,17 +97,17 @@ module Souls
           TEXT
         end
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
     def update_rbs_mutation(class_name: "user")
       file_path = ""
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/update_#{class_name}.rbs"
-        params = Souls.get_relation_params(class_name: class_name, col: "mutation")
+        params = SOULs.get_relation_params(class_name: class_name, col: "mutation")
         params[:params] << { column_name: "id", type: "string", array: false }
         File.open(file_path, "w") do |f|
           f.write(<<~TEXT)
@@ -125,7 +125,7 @@ module Souls
         File.open(file_path, "a") do |f|
           cols = params[:params].reject { |n| n[:column_name] == "user_id" }
           cols.each_with_index do |param, i|
-            type = Souls.rbs_type_check(param[:type])
+            type = SOULs.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
             type = "String" if param[:column_name].match?(/$*_id\z/)
 
@@ -145,8 +145,8 @@ module Souls
         File.open(file_path, "a") do |f|
           cols = params[:params].reject { |n| n[:column_name] == "user_id" }
           cols.each_with_index do |param, i|
-            type = Souls.type_check(param[:type])
-            rbs_type = Souls.rbs_type_check(param[:type])
+            type = SOULs.type_check(param[:type])
+            rbs_type = SOULs.rbs_type_check(param[:type])
             type = "[#{type}]" if param[:array]
             type = "String" if param[:column_name].match?(/$*_id\z/)
             rbs_type = "String" if param[:column_name].match?(/$*_id\z/)
@@ -176,13 +176,13 @@ module Souls
           TEXT
         end
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
     def delete_rbs_mutation(class_name: "user")
       file_path = ""
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/delete_#{class_name}.rbs"
@@ -204,14 +204,14 @@ module Souls
             end
           TEXT
         end
-        Souls::Painter.create_file(file_path.to_s)
+        SOULs::Painter.create_file(file_path.to_s)
       end
       file_path
     end
 
     def destroy_delete_rbs_mutation(class_name: "user")
       file_path = ""
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_dir = "./sig/api/app/graphql/mutations/base/#{class_name}"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "#{file_dir}/destroy_delete_#{class_name}.rbs"
@@ -233,7 +233,7 @@ module Souls
             end
           TEXT
         end
-        Souls::Painter.create_file(file_path.to_s)
+        SOULs::Painter.create_file(file_path.to_s)
       end
       file_path
     end

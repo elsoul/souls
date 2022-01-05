@@ -1,5 +1,5 @@
-module Souls
-  class SoulsConnection < GraphQL::Types::Relay::BaseConnection
+module SOULs
+  class SOULsConnection < GraphQL::Types::Relay::BaseConnection
     field :total_count, Integer, null: false do
       description "Total number of items"
     end

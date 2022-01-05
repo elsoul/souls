@@ -1,5 +1,5 @@
 module Types
-  class QueryType < Souls::Types::BaseObject
+  class QueryType < SOULs::Types::BaseObject
     add_field(GraphQL::Types::Relay::NodeField)
     add_field(GraphQL::Types::Relay::NodesField)
     workers =
