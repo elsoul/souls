@@ -1,7 +1,7 @@
 module SOULs
   module Types
     class QueryObject < SOULs::Types::BaseObject
-      unless FileUtils.pwd.split("/").last == "souls"
+      if (FileUtils.pwd.split("/").last != "souls") && File.exist?("./db/schema.rb")
         add_field(GraphQL::Types::Relay::NodeField)
         add_field(GraphQL::Types::Relay::NodesField)
         get_tables.each do |t|
