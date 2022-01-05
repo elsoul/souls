@@ -1,7 +1,7 @@
 module SOULs
   module Types
     class MutationObject < SOULs::Types::BaseObject
-      unless FileUtils.pwd.split("/").last == "souls"
+      if (FileUtils.pwd.split("/").last != "souls") && File.exist?("./db/schema.rb")
         get_tables.each do |t|
           %w[create update delete destroy_delete].each do |a|
             field "#{a}_#{t.singularize.underscore}".to_sym,
@@ -23,10 +23,10 @@ module SOULs
           field file[:name].underscore.to_s.to_sym,
                 mutation: Object.const_get(
                   "Mutations::Managers::#{
-                    file[:class].singularize.camelize
-                  }Manager::#{
-                      file[:name].singularize.camelize
-                    }"
+                      file[:class].singularize.camelize
+                    }Manager::#{
+                        file[:name].singularize.camelize
+                      }"
                 )
         end
       end
