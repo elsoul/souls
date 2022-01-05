@@ -4,6 +4,6 @@ SOULs.configure do |config|
   config.region = "asia-northeast1"
   config.endpoint = "/endpoint"
   config.strain = "api"
-  config.fixed_gems = ["spring"]
+  config.fixed_gems = []
   config.workers = []
 end
