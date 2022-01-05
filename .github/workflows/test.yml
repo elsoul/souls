@@ -10,7 +10,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
         with:
-          bundler-cache: false
+          bundler-cache: true
           ruby-version: "3.0"
       - name: Install redis
         run: sudo apt-get install -y redis-tools redis-server
@@ -23,9 +23,9 @@ jobs:
       - name: Check gem build
         run: |
           bundle exec rake build
-      # - name: Check gem install
-      #   run: |
-      #     gem uninstall -aIx
-      #     export gemname=$(ls pkg)
-      #     gem install pkg/$gemname
-      #     souls -v
+      - name: Check gem install
+        run: |
+          gem uninstall -aIx
+          export gemname=$(ls pkg)
+          gem install pkg/$gemname
+          souls -v

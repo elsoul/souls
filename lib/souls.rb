@@ -1,6 +1,3 @@
-require "rubygems"
-require "bundler/setup"
-Bundler.require(:default)
 require_relative "souls/index"
 require_relative "souls/cli"
 require "active_support/core_ext/string/inflections"
