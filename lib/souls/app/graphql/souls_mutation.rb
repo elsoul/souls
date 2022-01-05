@@ -44,18 +44,18 @@ module SOULs
 
     def self.souls_post_to_dev(worker_name: "", query_string: "")
       app = SOULs.configuration.app
-      port = get_worker(worker_name: "souls-#{app}-#{worker_name}")[0][:port]
+      port = souls_get_worker(worker_name: "souls-#{app}-#{worker_name}")[0][:port]
       endpoint = SOULs.configuration.endpoint
       res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: query_string })
       res.body
     end
 
-    def self.get_worker(worker_name: "")
+    def self.souls_get_worker(worker_name: "")
       workers = SOULs.configuration.workers
       workers.filter { |n| n[:name] == worker_name }
     end
 
-    def self.auth_check(context)
+    def self.souls_auth_check(context)
       raise(GraphQL::ExecutionError, "You need to sign in!!") if context[:user].nil?
     end
 
