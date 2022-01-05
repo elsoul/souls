@@ -3,7 +3,7 @@ RSpec.describe("User Query テスト") do
     let!(:user) { FactoryBot.create(:user) }
 
     let(:query) do
-      data_id = Base64.encode64("User:#{user.id}")
+      data_id = Base64.strict_encode64("User:#{user.id}")
       %(query {
           user(id: \"#{data_id}\") {
             id

@@ -46,7 +46,7 @@ module Souls
       let!(:#{class_name}) { FactoryBot.create(:#{class_name}) }
 
       let(:query) do
-        data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
+        data_id = Base64.strict_encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
         %(query {
           #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
             id
@@ -56,7 +56,7 @@ module Souls
       let(:#{class_name}) { FactoryBot.create(:#{class_name}, #{@relation_params.join(', ')}) }
 
       let(:query) do
-        data_id = Base64.encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
+        data_id = Base64.strict_encode64("#{class_name.camelize}:\#{#{class_name.singularize.underscore}.id}")
         %(query {
           #{class_name.singularize.camelize(:lower)}(id: \\"\#{data_id}\\") {
             id
