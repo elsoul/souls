@@ -18,7 +18,8 @@ module Souls
 
     def cp_and_dl_files(dir: "db")
       require("#{Souls.get_mother_path}/config/souls")
-      worker_paths = Souls.configuration.workers.map { |n| n[:name].split("-").last }
+      project_id = Souls.configuration.project_id
+      worker_paths = Souls.configuration.workers.map { |n| n[:name].split("souls-#{project_id}-").last }
       worker_paths.each do |path|
         cp_path = "./apps/api/#{dir}"
         old_path = "./apps/#{path}/#{dir}"
@@ -34,7 +35,8 @@ module Souls
     def cp_env_files
       return unless File.exist?("#{Souls.get_mother_path}/apps/api/.env")
 
-      worker_paths = Souls.configuration.workers.map { |n| n[:name].split("-").last }
+      project_id = Souls.configuration.project_id
+      worker_paths = Souls.configuration.workers.map { |n| n[:name].split("souls-#{project_id}-").last }
       worker_paths.each do |path|
         system("rm -f ./apps/#{path}/.env", chdir: Souls.get_mother_path)
         system("cp -f ./apps/api/.env ./apps/#{path}/.env", chdir: Souls.get_mother_path)
