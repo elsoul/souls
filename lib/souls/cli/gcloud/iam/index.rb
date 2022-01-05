@@ -1,18 +1,18 @@
-module Souls
+module SOULs
   class Iam < Thor
     desc "setup_key", "Create Google Cloud IAM Service Account Key And Set All Permissions"
     def setup_key
-      region = Souls.configuration.region
-      Souls::Gcloud.new.auth_login
-      Souls::Upgrade.new.config
+      region = SOULs.configuration.region
+      SOULs::Gcloud.new.auth_login
+      SOULs::Upgrade.new.config
       create_service_account
       create_service_account_key
-      Souls::Gcloud.new.enable_permissions
+      SOULs::Gcloud.new.enable_permissions
       add_permissions
       begin
         system("gcloud app create --region=#{region} --quiet")
       rescue StandardError, error
-        puts("gcloud app region is Already exist! - Souls::Gcloud::Iam.setup_key")
+        puts("gcloud app region is Already exist! - SOULs::Gcloud::Iam.setup_key")
       end
       begin
         set_gh_secret_json
@@ -25,18 +25,18 @@ module Souls
 
     desc "create_service_account", "Create Google Cloud IAM Service Account"
     def create_service_account
-      app_name = Souls.configuration.app
+      app_name = SOULs.configuration.app
       system(
         "gcloud iam service-accounts create #{app_name} \
-          --description='Souls Service Account' \
+          --description='SOULs Service Account' \
           --display-name=#{app_name}"
       )
     end
 
     desc "create_service_account_key", "Create Google Cloud Service Account Key"
     def create_service_account_key
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
+      app_name = SOULs.configuration.app
+      project_id = SOULs.configuration.project_id
       system(
         "gcloud iam service-accounts keys create ./config/keyfile.json \
             --iam-account #{app_name}@#{project_id}.iam.gserviceaccount.com"
@@ -80,8 +80,8 @@ module Souls
     end
 
     def add_service_account_role(role: "roles/firebase.admin")
-      app_name = Souls.configuration.app
-      project_id = Souls.configuration.project_id
+      app_name = SOULs.configuration.app
+      project_id = SOULs.configuration.project_id
       system(
         "gcloud projects add-iam-policy-binding #{project_id} \
           --member='serviceAccount:#{app_name}@#{project_id}.iam.gserviceaccount.com' \

@@ -5,7 +5,7 @@ module Mutations
       argument :id, String, required: true
 
       def resolve(args)
-        _, data_id = SoulsApiSchema.from_global_id(args[:id])
+        _, data_id = SOULsApiSchema.from_global_id(args[:id])
         article = ::Article.find(data_id)
         article.update(is_deleted: true)
         { article: ::Article.find(data_id) }

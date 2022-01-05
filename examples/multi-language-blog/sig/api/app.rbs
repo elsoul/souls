@@ -1,4 +1,4 @@
-class SoulsApi
+class SOULsApi
   def self.params: (*untyped) -> untyped
   def self.login_auth: (token: untyped) -> untyped
   def self.use: (*untyped) -> untyped
@@ -23,7 +23,7 @@ class StandardError
   def self.to_json: (*untyped) -> untyped
 end
 
-module Souls
+module SOULs
   def self.configuration: -> untyped
 end
 

@@ -1,13 +1,13 @@
-module Souls
+module SOULs
   class DB < Thor
     desc "create_migration [CLASS_NAME]", "Create ActiveRecord Migration File"
     def create_migration(class_name)
       pluralized_class_name = class_name.underscore.pluralize
       singularized_class_name = class_name.underscore.singularize
-      Souls::DB.new.invoke(:model, [singularized_class_name], {})
-      Souls::DB.new.invoke(:rspec_model, [singularized_class_name], {})
-      Souls::DB.new.invoke(:model_rbs, [singularized_class_name], {})
-      Souls::Painter.create_file("")
+      SOULs::DB.new.invoke(:model, [singularized_class_name], {})
+      SOULs::DB.new.invoke(:rspec_model, [singularized_class_name], {})
+      SOULs::DB.new.invoke(:model_rbs, [singularized_class_name], {})
+      SOULs::Painter.create_file("")
       system("rake db:create_migration NAME=create_#{pluralized_class_name}")
       file_path = Dir["db/migrate/*create_#{pluralized_class_name}.rb"].first
       File.open(file_path, "w") do |f|

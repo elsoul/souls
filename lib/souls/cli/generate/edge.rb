@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "edge [CLASS_NAME]", "Generate GraphQL Edge from schema.rb"
     def edge(class_name)
@@ -13,7 +13,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

@@ -1,14 +1,14 @@
 require_relative "./scaffolds/scaffold_manager"
 
-RSpec.describe(Souls::Generate) do
+RSpec.describe(SOULs::Generate) do
   describe "Generate Manager" do
     let(:class_name) { "user" }
 
     describe "manager" do
       it "calls create manager" do
-        cli = Souls::Generate.new
+        cli = SOULs::Generate.new
         allow(cli).to(receive(:create_manager).and_return(true))
-        allow_any_instance_of(Souls::Generate).to(receive(:invoke).and_return(true))
+        allow_any_instance_of(SOULs::Generate).to(receive(:invoke).and_return(true))
 
         expect(cli).to(receive(:create_manager))
         cli.manager(class_name)
@@ -26,8 +26,8 @@ RSpec.describe(Souls::Generate) do
       it "creates manager file" do
         file_path = "#{@file_dir}#{class_name.singularize}_manager/#{class_name}.rb"
         FakeFS.activate!
-        generate = Souls::Generate.new
-        allow(Souls).to(receive(:get_mother_path).and_return(""))
+        generate = SOULs::Generate.new
+        allow(SOULs).to(receive(:get_mother_path).and_return(""))
         a1 = generate.__send__(:create_manager, class_name, "user")
         file_output = File.read(file_path)
 

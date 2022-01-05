@@ -1,4 +1,4 @@
-module SoulsHelper
+module SOULsHelper
   def self.export_csv(model_name)
     singularized_name = model_name.singularize.underscore
     return "Please Set column names in Constants !" unless Constants.public_send("#{singularized_name}_columns").size

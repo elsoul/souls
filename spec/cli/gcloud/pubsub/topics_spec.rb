@@ -1,7 +1,7 @@
-RSpec.describe(Souls::Pubsub) do
+RSpec.describe(SOULs::Pubsub) do
   describe "create_topic" do
     it "should send create topic" do
-      cli = Souls::Pubsub.new
+      cli = SOULs::Pubsub.new
 
       allow(cli).to(receive(:options).and_return({ topic_name: "name" }))
       allow(cli).to(receive(:system).and_return(true))
@@ -14,7 +14,7 @@ RSpec.describe(Souls::Pubsub) do
 
   describe "topic_list" do
     it "should call gcloud with topics list" do
-      cli = Souls::Pubsub.new
+      cli = SOULs::Pubsub.new
 
       allow(cli).to(receive(:system).and_return(true))
 

@@ -1,4 +1,4 @@
 module Queries
-  class BaseQuery < Souls::SoulsQuery
+  class BaseQuery < SOULs::SOULsQuery
   end
 end

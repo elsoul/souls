@@ -1,5 +1,5 @@
 require "souls"
-module Souls
+module SOULs
   class CLI < Thor
     desc "generate [COMMAND]", "SOULs Generate Commands"
     subcommand "generate", Generate
@@ -46,17 +46,17 @@ module Souls
 
     desc "version", "SOULs Version"
     def version
-      puts(Souls::VERSION)
+      puts(SOULs::VERSION)
     end
 
     desc "test", "Run Rspec & Rubocop"
     method_option :all, type: :boolean, aliases: "--all", default: false, desc: "Run (Rspec & steep check & Rubocop)"
     def test
       if options[:all]
-        Dir.chdir(Souls.get_mother_path.to_s) do
+        Dir.chdir(SOULs.get_mother_path.to_s) do
           system("steep check")
         end
-        Dir.chdir(Souls.get_api_path.to_s) do
+        Dir.chdir(SOULs.get_api_path.to_s) do
           system("rubocop -A")
           system("bundle exec rspec")
         end
@@ -68,7 +68,7 @@ module Souls
 
     desc "check", "Run steep check"
     def check
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         system("steep check")
       end
     end

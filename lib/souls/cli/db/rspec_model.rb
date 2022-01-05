@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class DB < Thor
     desc "rspec_model [CLASS_NAME]", "Generate Rspec Model Test from schema.rb"
     def rspec_model(class_name)
@@ -18,7 +18,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

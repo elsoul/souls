@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Delete < Thor
     desc "job [CLASS_NAME]", "Delete Job File in Worker"
     method_option :mailer, type: :boolean, aliases: "--mailer", default: false, desc: "Mailer Option"
@@ -7,9 +7,9 @@ module Souls
       file_path = "#{file_dir}#{class_name.singularize}.rb"
 
       FileUtils.rm_f(file_path)
-      Souls::Painter.delete_file(file_path.to_s)
-      Souls::Delete.new.invoke(:job_rbs, [class_name], {})
-      Souls::Delete.new.invoke(:rspec_job, [class_name], {})
+      SOULs::Painter.delete_file(file_path.to_s)
+      SOULs::Delete.new.invoke(:job_rbs, [class_name], {})
+      SOULs::Delete.new.invoke(:rspec_job, [class_name], {})
     end
   end
 end

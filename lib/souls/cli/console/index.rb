@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class CLI < Thor
     desc "console", "Run IRB Console"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"

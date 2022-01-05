@@ -1,10 +1,10 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "job_rbs [CLASS_NAME]", "Generate SOULs Job Mutation RBS Template"
     def job_rbs(class_name)
       file_path = ""
       worker_name = FileUtils.pwd.split("/").last
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         singularized_class_name = class_name.underscore.singularize
         file_dir = "./sig/#{worker_name}/app/graphql/queries/"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
@@ -26,13 +26,13 @@ module Souls
         File.open(type_file_path, "w") do |f|
           f.write(<<~TEXT)
             module Types
-              class #{singularized_class_name.camelize}Type < Souls::Types::BaseObject
+              class #{singularized_class_name.camelize}Type < SOULs::Types::BaseObject
                 def self.field: (:response, String, null: true) -> untyped
               end
             end
           TEXT
         end
-        Souls::Painter.create_file(file_path.to_s)
+        SOULs::Painter.create_file(file_path.to_s)
       end
       file_path
     end

@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Delete < Thor
     desc "scaffold [CLASS_NAME]", "Delete Scaffold"
     method_option :rbs, type: :boolean, aliases: "--rbs", default: false, desc: "Deletes Only RBS Files"
@@ -16,8 +16,8 @@ module Souls
     method_option :rbs, type: :boolean, aliases: "--rbs", default: false, desc: "Deletes Only RBS Files"
     def scaffold_all
       puts(Paint["Delete All Scaffold Files!\n", :cyan])
-      Souls.get_tables.each do |table|
-        Souls::Delete.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
+      SOULs.get_tables.each do |table|
+        SOULs::Delete.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
       end
       true
     end

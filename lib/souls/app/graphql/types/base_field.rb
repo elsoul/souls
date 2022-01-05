@@ -1,7 +1,7 @@
-module Souls
+module SOULs
   module Types
     class BaseField < GraphQL::Schema::Field
-      argument_class Souls::Types::BaseArgument
+      argument_class SOULs::Types::BaseArgument
     end
   end
 end

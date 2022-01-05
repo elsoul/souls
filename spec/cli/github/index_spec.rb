@@ -1,36 +1,36 @@
 require_relative "scaffolds/scaffold_workflows"
 
-RSpec.describe(Souls::Github) do
+RSpec.describe(SOULs::Github) do
   describe "index" do
     describe "watch" do
       it "should print error with no connection to github " do
-        cli = Souls::Github.new
+        cli = SOULs::Github.new
         allow(cli).to(receive(:`).and_return("{}"))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("abc123"))
         expect(JSON).not_to(receive(:parse))
-        expect(Souls::Painter).to(receive(:error))
+        expect(SOULs::Painter).to(receive(:error))
         expect(cli.watch).to(eq(nil))
       end
 
       it "should print error with malformed json" do
-        cli = Souls::Github.new
+        cli = SOULs::Github.new
         allow(cli).to(receive(:`).and_return("{}"))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("git@github.com:elsoul/souls.git"))
         expect(JSON).to(receive(:parse))
-        expect(Souls::Painter).to(receive(:error))
+        expect(SOULs::Painter).to(receive(:error))
         expect(cli.watch).to(eq(nil))
       end
 
       it "should print error with no workflows" do
-        cli = Souls::Github.new
+        cli = SOULs::Github.new
         allow(cli).to(receive(:`).and_return(Scaffold.scaffold_no_workflows))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("git@github.com:elsoul/souls.git"))
-        expect(Souls::Painter).to(receive(:error))
+        expect(SOULs::Painter).to(receive(:error))
         expect(cli.watch).to(eq(nil))
       end
 
       it "should call gh run watch with one workflow" do
-        cli = Souls::Github.new
+        cli = SOULs::Github.new
         allow(cli).to(receive(:`).and_return(Scaffold.scaffold_one_workflow))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("git@github.com:elsoul/souls.git"))
 
@@ -41,7 +41,7 @@ RSpec.describe(Souls::Github) do
       end
 
       it "should prompt user with multiple workflows" do
-        cli = Souls::Github.new
+        cli = SOULs::Github.new
         allow(cli).to(receive(:`).and_return(Scaffold.scaffold_two_workflows))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("git@github.com:elsoul/souls.git"))
 
@@ -53,7 +53,7 @@ RSpec.describe(Souls::Github) do
       end
 
       it "should work with https" do
-        cli = Souls::Github.new
+        cli = SOULs::Github.new
         allow(cli).to(receive(:`).and_return(Scaffold.scaffold_two_workflows))
         allow(cli).to(receive(:`).with("git remote get-url origin").and_return("https://github.com/elsoul/souls-rubyworld.git"))
 

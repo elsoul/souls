@@ -10,7 +10,7 @@ module Mutations
       argument :title, String, required: false
 
       def resolve(args)
-        _, article_id = SoulsApiSchema.from_global_id(args[:article_id])
+        _, article_id = SOULsApiSchema.from_global_id(args[:article_id])
         new_record = { **args, article_id: article_id }
         data = ::ArticleTranslation.new(new_record)
         raise(StandardError, data.errors.full_messages) unless data.save

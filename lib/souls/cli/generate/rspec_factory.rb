@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "rspec_factory [CLASS_NAME]", "Generate Rspec Factory Test from schema.rb"
     def rspec_factory(class_name)
@@ -9,7 +9,7 @@ module Souls
       rspec_factory_head(class_name: singularized_class_name)
       rspec_factory_params(class_name: singularized_class_name)
       rspec_factory_end(class_name: singularized_class_name)
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -37,7 +37,7 @@ module Souls
               new_line.write("\n" && break) if line.include?("t.index") || line.strip == "end"
               field = '["tag1", "tag2", "tag3"]' if line.include?("array: true")
               type, name = line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
-              field ||= Souls.get_test_type(type)
+              field ||= SOULs.get_test_type(type)
               if type == "bigint" && name.include?("_id")
                 id_name = name.gsub("_id", "")
                 new_line.write("    association :#{id_name}, factory: :#{id_name}\n")
@@ -45,7 +45,7 @@ module Souls
                 new_line.write("    #{name} { #{field} }\n")
               end
             end
-            @on = true if Souls.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line: line, class_name: class_name)
           end
         end
       end

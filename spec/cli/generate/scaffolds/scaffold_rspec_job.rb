@@ -14,7 +14,7 @@ module Scaffold
           end
 
           subject(:result) do
-            SoulsApiSchema.execute(query).as_json
+            SOULsApiSchema.execute(query).as_json
           end
 
           it "return Mailer response" do
@@ -43,7 +43,7 @@ module Scaffold
           end
 
           subject(:result) do
-            SoulsApiSchema.execute(query).as_json
+            SOULsApiSchema.execute(query).as_json
           end
 
           it "return User response" do

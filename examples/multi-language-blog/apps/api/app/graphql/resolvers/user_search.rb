@@ -5,7 +5,7 @@ module Resolvers
     type Types::UserType.connection_type, null: false
     description "Search User"
 
-    class UserFilter < Souls::Types::BaseInputObject
+    class UserFilter < SOULs::Types::BaseInputObject
       argument :OR, [self], required: false
       argument :email, String, required: false
       argument :end_date, String, required: false

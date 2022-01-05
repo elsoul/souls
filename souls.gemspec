@@ -2,7 +2,7 @@ require_relative "lib/souls/version"
 
 Gem::Specification.new do |gem|
   gem.name          = "souls"
-  gem.version       = Souls::VERSION
+  gem.version       = SOULs::VERSION
   gem.authors       = ["POPPIN-FUMI", "KishiTheMechanic", "James Neve"]
   gem.email         = ["f.kawasaki@elsoul.nl", "s.kishi@elsoul.nl", "jamesoneve@gmail.com"]
 

@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Pubsub < Thor
     desc "create_subscription", "Create Google Cloud PubSub Subscription"
     method_option :topic_name,
@@ -10,8 +10,8 @@ module Souls
                   aliases: "--endpoint",
                   desc: "Google Cloud Pubsub Push Subscription Endpoint"
     def create_subscription
-      project_id = Souls.configuration.project_id
-      service_account = "#{Souls.configuration.app}@#{project_id}.iam.gserviceaccount.com"
+      project_id = SOULs.configuration.project_id
+      service_account = "#{SOULs.configuration.app}@#{project_id}.iam.gserviceaccount.com"
       system(
         "gcloud pubsub subscriptions create #{options[:topic_name]}-sub \
             --topic #{options[:topic_name]} \

@@ -5,7 +5,7 @@ require_relative "./rspec_model"
 require_relative "./model_rbs"
 require_relative "../cli_exception"
 
-module Souls
+module SOULs
   class DB < Thor
     desc "migrate", "Migrate Database"
     method_option :env, aliases: "--e", default: "development", desc: "Difine APP Enviroment - development | production"
@@ -102,7 +102,7 @@ module Souls
     private
 
     def db_system(cmd)
-      system(cmd) or Souls::Painter.error("DB is not running. Please run `souls docker psql`")
+      system(cmd) or SOULs::Painter.error("DB is not running. Please run `souls docker psql`")
     end
   end
 end

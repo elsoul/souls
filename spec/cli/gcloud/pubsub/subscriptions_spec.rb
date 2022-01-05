@@ -1,7 +1,7 @@
-RSpec.describe(Souls::Pubsub) do
+RSpec.describe(SOULs::Pubsub) do
   describe "create_subscription" do
     it "should call gcloud with options" do
-      cli = Souls::Pubsub.new
+      cli = SOULs::Pubsub.new
 
       allow(cli).to(receive(:options).and_return({ topic_name: "name", endpoint: "endpoint" }))
       allow(cli).to(receive(:system).and_return(true))
@@ -23,7 +23,7 @@ RSpec.describe(Souls::Pubsub) do
 
   describe "subscription_list" do
     it "should call gcloud" do
-      cli = Souls::Pubsub.new
+      cli = SOULs::Pubsub.new
       allow(cli).to(receive(:system).and_return(true))
       expect(cli).to(receive(:system).with("gcloud pubsub subscriptions list"))
       cli.subscription_list
@@ -32,7 +32,7 @@ RSpec.describe(Souls::Pubsub) do
 
   describe "update_subscription" do
     it "should call gcloud and update subscription" do
-      cli = Souls::Pubsub.new
+      cli = SOULs::Pubsub.new
 
       allow(cli).to(receive(:options).and_return({ topic_name: "name", endpoint: "endpoint" }))
       allow(cli).to(receive(:system).and_return(true))

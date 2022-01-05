@@ -3,7 +3,7 @@ require_relative "./scaffolds/scaffold_mutation_update_rbs"
 require_relative "./scaffolds/scaffold_mutation_delete_rbs"
 require_relative "./scaffolds/scaffold_mutation_destroy_delete_rbs"
 
-RSpec.describe(Souls::Generate) do
+RSpec.describe(SOULs::Generate) do
   describe "Generate Mutation" do
     let(:class_name) { "user" }
 
@@ -19,9 +19,9 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{@file_dir}create_#{class_name.singularize}.rbs"
 
         FakeFS.activate!
-        generate = Souls::Generate.new
-        allow(Souls).to(receive(:get_relation_params).and_return({ params: {} }))
-        allow(Souls).to(receive(:get_mother_path).and_return(""))
+        generate = SOULs::Generate.new
+        allow(SOULs).to(receive(:get_relation_params).and_return({ params: {} }))
+        allow(SOULs).to(receive(:get_mother_path).and_return(""))
         a1 = generate.__send__(:create_rbs_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 
@@ -38,8 +38,8 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{@file_dir}update_#{class_name.singularize}.rbs"
 
         FakeFS.activate!
-        generate = Souls::Generate.new
-        allow(Souls).to(
+        generate = SOULs::Generate.new
+        allow(SOULs).to(
           receive(:get_relation_params).and_return(
             {
               params: [
@@ -52,7 +52,7 @@ RSpec.describe(Souls::Generate) do
             }
           )
         )
-        allow(Souls).to(receive(:get_mother_path).and_return(""))
+        allow(SOULs).to(receive(:get_mother_path).and_return(""))
         a1 = generate.__send__(:update_rbs_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 
@@ -69,8 +69,8 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{@file_dir}delete_#{class_name.singularize}.rbs"
 
         FakeFS.activate!
-        generate = Souls::Generate.new
-        allow(Souls).to(receive(:get_mother_path).and_return(""))
+        generate = SOULs::Generate.new
+        allow(SOULs).to(receive(:get_mother_path).and_return(""))
         a1 = generate.__send__(:delete_rbs_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 
@@ -87,8 +87,8 @@ RSpec.describe(Souls::Generate) do
         file_path = "#{@file_dir}destroy_delete_#{class_name.singularize}.rbs"
 
         FakeFS.activate!
-        generate = Souls::Generate.new
-        allow(Souls).to(receive(:get_mother_path).and_return(""))
+        generate = SOULs::Generate.new
+        allow(SOULs).to(receive(:get_mother_path).and_return(""))
         a1 = generate.__send__(:destroy_delete_rbs_mutation, **{ class_name: class_name })
         file_output = File.read(file_path)
 

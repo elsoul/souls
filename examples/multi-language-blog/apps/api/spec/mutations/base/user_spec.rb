@@ -27,7 +27,7 @@ RSpec.describe("User Mutation テスト") do
     end
 
     subject(:result) do
-      SoulsApiSchema.execute(mutation).as_json
+      SOULsApiSchema.execute(mutation).as_json
     end
 
     it "return User Data" do

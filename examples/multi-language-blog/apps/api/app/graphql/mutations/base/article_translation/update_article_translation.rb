@@ -11,8 +11,8 @@ module Mutations
       argument :title, String, required: false
 
       def resolve(args)
-        _, data_id = SoulsApiSchema.from_global_id(args[:id])
-        _, article_id = SoulsApiSchema.from_global_id(args[:article_id])
+        _, data_id = SOULsApiSchema.from_global_id(args[:id])
+        _, article_id = SOULsApiSchema.from_global_id(args[:article_id])
         new_record = { **args, id: data_id, article_id: article_id }
         data = ::ArticleTranslation.find(data_id)
         data.update(new_record)

@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Upgrade < Thor
     desc "submodule", "Run git submodule update --init RBS collection"
     def submodule

@@ -1,10 +1,10 @@
-module Souls
+module SOULs
   class CLI < Thor
     desc "server", "Run SOULs APP"
     method_option :all, type: :boolean, alias: "--all", default: false, desc: "Run All API & Workers"
     def server
       if options[:all]
-        Dir.chdir(Souls.get_mother_path.to_s) do
+        Dir.chdir(SOULs.get_mother_path.to_s) do
           front_path = "apps/console/package.json"
           system("foreman start -f Procfile.dev")
           system("cd apps/console && yarn dev") if File.exist?(front_path)

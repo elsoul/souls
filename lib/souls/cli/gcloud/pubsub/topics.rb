@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Pubsub < Thor
     desc "create_topic", "Create Google Cloud Pubsub Topic"
     method_option :topic_name,

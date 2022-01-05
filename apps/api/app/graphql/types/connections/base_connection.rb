@@ -1,4 +1,4 @@
 module Types
-  class BaseConnection < Souls::SoulsConnection
+  class BaseConnection < SOULs::SOULsConnection
   end
 end

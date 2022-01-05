@@ -1,4 +1,4 @@
-module SoulsHelper
+module SOULsHelper
   def self.get_tables
     path = "./db/schema.rb"
     tables = []

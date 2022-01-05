@@ -1,8 +1,8 @@
-module Souls
+module SOULs
   class Upgrade < Thor
     desc "config", "Update config/souls.rb"
     def config
-      souls = Souls.configuration
+      souls = SOULs.configuration
       prompt = TTY::Prompt.new
       regions = `gcloud app regions list | awk '{print $1}'`.split("\n")
       regions.shift
@@ -10,7 +10,7 @@ module Souls
       region = prompt.select("Region:", regions, default: souls.region)
       endpoint = prompt.ask("Endpoint:", default: souls.endpoint)
 
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         mother_conf_path = "config/souls.rb"
         api_conf_path = "apps/api/config/souls.rb"
         mother_conf = File.readlines(mother_conf_path)

@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class CloudRun < Thor
     desc "list", "Show Google Cloud Run List"
     def list

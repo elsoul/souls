@@ -1,8 +1,8 @@
-module Souls
+module SOULs
   class CLI < Thor
     def initialize(*_args)
       super
-      @bucket_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{Souls::VERSION}"
+      @bucket_url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{SOULs::VERSION}"
     end
 
     desc "new [APP_NAME]", "Create SOULs APP"
@@ -67,7 +67,7 @@ module Souls
       file_path = "#{config_dir}/souls.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          Souls.configure do |config|
+          SOULs.configure do |config|
             config.app = "#{app_name}"
             config.project_id = "#{app_name}"
             config.region = "asia-northeast1"
@@ -98,7 +98,7 @@ module Souls
       file_path = "#{config_dir}/souls.rb"
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
-          Souls.configure do |config|
+          SOULs.configure do |config|
             config.app = "#{app_name}"
             config.project_id = "#{app_name}"
             config.region = "asia-northeast1"
@@ -115,8 +115,8 @@ module Souls
 
     def get_latest_gem(app_name)
       file_path = "./#{app_name}/Gemfile"
-      souls_gem = "gem \"souls\", \"#{Souls::VERSION}\""
-      souls_gem = "gem \"souls\", \"#{Souls::VERSION}\", path: \"~/.local_souls/\"" if Souls::VERSION.length > 20
+      souls_gem = "gem \"souls\", \"#{SOULs::VERSION}\""
+      souls_gem = "gem \"souls\", \"#{SOULs::VERSION}\", path: \"~/.local_souls/\"" if SOULs::VERSION.length > 20
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           source "https://rubygems.org"
@@ -144,7 +144,7 @@ module Souls
     end
 
     def download_souls(app_name: "souls", service_name: "api")
-      version = Souls.get_latest_version_txt(service_name: service_name).join(".")
+      version = SOULs.get_latest_version_txt(service_name: service_name).join(".")
       file_name = "#{service_name}-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
       system("curl -OL #{url}")
@@ -189,7 +189,7 @@ module Souls
       puts(line)
       welcome = Paint["Welcome to SOULs!", :white]
       puts(welcome)
-      souls_ver = Paint["SOULs Version: #{Souls::VERSION}", :white]
+      souls_ver = Paint["SOULs Version: #{SOULs::VERSION}", :white]
       puts(souls_ver)
       puts(line)
       endroll = <<~TEXT

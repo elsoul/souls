@@ -1,8 +1,8 @@
-module Souls
+module SOULs
   class Github < Thor
     desc "secret_set", "Github Secret Set from .env.production"
     def secret_set
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_path = ".env.production"
         File.open(file_path, "r") do |file|
           file.each_line do |line|
@@ -33,7 +33,7 @@ module Souls
       remote_url = `git remote get-url origin`
       split_url = %r{(https://|git@)(github.com)(:|/)([^.]+/[^.]+)(\.git)?}.match(remote_url)
       if split_url.nil? || split_url.size != 6
-        Souls::Painter.error("Cannot access Github, please check your credentials")
+        SOULs::Painter.error("Cannot access Github, please check your credentials")
         return
       end
 
@@ -41,7 +41,7 @@ module Souls
       workflows = JSON.parse(`#{api_request}`)
 
       if workflows.nil? || !workflows.key?("workflow_runs")
-        Souls::Painter.error("Failed to parse JSON response from Github")
+        SOULs::Painter.error("Failed to parse JSON response from Github")
         return
       end
 
@@ -53,7 +53,7 @@ module Souls
       wf_id =
         case wf_info.size
         when 0
-          Souls::Painter.error("No workflow is running")
+          SOULs::Painter.error("No workflow is running")
           return
         when 1
           wf_info[0].values[0]
@@ -68,47 +68,47 @@ module Souls
     private
 
     def update_env_production(key:, value:, dqm: false)
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_path = ".env.production"
         File.open(file_path, "a") do |line|
           dqm ? line.write("\n#{key.upcase}=\"#{value}\"") : line.write("\n#{key.upcase}=#{value}")
         end
-        Souls::Painter.update_file(file_path.to_s)
+        SOULs::Painter.update_file(file_path.to_s)
       end
     end
 
     def update_api_env(key:, value:, dqm: false)
-      Dir.chdir(Souls.get_api_path.to_s) do
+      Dir.chdir(SOULs.get_api_path.to_s) do
         file_path = ".env"
         File.open(file_path, "a") do |line|
           dqm ? line.write("\n#{key.upcase}=\"#{value}\"") : line.write("\n#{key.upcase}=#{value}")
         end
-        Souls::Painter.update_file(file_path.to_s)
+        SOULs::Painter.update_file(file_path.to_s)
       end
     end
 
     def update_workers_env(key:, value:, dqm: false)
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         workers = Dir["apps/worker-*"]
         workers.each do |worker_path|
           file_path = "#{worker_path}/.env"
           File.open(file_path, "a") do |line|
             dqm ? line.write("\n#{key.upcase}=\"#{value}\"") : line.write("\n#{key.upcase}=#{value}")
           end
-          Souls::Painter.update_file(file_path.to_s)
+          SOULs::Painter.update_file(file_path.to_s)
         end
       end
     end
 
     def update_github_actions(key:)
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_paths = Dir[".github/workflows/*.yml"]
         file_paths.each do |file_path|
           worker_workflow = File.readlines(file_path)
           worker_workflow[worker_workflow.size - 1] = worker_workflow.last.chomp
           worker_workflow << " \\\n            --set-env-vars=\"#{key.upcase}=${{ secrets.#{key.upcase} }}\""
           File.open(file_path, "w") { |f| f.write(worker_workflow.join) }
-          Souls::Painter.update_file(file_path.to_s)
+          SOULs::Painter.update_file(file_path.to_s)
         end
       end
     end

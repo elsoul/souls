@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   module Types
     class BaseUnion < GraphQL::Schema::Union
     end

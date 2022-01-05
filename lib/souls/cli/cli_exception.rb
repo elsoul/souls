@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class CLIException < StandardError
     attr_reader :message
 

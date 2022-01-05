@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "rspec_job [CLASS_NAME]", "Generate Rspec Job Test Template"
     method_option :mailer, type: :boolean, aliases: "--mailer", default: false, desc: "Mailgun Template"
@@ -25,7 +25,7 @@ module Souls
                 end
 
                 subject(:result) do
-                  SoulsApiSchema.execute(query).as_json
+                  SOULsApiSchema.execute(query).as_json
                 end
 
                 it "return #{singularized_class_name.camelize} response" do
@@ -54,7 +54,7 @@ module Souls
                 end
 
                 subject(:result) do
-                  SoulsApiSchema.execute(query).as_json
+                  SOULsApiSchema.execute(query).as_json
                 end
 
                 it "return #{singularized_class_name.camelize} response" do
@@ -67,7 +67,7 @@ module Souls
           TEXT
         end
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

@@ -1,11 +1,11 @@
-module Souls
+module SOULs
   class Update < Thor
     desc "type_rbs [CLASS_NAME]", "Update GraphQL Type from schema.rb"
     def type_rbs(class_name)
       singularized_class_name = class_name.singularize.underscore
       new_cols = ""
-      Dir.chdir(Souls.get_api_path.to_s) do
-        new_cols = Souls.get_columns_num(class_name: singularized_class_name)
+      Dir.chdir(SOULs.get_api_path.to_s) do
+        new_cols = SOULs.get_columns_num(class_name: singularized_class_name)
       end
       dir_name = "./sig/api/app/graphql/types"
       new_file_path = "config/create_type.rbs"
@@ -21,7 +21,7 @@ module Souls
               argument = false
             elsif line.include?("def self.field:") && !argument
               new_cols.each_with_index do |col, i|
-                type = Souls.get_type(col[:type])
+                type = SOULs.get_type(col[:type])
                 type = "[#{type}]" if col[:array]
                 if i.zero?
                   new_line.write("    def self.field: (:#{col[:column_name]}, #{type}, null: true) -> #{type}\n")
@@ -38,7 +38,7 @@ module Souls
       end
       FileUtils.rm(file_path)
       FileUtils.mv(new_file_path, file_path)
-      Souls::Painter.update_file(file_path.to_s)
+      SOULs::Painter.update_file(file_path.to_s)
     end
   end
 end

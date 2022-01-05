@@ -1,10 +1,10 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "mutation [CLASS_NAME]", "Generate GraphQL Mutation from schema.rb"
     def mutation(class_name)
       singularized_class_name = class_name.singularize
 
-      Dir.chdir(Souls.get_api_path.to_s) do
+      Dir.chdir(SOULs.get_api_path.to_s) do
         file_dir = "./app/graphql/mutations/base"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         file_path = "./app/graphql/mutations/base/#{singularized_class_name}/create_#{singularized_class_name}.rb"
@@ -26,7 +26,7 @@ module Souls
       file_path = "#{file_dir}/create_#{singularized_class_name}.rb"
       raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-      params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
+      params = SOULs.get_relation_params(class_name: singularized_class_name, col: "mutation")
       File.open(file_path, "a") do |f|
         f.write(<<~TEXT)
           module Mutations
@@ -40,7 +40,7 @@ module Souls
 
       File.open(file_path, "a") do |f|
         params[:params].each_with_index do |param, i|
-          type = Souls.type_check(param[:type])
+          type = SOULs.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           type = "String" if param[:column_name].match?(/$*_id\z/)
           next if param[:column_name] == "user_id"
@@ -60,7 +60,7 @@ module Souls
           params[:relation_params].each_with_index do |col, _i|
             next if col[:column_name] == "user_id"
 
-            f.write("      _, #{col[:column_name]} = SoulsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
+            f.write("      _, #{col[:column_name]} = SOULsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
           end
           relation_params =
             params[:relation_params].map do |n|
@@ -83,7 +83,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -94,7 +94,7 @@ module Souls
       file_path = "#{file_dir}/update_#{singularized_class_name}.rb"
       raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
 
-      params = Souls.get_relation_params(class_name: singularized_class_name, col: "mutation")
+      params = SOULs.get_relation_params(class_name: singularized_class_name, col: "mutation")
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           module Mutations
@@ -109,7 +109,7 @@ module Souls
 
       File.open(file_path, "a") do |f|
         params[:params].each_with_index do |param, i|
-          type = Souls.type_check(param[:type])
+          type = SOULs.type_check(param[:type])
           type = "[#{type}]" if param[:array]
           type = "String" if param[:column_name].match?(/$*_id\z/)
           next if param[:column_name] == "user_id"
@@ -117,7 +117,7 @@ module Souls
           if i == params[:params].size - 1
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n\n")
             f.write("      def resolve(args)\n")
-            f.write("      _, data_id = SoulsApiSchema.from_global_id(args[:id])\n")
+            f.write("      _, data_id = SOULsApiSchema.from_global_id(args[:id])\n")
           else
             f.write("      argument :#{param[:column_name]}, #{type}, required: false\n")
           end
@@ -130,7 +130,7 @@ module Souls
           params[:relation_params].each_with_index do |col, _i|
             next if col[:column_name] == "user_id"
 
-            f.write("      _, #{col[:column_name]} = SoulsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
+            f.write("      _, #{col[:column_name]} = SOULsApiSchema.from_global_id(args[:#{col[:column_name]}])\n")
           end
           relation_params =
             params[:relation_params].map do |n|
@@ -155,7 +155,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -173,7 +173,7 @@ module Souls
                 argument :id, String, required: true
 
                 def resolve args
-                  _, data_id = SoulsApiSchema.from_global_id args[:id]
+                  _, data_id = SOULsApiSchema.from_global_id args[:id]
                   #{class_name} = ::#{class_name.camelize}.find data_id
                   #{class_name}.update(is_deleted: true)
                   { #{class_name}: ::#{class_name.camelize}.find(data_id) }
@@ -183,7 +183,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
 
@@ -201,7 +201,7 @@ module Souls
                 argument :id, String, required: true
 
                 def resolve args
-                  _, data_id = SoulsApiSchema.from_global_id args[:id]
+                  _, data_id = SOULsApiSchema.from_global_id args[:id]
                   #{class_name} = ::#{class_name.camelize}.find data_id
                   #{class_name}.destroy
                   { #{class_name}: #{class_name} }
@@ -211,7 +211,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     rescue StandardError => e
       puts(e)

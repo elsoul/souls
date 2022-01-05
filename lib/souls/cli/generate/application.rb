@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "scaffold [CLASS_NAME]", "Generate Scaffold from schema.rb"
     method_option :rbs, type: :boolean, aliases: "--rbs", default: false, desc: "Generates Only RBS Files"
@@ -16,11 +16,11 @@ module Souls
     method_option :rbs, type: :boolean, aliases: "--rbs", default: false, desc: "Generates Only RBS All Schema Files"
     def scaffold_all
       puts(Paint["Let's Go SOULs AUTO CRUD Assist!\n", :cyan])
-      Souls.get_tables.each do |table|
+      SOULs.get_tables.each do |table|
         if options[:rbs]
-          Souls::Generate.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
+          SOULs::Generate.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
         else
-          Souls::Generate.new.invoke(:scaffold, [table.singularize], {})
+          SOULs::Generate.new.invoke(:scaffold, [table.singularize], {})
         end
       end
       true

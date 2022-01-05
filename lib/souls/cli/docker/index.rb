@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Docker < Thor
     desc "psql", "Run PostgreSQL13 Docker Container"
     def psql

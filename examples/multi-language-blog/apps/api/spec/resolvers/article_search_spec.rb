@@ -36,7 +36,7 @@ RSpec.describe("ArticleSearch Resolver テスト") do
     end
 
     subject(:result) do
-      SoulsApiSchema.execute(query).as_json
+      SOULsApiSchema.execute(query).as_json
     end
 
     it "return Article Data" do

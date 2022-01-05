@@ -1,5 +1,5 @@
 module Types
-  class ArticleTranslationType < Souls::Types::BaseObject
+  class ArticleTranslationType < SOULs::Types::BaseObject
     implements GraphQL::Types::Relay::Node
 
     global_id_field :id

@@ -6,7 +6,7 @@ require "database_cleaner"
 require "capybara/rspec"
 require "webmock/rspec"
 
-abort("The Souls environment is running in production mode!") if ENV["RACK_ENV"] == "production"
+abort("The SOULs environment is running in production mode!") if ENV["RACK_ENV"] == "production"
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -18,7 +18,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 def app
-  SoulsApi
+  SOULsApi
 end
 
 RSpec.configure do |config|

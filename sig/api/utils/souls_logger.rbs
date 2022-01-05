@@ -1,4 +1,4 @@
-module SoulsLogger
+module SOULsLogger
   def self.critical_log: (untyped) -> untyped
   def self.warning_log: (untyped) -> untyped
   def self.info_log: (untyped) -> untyped

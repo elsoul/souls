@@ -1,7 +1,7 @@
 module Scaffold
   def self.scaffold_souls_helper
     <<~SOULSHELPER
-      module SoulsHelper
+      module SOULsHelper
         def self.export_csv: (untyped model_name) -> (String? | StandardError )
         def self.export_model_to_csv: (untyped model_name) -> (untyped | StandardError )
         def self.upload_to_gcs: (String file_path, String upload_path) -> untyped

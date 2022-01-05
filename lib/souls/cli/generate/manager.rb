@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "manager [MANAGER_NAME]", "Generate GraphQL Mutation Template"
     method_option :mutation, aliases: "--mutation", required: true, desc: "Mutation File Name"
@@ -10,8 +10,8 @@ module Souls
       end
 
       create_manager(class_name, options[:mutation])
-      Souls::Generate.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
-      Souls::Generate.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
+      SOULs::Generate.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
+      SOULs::Generate.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
     end
 
     private
@@ -44,7 +44,7 @@ module Souls
           end
         TEXT
       end
-      Souls::Painter.create_file(file_path.to_s)
+      SOULs::Painter.create_file(file_path.to_s)
       file_path
     end
   end

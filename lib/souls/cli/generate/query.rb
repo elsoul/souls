@@ -1,4 +1,4 @@
-module Souls
+module SOULs
   class Generate < Thor
     desc "query [CLASS_NAME]", "Generate GraphQL Query from schema.rb"
     def query(class_name)
@@ -22,13 +22,13 @@ module Souls
               argument :id, String, required: true
 
               def resolve args
-                _, data_id = SoulsApiSchema.from_global_id args[:id]
+                _, data_id = SOULsApiSchema.from_global_id args[:id]
                 ::#{class_name.camelize}.find(data_id)
               end
             end
           end
         TEXT
-        Souls::Painter.create_file(file_path.to_s)
+        SOULs::Painter.create_file(file_path.to_s)
         file_path
       rescue StandardError => e
         raise(StandardError, e)

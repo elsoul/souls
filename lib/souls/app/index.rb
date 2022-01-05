@@ -6,5 +6,5 @@ require_relative "utils/painter"
 require_relative "utils/firebase_id_token"
 require_relative "graphql/types/index"
 
-module Souls
+module SOULs
 end

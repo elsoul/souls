@@ -10,8 +10,8 @@ require "tty-prompt"
 require "thor"
 require "resolv"
 
-module Souls
-  extend Souls::Utils
+module SOULs
+  extend SOULs::Utils
   class Error < StandardError; end
   class << self
     attr_accessor :configuration

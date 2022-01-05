@@ -1,9 +1,9 @@
-module Souls
+module SOULs
   class DB < Thor
     desc "create_migration_rbs [CLASS_NAME]", "Generate ActiveRecord Migration's RBS Template"
     def create_migration_rbs(class_name)
       file_path = ""
-      Dir.chdir(Souls.get_mother_path.to_s) do
+      Dir.chdir(SOULs.get_mother_path.to_s) do
         file_dir = "./sig/api/db/migrate"
         FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
         pluralized_class_name = class_name.underscore.pluralize
@@ -17,7 +17,7 @@ module Souls
             end
           TEXT
         end
-        Souls::Painter.create_file(file_path.to_s)
+        SOULs::Painter.create_file(file_path.to_s)
       end
       file_path
     end

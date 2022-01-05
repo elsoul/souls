@@ -48,7 +48,7 @@ module Scaffold
   def self.scaffold_job_type
     <<~JOBTYPE
       module Types
-        class SomeJobType < Souls::Types::BaseObject
+        class SomeJobType < SOULs::Types::BaseObject
           field :response, String, null: true
         end
       end
@@ -58,7 +58,7 @@ module Scaffold
   def self.scaffold_job_mailer_type
     <<~JOBMAILERTYPE
       module Types
-        class SomeJobType < Souls::Types::BaseObject
+        class SomeJobType < SOULs::Types::BaseObject
           field :response, String, null: true
         end
       end

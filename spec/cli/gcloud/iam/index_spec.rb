@@ -1,35 +1,35 @@
-RSpec.describe(Souls::Iam) do
+RSpec.describe(SOULs::Iam) do
   describe "setup_key" do
     before :each do
-      allow_any_instance_of(Souls::Upgrade).to(receive(:config).and_return(true))
+      allow_any_instance_of(SOULs::Upgrade).to(receive(:config).and_return(true))
       allow($stdout).to(receive(:write))
     end
 
     it "should call a bunch of methods" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       allow(cli).to(receive(:create_service_account).and_return(true))
       allow(cli).to(receive(:create_service_account_key).and_return(true))
       allow(cli).to(receive(:add_permissions).and_return(true))
       allow(cli).to(receive(:set_gh_secret_json).and_return(true))
       allow(cli).to(receive(:system).and_return(true))
 
-      allow_any_instance_of(Souls::Gcloud).to(receive(:auth_login).and_return(true))
-      allow_any_instance_of(Souls::Gcloud).to(receive(:enable_permissions).and_return(true))
+      allow_any_instance_of(SOULs::Gcloud).to(receive(:auth_login).and_return(true))
+      allow_any_instance_of(SOULs::Gcloud).to(receive(:enable_permissions).and_return(true))
 
       expect(cli.setup_key).to(eq(true))
       expect(cli).not_to(receive(:export_key_to_console))
     end
 
     it "should rescue standarderror if set_gh_secret throws error" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       allow(cli).to(receive(:create_service_account).and_return(true))
       allow(cli).to(receive(:create_service_account_key).and_return(true))
       allow(cli).to(receive(:add_permissions).and_return(true))
       allow(cli).to(receive(:system).and_return(true))
 
-      allow_any_instance_of(Souls::Gcloud).to(receive(:auth_login).and_return(true))
-      allow_any_instance_of(Souls::Gcloud).to(receive(:set_gh_secret_json).and_raise(StandardError.new))
-      allow_any_instance_of(Souls::Gcloud).to(receive(:enable_permissions).and_return(true))
+      allow_any_instance_of(SOULs::Gcloud).to(receive(:auth_login).and_return(true))
+      allow_any_instance_of(SOULs::Gcloud).to(receive(:set_gh_secret_json).and_raise(StandardError.new))
+      allow_any_instance_of(SOULs::Gcloud).to(receive(:enable_permissions).and_return(true))
       allow(cli).to(receive(:export_key_to_console).and_return(true))
 
       expect(cli).to(receive(:export_key_to_console))
@@ -39,13 +39,13 @@ RSpec.describe(Souls::Iam) do
 
   describe "create_service_account" do
     it "should call gcloud" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       allow(cli).to(receive(:system).and_return(true))
 
       expect(cli).to(
         receive(:system).with(
           "gcloud iam service-accounts create souls \
-          --description='Souls Service Account' \
+          --description='SOULs Service Account' \
           --display-name=souls"
         )
       )
@@ -55,7 +55,7 @@ RSpec.describe(Souls::Iam) do
 
   describe "create_service_account_key" do
     it "should call gcloud" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       allow(cli).to(receive(:system).and_return(true))
 
       expect(cli).to(
@@ -74,7 +74,7 @@ RSpec.describe(Souls::Iam) do
     end
 
     it "should handle keyfile" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       FakeFS.with_fresh do
         FileUtils.mkdir_p("config")
         FileUtils.touch("config/keyfile.json")
@@ -87,7 +87,7 @@ RSpec.describe(Souls::Iam) do
 
   describe "add_service_account_role" do
     it "should call gcloud" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       allow(cli).to(receive(:system).and_return(true))
 
       expect(cli).to(
@@ -103,7 +103,7 @@ RSpec.describe(Souls::Iam) do
 
   describe "add_permissions" do
     it "should add 12 permissions" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       allow(cli).to(receive(:add_service_account_role).and_return(true))
 
       expect(cli).to(receive(:add_service_account_role).exactly(12).times)
@@ -113,7 +113,7 @@ RSpec.describe(Souls::Iam) do
 
   describe "set_gh_secret_json" do
     it "should call system and remove file" do
-      cli = Souls::Iam.new
+      cli = SOULs::Iam.new
       FakeFS.with_fresh do
         FileUtils.mkdir_p("config")
         FileUtils.touch("config/keyfile.json")
