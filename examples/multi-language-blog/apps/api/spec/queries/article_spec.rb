@@ -4,7 +4,7 @@ RSpec.describe("Article Query テスト") do
     let(:article) { FactoryBot.create(:article, user_id: user.id) }
 
     let(:query) do
-      data_id = Base64.encode64("Article:#{article.id}")
+      data_id = Base64.strict_encode64("Article:#{article.id}")
       %(query {
           article(id: \"#{data_id}\") {
             id
