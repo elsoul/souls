@@ -10,7 +10,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
         with:
-          bundler-cache: true
+          bundler-cache: false
           ruby-version: "3.0"
       - name: Install redis
         run: sudo apt-get install -y redis-tools redis-server
