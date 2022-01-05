@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     souls (1.18.4)
-      activesupport (>= 6.1.4)
+      activesupport (>= 7.0.0)
       firebase_id_token (>= 2.4.0)
       foreman (>= 0.87.2)
       google-cloud-pubsub (>= 2.8.0)
