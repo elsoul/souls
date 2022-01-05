@@ -16,10 +16,9 @@ require "faker"
 require "logger"
 require "base64"
 require "./config/souls"
-require_relative "app/utils/souls_logger"
+require "./config/souls_logger"
 
 ENV["RACK_ENV"] ||= "development"
-Dir["./config/*.rb"].each { |f| require f unless f.include?("souls.rb") }
 Dir["./constants/*.rb"].each { |f| require f }
 @app_name = SOULs.configuration.app
 db_conf = YAML.safe_load(ERB.new(File.read("./config/database.yml")).result, permitted_classes: [Date], aliases: true)
@@ -28,7 +27,6 @@ ActiveRecord.default_timezone = :local
 
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{Dir.pwd}/app/models")
-loader.push_dir("#{Dir.pwd}/app/utils")
 
 loader.collapse("#{__dir__}/app/types")
 loader.collapse("#{__dir__}/app/mutations")
@@ -37,7 +35,6 @@ loader.push_dir("#{Dir.pwd}/app/graphql")
 loader.setup
 
 class SOULsApi < Sinatra::Base
-  include SOULsHelper
   ::Logger.class_eval { alias_method :write, :<< }
   access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)), "log", "access.log")
   access_logger = ::Logger.new(access_log)
