@@ -84,7 +84,6 @@ GEM
       gapic-common (>= 0.7, < 2.a)
       google-cloud-errors (~> 1.0)
       grpc-google-iam-v1 (>= 0.6.10, < 2.a)
-    google-protobuf (3.19.1-x86_64-darwin)
     google-protobuf (3.19.1-x86_64-linux)
     googleapis-common-protos (1.3.12)
       google-protobuf (~> 3.14)
@@ -132,8 +131,6 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    nokogiri (1.12.5-x86_64-darwin)
-      racc (~> 1.4)
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     os (1.1.4)
@@ -258,7 +255,6 @@ GEM
       webrick (~> 1.7.0)
 
 PLATFORMS
-  x86_64-darwin-20
   x86_64-linux
 
 DEPENDENCIES
@@ -287,4 +283,4 @@ DEPENDENCIES
   whirly (= 0.3.0)
 
 BUNDLED WITH
-   2.3.3
+   2.3.4

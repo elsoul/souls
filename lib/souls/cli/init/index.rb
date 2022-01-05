@@ -169,7 +169,7 @@ module SOULs
       FileUtils.rm(sig_name)
     end
 
-    def souls_api_credit(app_name)
+    def souls_api_credit(_app_name)
       line = Paint["====================================", :yellow]
       puts("\n")
       puts(line)
@@ -194,8 +194,6 @@ module SOULs
       puts(line)
       endroll = <<~TEXT
         Easy to Run
-        $ cd #{app_name}
-        $ souls check
         $ cd apps/api
         $ souls s
         Go To : http://localhost:4000
