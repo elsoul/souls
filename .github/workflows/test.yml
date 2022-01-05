@@ -23,9 +23,9 @@ jobs:
       - name: Check gem build
         run: |
           bundle exec rake build
-      - name: Check gem install
-        run: |
-          gem uninstall -aIx
-          export gemname=$(ls pkg)
-          gem install pkg/$gemname
-          souls -v
+      # - name: Check gem install
+      #   run: |
+      #     gem uninstall -aIx
+      #     export gemname=$(ls pkg)
+      #     gem install pkg/$gemname
+      #     souls -v
