@@ -1,36 +1,36 @@
 require_relative "./functions"
 module Souls
   class Create < Thor
-    desc "worker", "Create SOULs Worker"
-    method_option :name, aliases: "--name", desc: "Worker Name", required: true
-    def worker
+    desc "worker [name]", "Create SOULs Worker"
+    def worker(name)
       require("#{Souls.get_mother_path}/config/souls")
       Dir.chdir(Souls.get_mother_path.to_s) do
-        file_dir = "apps/#{options[:name]}"
+        worker_name = "worker-#{name}"
+        file_dir = "apps/worker-#{name}"
         raise(StandardError, "Same Worker Already Exist!") if Dir.exist?(file_dir)
 
         workers = Souls.configuration.workers
         app = Souls.configuration.app
         port = 3000 + workers.size
-        souls_worker_name = "souls-#{app}-#{options[:name]}"
-        download_worker(worker_name: options[:name])
+        souls_worker_name = "souls-#{app}-#{worker_name}"
+        download_worker(worker_name: worker_name)
         souls_conf_update(worker_name: souls_worker_name)
         souls_conf_update(worker_name: souls_worker_name, strain: "api")
-        workflow(worker_name: options[:name])
-        procfile(worker_name: options[:name], port: port)
-        mother_procfile(worker_name: options[:name])
-        souls_config_init(worker_name: options[:name])
-        steepfile(worker_name: options[:name])
-        souls_helper_rbs(worker_name: options[:name])
-        system("cd apps/#{options[:name]} && bundle")
-        souls_worker_credit(worker_name: options[:name])
+        workflow(worker_name: worker_name)
+        procfile(worker_name: worker_name, port: port)
+        mother_procfile(worker_name: worker_name)
+        souls_config_init(worker_name: worker_name)
+        steepfile(worker_name: worker_name)
+        souls_helper_rbs(worker_name: worker_name)
+        system("cd #{file_dir} && bundle")
+        souls_worker_credit(worker_name: worker_name)
       end
       true
     end
 
     private
 
-    def steepfile(worker_name: "mailer")
+    def steepfile(worker_name: "worker-mailer")
       file_path = "./Steepfile"
 
       write_txt = ""
@@ -49,21 +49,21 @@ module Souls
       File.open(file_path, "w") { |f| f.write(write_txt) }
     end
 
-    def procfile(worker_name: "mailer", port: 123)
+    def procfile(worker_name: "worker-mailer", port: 123)
       file_path = "apps/#{worker_name}/Procfile.dev"
       File.open(file_path, "w") do |f|
         f.write("#{worker_name}: bundle exec puma -p #{port} -e development")
       end
     end
 
-    def mother_procfile(worker_name: "mailer")
+    def mother_procfile(worker_name: "worker-mailer")
       file_path = "Procfile.dev"
       File.open(file_path, "a") do |f|
         f.write("\n#{worker_name}: foreman start -f ./apps/#{worker_name}/Procfile.dev")
       end
     end
 
-    def souls_conf_update(worker_name: "mailer", strain: "mother")
+    def souls_conf_update(worker_name: "worker-mailer", strain: "mother")
       workers = Souls.configuration.workers
       port = 3000 + workers.size
       file_path = strain == "mother" ? "config/souls.rb" : "apps/api/config/souls.rb"
@@ -84,7 +84,6 @@ module Souls
             write_txt += <<-TEXT
     {
       name: "#{worker[:name]}",
-      endpoint: "#{worker[:endpoint]}",
       port: #{worker[:port]}
     },
             TEXT
@@ -95,7 +94,6 @@ module Souls
       write_txt += <<-TEXT
     {
       name: "#{worker_name}",
-      endpoint: "",
       port: #{port}
     }
   ]
@@ -105,12 +103,11 @@ end
       File.open(file_path, "w") { |f| f.write(write_txt) }
     end
 
-    def workflow(worker_name: "mailer")
+    def workflow(worker_name: "worker-mailer")
       file_dir = ".github/workflows"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}/#{worker_name}.yml"
-      worker_name = worker_name.underscore
-      worker_name_camelize = worker_name.camelize
+      worker_name_camelize = worker_name.gsub("-", "_").camelize
       File.open(file_path, "w") do |f|
         f.write(<<~TEXT)
           name: #{worker_name_camelize}
@@ -176,6 +173,9 @@ end
               - name: Sync Tasks
                 run: cd apps/#{worker_name} && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
 
+              - name: Sync PubSub
+                run: cd apps/#{worker_name} && souls sync pubsub
+
               - name: Configure Docker
                 run: gcloud auth configure-docker --quiet
 
@@ -210,7 +210,7 @@ end
       file_path
     end
 
-    def souls_config_init(worker_name: "mailer")
+    def souls_config_init(worker_name: "worker-mailer")
       app_name = Souls.configuration.app
       project_id = Souls.configuration.project_id
       config_dir = "apps/#{worker_name}/config"
@@ -232,7 +232,7 @@ end
       end
     end
 
-    def souls_helper_rbs(worker_name: "mailer")
+    def souls_helper_rbs(worker_name: "worker-mailer")
       file_dir = "./sig/#{worker_name}/app/utils"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}/souls_helper.rbs"
@@ -273,7 +273,7 @@ end
       end
     end
 
-    def download_worker(worker_name: "mailer")
+    def download_worker(worker_name: "worker-mailer")
       version = Souls.get_latest_version_txt(service_name: "worker").join(".")
       file_name = "worker-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/workers/#{file_name}"
@@ -285,7 +285,7 @@ end
       FileUtils.rm_f(file_name)
     end
 
-    def souls_worker_credit(worker_name: "mailer")
+    def souls_worker_credit(worker_name: "worker-mailer")
       line = Paint["====================================", :yellow]
       puts("\n")
       puts(line)

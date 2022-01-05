@@ -1,15 +1,15 @@
 module Scaffold
   def self.scaffold_workflow
     <<~WORKFLOW
-      name: Mailer
+      name: WorkerMailer
 
       on:
         push:
           branches:
             - main
           paths:
-            - "apps/mailer/**"
-            - ".github/workflows/mailer.yml"
+            - "apps/worker-mailer/**"
+            - ".github/workflows/worker-mailer.yml"
 
       jobs:
         build:
@@ -54,7 +54,7 @@ module Scaffold
               SOULS_GCP_PROJECT_ID: ${{ secrets.SOULS_GCP_PROJECT_ID }}
             run: |
               sudo apt-get -yqq install libpq-dev
-              cd apps/mailer
+              cd apps/worker-mailer
               gem install bundler
               bundle install --jobs 4 --retry 3
               bundle exec rake db:create RACK_ENV=test
@@ -62,22 +62,25 @@ module Scaffold
               bundle exec rspec
 
           - name: Sync Tasks
-            run: cd apps/mailer && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
+            run: cd apps/worker-mailer && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
+
+          - name: Sync PubSub
+            run: cd apps/worker-mailer && souls sync pubsub
 
           - name: Configure Docker
             run: gcloud auth configure-docker --quiet
 
           - name: Build Docker container
-            run: docker build -f ./apps/mailer/Dockerfile ./apps/mailer -t gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-mailer
+            run: docker build -f ./apps/worker-mailer/Dockerfile ./apps/worker-mailer -t gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-worker-mailer
 
           - name: Push to Container Resistory
-            run: docker push gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-mailer
+            run: docker push gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-worker-mailer
 
           - name: Deploy to Cloud Run
             run: |
-                gcloud run deploy souls-${{ secrets.SOULS_APP_NAME }}-mailer \\
+                gcloud run deploy souls-${{ secrets.SOULS_APP_NAME }}-worker-mailer \\
                   --service-account=${{ secrets.SOULS_APP_NAME }}@${{ secrets.SOULS_GCP_PROJECT_ID }}.iam.gserviceaccount.com \\
-                  --image=gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-mailer \\
+                  --image=gcr.io/${{ secrets.SOULS_GCP_PROJECT_ID }}/${{secrets.SOULS_APP_NAME}}-worker-mailer \\
                   --memory=4Gi \\
                   --region=${{ secrets.SOULS_GCP_REGION }} \\
                   --allow-unauthenticated \\
