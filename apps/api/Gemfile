@@ -36,15 +36,12 @@ group :development, :test do
   gem "graphql_playground", "0.0.1"
   gem "rack-test", "1.1.0"
   gem "rspec", "3.10.0"
-  gem "rubocop", "1.23.0"
-  gem "solargraph", "0.44.2"
-  gem "steep", github: "williamcotton/steep", branch: "issue-466"
   gem "webmock", "3.14.0"
 end
 
 group :development do
-  gem "listen", "3.7.0"
+  gem "rubocop", "1.23.0"
   gem "rubocop-graphql", "0.11.2"
-  gem "spring", "2.1.1"
-  gem "spring-watcher-listen", "2.0.1"
+  gem "solargraph", "0.44.2"
+  gem "steep", github: "williamcotton/steep", branch: "issue-466"
 end
