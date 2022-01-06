@@ -7,7 +7,7 @@ gemspec
 gem "activesupport", "7.0.0"
 gem "firebase_id_token", "2.4.0"
 gem "foreman", "0.87.2"
-gem "google-cloud-pubsub", "2.9.0"
+gem "google-cloud-pubsub", "2.8.0"
 gem "graphql", "1.13.2"
 gem "grpc", "1.41.1"
 gem "httpclient", "2.8.3"

@@ -13,7 +13,7 @@ jobs:
           bundler-cache: false
           ruby-version: "3.0"
       - name: Install redis
-        run: sudo apt-get install -y redis-tools redis-server
+        run: sudo apt-get install -y redis-tools redis-server libcurl3-dev
       - name: Install dependencies
         run: bundle install
       - name: Run tests
