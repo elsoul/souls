@@ -113,6 +113,7 @@ GEM
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
+    httpclient (2.8.3)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.4)
@@ -270,6 +271,7 @@ DEPENDENCIES
   google-cloud-pubsub (= 2.9.0)
   graphql (= 1.13.2)
   grpc (= 1.41.1)
+  httpclient
   paint (= 2.2.1)
   parser (= 3.0.3.2)
   pg (= 1.2.3)
