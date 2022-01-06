@@ -1,6 +1,6 @@
 FROM ruby:3.0.3
 
-RUN apt-get update -qq && apt-get install -y nodejs redis-server
+RUN apt-get update -qq && apt-get install -y nodejs redis-server libcurl3-dev
 
 # Install manually all the missing libraries
 RUN apt-get update
