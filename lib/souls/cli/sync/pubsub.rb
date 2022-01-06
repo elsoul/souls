@@ -36,10 +36,11 @@ module SOULs
       souls_topics = topic_names.select { |n| n.include?("souls-#{worker_name}") }
 
       souls_topics.each do |name|
-        file_name = name.gsub("-", "_")
+        file_name = name.underscore
         value = worker_file_names[file_name.to_sym] || 0
         worker_file_names[file_name.to_sym] = value - 1
       end
+      puts(worker_file_names)
 
       if worker_file_names.blank?
         return if souls_topics.blank?
