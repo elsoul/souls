@@ -61,11 +61,11 @@ module Scaffold
               bundle exec rake db:migrate RACK_ENV=test
               bundle exec rspec
 
-          - name: Sync Tasks
-            run: cd apps/worker-mailer && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
-
           - name: Sync PubSub
             run: cd apps/worker-mailer && souls sync pubsub
+
+          - name: Sync Tasks
+            run: cd apps/worker-mailer && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
 
           - name: Configure Docker
             run: gcloud auth configure-docker --quiet

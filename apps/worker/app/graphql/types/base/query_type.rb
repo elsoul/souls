@@ -1,14 +1,13 @@
 module Types
   class QueryType < SOULs::Types::BaseObject
-    add_field(GraphQL::Types::Relay::NodeField)
-    add_field(GraphQL::Types::Relay::NodesField)
-    get_tables.each do |t|
-      field t.singularize.underscore.to_s.to_sym, resolver: Object.const_get("Queries::#{t.singularize.camelize}")
-      field "#{t.singularize.underscore}_search".to_sym,
-            resolver: Object.const_get("Resolvers::#{t.singularize.camelize}Search")
-      field t.pluralize.underscore.to_s.to_sym,
-            Object.const_get("Types::#{t.singularize.camelize}Type").connection_type,
-            null: true
+    workers =
+      Dir["./app/graphql/queries/*.rb"].map do |file|
+        file.gsub("./app/graphql/queries/", "").gsub(".rb", "")
+      end
+    workers.delete("base_query")
+    workers.each do |worker|
+      field worker.underscore.to_s.to_sym,
+            resolver: Object.const_get("Queries::#{worker.singularize.camelize}")
     end
   end
 end
