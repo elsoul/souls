@@ -23,6 +23,7 @@ module SOULs
         end
       end
       SOULs::Painter.success("You're all set!")
+      true
     end
 
     private
