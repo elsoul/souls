@@ -1,6 +1,7 @@
 module Template
   module Go
     def self.function(file_name)
+      file_name.underscore.camelize
       <<~APP
         // Package p contains an HTTP Cloud Function.
         package p

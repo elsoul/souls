@@ -5,12 +5,12 @@ module SOULs
       require(SOULs.get_mother_path.to_s + "/config/souls")
       project_id = SOULs.configuration.project_id
       current_dir = FileUtils.pwd.split("/").last
-      unless current_dir.match?(/^cf_/)
+      unless current_dir.match?(/^cf-/)
         SOULs::Painter.error("You are at wrong dir!\nPlease go to `apps/functions` dir!")
         return false
       end
 
-      runtime = current_dir.match(/cf_(\D+\d+)_/)[1]
+      runtime = current_dir.match(/cf-(\D+\d+)-/)[1]
       system(
         "
           gcloud functions deploy #{current_dir} --project=#{project_id} \
@@ -22,11 +22,12 @@ module SOULs
     desc "describe", "Describe SOULs Functions"
     def describe
       require(SOULs.get_mother_path.to_s + "/config/souls")
+      current_dir = FileUtils.pwd.split("/").last
       project_id = SOULs.configuration.project_id
-      system("gcloud functions describe souls_functions --project=#{project_id}")
+      system("gcloud functions describe #{current_dir} --project=#{project_id}")
     end
 
-    desc "delete", "Delete SOULs Functions"
+    desc "delete [name]", "Delete SOULs Functions"
     def delete(name)
       require(SOULs.get_mother_path.to_s + "/config/souls")
       project_id = SOULs.configuration.project_id
@@ -50,7 +51,7 @@ module SOULs
       require(SOULs.get_mother_path.to_s + "/config/souls")
       project_id = SOULs.configuration.project_id
       Dir.chdir(SOULs.get_mother_path.to_s) do
-        souls_functions = Dir["apps/cf_*"]
+        souls_functions = Dir["apps/cf-*"]
         cf_dir = souls_functions.map { |n| n.split("/").last }
         cf_dir.each do |dir|
           SOULs::Painter.success(`gcloud functions describe #{dir} --project=#{project_id}| grep url`)

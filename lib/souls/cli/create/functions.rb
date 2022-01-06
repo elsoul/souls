@@ -21,7 +21,7 @@ module SOULs
       version = prompt.select("Select Version?", supported_languages[runtime.downcase.to_sym].sort.reverse)
       version_string = "#{runtime_downcased}#{version.gsub('.', '')}"
       runtime_methods = get_runtime_create_method(runtime: runtime_downcased)
-      file_dir = "./apps/cf_#{version_string}_#{function_name}"
+      file_dir = "./apps/cf-#{version_string}-#{function_name}"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
 
       runtime_methods.each do |method|
