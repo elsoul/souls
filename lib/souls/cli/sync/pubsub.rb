@@ -2,6 +2,7 @@ module SOULs
   class Sync < Thor
     desc "pubsub", "Sync Worker Jobs & Google Cloud Pubsub Topics/Subscriptions"
     def pubsub
+      project_id = SOULs.configuration.project_id
       worker_name = FileUtils.pwd.split("/").last
 
       unless worker_name.match(/^worker-(\d|\w)+(-)*(\d|\w)+$/)
