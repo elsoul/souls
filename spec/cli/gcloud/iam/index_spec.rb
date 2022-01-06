@@ -17,7 +17,7 @@ RSpec.describe(SOULs::Iam) do
       allow_any_instance_of(SOULs::Gcloud).to(receive(:enable_permissions).and_return(true))
 
       expect(cli.setup_key).to(eq(true))
-      expect(cli).not_to(receive(:export_key_to_console))
+      # expect(cli).not_to(receive(:export_key_to_console))
     end
 
     it "should rescue standarderror if set_gh_secret throws error" do
