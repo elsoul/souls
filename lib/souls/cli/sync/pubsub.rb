@@ -10,7 +10,8 @@ module SOULs
         return false
       end
 
-      url = `gcloud run services list |grep souls-#{project_id}-#{worker_name}| awk '{print $4}'`.strip
+      url = `gcloud run services list --platform=managed \
+       --project=#{project_id} |grep souls-#{project_id}-#{worker_name}| awk '{print $4}'`.strip
       return false if url.blank?
 
       worker_file_names = get_workers_file_paths
@@ -56,7 +57,7 @@ module SOULs
       project_id = SOULs.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       topic = pubsub.create_topic(topic_id.to_s)
-      puts("Topic #{topic.name} created.")
+      SOULs::Painter.success("Topic #{topic.name} created.")
     end
 
     def delete_topic(topic_id: "worker-mailer")
@@ -64,7 +65,7 @@ module SOULs
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
       topic = pubsub.topic(topic_id.to_s)
       topic.delete
-      puts("Topic #{topic_id} deleted.")
+      SOULs::Painter.error("Topic #{topic_id} deleted.")
     end
 
     def delete_subscription(topic_id: "worker-mailer")
@@ -86,7 +87,7 @@ module SOULs
       topic = pubsub.topic(topic_id)
       sub = topic.subscribe(subscription_id, endpoint: endpoint, deadline: 20)
       sub.expires_in = nil
-      puts("Push subscription #{subscription_id} created.")
+      SOULs::Painter.success("Push subscription #{subscription_id} created.")
     end
 
     def get_workers_file_paths
