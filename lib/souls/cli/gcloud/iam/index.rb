@@ -2,23 +2,27 @@ module SOULs
   class Iam < Thor
     desc "setup_key", "Create Google Cloud IAM Service Account Key And Set All Permissions"
     def setup_key
-      region = SOULs.configuration.region
-      SOULs::Gcloud.new.auth_login
-      SOULs::Upgrade.new.config
-      create_service_account
-      create_service_account_key
-      SOULs::Gcloud.new.enable_permissions
-      add_permissions
-      begin
-        system("gcloud app create --region=#{region} --quiet")
-      rescue StandardError, error
-        puts("gcloud app region is Already exist! - SOULs::Gcloud::Iam.setup_key")
+      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
+        Whirly.status = "Setting up credentials and permissions..."
+        region = SOULs.configuration.region
+        SOULs::Gcloud.new.auth_login
+        SOULs::Upgrade.new.config
+        create_service_account
+        create_service_account_key
+        SOULs::Gcloud.new.enable_permissions
+        add_permissions
+        begin
+          system("gcloud app create --region=#{region} --quiet")
+        rescue StandardError, error
+          puts("gcloud app region is Already exist! - SOULs::Gcloud::Iam.setup_key")
+        end
+        begin
+          set_gh_secret_json
+        rescue StandardError
+          export_key_to_console
+        end
       end
-      begin
-        set_gh_secret_json
-      rescue StandardError
-        export_key_to_console
-      end
+      SOULs::Painter.success("You're all set!")
     end
 
     private

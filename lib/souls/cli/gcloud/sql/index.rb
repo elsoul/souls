@@ -6,7 +6,6 @@ module SOULs
     def create_instance
       prompt = TTY::Prompt.new
       password = prompt.mask("Set DB PassWord:")
-      app_name = SOULs.configuration.app
       project_id = SOULs.configuration.project_id
       instance_name = SOULs.configuration.instance_name
       region = SOULs.configuration.region if options[:region].blank?
@@ -20,41 +19,55 @@ module SOULs
                 --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
                 --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
         )
-        instance_ip = `gcloud sql instances list | grep #{instance_name} | awk '{print $5}'`.strip
-        Dir.chdir(SOULs.get_api_path.to_s) do
-          file_path = ".env"
-          File.open(file_path, "w") do |line|
-            line.write(<<~TEXT)
-              GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1
-              SOULS_DB_HOST=#{instance_ip}
-              SOULS_DB_PW=#{password}
-              SOULS_DB_USER=postgres
-              SOULS_GCP_PROJECT_ID=#{project_id}
-              SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-              TZ="#{region_to_timezone(region: region)}"
-            TEXT
-          end
-        end
-        Dir.chdir(SOULs.get_mother_path.to_s) do
-          file_path = ".env.production"
-          File.open(file_path, "w") do |line|
-            line.write(<<~TEXT)
-              SOULS_DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
-              SOULS_DB_PW=#{password}
-              SOULS_DB_USER=postgres
-              SOULS_APP_NAME=#{app_name}
-              SOULS_GCP_PROJECT_ID=#{project_id}
-              SOULS_GCP_REGION=#{region}
-              SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
-              SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-              TZ="#{region_to_timezone(region: region)}"
-            TEXT
-          end
-        end
+        SOULs::Sql.new.env(password: password)
         SOULs::Github.new.secret_set
         Whirly.status = Paint["Cloud SQL #{instance_name} is successfully created! You can push to deploy!", :green]
       end
       true
+    end
+
+    desc "env", "Generate .env.production file to deploy"
+    def env(password: "Password")
+      require(SOULs.get_mother_path.to_s + "/config/souls")
+      project_id = SOULs.configuration.project_id
+      instance_name = SOULs.configuration.instance_name
+      region = SOULs.configuration.region
+      app_name = SOULs.configuration.app
+      prompt = TTY::Prompt.new
+      db_password = password == "Password" ? prompt.mask("Set DB PassWord:") : password
+      instance_ip = `gcloud sql instances list --project=#{project_id} | grep #{instance_name} | awk '{print $5}'`.strip
+      Dir.chdir(SOULs.get_api_path.to_s) do
+        file_path = ".env"
+        File.open(file_path, "w") do |line|
+          line.write(<<~TEXT)
+            GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1
+            SOULS_DB_HOST=#{instance_ip}
+            SOULS_DB_PW=#{db_password}
+            SOULS_DB_USER=postgres
+            SOULS_GCP_PROJECT_ID=#{project_id}
+            SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
+            TZ="#{region_to_timezone(region: region)}"
+          TEXT
+        end
+        SOULs::Painter.create_file(file_path)
+      end
+      Dir.chdir(SOULs.get_mother_path.to_s) do
+        file_path = ".env.production"
+        File.open(file_path, "w") do |line|
+          line.write(<<~TEXT)
+            SOULS_DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
+            SOULS_DB_PW=#{db_password}
+            SOULS_DB_USER=postgres
+            SOULS_APP_NAME=#{app_name}
+            SOULS_GCP_PROJECT_ID=#{project_id}
+            SOULS_GCP_REGION=#{region}
+            SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
+            SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
+            TZ="#{region_to_timezone(region: region)}"
+          TEXT
+        end
+        SOULs::Painter.create_file(file_path)
+      end
     end
 
     desc "list", "Show Cloud SQL Instances List"
@@ -111,6 +124,7 @@ module SOULs
     desc "assgin_ip", "Add Current Grobal IP to White List"
     method_option :ip, default: "", aliases: "--ip", desc: "Adding IP to Google Cloud SQL White List: e.g.'11.11.1.1'"
     def assign_ip
+      require(SOULs.get_mother_path.to_s + "/config/souls")
       project_id = SOULs.configuration.project_id
       instance_name = SOULs.configuration.instance_name
       ips = []
@@ -126,12 +140,15 @@ module SOULs
         -H "Authorization: Bearer "$(gcloud auth print-access-token) \
         "https://sqladmin.googleapis.com/v1/projects/#{project_id}/instances/#{instance_name}?fields=settings"`
       )
-      unless cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].blank?
+      begin
+        cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].blank?
         white_ips =
           cloud_sql["settings"]["ipConfiguration"]["authorizedNetworks"].map do |sql_ips|
             sql_ips["value"]
           end
         ips = (ips + white_ips).uniq
+      rescue StandardError => e
+        puts(e)
       end
       ips = ips.join(",")
       Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
