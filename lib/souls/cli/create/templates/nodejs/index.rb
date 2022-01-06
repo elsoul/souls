@@ -1,6 +1,7 @@
 module Template
   module Nodejs
     def self.index(file_name)
+      file_name.underscore.camelize(:lower)
       <<~APP
         const express = require('express');
         const bodyParser = require('body-parser');

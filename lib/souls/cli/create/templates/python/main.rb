@@ -1,6 +1,7 @@
 module Template
   module Python
     def self.main(file_name)
+      file_name.underscore
       <<~APP
         def #{file_name}(request):
           """Responds to any HTTP request.
