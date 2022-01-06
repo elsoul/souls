@@ -37,8 +37,9 @@ module SOULs
       souls_topics = topic_names.select { |n| n.include?("souls-#{worker_name}") }
 
       souls_topics.each do |name|
-        value = workers[name.to_sym] || 0
-        workers[name.to_sym] = value - 1
+        file_name = name.gsub("-", "_")
+        value = workers[file_name.to_sym] || 0
+        workers[file_name.to_sym] = value - 1
       end
 
       workers.each do |key, value|
@@ -79,7 +80,7 @@ module SOULs
     def create_push_subscription(worker_url:, topic_id: "worker-mailer")
       souls_endpoint = SOULs.configuration.endpoint
       subscription_id = "#{topic_id}-sub"
-      endpoint = "#{worker_url}/#{souls_endpoint}"
+      endpoint = "#{worker_url}#{souls_endpoint}"
 
       project_id = SOULs.configuration.project_id
       pubsub = Google::Cloud::Pubsub.new(project_id: project_id)

@@ -9,6 +9,7 @@ require "whirly"
 require "tty-prompt"
 require "thor"
 require "resolv"
+require "google/cloud/pubsub"
 
 module SOULs
   extend SOULs::Utils

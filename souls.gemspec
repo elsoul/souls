@@ -36,6 +36,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency("paint", ">= 2.2.1")
   gem.add_runtime_dependency("tty-prompt", ">= 0.23.1")
   gem.add_runtime_dependency("whirly", ">= 0.3.0")
+  gem.add_runtime_dependency("httpclient", ">= 2.8.3")
   gem.add_dependency("thor", ">= 1.1.0")
   gem.metadata = { "rubygems_mfa_required" => "true" }
 end
