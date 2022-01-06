@@ -21,6 +21,4 @@ target :app do
   library "fileutils"
   library "graphql"
   signature "rbs"
-
-  # check "lib"
 end
