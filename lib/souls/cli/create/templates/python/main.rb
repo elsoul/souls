@@ -1,9 +1,8 @@
 module Template
   module Python
     def self.main(file_name)
-      file_name.underscore
       <<~APP
-        def #{file_name}(request):
+        def #{file_name.underscore}(request):
           """Responds to any HTTP request.
           Args:
               request (flask.Request): HTTP request object.

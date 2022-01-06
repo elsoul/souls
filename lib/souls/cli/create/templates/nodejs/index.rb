@@ -1,7 +1,6 @@
 module Template
   module Nodejs
     def self.index(file_name)
-      file_name.underscore.camelize(:lower)
       <<~APP
         const express = require('express');
         const bodyParser = require('body-parser');
@@ -20,7 +19,7 @@ module Template
         app.post('/souls-functions-post', (req, res)=>{
           res.json(req.body)
         });
-        exports.#{file_name} = app;
+        exports.#{file_name.underscore.camelize(:lower)} = app;
       APP
     end
   end
