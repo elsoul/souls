@@ -1,12 +1,13 @@
 PATH
   remote: .
   specs:
-    souls (1.19.5)
+    souls (1.19.6)
       activesupport (>= 7.0.0)
       firebase_id_token (>= 2.4.0)
       foreman (>= 0.87.2)
       google-cloud-pubsub (>= 2.8.0)
       graphql (>= 1.12.19)
+      httpclient (>= 2.8.3)
       paint (>= 2.2.1)
       thor (>= 1.1.0)
       tty-prompt (>= 0.23.1)
@@ -271,7 +272,7 @@ DEPENDENCIES
   google-cloud-pubsub (= 2.9.0)
   graphql (= 1.13.2)
   grpc (= 1.41.1)
-  httpclient
+  httpclient (= 2.8.3)
   paint (= 2.2.1)
   parser (= 3.0.3.2)
   pg (= 1.2.3)
