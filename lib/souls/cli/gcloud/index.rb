@@ -63,6 +63,7 @@ module SOULs
       system("gcloud services enable translate.googleapis.com")
       system("gcloud services enable firestore.googleapis.com")
       system("gcloud services enable cloudfunctions.googleapis.com")
+      system("gcloud services enable cloudbuild.googleapis.com")
     end
   end
 end
