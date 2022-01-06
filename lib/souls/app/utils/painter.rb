@@ -13,16 +13,28 @@ module SOULs
         puts(Paint % ["✓ %{white_text}", :red, { white_text: ["Deleted file #{text}", :white] }])
       end
 
-      def error(text)
-        puts(Paint["🚨 #{text}", :red])
+      def error(text, emoji)
+        if emoji
+          puts(Paint["#{emoji} #{text}", :red])
+        else
+          puts(Paint["🚨 #{text}", :red])
+        end
       end
 
-      def warning(text)
-        puts(Paint["🚨 #{text}", :yellow])
+      def warning(text, emoji)
+        if emoji
+          puts(Paint["#{emoji} #{text}", :yellow])
+        else
+          puts(Paint["🚨 #{text}", :yellow])
+        end
       end
 
-      def success(text)
-        puts(Paint["🎉 #{text}", :green])
+      def success(text, emoji)
+        if emoji
+          puts(Paint["#{emoji} #{text}", :green])
+        else
+          puts(Paint["🎉 #{text}", :green])
+        end
       end
 
       def sync(text)
