@@ -11,8 +11,7 @@ module SOULs
       end
 
       runtime = current_dir.match(/cf-(\D+\d+)-/)[1]
-      runtime_lang = current_dir.match(/^cf-(\D+)\d+-/)
-      puts(runtime_lang)
+      runtime_lang = current_dir.match(/^cf-(\D+)\d+-/)[1]
       entry_point =
         case runtime_lang
         when "nodejs"
@@ -24,13 +23,7 @@ module SOULs
         else
           current_dir
         end
-      puts(entry_point)
-      puts(
-        "
-        gcloud functions deploy #{current_dir} --entry-point='#{entry_point}' --project=#{project_id} \
-        --runtime #{runtime} --trigger-http --allow-unauthenticated --env-vars-file .env.yaml
-        "
-      )
+
       system(
         "
           gcloud functions deploy #{current_dir} --entry-point='#{entry_point}' --project=#{project_id} \
