@@ -23,6 +23,13 @@ module SOULs
         else
           current_dir
         end
+      puts(entry_point)
+      puts(
+        "
+        gcloud functions deploy #{current_dir} --entry-point='#{entry_point}' --project=#{project_id} \
+        --runtime #{runtime} --trigger-http --allow-unauthenticated --env-vars-file .env.yaml
+        "
+      )
       system(
         "
           gcloud functions deploy #{current_dir} --entry-point='#{entry_point}' --project=#{project_id} \
