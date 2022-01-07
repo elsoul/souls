@@ -1,5 +1,10 @@
 module SOULs
   class SOULsMutation < GraphQL::Schema::RelayClassicMutation
+    def self.post(url:, payload: {}, content_type: "application/json")
+      response = Faraday.post(url, payload.to_json, "Content-Type": content_type)
+      response.body
+    end
+
     def self.souls_check_user_permissions(user, obj, method)
       raise(StandardError, "Invalid or Missing Token") unless user
 
