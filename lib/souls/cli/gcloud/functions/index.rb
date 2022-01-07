@@ -12,6 +12,7 @@ module SOULs
 
       runtime = current_dir.match(/cf-(\D+\d+)-/)[1]
       runtime_lang = current_dir.match(/^cf-(\D+)\d+-/)
+      puts(runtime_lang)
       entry_point =
         case runtime_lang
         when "nodejs"
