@@ -25,7 +25,7 @@ module SOULs
         end
       system(
         "
-          gcloud functions deploy #{current_dir} --entry-point=#{entry_point} --project=#{project_id} \
+          gcloud functions deploy #{current_dir} --entry-point='#{entry_point}' --project=#{project_id} \
           --runtime #{runtime} --trigger-http --allow-unauthenticated --env-vars-file .env.yaml
           "
       )
