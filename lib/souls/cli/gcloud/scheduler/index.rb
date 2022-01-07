@@ -1,12 +1,11 @@
 module SOULs
   class CloudScheduler < Thor
-    desc "awake", "Set Ping Every 15min by Google Cloud Scheduler"
-    method_option :url, default: "https://souls.souls.nl", aliases: "--url", desc: "Set URL"
-    def awake
+    desc "awake [url]", "Set Ping Every 15min by Google Cloud Scheduler"
+    def awake(url)
       app_name = SOULs.configuration.app
       system(
         "gcloud scheduler jobs create http #{app_name}-awake
-            --schedule '0,10,20,30,40,50 * * * *' --uri #{options[:url]} --http-method GET"
+            --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
       )
     end
 
@@ -18,11 +17,11 @@ module SOULs
       project_id = SOULs.configuration.project_id
 
       schedules_list = current_schedules
-      worker_name = FileUtils.pwd.split("/").last
+      worker_name = FileUtils.pwd.split("/").last.underscore
       Queries::BaseQuery.all_schedules.each do |k, v|
         worker_name = FileUtils.pwd.split("/").last
-        job_name = "souls_#{worker_name}_#{k.to_s.underscore}".to_sym
-        topic = "souls_#{worker_name}_#{k.to_s.underscore}"
+        job_name = "souls-#{worker_name}-#{k.to_s.underscore}".to_sym
+        topic = "souls-#{worker_name}-#{k.to_s.underscore}"
         message_body = "query { #{k.to_s.camelize(:lower)} { response }}"
 
         if schedules_list.include?(job_name)
@@ -43,7 +42,7 @@ module SOULs
       end
 
       schedules_list.each do |k, _|
-        next unless k.match?(/^souls_#{worker_name}/)
+        next unless k.match?(/^souls-#{worker_name}/)
 
         system("gcloud scheduler jobs delete #{k} -q >/dev/null 2>&1")
       end

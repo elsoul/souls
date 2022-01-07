@@ -15,7 +15,7 @@ RSpec.describe(SOULs::CloudScheduler) do
         )
       )
 
-      expect(cli.invoke(:awake, [], { url: "abc.com" })).to(eq(true))
+      expect(cli.invoke(:awake, ["abc.com"], {})).to(eq(true))
     end
   end
 
