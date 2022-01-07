@@ -47,6 +47,18 @@ module SOULs
         SOULs::Painter.create_file(file_path)
       end
       create_env_yaml(file_dir: file_dir)
+      endroll = <<~TEXT
+        ♤ Deploy Cloud Functions ♤
+
+        $ cd apps/cf-#{version_string}-#{function_name}
+        $ souls functions deploy
+
+        $ souls functions help
+
+
+        Doc: https://souls.elsoul.nl
+      TEXT
+      puts(Paint[endroll, :white])
     end
 
     private

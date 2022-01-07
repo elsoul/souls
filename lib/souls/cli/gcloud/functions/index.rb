@@ -11,7 +11,7 @@ module SOULs
       end
 
       runtime = current_dir.match(/cf-(\D+\d+)-/)[1]
-      runtime_lang = current_dir.match(/^cf-(\D+)\d+-/)
+      runtime_lang = current_dir.match(/^cf-(\D+)\d+-/)[1]
       entry_point =
         case runtime_lang
         when "nodejs"
@@ -47,7 +47,7 @@ module SOULs
       Dir.chdir(SOULs.get_mother_path.to_s) do
         FileUtils.rm_rf("apps/#{name}")
       end
-      SOULs::Painter.success("Deleted #{name} functions!")
+      SOULs::Painter.warning("Deleted #{name} functions!", "✨")
     end
 
     desc "url", "Get SOULs Functions URL"

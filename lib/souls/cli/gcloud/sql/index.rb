@@ -13,16 +13,14 @@ module SOULs
 
       zone = "#{region}-b"
       system("gcloud config set project #{project_id} >/dev/null 2>&1")
-      Whirly.start(spinner: "clock", interval: 420, stop: "🎉") do
-        system(
-          "gcloud sql instances create #{instance_name} \
+      system(
+        "gcloud sql instances create #{instance_name} \
                 --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
                 --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
-        )
-        SOULs::Sql.new.env(password: password)
-        SOULs::Github.new.secret_set
-        Whirly.status = Paint["Cloud SQL #{instance_name} is successfully created! You can push to deploy!", :green]
-      end
+      )
+      SOULs::Sql.new.env(password: password)
+      SOULs::Github.new.secret_set
+      SOULs::Painter.success("Cloud SQL #{instance_name} is successfully created! You can push to deploy!")
       true
     end
 
