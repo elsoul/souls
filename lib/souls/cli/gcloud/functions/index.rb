@@ -23,7 +23,6 @@ module SOULs
         else
           current_dir
         end
-
       system(
         "
           gcloud functions deploy #{current_dir} --entry-point='#{entry_point}' --project=#{project_id} \
@@ -48,7 +47,7 @@ module SOULs
       Dir.chdir(SOULs.get_mother_path.to_s) do
         FileUtils.rm_rf("apps/#{name}")
       end
-      SOULs::Painter.success("Deleted #{name} functions!")
+      SOULs::Painter.warning("Deleted #{name} functions!", "✨")
     end
 
     desc "url", "Get SOULs Functions URL"

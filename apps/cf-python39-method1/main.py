@@ -1,4 +1,4 @@
-def cf_python39_discord(request):
+def cf_python39_method1(request):
   """Responds to any HTTP request.
   Args:
       request (flask.Request): HTTP request object.
