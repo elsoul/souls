@@ -109,7 +109,7 @@ module SOULs
         end
       workers.delete("base_query")
       workers.each do |file|
-        response[:"souls_#{worker_name}_#{file}"] = 1
+        response["souls_#{worker_name.underscore}_#{file}".to_sym] = 1
       end
       response
     end
