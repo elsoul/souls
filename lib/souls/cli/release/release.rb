@@ -5,6 +5,8 @@ module SOULs
     desc "release", "Release Gem"
     def release
       SOULs::Painter.error("hey! It's Broken!") unless system("rspec")
+      FileUtils.rm("apps/api/Gemfile.lock") if File.exist?("apps/api/Gemfile.lock")
+      FileUtils.rm("apps/worker/Gemfile.lock") if File.exist?("apps/worker/Gemfile.lock")
 
       system("gem install souls")
       sleep(3)
