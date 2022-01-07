@@ -40,7 +40,6 @@ module SOULs
         value = worker_file_names[file_name.to_sym] || 0
         worker_file_names[file_name.to_sym] = value - 1
       end
-      puts(worker_file_names)
 
       if worker_file_names.blank?
         return if souls_topics.blank?
