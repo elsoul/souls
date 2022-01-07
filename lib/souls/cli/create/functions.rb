@@ -1,6 +1,6 @@
-require_relative "./templates/functions_env_yaml"
+require_relative "./templates/functions/functions_env_yaml"
 
-Dir["#{SOULs::SOULS_PATH}/lib/souls/cli/create/templates/*/*.rb"].map do |f|
+Dir["#{SOULs::SOULS_PATH}/lib/souls/cli/create/templates/functions/*/*.rb"].map do |f|
   require f
 end
 
@@ -62,7 +62,7 @@ module SOULs
     end
 
     def get_runtime_create_method(runtime:)
-      Dir["#{SOULs::SOULS_PATH}/lib/souls/cli/create/templates/#{runtime}/*"].map do |n|
+      Dir["#{SOULs::SOULS_PATH}/lib/souls/cli/create/templates/functions/#{runtime}/*"].map do |n|
         n.split("/").last.gsub(".rb", "")
       end
     end
