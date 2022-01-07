@@ -24,6 +24,30 @@ module SOULs
       true
     end
 
+    desc "stop", "Stop Cloud SQL Instance"
+    def stop
+      project_id = SOULs.configuration.project_id
+      instance_name = SOULs.configuration.instance_name
+      system("gcloud sql instances patch #{instance_name} --project=#{project_id} --activation-policy=NEVER")
+      SOULs::Painter.warning("Cloud SQL #{instance_name} is stopped!")
+    end
+
+    desc "restart", "Restart Cloud SQL Instance"
+    def restart
+      project_id = SOULs.configuration.project_id
+      instance_name = SOULs.configuration.instance_name
+      system("gcloud sql instances restart #{instance_name} --project=#{project_id}")
+      SOULs::Painter.success("Cloud SQL #{instance_name} is restarted!")
+    end
+
+    desc "delete", "Delete Cloud SQL Instance"
+    def delete
+      project_id = SOULs.configuration.project_id
+      instance_name = SOULs.configuration.instance_name
+      system("gcloud sql instances delete #{instance_name} --project=#{project_id}")
+      SOULs::Painter.warning("Cloud SQL #{instance_name} is deleted!", "✨")
+    end
+
     desc "env", "Generate .env.production file to deploy"
     def env(password: "Password")
       require(SOULs.get_mother_path.to_s + "/config/souls")
