@@ -8,7 +8,7 @@ module SOULs
     def self.souls_worker_trigger(query_name:)
       query_name = query_name.gsub("_", "-")
       worker_name = FileUtils.pwd.split("/").last
-      topic_name = "souls-#{worker_name}-#{query_name}-#{query_name}"
+      topic_name = "souls-#{worker_name}-#{query_name}"
       query = query_name.underscore.camelize(:lower)
       query_string = souls_make_graphql_query(query: query)
       case ENV["RACK_ENV"]
