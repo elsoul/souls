@@ -76,23 +76,20 @@ RSpec.describe(SOULs::SOULsMutation) do
 
   describe "production?" do
     it "should return false when not production" do
-      cli = SOULs::SOULsMutation.new(object: [], context: [], field: [])
-
-      expect(cli.production?).to(eq(false))
+      expect(SOULs::SOULsMutation.production?).to(eq(false))
     end
   end
 
   describe "get_instance_id" do
     it "should curl instance ID" do
-      cli = SOULs::SOULsMutation.new(object: [], context: [], field: [])
-      allow(cli).to(receive(:`).and_return(true))
-      expect(cli).to(
+      allow(SOULs::SOULsMutation).to(receive(:`).and_return(true))
+      expect(SOULs::SOULsMutation).to(
         receive(:`).with(
           "curl http://metadata.google.internal/computeMetadata/v1/instance/id -H Metadata-Flavor:Google"
         )
       )
 
-      expect(cli.get_instance_id).to(eq(true))
+      expect(SOULs::SOULsMutation.get_instance_id).to(eq(true))
     end
   end
 end
