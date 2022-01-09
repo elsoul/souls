@@ -5,11 +5,11 @@ module SOULs
       response.body
     end
 
-    def souls_worker_trigger(worker_name:, query_file_name:)
+    def souls_worker_trigger(worker_name:, query_file_name:, args: {})
       query_file_name = query_file_name.gsub("_", "-")
       topic_name = "souls-#{worker_name}-#{query_file_name}"
       query = query_file_name.underscore.camelize(:lower)
-      query_string = souls_make_graphql_query(query: query)
+      query_string = souls_make_graphql_query(query: query, args: args)
       case ENV["RACK_ENV"]
       when "production"
         souls_publish_pubsub_queue(topic_name: topic_name, message: query_string)
