@@ -48,6 +48,7 @@ module SOULs
       end
       create_env_yaml(file_dir: file_dir)
       endroll = <<~TEXT
+
         ♤ Deploy Cloud Functions ♤
 
         $ cd apps/cf-#{version_string}-#{function_name}
