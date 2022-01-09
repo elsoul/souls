@@ -21,6 +21,7 @@ module SOULs
         when "go"
           current_dir.underscore.camelize
         else
+          system("bundle install")
           current_dir
         end
       system(
