@@ -5,6 +5,20 @@ module SOULs
       response.body
     end
 
+    def self.souls_worker_trigger(query_name:)
+      query_name = query_name.gsub("_", "-")
+      worker_name = FileUtils.pwd.split("/").last
+      topic_name = "souls-#{worker_name}-#{query_name}-#{query_name}"
+      query = query_name.underscore.camelize(:lower)
+      query_string = souls_make_graphql_query(query: query)
+      case ENV["RACK_ENV"]
+      when "production"
+        souls_publish_pubsub_queue(topic_name: topic_name, message: query_string)
+      when "development"
+        puts(souls_post_to_dev(worker_name: worker_name, query_string: query_string))
+      end
+    end
+
     def self.souls_check_user_permissions(user, obj, method)
       raise(StandardError, "Invalid or Missing Token") unless user
 
