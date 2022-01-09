@@ -5,7 +5,7 @@ module SOULs
       response.body
     end
 
-    def self.souls_worker_trigger(worker_name:, query_file_name:)
+    def souls_worker_trigger(worker_name:, query_file_name:)
       query_file_name = query_file_name.gsub("_", "-")
       topic_name = "souls-#{worker_name}-#{query_file_name}"
       query = query_file_name.underscore.camelize(:lower)
