@@ -5,11 +5,10 @@ module SOULs
       response.body
     end
 
-    def self.souls_worker_trigger(query_name:)
-      query_name = query_name.gsub("_", "-")
-      worker_name = FileUtils.pwd.split("/").last
-      topic_name = "souls-#{worker_name}-#{query_name}"
-      query = query_name.underscore.camelize(:lower)
+    def self.souls_worker_trigger(worker_name:, query_file_name:)
+      query_file_name = query_file_name.gsub("_", "-")
+      topic_name = "souls-#{worker_name}-#{query_file_name}"
+      query = query_file_name.underscore.camelize(:lower)
       query_string = souls_make_graphql_query(query: query)
       case ENV["RACK_ENV"]
       when "production"
@@ -62,8 +61,7 @@ module SOULs
     end
 
     def self.souls_post_to_dev(worker_name: "", query_string: "")
-      app = SOULs.configuration.app
-      port = souls_get_worker(worker_name: "souls-#{app}-#{worker_name}")[0][:port]
+      port = souls_get_worker(worker_name: worker_name)[0][:port]
       endpoint = SOULs.configuration.endpoint
       res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: query_string })
       res.body
@@ -78,11 +76,11 @@ module SOULs
       raise(GraphQL::ExecutionError, "You need to sign in!!") if context[:user].nil?
     end
 
-    def production?
+    def self.production?
       ENV["RACK_ENV"] == "production"
     end
 
-    def get_instance_id
+    def self.get_instance_id
       `curl http://metadata.google.internal/computeMetadata/v1/instance/id -H Metadata-Flavor:Google`
     end
   end
