@@ -223,7 +223,7 @@ end
             config.region = "asia-northeast1"
             config.endpoint = "/endpoint"
             config.strain = "worker"
-            config.fixed_gems = ["spring"]
+            config.fixed_gems = ["graphql"]
             config.workers = []
           end
         TEXT
