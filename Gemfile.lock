@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    souls (1.20.11)
+    souls (1.20.12)
       activesupport (>= 7.0.0)
       firebase_id_token (>= 2.4.0)
       foreman (>= 0.87.2)
