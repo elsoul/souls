@@ -19,7 +19,7 @@ module SOULs
       schedules_list = current_schedules
       worker_name = FileUtils.pwd.split("/").last
       Queries::BaseQuery.all_schedules.each do |k, v|
-        job_name = "souls-#{worker_name}-#{k}".to_sym
+        job_name = "souls-#{worker_name}-#{k.to_s.underscore.gsub('_', '-')}".to_sym
         topic = "souls-#{worker_name}-#{k.to_s.underscore.gsub('_', '-')}"
         query_name = k.to_s.gsub("-", "").camelize(:lower)
         message_body = "query { #{query_name} { response }}"
