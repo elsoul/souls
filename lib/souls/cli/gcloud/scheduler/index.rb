@@ -17,11 +17,10 @@ module SOULs
       project_id = SOULs.configuration.project_id
 
       schedules_list = current_schedules
-      worker_name = FileUtils.pwd.split("/").last.underscore
+      worker_name = FileUtils.pwd.split("/").last
       Queries::BaseQuery.all_schedules.each do |k, v|
-        worker_name = FileUtils.pwd.split("/").last
-        job_name = "souls-#{worker_name}-#{k.to_s.underscore}".to_sym
-        topic = "souls-#{worker_name}-#{k.to_s.underscore}"
+        job_name = "souls-#{worker_name}-#{k}".to_sym
+        topic = "souls-#{worker_name}-#{k}"
         message_body = "query { #{k.to_s.camelize(:lower)} { response }}"
 
         if schedules_list.include?(job_name)
