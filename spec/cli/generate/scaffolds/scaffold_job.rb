@@ -69,8 +69,8 @@ module Scaffold
     <<~BASEQUERY
       module Types
         class QueryType < Types::BaseObject
-          add_field(GraphQL::Types::Relay::NodeField)
-          add_field(GraphQL::Types::Relay::NodesField)
+          add_field(GraphQL::Types::Relay::HasNodeField)
+          add_field(GraphQL::Types::Relay::HasNodesField)
         end
       end
     BASEQUERY
@@ -80,8 +80,8 @@ module Scaffold
     <<~MODIFIEDQUERY
       module Types
         class QueryType < Types::BaseObject
-          add_field(GraphQL::Types::Relay::NodeField)
-          add_field(GraphQL::Types::Relay::NodesField)
+          add_field(GraphQL::Types::Relay::HasNodeField)
+          add_field(GraphQL::Types::Relay::HasNodesField)
           field :some_job, resolver: Queries::SomeJob
         end
       end

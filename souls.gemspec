@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency("foreman", ">= 0.87.2")
   gem.add_runtime_dependency("firebase_id_token", ">= 2.4.0")
   gem.add_runtime_dependency("google-cloud-pubsub", ">= 2.8.0")
-  gem.add_runtime_dependency("graphql", ">= 1.12.19")
+  gem.add_runtime_dependency("graphql", ">= 1.13.4")
   gem.add_runtime_dependency("paint", ">= 2.2.1")
   gem.add_runtime_dependency("tty-prompt", ">= 0.23.1")
   gem.add_runtime_dependency("whirly", ">= 0.3.0")
