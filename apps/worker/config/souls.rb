@@ -5,5 +5,5 @@ SOULs.configure do |config|
   config.region = "asia-northeast1"
   config.endpoint = "/endpoint"
   config.strain = "worker"
-  config.fixed_gems = []
+  config.fixed_gems = ["graphql"]
 end
