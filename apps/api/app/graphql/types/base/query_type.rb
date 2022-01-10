@@ -1,7 +1,7 @@
 module Types
   class QueryType < SOULs::Types::BaseObject
-    add_field(GraphQL::Types::Relay::NodeField)
-    add_field(GraphQL::Types::Relay::NodesField)
+    add_field(GraphQL::Types::Relay::HasNodeField)
+    add_field(GraphQL::Types::Relay::HasNodesField)
     get_tables.each do |t|
       field t.singularize.underscore.to_s.to_sym, resolver: Object.const_get("Queries::#{t.singularize.camelize}")
       field "#{t.singularize.underscore}_search".to_sym,
