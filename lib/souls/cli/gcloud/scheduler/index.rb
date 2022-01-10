@@ -21,7 +21,7 @@ module SOULs
       Queries::BaseQuery.all_schedules.each do |k, v|
         job_name = "souls-#{worker_name}-#{k}".to_sym
         topic = "souls-#{worker_name}-#{k}"
-        query_name = k.gsub("-", "").camelize(:lower)
+        query_name = k.to_s.gsub("-", "").camelize(:lower)
         message_body = "query { #{query_name} { response }}"
 
         if schedules_list.include?(job_name)
