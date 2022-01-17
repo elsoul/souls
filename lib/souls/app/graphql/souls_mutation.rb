@@ -27,9 +27,9 @@ module SOULs
       raise(Pundit::NotAuthorizedError, "permission error!") unless permission
     end
 
-    def souls_fb_auth(token:)
+    def souls_fb_auth(token: "")
       FirebaseIdToken::Certificates.request!
-      sleep(3) if ENV["RACK_ENV"] == "development"
+      sleep(3)
       user = FirebaseIdToken::Signature.verify(token)
       raise(ArgumentError, "Invalid or Missing Token") if user.blank?
 
