@@ -30,7 +30,7 @@ module Scaffold
 
           steps:
           - uses: actions/checkout@v2
-          - name: Set up Ruby 3.0
+          - name: Set up Ruby 3.1
             uses: ruby/setup-ruby@v1
             with:
               ruby-version: 3.0
@@ -121,7 +121,7 @@ module Scaffold
 
           steps:
           - uses: actions/checkout@v2
-          - name: Set up Ruby 3.0
+          - name: Set up Ruby 3.1
             uses: ruby/setup-ruby@v1
             with:
               ruby-version: 3.0
@@ -213,7 +213,7 @@ module Scaffold
 
           steps:
           - uses: actions/checkout@v2
-          - name: Set up Ruby 3.0
+          - name: Set up Ruby 3.1
             uses: ruby/setup-ruby@v1
             with:
               ruby-version: 3.0

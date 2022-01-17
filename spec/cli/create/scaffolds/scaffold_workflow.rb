@@ -30,10 +30,10 @@ module Scaffold
 
           steps:
           - uses: actions/checkout@v2
-          - name: Set up Ruby 3.0
+          - name: Set up Ruby 3.1
             uses: ruby/setup-ruby@v1
             with:
-              ruby-version: "3.0"
+              ruby-version: 3.1
 
           - name: Checkout the repository
             uses: actions/checkout@v2
