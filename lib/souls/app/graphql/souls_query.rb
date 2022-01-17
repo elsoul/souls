@@ -5,12 +5,12 @@ module SOULs
       attr_accessor :schedule
     end
 
-    def post(url:, payload: {}, content_type: "application/json")
+    def souls_post(url:, payload: {}, content_type: "application/json")
       response = Faraday.post(url, payload.to_json, "Content-Type": content_type)
       response.body
     end
 
-    def check_user_permissions(user, obj, method)
+    def souls_check_user_permissions(user, obj, method)
       raise(StandardError, "Invalid or Missing Token") unless user
 
       policy_class = obj.class.name + "Policy"
