@@ -72,7 +72,7 @@ module SOULs
                 new_line.write("    let(:#{relation_col}) { FactoryBot.create(:#{relation_col}) }\n")
               end
             end
-            @on = true if SOULs.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line:, class_name:)
           end
         end
       end
@@ -119,7 +119,7 @@ module SOULs
                 new_line.write("          #{name.camelize(:lower)}\n")
               end
             end
-            @on = true if SOULs.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line:, class_name:)
           end
         end
       end
@@ -161,7 +161,7 @@ module SOULs
                 end
               end
             end
-            @on = true if SOULs.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line:, class_name:)
           end
         end
       end

@@ -35,7 +35,7 @@ module SOULs
       rspec_mutation(class_name)
       rspec_query(class_name)
       rspec_resolver(class_name)
-      run_rbs_scaffold(class_name: class_name)
+      run_rbs_scaffold(class_name:)
     end
 
     def run_rbs_scaffold(class_name: "user")

@@ -4,7 +4,7 @@ require "pp"
 # Specify your gem's dependencies in souls.gemspec
 gemspec
 
-gem "activesupport", "7.0.0"
+gem "activesupport", "7.0.1"
 gem "firebase_id_token", "2.4.0"
 gem "foreman", "0.87.2"
 gem "google-cloud-pubsub", "2.8.0"

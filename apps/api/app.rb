@@ -82,9 +82,9 @@ class SOULsApi < Sinatra::Base
   post endpoint do
     token = request.env["HTTP_AUTHORIZATION"].split("Bearer ")[1] if request.env["HTTP_AUTHORIZATION"]
 
-    user = token ? login_auth(token: token) : nil
-    context = { user: user }
-    result = SOULsApiSchema.execute(params[:query], variables: params[:variables], context: context)
+    user = token ? login_auth(token:) : nil
+    context = { user: }
+    result = SOULsApiSchema.execute(params[:query], variables: params[:variables], context:)
     json(result)
   rescue StandardError => e
     message = { error: e }

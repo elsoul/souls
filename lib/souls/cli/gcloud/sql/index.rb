@@ -18,7 +18,7 @@ module SOULs
                 --database-version=#{db_type} --cpu=1 --memory=4096MB --zone=#{zone} \
                 --root-password='#{password}' --database-flags cloudsql.iam_authentication=on"
       )
-      SOULs::Sql.new.env(password: password)
+      SOULs::Sql.new.env(password:)
       SOULs::Github.new.secret_set
       SOULs::Painter.success("Cloud SQL #{instance_name} is successfully created! You can push to deploy!")
       true
@@ -68,7 +68,7 @@ module SOULs
             SOULS_DB_USER=postgres
             SOULS_GCP_PROJECT_ID=#{project_id}
             SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-            TZ="#{region_to_timezone(region: region)}"
+            TZ="#{region_to_timezone(region:)}"
           TEXT
         end
         SOULs::Painter.create_file(file_path)
@@ -85,7 +85,7 @@ module SOULs
             SOULS_GCP_REGION=#{region}
             SOULS_GCLOUDSQL_INSTANCE="#{project_id}:#{region}:#{instance_name}"
             SOULS_SECRET_KEY_BASE='#{SecureRandom.base64(64)}'
-            TZ="#{region_to_timezone(region: region)}"
+            TZ="#{region_to_timezone(region:)}"
           TEXT
         end
         SOULs::Painter.create_file(file_path)

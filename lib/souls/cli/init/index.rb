@@ -16,10 +16,10 @@ module SOULs
       raise(StandardError, "Directory already exists and is not empty") if Dir.exist?(file_dir) && !Dir.empty?(file_dir)
 
       service_name = "api"
-      download_souls(app_name: app_name, service_name: service_name)
-      mother_config_init(app_name: app_name)
-      download_github_actions(app_name: app_name)
-      initial_config_init(app_name: app_name, service_name: service_name)
+      download_souls(app_name:, service_name:)
+      mother_config_init(app_name:)
+      download_github_actions(app_name:)
+      initial_config_init(app_name:, service_name:)
       system("cd #{app_name} && git init --initial-branch=main")
 
       system(" cd #{app_name} && rbs collection init && rbs collection install ")
@@ -121,7 +121,7 @@ module SOULs
         f.write(<<~TEXT)
           source "https://rubygems.org"
 
-          gem "activesupport", "7.0.0"
+          gem "activesupport", "7.0.1"
           gem "foreman", "0.87.2"
           gem "google-cloud-pubsub", "2.9.0"
           gem "paint", "2.2.1"
@@ -144,7 +144,7 @@ module SOULs
     end
 
     def download_souls(app_name: "souls", service_name: "api")
-      version = SOULs.get_latest_version_txt(service_name: service_name).join(".")
+      version = SOULs.get_latest_version_txt(service_name:).join(".")
       file_name = "#{service_name}-v#{version}.tgz"
       url = "https://storage.googleapis.com/souls-bucket/boilerplates/#{service_name.pluralize}/#{file_name}"
       system("curl -OL #{url}")
@@ -184,7 +184,7 @@ module SOULs
       red2 = ["/ ___/", :red]
       red3 = ["(__  )", :red]
       red4 = ["/____/", :red]
-      ms = Paint % [txt2, :cyan, { red1: red1, red2: red2, red3: red3, red4: red4 }]
+      ms = Paint % [txt2, :cyan, { red1:, red2:, red3:, red4: }]
       puts(ms)
       puts(line)
       welcome = Paint["Welcome to SOULs!", :white]

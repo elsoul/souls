@@ -8,10 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
-        uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+        uses: ruby/setup-ruby@v1
         with:
           bundler-cache: false
-          ruby-version: "3.0"
+          ruby-version: 3.1
       - name: Install redis
         run: sudo apt-get install -y redis-tools redis-server libcurl3-dev
       - name: Install dependencies

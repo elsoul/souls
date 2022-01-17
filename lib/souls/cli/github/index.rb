@@ -21,10 +21,10 @@ module SOULs
       prompt = TTY::Prompt.new
       key = prompt.ask("Set Key:")
       value = prompt.ask("Set Value:")
-      update_env_production(key: key, value: value, dqm: options[:dqm])
-      update_api_env(key: key, value: value, dqm: options[:dqm])
-      update_workers_env(key: key, value: value, dqm: options[:dqm])
-      update_github_actions(key: key)
+      update_env_production(key:, value:, dqm: options[:dqm])
+      update_api_env(key:, value:, dqm: options[:dqm])
+      update_workers_env(key:, value:, dqm: options[:dqm])
+      update_github_actions(key:)
       system("gh secret set #{key} -b \"#{value.strip}\"")
     end
 
