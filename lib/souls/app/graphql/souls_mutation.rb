@@ -1,6 +1,6 @@
 module SOULs
   class SOULsMutation < GraphQL::Schema::RelayClassicMutation
-    def post(url:, payload: {}, content_type: "application/json")
+    def souls_post(url:, payload: {}, content_type: "application/json")
       response = Faraday.post(url, payload.to_json, "Content-Type": content_type)
       response.body
     end
