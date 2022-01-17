@@ -9,12 +9,12 @@ module SOULs
       query_file_name = query_file_name.gsub("_", "-")
       topic_name = "souls-#{worker_name}-#{query_file_name}"
       query = query_file_name.underscore.camelize(:lower)
-      query_string = souls_make_graphql_query(query: query, args: args)
+      query_string = souls_make_graphql_query(query:, args:)
       case ENV["RACK_ENV"]
       when "production"
-        souls_publish_pubsub_queue(topic_name: topic_name, message: query_string)
+        souls_publish_pubsub_queue(topic_name:, message: query_string)
       when "development"
-        puts(souls_post_to_dev(worker_name: worker_name, query_string: query_string))
+        puts(souls_post_to_dev(worker_name:, query_string:))
       end
     end
 
@@ -61,7 +61,7 @@ module SOULs
     end
 
     def souls_post_to_dev(worker_name: "", query_string: "")
-      port = souls_get_worker(worker_name: worker_name)[0][:port]
+      port = souls_get_worker(worker_name:)[0][:port]
       endpoint = SOULs.configuration.endpoint
       res = Net::HTTP.post_form(URI.parse("http://localhost:#{port}#{endpoint}"), { query: query_string })
       res.body

@@ -11,17 +11,17 @@ module SOULs
 
         workers = SOULs.configuration.workers
         port = 3000 + workers.size
-        download_worker(worker_name: worker_name)
-        souls_conf_update(worker_name: worker_name)
-        souls_conf_update(worker_name: worker_name, strain: "api")
-        workflow(worker_name: worker_name)
-        procfile(worker_name: worker_name, port: port)
-        mother_procfile(worker_name: worker_name)
-        souls_config_init(worker_name: worker_name)
-        steepfile(worker_name: worker_name)
-        souls_helper_rbs(worker_name: worker_name)
+        download_worker(worker_name:)
+        souls_conf_update(worker_name:)
+        souls_conf_update(worker_name:, strain: "api")
+        workflow(worker_name:)
+        procfile(worker_name:, port:)
+        mother_procfile(worker_name:)
+        souls_config_init(worker_name:)
+        steepfile(worker_name:)
+        souls_helper_rbs(worker_name:)
         system("cd #{file_dir} && bundle")
-        souls_worker_credit(worker_name: worker_name)
+        souls_worker_credit(worker_name:)
       end
       true
     end
@@ -298,7 +298,7 @@ end
       red2 = ["/ ___/", :red]
       red3 = ["(__  )", :red]
       red4 = ["/____/", :red]
-      ms = Paint % [txt2, :blue, { red1: red1, red2: red2, red3: red3, red4: red4 }]
+      ms = Paint % [txt2, :blue, { red1:, red2:, red3:, red4: }]
       puts(ms)
       puts(line)
       welcome = Paint["SOULs Worker is Ready!", :white]

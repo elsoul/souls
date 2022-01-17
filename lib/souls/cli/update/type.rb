@@ -17,7 +17,7 @@ module SOULs
             new_cols.each do |col|
               type = SOULs.get_type(col[:type])
               type = "[#{type}]" if col[:array]
-              args = check_type_argument(class_name: class_name)
+              args = check_type_argument(class_name:)
               unless args.include?(col[:column_name])
                 new_line.write("    field :#{col[:column_name]}, #{type}, null: true\n")
               end

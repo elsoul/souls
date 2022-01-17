@@ -19,7 +19,7 @@ module SOULs
             test_res = false if test_res && line.strip == ")"
 
             if node_res && !line.include?("{")
-              node_args = check_rspec_resolver_argument(class_name: class_name, action: "node_args")
+              node_args = check_rspec_resolver_argument(class_name:, action: "node_args")
               new_cols.each do |col|
                 unless node_args.include?(col[:column_name])
                   new_line.write("              #{col[:column_name].camelize(:lower)}\n")
@@ -27,7 +27,7 @@ module SOULs
               end
               node_res = false
             elsif test_res && line.include?("=> be_")
-              test_args = check_rspec_resolver_argument(class_name: class_name, action: "test_args")
+              test_args = check_rspec_resolver_argument(class_name:, action: "test_args")
               new_cols.each do |col|
                 type = SOULs.type_check(col[:type])
                 text =

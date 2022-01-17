@@ -22,7 +22,7 @@ RSpec.describe(SOULs::Generate) do
         generate = SOULs::Generate.new
         allow(SOULs).to(receive(:get_relation_params).and_return({ params: {} }))
         allow(SOULs).to(receive(:get_mother_path).and_return(""))
-        a1 = generate.__send__(:create_rbs_mutation, **{ class_name: class_name })
+        a1 = generate.__send__(:create_rbs_mutation, **{ class_name: })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
@@ -53,7 +53,7 @@ RSpec.describe(SOULs::Generate) do
           )
         )
         allow(SOULs).to(receive(:get_mother_path).and_return(""))
-        a1 = generate.__send__(:update_rbs_mutation, **{ class_name: class_name })
+        a1 = generate.__send__(:update_rbs_mutation, **{ class_name: })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
@@ -71,7 +71,7 @@ RSpec.describe(SOULs::Generate) do
         FakeFS.activate!
         generate = SOULs::Generate.new
         allow(SOULs).to(receive(:get_mother_path).and_return(""))
-        a1 = generate.__send__(:delete_rbs_mutation, **{ class_name: class_name })
+        a1 = generate.__send__(:delete_rbs_mutation, **{ class_name: })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
@@ -89,7 +89,7 @@ RSpec.describe(SOULs::Generate) do
         FakeFS.activate!
         generate = SOULs::Generate.new
         allow(SOULs).to(receive(:get_mother_path).and_return(""))
-        a1 = generate.__send__(:destroy_delete_rbs_mutation, **{ class_name: class_name })
+        a1 = generate.__send__(:destroy_delete_rbs_mutation, **{ class_name: })
         file_output = File.read(file_path)
 
         expect(a1).to(eq(file_path))
