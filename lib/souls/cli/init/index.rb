@@ -23,7 +23,7 @@ module SOULs
       mother_config_init(app_name:)
       download_github_actions(app_name:)
       initial_config_init(app_name:, service_name:)
-      system("cd #{app_name} && mv .env.sample .env")
+      system("cd #{app_name}/apps/api && mv .env.sample .env")
       system("cd #{app_name} && git init --initial-branch=main")
 
       system(" cd #{app_name} && rbs collection init && rbs collection install ")
