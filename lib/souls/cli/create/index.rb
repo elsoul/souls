@@ -21,6 +21,7 @@ module SOULs
         steepfile(worker_name:)
         souls_helper_rbs(worker_name:)
         system("cd #{file_dir} && bundle")
+        system("cd #{file_dir} && mv .env.sample .env")
         souls_worker_credit(worker_name:)
       end
       true
@@ -201,7 +202,7 @@ end
                       --set-env-vars="SOULS_DB_HOST=${{ secrets.SOULS_DB_HOST }}" \\
                       --set-env-vars="TZ=${{ secrets.TZ }}" \\
                       --set-env-vars="SOULS_SECRET_KEY_BASE=${{ secrets.SOULS_SECRET_KEY_BASE }}" \\
-                      --set-env-vars="SOULS_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}"
+                      --set-env-vars="SOULS_GCP_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}"
         TEXT
       end
       SOULs::Painter.create_file(file_path.to_s)
