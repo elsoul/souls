@@ -20,7 +20,6 @@ require "search_object/plugin/graphql"
 require "graphql/batch"
 require "./config/souls"
 require "./config/souls_logger"
-require "./config/firebase_id_token"
 
 ENV["RACK_ENV"] ||= "development"
 Dir["./constants/*.rb"].each { |f| require f }
