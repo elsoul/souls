@@ -62,6 +62,7 @@ module SOULs
         file_path = ".env"
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
+            RUBY_YJIT_ENABLE=1
             GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=1
             SOULS_DB_HOST=#{instance_ip}
             SOULS_DB_PW=#{db_password}
@@ -77,6 +78,7 @@ module SOULs
         file_path = ".env.production"
         File.open(file_path, "w") do |line|
           line.write(<<~TEXT)
+            RUBY_YJIT_ENABLE=1
             SOULS_DB_HOST="/cloudsql/#{project_id}:#{region}:#{instance_name}"
             SOULS_DB_PW=#{db_password}
             SOULS_DB_USER=postgres

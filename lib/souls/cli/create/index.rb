@@ -21,6 +21,7 @@ module SOULs
         steepfile(worker_name:)
         souls_helper_rbs(worker_name:)
         system("cd #{file_dir} && bundle")
+        system("cd #{file_dir} && mv .env.sample .env")
         souls_worker_credit(worker_name:)
       end
       true

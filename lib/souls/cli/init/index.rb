@@ -13,13 +13,17 @@ module SOULs
         exit
       end
       file_dir = "./#{app_name}"
-      raise(StandardError, "Directory already exists and is not empty") if Dir.exist?(file_dir) && !Dir.empty?(file_dir)
+      if Dir.exist?(file_dir) && !Dir.empty?(file_dir)
+        SOULs::Painter.error("Directory already exists and is not empty")
+        return
+      end
 
       service_name = "api"
       download_souls(app_name:, service_name:)
       mother_config_init(app_name:)
       download_github_actions(app_name:)
       initial_config_init(app_name:, service_name:)
+      system("cd #{app_name} && mv .env.sample .env")
       system("cd #{app_name} && git init --initial-branch=main")
 
       system(" cd #{app_name} && rbs collection init && rbs collection install ")
