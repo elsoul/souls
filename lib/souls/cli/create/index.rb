@@ -165,7 +165,7 @@ end
                 run: |
                   sudo apt-get -yqq install libpq-dev
                   cd apps/#{worker_name}
-                  rm .env
+                  rm -f .env
                   gem install bundler
                   bundle install --jobs 4 --retry 3
                   bundle exec rake db:create RACK_ENV=test
