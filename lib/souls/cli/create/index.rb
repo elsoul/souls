@@ -141,28 +141,31 @@ end
               - name: Set up Ruby 3.1
                 uses: ruby/setup-ruby@v1
                 with:
+                  bundler-cache: true
                   ruby-version: 3.1
 
               - name: Checkout the repository
                 uses: actions/checkout@v2
 
-              - name: GCP Authenticate
-                uses: google-github-actions/setup-gcloud@master
+              - id: auth
+                uses: google-github-actions/auth@v0
                 with:
-                  version: "323.0.0"
-                  project_id: ${{ secrets.SOULS_GCP_PROJECT_ID }}
-                  service_account_key: ${{ secrets.SOULS_GCP_SA_KEY }}
-                  export_default_credentials: true
+                  credentials_json: ${{ secrets.SOULS_GCP_SA_KEY }}
+
+              - name: Set up Cloud SDK
+                uses: google-github-actions/setup-gcloud@v0
 
               - name: Build and test with Rake
                 env:
                   PGHOST: 127.0.0.1
                   PGUSER: postgres
                   RACK_ENV: test
+                  RUBY_YJIT_ENABLE: 1
                   SOULS_GCP_PROJECT_ID: ${{ secrets.SOULS_GCP_PROJECT_ID }}
                 run: |
                   sudo apt-get -yqq install libpq-dev
                   cd apps/#{worker_name}
+                  rm .env
                   gem install bundler
                   bundle install --jobs 4 --retry 3
                   bundle exec rake db:create RACK_ENV=test
@@ -202,7 +205,8 @@ end
                       --set-env-vars="SOULS_DB_HOST=${{ secrets.SOULS_DB_HOST }}" \\
                       --set-env-vars="TZ=${{ secrets.TZ }}" \\
                       --set-env-vars="SOULS_SECRET_KEY_BASE=${{ secrets.SOULS_SECRET_KEY_BASE }}" \\
-                      --set-env-vars="SOULS_GCP_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}"
+                      --set-env-vars="SOULS_GCP_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}" \\
+                      --set-env-vars="RUBY_YJIT_ENABLE=1"
         TEXT
       end
       SOULs::Painter.create_file(file_path.to_s)
