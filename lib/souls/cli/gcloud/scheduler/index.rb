@@ -3,6 +3,7 @@ module SOULs
     desc "awake [url]", "Set Ping by Google Cloud Scheduler: Cron e.g. '0 10 * * *' or 'every 10 hours'"
     def awake
       app_name = SOULs.configuration.app.gsub("_", "-")
+      project_id = SOULs.configuration.project_id
       worker_names = SOULs.configuration.workers.map { |f| f[:name] }
       services = ["souls-#{app_name}-api"]
       worker_names.each { |worker| services << "souls-#{app_name}-#{worker}" }
@@ -11,10 +12,10 @@ module SOULs
       service = prompt.select("Select Service?", services)
       cron = prompt.ask("Cron Schedule?", default: "every 10 mins")
 
-      url = SOULs::GcloudRun.new.get_endpoint(service)
+      url = SOULs::CloudRun.new.get_endpoint(service)
       system(
         "gcloud scheduler jobs create http #{app_name}-awake \
-            --schedule '#{cron}' --uri #{url} --http-method GET"
+            --schedule '#{cron}' --uri #{url} --project=#{project_id} --http-method GET"
       )
     end
 
