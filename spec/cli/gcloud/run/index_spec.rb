@@ -15,7 +15,7 @@ RSpec.describe(SOULs::CloudRun) do
       allow(cli).to(receive(:`).and_return(true))
       expect(cli).to(receive(:`).with("gcloud run services list  --platform managed | grep worker | awk '{print $4}'"))
 
-      expect(cli.get_endpoint(worker_name: "worker")).to(eq(true))
+      expect(cli.get_endpoint("worker")).to(eq(true))
     end
   end
 end

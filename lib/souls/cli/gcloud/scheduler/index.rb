@@ -1,11 +1,20 @@
 module SOULs
   class CloudScheduler < Thor
-    desc "awake [url]", "Set Ping Every 15min by Google Cloud Scheduler"
-    def awake(url)
-      app_name = SOULs.configuration.app
+    desc "awake [url]", "Set Ping by Google Cloud Scheduler: Cron e.g. '0 10 * * *' or 'every 10 hours'"
+    def awake
+      app_name = SOULs.configuration.app.gsub("_", "-")
+      worker_names = SOULs.configuration.workers.map(&:name)
+      services = ["souls-#{app_name}-api"]
+      worker_names.each { |worker| services << "souls-#{app_name}-#{worker}" }
+
+      prompt = TTY::Prompt.new
+      service = prompt.select("Select Service?", services)
+      cron = prompt.ask("Cron Schedule?", default: "every 10 mins")
+
+      url = SOULs::GcloudRun.new.get_endpoint(service)
       system(
-        "gcloud scheduler jobs create http #{app_name}-awake
-            --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
+        "gcloud scheduler jobs create http #{app_name}-awake \
+            --schedule '#{cron}' --uri #{url} --http-method GET"
       )
     end
 
