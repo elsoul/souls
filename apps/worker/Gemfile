@@ -25,7 +25,7 @@ gem "sinatra", "2.1.0"
 gem "sinatra-activerecord", "2.0.25", require: "sinatra/activerecord"
 gem "sinatra-contrib", "2.1.0", require: false
 gem "slack-ruby3", "0.1.2"
-gem "souls", "1.21.7"
+gem "souls", "1.21.8"
 gem "zeitwerk", "2.5.1"
 
 group :development, :test do
