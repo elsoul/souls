@@ -11,7 +11,7 @@ module SOULs
       service = prompt.select("Select Service?", services)
       cron = prompt.ask("Cron Schedule?", default: "every 10 mins")
 
-      url = SOULs::GcloudRun.new.get_endpoint(service)
+      url = SOULs::CloudRun.new.get_endpoint(service)
       system(
         "gcloud scheduler jobs create http #{app_name}-awake \
             --schedule '#{cron}' --uri #{url} --http-method GET"
