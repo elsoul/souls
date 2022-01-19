@@ -3,7 +3,7 @@ module SOULs
     desc "awake [url]", "Set Ping by Google Cloud Scheduler: Cron e.g. '0 10 * * *' or 'every 10 hours'"
     def awake
       app_name = SOULs.configuration.app.gsub("_", "-")
-      worker_names = SOULs.configuration.workers.map(&:name)
+      worker_names = SOULs.configuration.workers.map { |f| f[:name] }
       services = ["souls-#{app_name}-api"]
       worker_names.each { |worker| services << "souls-#{app_name}-#{worker}" }
 
