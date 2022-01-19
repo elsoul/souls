@@ -4,7 +4,7 @@ module SOULs
     def awake(url)
       app_name = SOULs.configuration.app
       system(
-        "gcloud scheduler jobs create http #{app_name}-awake
+        "gcloud scheduler jobs create http #{app_name}-awake \
             --schedule '0,10,20,30,40,50 * * * *' --uri #{url} --http-method GET"
       )
     end
