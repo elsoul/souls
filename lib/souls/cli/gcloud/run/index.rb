@@ -5,9 +5,9 @@ module SOULs
       system("gcloud run services list --platform managed")
     end
 
-    desc "get_endpoint", "Show Worker's Endpoint"
-    def get_endpoint(worker_name: "")
-      `gcloud run services list  --platform managed | grep #{worker_name} | awk '{print $4}'`
+    desc "get_endpoint [service_name]", "Show Worker's Endpoint"
+    def get_endpoint(service_name)
+      `gcloud run services list  --platform managed | grep #{service_name} | awk '{print $4}'`
     end
   end
 end
