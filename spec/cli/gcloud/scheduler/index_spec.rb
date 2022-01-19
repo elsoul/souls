@@ -10,7 +10,7 @@ RSpec.describe(SOULs::CloudScheduler) do
       allow_any_instance_of(SOULs::CloudScheduler).to(receive(:system).and_return(true))
       expect_any_instance_of(SOULs::CloudScheduler).to(
         receive(:system).with(
-          "gcloud scheduler jobs create http test-app-awake
+          "gcloud scheduler jobs create http test-app-awake \
             --schedule '0,10,20,30,40,50 * * * *' --uri abc.com --http-method GET"
         )
       )
