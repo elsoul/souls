@@ -15,7 +15,7 @@ module SOULs
       url = SOULs::CloudRun.new.get_endpoint(service)
       system(
         "gcloud scheduler jobs create http #{app_name}-awake \
-            --schedule '#{cron}' --uri #{url} --project=#{project_id} --http-method GET"
+            --schedule '#{cron}' --uri '#{url}' --project=#{project_id} --http-method GET"
       )
     end
 
