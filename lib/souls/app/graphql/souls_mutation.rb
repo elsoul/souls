@@ -30,15 +30,12 @@ module SOULs
     def souls_fb_auth(token: "")
       FirebaseIdToken::Certificates.request!
       user = FirebaseIdToken::Signature.verify(token)
-      if user.nil?
-        Retryable.retryable(tries: 20) do
+      if user.blank?
+        Retryable.retryable(tries: 20, on: ArgumentError) do
           user = FirebaseIdToken::Signature.verify(token)
-          raise(StandardError, "Oops user nil!") if user.nil?
+          raise(ArgumentError, "Invalid or Missing Token") if user.blank?
         end
       end
-      raise(ArgumentError, "Invalid or Missing Token") if user.blank?
-      raise(ArgumentError, "Network Error") if user.nil?
-
       user
     end
 
