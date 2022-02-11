@@ -19,3 +19,4 @@ CHANGELOG.md
 souls-*.gem
 .gitmodules
 dump.rdb
+.DS_Store
