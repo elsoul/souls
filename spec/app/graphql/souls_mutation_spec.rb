@@ -17,7 +17,7 @@ RSpec.describe(SOULs::SOULsMutation) do
       cli = SOULs::SOULsMutation.new(object: [], context: [], field: [])
       allow_any_instance_of(FirebaseIdToken::Certificates).to(receive(:request!).and_return(true))
       allow_any_instance_of(FirebaseIdToken::Signature).to(receive(:verify).and_return("abc123"))
-
+      allow_any_instance_of(Retryable).to(receive(:retryable).and_return(nil))
       result = cli.souls_fb_auth(token: "test")
       expect(result).to(eq("abc123"))
     end

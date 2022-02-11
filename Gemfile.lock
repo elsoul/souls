@@ -9,6 +9,7 @@ PATH
       graphql (<= 1.13.2)
       httpclient (>= 2.8.3)
       paint (>= 2.2.1)
+      retryable (>= 3.0.5)
       thor (>= 1.1.0)
       tty-prompt (>= 0.23.1)
       whirly (>= 0.3.0)
@@ -137,6 +138,8 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    nokogiri (1.13.1-x86_64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.1-x86_64-linux)
       racc (~> 1.4)
     os (1.1.4)
@@ -162,6 +165,7 @@ GEM
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     regexp_parser (2.2.0)
+    retryable (3.0.5)
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.2.5)
@@ -261,6 +265,7 @@ GEM
       webrick (~> 1.7.0)
 
 PLATFORMS
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -277,6 +282,7 @@ DEPENDENCIES
   parser (= 3.0.3.2)
   pg (= 1.2.3)
   rake (= 13.0.6)
+  retryable (= 3.0.5)
   rspec (= 3.10.0)
   rubocop (= 1.24.0)
   rubocop-graphql (= 0.11.3)

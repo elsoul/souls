@@ -9,6 +9,7 @@ require "whirly"
 require "tty-prompt"
 require "thor"
 require "resolv"
+require "retryable"
 require "google/cloud/pubsub"
 
 module SOULs
