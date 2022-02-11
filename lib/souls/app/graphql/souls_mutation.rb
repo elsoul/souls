@@ -28,6 +28,8 @@ module SOULs
     end
 
     def souls_fb_auth(token: "")
+      raise(ArgumentError, "Invalid or Missing Token") if token.blank?
+
       FirebaseIdToken::Certificates.request!
       user = FirebaseIdToken::Signature.verify(token)
       if user.blank?
