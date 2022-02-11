@@ -32,7 +32,7 @@ module SOULs
       user = nil
       Retryable.retryable(tries: 20) do
         user = FirebaseIdToken::Signature.verify(token)
-        raise "oops user nil!" if user == nil
+        raise(StandardError, "Oops user nil!") if user.nil?
       end
       raise(ArgumentError, "Invalid or Missing Token") if user.blank?
       raise(ArgumentError, "Network Error") if user.nil?
