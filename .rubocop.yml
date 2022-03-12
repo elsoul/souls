@@ -33,6 +33,7 @@ Style/IpAddresses:
     - "config.ru"
     - "Gemfile"
     - "apps/**/Gemfile"
+    - "init_files/Gemfile"
 
 Style/HashSyntax:
   EnforcedStyle: ruby19
