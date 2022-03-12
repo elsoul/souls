@@ -18,7 +18,7 @@ Style/Copyright:
   Enabled: false
   VersionAdded: "0.30"
   Notice: '^Copyright (\(c\) )?2[0-9]{3} .+'
-  AutocorrectNotice: "Copyright 2021 by ELSOUL LABO B.V."
+  AutocorrectNotice: "Copyright 2022 by ELSOUL LABO B.V."
 
 Style/DisableCopsWithinSourceCodeDirective:
   Enabled: false
