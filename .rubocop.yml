@@ -32,6 +32,7 @@ Style/IpAddresses:
   Exclude:
     - "config.ru"
     - "Gemfile"
+    - "apps/**/Gemfile"
 
 Style/HashSyntax:
   EnforcedStyle: ruby19
