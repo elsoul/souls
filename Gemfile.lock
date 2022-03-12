@@ -2,14 +2,14 @@ PATH
   remote: .
   specs:
     souls (1.20.7)
-      activesupport (>= 7.0.0)
+      activesupport (>= 7.0.2.3)
       firebase_id_token (>= 2.4.0)
       foreman (>= 0.87.2)
       google-cloud-pubsub (>= 2.8.0)
       graphql (>= 2.0.2)
       httpclient (>= 2.8.3)
       paint (>= 2.2.1)
-      thor (>= 1.1.0)
+      thor (>= 1.2.1)
       tty-prompt (>= 0.23.1)
       whirly (>= 0.3.0)
 
