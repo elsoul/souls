@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cloud."
   gem.homepage      = "https://souls.elsoul.nl"
   gem.license       = "Apache-2.0"
-  gem.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
+  gem.required_ruby_version = Gem::Requirement.new(">= 3.0.0", "<= 3.1.0")
 
   gem.metadata["homepage_uri"] = gem.homepage
   gem.metadata["source_code_uri"] = "https://github.com/elsoul/souls"
@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency("foreman", ">= 0.87.2")
   gem.add_runtime_dependency("firebase_id_token", ">= 2.4.0")
   gem.add_runtime_dependency("google-cloud-pubsub", ">= 2.8.0")
-  gem.add_runtime_dependency("graphql", ">= 2.0.2")
+  gem.add_runtime_dependency("graphql", "<= 1.8.0")
   gem.add_runtime_dependency("paint", ">= 2.2.1")
   gem.add_runtime_dependency("tty-prompt", ">= 0.23.1")
   gem.add_runtime_dependency("whirly", ">= 0.3.0")

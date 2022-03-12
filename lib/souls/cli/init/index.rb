@@ -124,20 +124,20 @@ module SOULs
         f.write(<<~TEXT)
           source "https://rubygems.org"
 
-          gem "activesupport", "7.0.1"
+          gem "activesupport", "7.0.2.3"
           gem "foreman", "0.87.2"
-          gem "google-cloud-pubsub", "2.9.0"
+          gem "google-cloud-pubsub", "2.9.1"
           gem "paint", "2.2.1"
-          gem "parser", "3.0.2.0"
-          gem "pg", "1.2.3"
+          gem "parser", "3.1.1.0"
+          gem "pg", "1.3.2"
           gem "rake", "13.0.6"
           gem "rspec", "3.10.0"
-          gem "rubocop", "1.24.1"
+          gem "rubocop", "1.26.0"
           gem "sinatra-activerecord", "2.0.25"
-          gem "solargraph", "0.44.0"
+          gem "solargraph", "0.44.3"
           #{souls_gem}
-          gem "steep", "0.47.0"
-          gem "thor", "1.1.0"
+          gem "steep", "0.49.0"
+          gem "thor", "1.2.1"
           gem "tty-prompt", "0.23.1"
           gem "whirly", "0.3.0"
         TEXT
