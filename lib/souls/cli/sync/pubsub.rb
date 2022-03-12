@@ -16,7 +16,7 @@ module SOULs
 
       worker_file_names = get_workers_file_paths
 
-      sync_pubsub_topics_and_subscriptions(worker_file_names: worker_file_names, worker_url: url)
+      sync_pubsub_topics_and_subscriptions(worker_file_names:, worker_url: url)
       SOULs::Painter.sync("All Jobs with PubSub Subscription!")
     end
 
@@ -24,7 +24,7 @@ module SOULs
 
     def sync_pubsub_topics_and_subscriptions(worker_url:, worker_file_names: {})
       project_id = SOULs.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       topics = pubsub.topics
       worker_name = FileUtils.pwd.split("/").last
 
@@ -45,18 +45,18 @@ module SOULs
         return if souls_topics.blank?
 
         souls_topics.each do |topic_id|
-          delete_topic(topic_id: topic_id)
-          delete_subscription(topic_id: topic_id)
+          delete_topic(topic_id:)
+          delete_subscription(topic_id:)
         end
       else
         worker_file_names.each do |key, value|
           topic_id = key.to_s.gsub("_", "-")
           if value == 1
-            create_topic(topic_id: topic_id)
-            create_push_subscription(worker_url: worker_url, topic_id: topic_id)
+            create_topic(topic_id:)
+            create_push_subscription(worker_url:, topic_id:)
           end
-          delete_topic(topic_id: topic_id) if value == -1
-          delete_subscription(topic_id: topic_id) if value == -1
+          delete_topic(topic_id:) if value == -1
+          delete_subscription(topic_id:) if value == -1
         end
       end
       worker_file_names
@@ -64,14 +64,14 @@ module SOULs
 
     def create_topic(topic_id: "worker-mailer")
       project_id = SOULs.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       topic = pubsub.create_topic(topic_id.to_s)
       SOULs::Painter.success("Topic #{topic.name} created.")
     end
 
     def delete_topic(topic_id: "worker-mailer")
       project_id = SOULs.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       topic = pubsub.topic(topic_id.to_s)
       topic.delete
       SOULs::Painter.warning("Topic #{topic_id} deleted.", "✨")
@@ -79,7 +79,7 @@ module SOULs
 
     def delete_subscription(topic_id: "worker-mailer")
       project_id = SOULs.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
       subscription_id = "#{topic_id}-sub"
       subscription = pubsub.subscription(subscription_id)
       subscription.delete
@@ -91,10 +91,10 @@ module SOULs
       endpoint = "#{worker_url}#{souls_endpoint}"
 
       project_id = SOULs.configuration.project_id
-      pubsub = Google::Cloud::Pubsub.new(project_id: project_id)
+      pubsub = Google::Cloud::Pubsub.new(project_id:)
 
       topic = pubsub.topic(topic_id)
-      sub = topic.subscribe(subscription_id, endpoint: endpoint, deadline: 20)
+      sub = topic.subscribe(subscription_id, endpoint:, deadline: 20)
       sub.expires_in = nil
       SOULs::Painter.success("Push subscription #{subscription_id} created.")
     end

@@ -8,7 +8,7 @@ module SOULs
     def model
       cp_dir = %w[db app/models spec/factories]
       cp_dir.each do |dir|
-        cp_and_dl_files(dir: dir)
+        cp_and_dl_files(dir:)
         cp_env_files
       end
       SOULs::Painter.sync(cp_dir.to_s)

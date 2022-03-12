@@ -110,7 +110,7 @@ module SOULs
       {
         gems: updated_gems,
         lines: updated_lines,
-        updated_gem_versions: updated_gem_versions
+        updated_gem_versions:
       }
     end
   end

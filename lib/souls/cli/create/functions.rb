@@ -46,7 +46,7 @@ module SOULs
         File.write(file_path, Object.const_get("Template::#{runtime}").__send__(method, file_name))
         SOULs::Painter.create_file(file_path)
       end
-      create_env_yaml(file_dir: file_dir)
+      create_env_yaml(file_dir:)
       endroll = <<~TEXT
 
         ♤ Deploy Cloud Functions ♤

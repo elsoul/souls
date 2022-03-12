@@ -1,0 +1,505 @@
+# HTTPClient - HTTP client library.
+# Copyright (C) 2000-2015  NAKAMURA, Hiroshi  <nahi@ruby-lang.org>.
+#
+# This program is copyrighted free software by NAKAMURA, Hiroshi.  You can
+# redistribute it and/or modify it under the same terms of Ruby's license;
+# either the dual license version in 2003, or any later version.
+# :main:HTTPClient
+# The HTTPClient class provides several methods for accessing Web resources
+# via HTTP.
+#
+# HTTPClient instance is designed to be MT-safe.  You can call a HTTPClient
+# instance from several threads without synchronization after setting up an
+# instance.
+#
+#   clnt = HTTPClient.new
+#   clnt.set_cookie_store('/home/nahi/cookie.dat')
+#   urls.each do |url|
+#     Thread.new(url) do |u|
+#       p clnt.head(u).status
+#     end
+#   end
+#
+# == How to use
+#
+# At first, how to create your client.  See initialize for more detail.
+#
+# 1. Create simple client.
+#
+#     clnt = HTTPClient.new
+#
+# 2. Accessing resources through HTTP proxy.  You can use environment
+#    variable 'http_proxy' or 'HTTP_PROXY' instead.
+#
+#     clnt = HTTPClient.new('http://myproxy:8080')
+#
+# === How to retrieve web resources
+#
+# See get and get_content.
+#
+# 1. Get content of specified URL.  It returns HTTP::Message object and
+#    calling 'body' method of it returns a content String.
+#
+#     puts clnt.get('http://dev.ctor.org/').body
+#
+# 2. For getting content directly, use get_content.  It follows redirect
+#    response and returns a String of whole result.
+#
+#     puts clnt.get_content('http://dev.ctor.org/')
+#
+# 3. You can pass :follow_redirect option to follow redirect response in get.
+#
+#     puts clnt.get('http://dev.ctor.org/', :follow_redirect => true)
+#
+# 4. Get content as chunks of String.  It yields chunks of String.
+#
+#     clnt.get_content('http://dev.ctor.org/') do |chunk|
+#       puts chunk
+#     end
+#
+# === Invoking other HTTP methods
+#
+# See head, get, post, put, delete, options, propfind, proppatch and trace.
+# It returns a HTTP::Message instance as a response.
+#
+# 1. Do HEAD request.
+#
+#     res = clnt.head(uri)
+#     p res.header['Last-Modified'][0]
+#
+# 2. Do GET request with query.
+#
+#     query = { 'keyword' => 'ruby', 'lang' => 'en' }
+#     res = clnt.get(uri, query)
+#     p res.status
+#     p res.contenttype
+#     p res.header['X-Custom']
+#     puts res.body
+#
+#    You can also use keyword argument style.
+#
+#     res = clnt.get(uri, :query => { :keyword => 'ruby', :lang => 'en' })
+#
+# === How to POST
+#
+# See post.
+#
+# 1. Do POST a form data.
+#
+#     body = { 'keyword' => 'ruby', 'lang' => 'en' }
+#     res = clnt.post(uri, body)
+#
+#    Keyword argument style.
+#
+#     res = clnt.post(uri, :body => ...)
+#
+# 2. Do multipart file upload with POST.  No need to set extra header by
+#    yourself from httpclient/2.1.4.
+#
+#     File.open('/tmp/post_data') do |file|
+#       body = { 'upload' => file, 'user' => 'nahi' }
+#       res = clnt.post(uri, body)
+#     end
+#
+# 3. Do multipart with custom body.
+#
+#     File.open('/tmp/post_data') do |file|
+#       body = [{ 'Content-Type' => 'application/atom+xml; charset=UTF-8',
+#                 :content => '<entry>...</entry>' },
+#               { 'Content-Type' => 'video/mp4',
+#                 'Content-Transfer-Encoding' => 'binary',
+#                 :content => file }]
+#       res = clnt.post(uri, body)
+#     end
+#
+# === Accessing via SSL
+#
+# Ruby needs to be compiled with OpenSSL.
+#
+# 1. Get content of specified URL via SSL.
+#    Just pass an URL which starts with 'https://'.
+#
+#     https_url = 'https://www.rsa.com'
+#     clnt.get(https_url)
+#
+# 2. Getting peer certificate from response.
+#
+#     res = clnt.get(https_url)
+#     p res.peer_cert #=> returns OpenSSL::X509::Certificate
+#
+# 3. Configuring OpenSSL options.  See HTTPClient::SSLConfig for more details.
+#
+#     user_cert_file = 'cert.pem'
+#     user_key_file = 'privkey.pem'
+#     clnt.ssl_config.set_client_cert_file(user_cert_file, user_key_file)
+#     clnt.get(https_url)
+#
+# 4. Revocation check. On JRuby you can set following options to let
+#    HTTPClient to perform revocation check with CRL and OCSP:
+#
+#     -J-Dcom.sun.security.enableCRLDP=true -J-Dcom.sun.net.ssl.checkRevocation=true
+#     ex. jruby -J-Dcom.sun.security.enableCRLDP=true -J-Dcom.sun.net.ssl.checkRevocation=true app.rb
+#     Revoked cert example: https://test-sspev.verisign.com:2443/test-SSPEV-revoked-verisign.html
+#
+#    On other platform you can download CRL by yourself and set it via
+#    SSLConfig#add_crl.
+#
+# === Handling Cookies
+#
+# 1. Using volatile Cookies.  Nothing to do.  HTTPClient handles Cookies.
+#
+#     clnt = HTTPClient.new
+#     res = clnt.get(url1) # receives Cookies.
+#     res = clnt.get(url2) # sends Cookies if needed.
+#     p res.cookies
+#
+# 2. Saving non volatile Cookies to a specified file.  Need to set a file at
+#    first and invoke save method at last.
+#
+#     clnt = HTTPClient.new
+#     clnt.set_cookie_store('/home/nahi/cookie.dat')
+#     clnt.get(url)
+#     ...
+#     clnt.save_cookie_store
+#
+# 3. Disabling Cookies.
+#
+#     clnt = HTTPClient.new
+#     clnt.cookie_manager = nil
+#
+# === Configuring authentication credentials
+#
+# 1. Authentication with Web server.  Supports BasicAuth, DigestAuth, and
+#    Negotiate/NTLM (requires ruby/ntlm module).
+#
+#     clnt = HTTPClient.new
+#     domain = 'http://dev.ctor.org/http-access2/'
+#     user = 'user'
+#     password = 'user'
+#     clnt.set_auth(domain, user, password)
+#     p clnt.get('http://dev.ctor.org/http-access2/login').status
+#
+# 2. Authentication with Proxy server.  Supports BasicAuth and NTLM
+#    (requires win32/sspi)
+#
+#     clnt = HTTPClient.new(proxy)
+#     user = 'proxy'
+#     password = 'proxy'
+#     clnt.set_proxy_auth(user, password)
+#     p clnt.get(url)
+#
+# === Invoking HTTP methods with custom header
+#
+# Pass a Hash or an Array for header argument.
+#
+#     header = { 'Accept' => 'text/html' }
+#     clnt.get(uri, query, header)
+#
+#     header = [['Accept', 'image/jpeg'], ['Accept', 'image/png']]
+#     clnt.get_content(uri, query, header)
+#
+# === Invoking HTTP methods asynchronously
+#
+# See head_async, get_async, post_async, put_async, delete_async,
+# options_async, propfind_async, proppatch_async, and trace_async.
+# It immediately returns a HTTPClient::Connection instance as a returning value.
+#
+#     connection = clnt.post_async(url, body)
+#     print 'posting.'
+#     while true
+#       break if connection.finished?
+#       print '.'
+#       sleep 1
+#     end
+#     puts '.'
+#     res = connection.pop
+#     p res.status
+#     p res.body.read # res.body is an IO for the res of async method.
+#
+# === Shortcut methods
+#
+# You can invoke get_content, get, etc. without creating HTTPClient instance.
+#
+#   ruby -rhttpclient -e 'puts HTTPClient.get_content(ARGV.shift)' http://dev.ctor.org/
+#   ruby -rhttpclient -e 'p HTTPClient.head(ARGV.shift).header["last-modified"]' http://dev.ctor.org/
+#
+class HTTPClient
+  type query = Hash[String, _ToS | _Reader]
+             | Array[[String, _ToS | _Reader]]
+             | String
+             | _Reader
+  type header = Hash[String, _ToS]
+              | Array[[String, _ToS]]
+  type body = Hash[String, _ToS | _Reader]
+            | Array[[String, _ToS | _Reader]]
+            | Array[Hash[String, _ToS | _Reader]]
+            | String
+            | _Reader
+
+  module DelegateMethods
+    def get_content: (
+                       String | URI uri,
+                       ?query: query,
+                       ?header: header
+                     ) -> String
+                   | (
+                      String | URI uri,
+                      ?query: query,
+                      ?header: header
+                     ) { (String chunk) -> void } -> nil
+    def post_content: (
+                        String | URI uri,
+                        ?query: query,
+                        ?body: body,
+                        ?header: header
+                      ) -> String
+                    | (
+                        String | URI uri,
+                        ?query: query,
+                        ?body: body,
+                        ?header: header
+                       ) { (String chunk) -> void } -> nil
+    def head: (
+                String | URI uri,
+                ?query: query,
+                ?header: header,
+                ?follow_redirect: bool
+              ) -> HTTP::Message
+    def get: (
+               String | URI uri,
+               ?query: query,
+               ?header: header,
+               ?follow_redirect: bool
+             ) -> HTTP::Message
+           | (
+               String | URI uri,
+               ?query: query,
+               ?header: header,
+               ?follow_redirect: bool
+             ) { (String) -> void } -> HTTP::MessageNil
+    def post: (
+                String | URI uri,
+                ?query: query,
+                ?body: body,
+                ?header: header,
+                ?follow_redirect: bool
+              ) -> HTTP::Message
+            | (
+                String | URI uri,
+                ?query: query,
+                ?body: body,
+                ?header: header,
+                ?follow_redirect: bool
+              ) { (String) -> void } -> HTTP::MessageNil
+    def put: (
+               String | URI uri,
+               ?query: query,
+               ?body: body,
+               ?header: header,
+             ) -> HTTP::Message
+           | (
+               String | URI uri,
+               ?query: query,
+               ?body: body,
+               ?header: header,
+             ) { (String) -> void } -> HTTP::MessageNil
+    def delete: (
+                  String | URI uri,
+                  ?query: query,
+                  ?body: body,
+                  ?header: header,
+                ) -> HTTP::Message
+              | (
+                  String | URI uri,
+                  ?query: query,
+                  ?body: body,
+                  ?header: header,
+                ) { (String) -> void } -> HTTP::MessageNil
+    def options: (
+                   String | URI uri,
+                   ?query: query,
+                   ?body: body,
+                   ?header: header,
+                 ) -> HTTP::Message
+               | (
+                   String | URI uri,
+                   ?query: query,
+                   ?body: body,
+                   ?header: header,
+                 ) { (String) -> void } -> HTTP::MessageNil
+    def propfind: (
+                    String | URI uri,
+                    ?header: header,
+                  ) -> HTTP::Message
+                | (
+                    String | URI uri,
+                    ?header: header,
+                  ) { (String) -> void } -> HTTP::MessageNil
+    def proppatch: (
+                    String | URI uri,
+                    ?body: body,
+                    ?header: header,
+                   ) -> HTTP::Message
+                 | (
+                     String | URI uri,
+                     ?body: body,
+                     ?header: header,
+                   ) { (String) -> void } -> HTTP::MessageNil
+    def trace: (
+                 String | URI uri,
+                 ?query: query,
+                 ?header: header,
+               ) -> HTTP::Message
+             | (
+                 String | URI uri,
+                 ?query: query,
+                 ?header: header,
+               ) { (String) -> void } -> HTTP::MessageNil
+  end
+  include DelegateMethods
+  extend DelegateMethods
+
+  def patch: (
+             String | URI uri,
+             ?query: query,
+             ?body: body,
+             ?header: header,
+             ?follow_redirect: bool
+           ) -> HTTP::Message
+         | (
+             String | URI uri,
+             ?query: query,
+             ?body: body,
+             ?header: header,
+             ?follow_redirect: bool
+           ) { (String) -> void } -> HTTP::MessageNil
+  def initialize: (
+                    ?proxy: untyped,
+                    ?agent_name: untyped,
+                    ?from: untyped,
+                    ?base_url: untyped,
+                    ?default_header: untyped,
+                    ?force_basic_auth: untyped
+                  ) ?{ (HTTPClient) -> void } -> void
+  def request: (
+                 string method,
+                 String | URI uri,
+                 ?query: query,
+                 ?body: body,
+                 ?header: header,
+                 ?follow_redirect: bool
+               ) -> HTTP::Message
+             | (
+                 string method,
+                 String | URI uri,
+                 ?query: query,
+                 ?body: body,
+                 ?header: header,
+                 ?follow_redirect: bool
+               ) { (String) -> void } -> HTTP::MessageNil
+  def head_async: (
+                    String | URI uri,
+                    ?query: query,
+                    ?header: header,
+                  ) -> Connection
+  def get_async: (
+                   String | URI uri,
+                   ?query: query,
+                   ?header: header,
+                 ) -> Connection
+  def patch_async: (
+                     String | URI uri,
+                     ?query: query,
+                     ?body: body,
+                     ?header: header,
+                   ) -> Connection
+  def post_async: (
+                    String | URI uri,
+                    ?query: query,
+                    ?body: body,
+                    ?header: header,
+                  ) -> Connection
+  def put_async: (
+                   String | URI uri,
+                   ?query: query,
+                   ?body: body,
+                   ?header: header,
+                 ) -> Connection
+  def delete_async: (
+                     String | URI uri,
+                     ?query: query,
+                     ?body: body,
+                     ?header: header,
+                   ) -> Connection
+  def options_async: (
+                       String | URI uri,
+                       ?query: query,
+                       ?body: body,
+                       ?header: header,
+                     ) -> Connection
+  def propfind_async: (
+                        String | URI uri,
+                        ?body: body,
+                        ?header: header,
+                      ) -> Connection
+  def proppatch_async: (
+                         String | URI uri,
+                         ?body: body,
+                         ?header: header,
+                       ) -> Connection
+  def trace_async: (
+                     String | URI uri,
+                     ?query: query,
+                     ?header: header,
+                   ) -> Connection
+  def request_async: (
+                       string method,
+                       String | URI uri,
+                       ?query? query,
+                       ?body? body,
+                       ?header? header
+                     ) -> Connection
+  def request_async2: (
+                        string method,
+                        String | URI uri,
+                        ?query: query,
+                        ?body: body,
+                        ?header: header,
+                      ) -> Connection
+
+  class Connection
+    def pop: -> HTTP::MessageIO
+    def join: -> nil
+  end
+end
+
+module HTTP
+  class Message
+    class Headers
+      def []: (String key) -> Array[String]
+    end
+
+    def status: -> Integer
+    alias code status
+    alias status_code status
+
+    def http_header: -> Headers
+    alias header http_header
+    def content: -> String
+    alias body content
+
+    def headers: -> Hash[String, String]
+  end
+
+  # MessageIO is only rbs class for async reponse
+  class MessageIO < Message
+    def content: -> IO
+    alias body content
+  end
+
+  # MessageNil is only rbs class for async reponse
+  class MessageNil < Message
+    def content: -> nil
+    alias body content
+  end
+end

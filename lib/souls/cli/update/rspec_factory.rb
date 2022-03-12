@@ -20,7 +20,7 @@ module SOULs
 
               type = SOULs.get_test_type(col[:type])
               type = "[#{type}]" if col[:array]
-              args = check_factory_argument(class_name: class_name)
+              args = check_factory_argument(class_name:)
 
               new_line.write("    #{col[:column_name]} { #{type} }\n") unless args.include?(col[:column_name])
             end

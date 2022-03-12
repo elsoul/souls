@@ -1,0 +1,8 @@
+module ActiveRecord
+  class Base
+    module DelegatedType
+      def delegated_type: (Symbol role, types: Array[String], **untyped options) -> void
+    end
+    extend DelegatedType
+  end
+end

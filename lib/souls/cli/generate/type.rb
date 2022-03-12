@@ -53,7 +53,7 @@ module SOULs
                 new_line.write("    field :#{name}, #{field}, null: true\n")
               end
             end
-            if SOULs.table_check(line: line, class_name: class_name)
+            if SOULs.table_check(line:, class_name:)
               @on = true
               new_line.write("    global_id_field :id\n")
             end

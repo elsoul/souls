@@ -1,0 +1,169 @@
+module GraphQL
+  class Query
+    class Context
+      def []: (Symbol key) -> untyped
+    end
+  end
+  class Schema
+    interface _Argument
+      def argument: (
+        ?Symbol? arg_name,
+        ?untyped? type_expr,
+        ?String? desc,
+        required: bool,
+        ?type: untyped,
+        ?default_value: untyped,
+        ?description: String,
+        ?validates: Hash[untyped, untyped],
+      ) ?{ (*untyped) -> void } -> void
+    end
+
+    class Argument
+    end
+    class EnumValue < Member
+    end
+    class Enum < Member
+      def self.value: (String graphql_name, ?String? desc, ?ast_node: untyped, ?directives: untyped, ?description: untyped, ?value: untyped, ?deprecation_reason: untyped) ?{ () -> void } -> void
+    end
+    class Field
+      include Member::HasArguments
+      extend Member::HasArguments::ArgumentClassAccessor
+    end
+    class InputObject < Member
+      extend Member::HasArguments
+      extend Member::HasArguments::ArgumentClassAccessor
+      extend _Argument
+    end
+    module Interface
+      module DefinitionMethods
+        include Member::BaseDSLMethods
+        include Member::HasFields
+        include Member::RelayShortcuts
+      end
+      extend DefinitionMethods
+      include Member::GraphQLTypeNames
+    end
+    class Member
+      module BaseDSLMethods
+        def description: (?String? new_description) -> String?
+        def graphql_name: (?String? new_name) -> String
+      end
+      extend BaseDSLMethods
+
+      module GraphQLTypeNames
+        Boolean: "Boolean"
+        ID: "ID"
+        Int: "Int"
+      end
+      include GraphQLTypeNames
+
+      module HasArguments
+        module ArgumentClassAccessor
+          def argument_class: (?Class? new_arg_class) -> void
+        end
+      end
+
+      module HasFields
+        def field: (
+          ?Symbol name,
+          ?untyped `type`,
+          ?String desc,
+          ?name: Symbol,
+          ?null: bool,
+          ?type: untyped,
+          ?description: String,
+          ?resolver_method: Symbol,
+          ?resolver: Class,
+          ?mutation: Class,
+        ) ?{ (untyped) -> void } -> void
+        def field_class: (?Class? new_field_class) -> void
+        def global_id_field: (Symbol field_name, **untyped kwargs) -> void
+      end
+
+      module RelayShortcuts
+        def connection_type: () -> Class
+        def connection_type_class: (?Class? new_connection_type_class) -> void
+        def edge_type_class: (?Class? new_edge_type_class) -> void
+      end
+      extend RelayShortcuts
+    end
+    class Mutation < Resolver
+      extend Member::HasFields
+      extend Resolver::HasPayloadType
+    end
+    class Object < Member
+      extend Member::HasFields
+      attr_reader object: untyped
+      attr_reader context: GraphQL::Query::Context
+    end
+    class Resolver
+      module HasPayloadType
+        def payload_type: (?Class? new_payload_type) -> Class
+        alias type payload_type
+        alias type_expr payload_type
+        def field_class: (?Class? new_class) -> void
+        def object_class: (?Class? new_class) -> void
+      end
+      extend Member::BaseDSLMethods
+      include Member::GraphQLTypeNames
+      extend Member::HasArguments
+      extend Member::HasArguments::ArgumentClassAccessor
+      extend _Argument
+      def self.type: (?(Class | Array[Class] | nil) new_type, ?null: bool null) -> void
+
+      attr_reader object: untyped
+      attr_reader context: GraphQL::Query::Context
+    end
+    class RelayClassicMutation < Mutation
+      def self.input_object_class: (?Class? new_class) -> void
+    end
+    class Scalar < Member
+      def self.coerce_input: (untyped val, untyped ctx) -> untyped
+      def self.coerce_result: (untyped val, untyped ctx) -> untyped
+    end
+    class Union < Member
+    end
+    module UniqueWithinType
+      def self.encode: (String type_name, _ToS object_value, ?separator: String separator) -> String
+      def self.decode: (String, ?separator: String separator) -> [String, String]
+    end
+    def self.rescue_from: (*untyped err_classes) { (untyped err) -> void } -> void
+    def self.mutation: (?Class? new_mutation_object) -> void
+    def self.query: (?Class? new_query_object) -> void
+  end
+  module Types
+    class Boolean < GraphQL::Schema::Scalar
+    end
+    class Float < GraphQL::Schema::Scalar
+    end
+    class Int < GraphQL::Schema::Scalar
+    end
+    class ISO8601Date < GraphQL::Schema::Scalar
+    end
+    class ISO8601DateTime < GraphQL::Schema::Scalar
+      def self.time_precision: () -> Integer
+      def self.time_precision=: (Integer) -> Integer
+    end
+    class JSON < GraphQL::Schema::Scalar
+    end
+    module Relay
+      module HasNodeField
+      end
+      module HasNodesField
+      end
+      module NodeBehaviors
+      end
+      module ConnectionBehaviors
+      end
+      module EdgeBehaviors
+      end
+    end
+    class String < GraphQL::Schema::Scalar
+    end
+  end
+  class Error < StandardError
+  end
+  class ExecutionError < Error
+    def to_h: () -> Hash[String, untyped]
+  end
+end

@@ -45,7 +45,7 @@ module SOULs
                 new_line.write("    #{name} { #{field} }\n")
               end
             end
-            @on = true if SOULs.table_check(line: line, class_name: class_name)
+            @on = true if SOULs.table_check(line:, class_name:)
           end
         end
       end

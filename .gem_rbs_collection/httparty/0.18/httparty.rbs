@@ -1,0 +1,679 @@
+module HTTParty
+  def self.included: (untyped base) -> void
+
+  module ClassMethods
+    # Turns on logging
+    #
+    #   class Foo
+    #     include HTTParty
+    #     logger Logger.new('http_logger'), :info, :apache
+    #   end
+    def logger: (untyped logger, ?Symbol level, ?Symbol format) -> untyped
+
+    # Raises HTTParty::ResponseError if response's code matches this statuses
+    #
+    #   class Foo
+    #     include HTTParty
+    #     raise_on [404, 500]
+    #   end
+    def raise_on: (?Array[Integer] codes) -> void
+
+    # Allows setting http proxy information to be used
+    #
+    #   class Foo
+    #     include HTTParty
+    #     http_proxy 'http://foo.com', 80, 'user', 'pass'
+    #   end
+    def http_proxy: (?untyped? addr, ?Integer? port, ?String? user, ?String? pass) -> void
+
+    # Allows setting a base uri to be used for each request.
+    # Will normalize uri to include http, etc.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     base_uri 'twitter.com'
+    #   end
+    def base_uri: (?String? uri) -> void
+
+    # Allows setting basic authentication username and password.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     basic_auth 'username', 'password'
+    #   end
+    def basic_auth: (String u, String p) -> void
+
+    # Allows setting digest authentication username and password.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     digest_auth 'username', 'password'
+    #   end
+    def digest_auth: (String u, String p) -> void
+
+    # Do not send rails style query strings.
+    # Specifically, don't use bracket notation when sending an array
+    #
+    # For a query:
+    #   get '/', query: {selected_ids: [1,2,3]}
+    #
+    # The default query string looks like this:
+    #   /?selected_ids[]=1&selected_ids[]=2&selected_ids[]=3
+    #
+    # Call `disable_rails_query_string_format` to transform the query string
+    # into:
+    #   /?selected_ids=1&selected_ids=2&selected_ids=3
+    #
+    # @example
+    #   class Foo
+    #     include HTTParty
+    #     disable_rails_query_string_format
+    #   end
+    def disable_rails_query_string_format: () -> untyped
+
+    # Allows setting default parameters to be appended to each request.
+    # Great for api keys and such.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     default_params api_key: 'secret', another: 'foo'
+    #   end
+    def default_params: (?Hash[untyped, untyped] h) -> void
+
+    # Allows setting a default timeout for all HTTP calls
+    # Timeout is specified in seconds.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     default_timeout 10
+    #   end
+    def default_timeout: (Integer | Float value) -> void
+
+    # Allows setting a default open_timeout for all HTTP calls in seconds
+    #
+    #   class Foo
+    #     include HTTParty
+    #     open_timeout 10
+    #   end
+    def open_timeout: (Integer | Float value) -> void
+
+    # Allows setting a default read_timeout for all HTTP calls in seconds
+    #
+    #   class Foo
+    #     include HTTParty
+    #     read_timeout 10
+    #   end
+    def read_timeout: (Integer | Float value) -> void
+
+    # Allows setting a default write_timeout for all HTTP calls in seconds
+    # Supported by Ruby > 2.6.0
+    #
+    #   class Foo
+    #     include HTTParty
+    #     write_timeout 10
+    #   end
+    def write_timeout: (Integer | Float value) -> void
+
+    # Set an output stream for debugging, defaults to $stderr.
+    # The output stream is passed on to Net::HTTP#set_debug_output.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     debug_output $stderr
+    #   end
+    def debug_output: (?IO stream) -> untyped
+
+    # Allows setting HTTP headers to be used for each request.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     headers 'Accept' => 'text/html'
+    #   end
+    def headers: (?untyped? h) -> void
+
+    def cookies: (?untyped h) -> void
+
+    # Proceed to the location header when an HTTP response dictates a redirect.
+    # Redirects are always followed by default.
+    #
+    # @example
+    #   class Foo
+    #     include HTTParty
+    #     base_uri 'http://google.com'
+    #     follow_redirects true
+    #   end
+    def follow_redirects: (?bool value) -> void
+
+    # Allows setting the format with which to parse.
+    # Must be one of the allowed formats ie: json, xml
+    #
+    #   class Foo
+    #     include HTTParty
+    #     format :json
+    #   end
+    def format: (?String | Symbol? f) -> void
+
+    # Declare whether or not to follow redirects.  When true, an
+    # {HTTParty::RedirectionTooDeep} error will raise upon encountering a
+    # redirect. You can then gain access to the response object via
+    # HTTParty::RedirectionTooDeep#response.
+    #
+    # @see HTTParty::ResponseError#response
+    #
+    # @example
+    #   class Foo
+    #     include HTTParty
+    #     base_uri 'http://google.com'
+    #     no_follow true
+    #   end
+    #
+    #   begin
+    #     Foo.get('/')
+    #   rescue HTTParty::RedirectionTooDeep => e
+    #     puts e.response.body
+    #   end
+    def no_follow: (?bool value) -> void
+
+    def maintain_method_across_redirects: (?bool value) -> void
+
+    def resend_on_redirect: (?bool value) -> void
+
+    # Allows setting a PEM file to be used
+    #
+    #   class Foo
+    #     include HTTParty
+    #     pem File.read('/home/user/my.pem'), "optional password"
+    #   end
+    def pem: (String pem_contents, ?String? password) -> void
+
+    # Allows setting a PKCS12 file to be used
+    #
+    #   class Foo
+    #     include HTTParty
+    #     pkcs12 File.read('/home/user/my.p12'), "password"
+    #   end
+    def pkcs12: (String p12_contents, String password) -> void
+
+    # Override the way query strings are normalized.
+    # Helpful for overriding the default rails normalization of Array queries.
+    #
+    # For a query:
+    #   get '/', query: {selected_ids: [1,2,3]}
+    #
+    # The default query string normalizer returns:
+    #   /?selected_ids[]=1&selected_ids[]=2&selected_ids[]=3
+    #
+    # Let's change it to this:
+    #  /?selected_ids=1&selected_ids=2&selected_ids=3
+    #
+    # Pass a Proc to the query normalizer which accepts the yielded query.
+    #
+    # @example Modifying Array query strings
+    #   class ServiceWrapper
+    #     include HTTParty
+    #
+    #     query_string_normalizer proc { |query|
+    #       query.map do |key, value|
+    #         value.map {|v| "#{key}=#{v}"}
+    #       end.join('&')
+    #     }
+    #   end
+    #
+    # @param [Proc] normalizer custom query string normalizer.
+    # @yield [Hash, String] query string
+    # @yieldreturn [Array] an array that will later be joined with '&'
+    def query_string_normalizer: (untyped normalizer) -> untyped
+
+    # Allows setting of SSL version to use. This only works in Ruby 1.9+.
+    # You can get a list of valid versions from OpenSSL::SSL::SSLContext::METHODS.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     ssl_version :SSLv3
+    #   end
+    def ssl_version: (String | Symbol version) -> void
+
+    # Allows setting of SSL ciphers to use.  This only works in Ruby 1.9+.
+    # You can get a list of valid specific ciphers from OpenSSL::Cipher.ciphers.
+    # You also can specify a cipher suite here, listed here at openssl.org:
+    # http://www.openssl.org/docs/apps/ciphers.html#CIPHER_SUITE_NAMES
+    #
+    #   class Foo
+    #     include HTTParty
+    #     ciphers "RC4-SHA"
+    #   end
+    def ciphers: (untyped cipher_names) -> void
+
+    # Allows setting an OpenSSL certificate authority file.  The file
+    # should contain one or more certificates in PEM format.
+    #
+    # Setting this option enables certificate verification.  All
+    # certificates along a chain must be available in ssl_ca_file or
+    # ssl_ca_path for verification to succeed.
+    #
+    #
+    #   class Foo
+    #     include HTTParty
+    #     ssl_ca_file '/etc/ssl/certs/ca-certificates.crt'
+    #   end
+    def ssl_ca_file: (String path) -> void
+
+    # Allows setting an OpenSSL certificate authority path (directory).
+    #
+    # Setting this option enables certificate verification.  All
+    # certificates along a chain must be available in ssl_ca_file or
+    # ssl_ca_path for verification to succeed.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     ssl_ca_path '/etc/ssl/certs/'
+    #   end
+    def ssl_ca_path: (String path) -> void
+
+    # Allows setting a custom parser for the response.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     parser Proc.new {|data| ...}
+    #   end
+    def parser: (?untyped? custom_parser) -> void
+
+    # Allows setting a custom URI adapter.
+    #
+    #   class Foo
+    #     include HTTParty
+    #     uri_adapter Addressable::URI
+    #   end
+    def uri_adapter: (untyped uri_adapter) -> void
+
+    # Allows setting a custom connection_adapter for the http connections
+    #
+    # @example
+    #   class Foo
+    #     include HTTParty
+    #     connection_adapter Proc.new {|uri, options| ... }
+    #   end
+    #
+    # @example provide optional configuration for your connection_adapter
+    #   class Foo
+    #     include HTTParty
+    #     connection_adapter Proc.new {|uri, options| ... }, {foo: :bar}
+    #   end
+    #
+    # @see HTTParty::ConnectionAdapter
+    def connection_adapter: (?untyped? custom_adapter, ?untyped? options) -> void
+
+    # Allows making a get request to a url.
+    #
+    #   class Foo
+    #     include HTTParty
+    #   end
+    #
+    #   # Simple get with full url
+    #   Foo.get('http://foo.com/resource.json')
+    #
+    #   # Simple get with full url and query parameters
+    #   # ie: http://foo.com/resource.json?limit=10
+    #   Foo.get('http://foo.com/resource.json', query: {limit: 10})
+    type string_or_uri = String |  URI::Generic | untyped
+    def get: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+           | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Allows making a post request to a url.
+    #
+    #   class Foo
+    #     include HTTParty
+    #   end
+    #
+    #   # Simple post with full url and setting the body
+    #   Foo.post('http://foo.com/resources', body: {bar: 'baz'})
+    #
+    #   # Simple post with full url using :query option,
+    #   # which appends the parameters to the URI.
+    #   Foo.post('http://foo.com/resources', query: {bar: 'baz'})
+    def post: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+            | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform a PATCH request to a path
+    def patch: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+             | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform a PUT request to a path
+    def put: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+           | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform a DELETE request to a path
+    def delete: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+              | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform a MOVE request to a path
+    def move: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+            | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform a COPY request to a path
+    def copy: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+            | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform a HEAD request to a path
+    def head: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+            | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform an OPTIONS request to a path
+    def options: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+               | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    # Perform a MKCOL request to a path
+    def mkcol: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+             | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    def lock: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+            | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    def unlock: (string_or_uri, ?Hash[untyped, untyped] options) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+              | (string_or_uri, ?Hash[untyped, untyped] options) -> HTTParty::Response
+
+    attr_reader default_options: Hash[untyped, untyped]
+  end
+
+  def self.normalize_base_uri: (String url) -> String
+
+  class Basement
+    # nodoc:
+    include HTTParty
+  end
+
+  def self.get: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+              | (* untyped args) -> HTTParty::Response
+
+  def self.post: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+               | (* untyped args) -> HTTParty::Response
+
+  def self.patch: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+                | (* untyped args) -> HTTParty::Response
+
+  def self.put: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+              | (* untyped args) -> HTTParty::Response
+
+  def self.delete: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+                 | (* untyped args) -> HTTParty::Response
+
+  def self.move: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+               | (* untyped args) -> HTTParty::Response
+
+  def self.copy: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+               | (* untyped args) -> HTTParty::Response
+
+  def self.head: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+               | (* untyped args) -> HTTParty::Response
+
+  def self.options: (*untyped args) { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+                  | (* untyped args) -> HTTParty::Response
+
+  class Response < Object
+    def self.underscore: (String string) -> String
+
+    def self._load: (untyped data) -> instance
+
+    attr_reader request: HTTParty::Request
+
+    attr_reader response: Net::HTTPResponse
+
+    attr_reader body: String
+
+    attr_reader headers: HTTParty::Response::Headers
+
+    def initialize: (HTTParty::Request request, untyped response, String parsed_block, ?Hash[untyped, untyped] options) -> instance
+
+    def parsed_response: () -> String
+
+    def code: () -> Integer
+
+    def http_version: () -> String
+
+    def tap: () { (HTTParty::Response) -> untyped } -> HTTParty::Response
+
+    def inspect: () -> String
+
+    CODES_TO_OBJ: Hash[untyped, untyped]
+
+    def nil?: () -> bool
+
+    def to_s: () -> String
+
+    # PP - PrettyPrint module
+    def pretty_print: (untyped pp) -> untyped
+
+    def display: (?untyped port) -> untyped
+
+    def respond_to_missing?: (untyped name, *untyped args) -> bool
+
+    def _dump: (Integer _level) -> Object
+
+    class Headers < SimpleDelegator
+      include Net::HTTPHeader
+
+      def initialize: (?Hash[untyped, untyped]? header_values) -> void
+
+      def ==: (untyped other) -> bool
+    end
+  end
+
+  # Allow access to http_response and code by delegation on fragment
+  class ResponseFragment < SimpleDelegator
+    attr_reader http_response: untyped
+
+    attr_reader connection: untyped
+
+    def code: () -> Integer
+
+    def initialize: (untyped fragment, untyped http_response, untyped connection) -> instance
+  end
+
+  class Request
+    # include Body
+    # include MultipartBoundary
+    # nodoc:
+    SupportedHTTPMethods: ::Array[untyped]
+
+    SupportedURISchemes: ::Array[untyped]
+
+    NON_RAILS_QUERY_STRING_NORMALIZER: untyped
+
+    JSON_API_QUERY_STRING_NORMALIZER: untyped
+
+    attr_accessor http_method: Net::HTTPRequest
+
+    attr_accessor options: Hash[untyped, untyped]
+
+    attr_accessor last_response: Net::HTTPResponse
+
+    attr_accessor redirect: bool
+
+    attr_accessor last_uri:  (URI::Generic | untyped)
+
+    attr_reader path:  (URI::Generic | untyped)
+
+    def initialize: (singleton(Net::HTTPRequest) http_method,  (URI::Generic | untyped) path, ?Hash[untyped, untyped] o) -> void
+
+    def path=: ( (URI::Generic | untyped) uri) -> void
+
+    def request_uri: ( (URI::Generic | untyped) uri) ->  (URI::Generic | untyped)
+
+    def uri: () ->  (URI::Generic | untyped)
+
+    def base_uri: () -> String
+
+    def format: () -> Symbol
+
+    def parser: () -> untyped
+
+    def connection_adapter: () -> untyped
+
+    def perform: () { (HTTParty::ResponseFragment) -> untyped } -> HTTParty::Response
+               | () -> HTTParty::Response
+
+    def handle_unauthorized: () { (HTTParty::ResponseFragment) -> untyped } -> (nil | HTTParty::Response)
+
+    def raw_body: () -> untyped
+
+    class Body
+      NEWLINE: String
+
+      def initialize: (Hash[untyped, untyped] | String params, ?query_string_normalizer: untyped? query_string_normalizer, ?force_multipart: bool force_multipart) -> void
+
+      def call: () -> String
+
+      def boundary: () -> untyped
+
+      def multipart?: () -> bool
+
+      private
+
+      def generate_multipart: () -> String
+
+      def has_file?: (untyped value) -> bool
+
+      def file?: (untyped object) -> bool
+
+      def normalize_query: (untyped query) -> String
+
+      def content_body: (untyped object) -> String
+
+      def content_type: (untyped object) -> untyped
+
+      def file_name: (untyped object) -> String
+
+      attr_reader params: Hash[untyped, untyped] | String
+
+      attr_reader query_string_normalizer: untyped
+
+      attr_reader force_multipart: bool
+    end
+
+    class MultipartBoundary
+      def self.generate: () -> String
+    end
+  end
+
+  class ConnectionAdapter
+    # Private: Regex used to strip brackets from IPv6 URIs.
+    StripIpv6BracketsRegex: untyped
+
+    OPTION_DEFAULTS: Hash[Symbol, bool]
+
+    # Public
+    def self.call: ( URI::Generic | untyped uri, Hash[untyped, untyped] options) -> untyped
+
+    def self.default_cert_store: () -> void
+
+    attr_reader uri: untyped
+
+    attr_reader options: Hash[untyped, untyped]
+
+    def initialize: (untyped uri, ?Hash[untyped, untyped] options) -> void
+
+    def connection: () -> Net::HTTP
+
+    private
+
+    def from_ruby_version: (String ruby_version, ?option: (Symbol | String)? option, ?warn: bool warn) { () -> untyped } -> void
+
+    def add_timeout?: (Integer | Float timeout) -> bool
+
+    def add_max_retries?: (Integer max_retries) -> untyped
+
+    def clean_host: (String host) -> void
+
+    def strip_ipv6_brackets: (String host) -> String
+
+    def ssl_implied?: (untyped uri) -> bool
+
+    def verify_ssl_certificate?: () -> bool
+
+    def attach_ssl_certificates: (Net::HTTP http, Hash[untyped, untyped] options) -> void
+  end
+
+  # @abstract Read the Custom Parsers section for more information.
+  class Parser
+    SupportedFormats: Hash[String, Symbol]
+
+    # The response body of the request
+    # @return [String]
+    attr_reader body: String
+
+    # The intended parsing format for the request
+    # @return [Symbol] e.g. :json
+    attr_reader format: Symbol
+
+    # Instantiate the parser and call {#parse}.
+    # @param [String] body the response body
+    # @param [Symbol] format the response format
+    # @return parsed response
+    def self.call: (String body, Symbol format) -> (nil | Object)
+
+    # @return [Hash] the SupportedFormats hash
+    def self.formats: () -> Hash[String, Symbol]
+
+    # @param [String] mimetype response MIME type
+    # @return [Symbol]
+    # @return [nil] mime type not supported
+    def self.format_from_mimetype: (String mimetype) -> Symbol
+
+    # @return [Array<Symbol>] list of supported formats
+    def self.supported_formats: () -> Array[Symbol]
+
+    # @param [Symbol] format e.g. :json, :xml
+    # @return [Boolean]
+    def self.supports_format?: (Symbol format) -> bool
+
+    def initialize: (String body, Symbol format) -> void
+
+    # @return [Object] the parsed body
+    # @return [nil] when the response body is nil, an empty string, spaces only or "null"
+    def parse: () -> (nil | Object)
+
+    def xml: () -> untyped
+
+    UTF8_BOM: String
+
+    def json: () -> untyped
+
+    def csv: () -> Array[Array[String?]]?
+
+    def html: () -> untyped
+
+    def plain: () -> untyped
+
+    def supports_format?: () -> bool
+
+    def parse_supported_format: () -> void
+  end
+
+  module HashConversions
+    # @return <String> This hash as a query string
+    #
+    # @example
+    #   { name: "Bob",
+    #     address: {
+    #       street: '111 Ruby Ave.',
+    #       city: 'Ruby Central',
+    #       phones: ['111-111-1111', '222-222-2222']
+    #     }
+    #   }.to_params
+    #     #=> "name=Bob&address[city]=Ruby Central&address[phones][]=111-111-1111&address[phones][]=222-222-2222&address[street]=111 Ruby Ave."
+    def self.to_params: (Hash[untyped, untyped] hash) -> String
+
+    # @param key<Object> The key for the param.
+    # @param value<Object> The value for the param.
+    #
+    # @return <String> This key value pair as a param
+    #
+    # @example normalize_param(:name, "Bob Jones") #=> "name=Bob%20Jones&"
+    def self.normalize_param: (Object key, Object value) -> String
+
+    def self.normalize_keys: (Object key, Object value) -> Array[untyped]
+  end
+end
+
+class SimpleDelegator
+end
