@@ -10,7 +10,7 @@ jobs:
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 3.1
+          ruby-version: 3.1.0
       - name: Install redis
         run: sudo apt-get install -y redis-tools redis-server libcurl3-dev
       - name: Install dependencies
