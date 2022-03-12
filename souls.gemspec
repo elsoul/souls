@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cloud."
   gem.homepage      = "https://souls.elsoul.nl"
   gem.license       = "Apache-2.0"
-  gem.required_ruby_version = "~> 3.0.0", "=> 3.1.0"
+  gem.required_ruby_version = "=> 3.1.0"
 
   gem.metadata["homepage_uri"] = gem.homepage
   gem.metadata["source_code_uri"] = "https://github.com/elsoul/souls"
