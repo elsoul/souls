@@ -1,4 +1,4 @@
-[![SOULs](https://souls.elsoul.nl/ogp.jpg)](https://souls.elsoul.nl)
+[![SOULs](https://storage.googleapis.com/souls-bucket/imgs/SOULs-ogp.jpg)](https://souls.elsoul.nl)
 
 <p align="center">
   <a aria-label="Ruby logo" href="https://el-soul.com">
@@ -33,7 +33,7 @@
 
 <p>
   <a aria-label="Ruby Serverless Application Framework SOULs Document" href="https://souls.elsoul.nl/">
-    <img src="https://souls.elsoul.nl/imgs/gifs/souls-new-video.gif">
+    <img src="https://storage.googleapis.com/souls-bucket/imgs/souls-new-video.gif">
   </a>
 </p>
 
@@ -50,7 +50,7 @@ Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cl
 - Maximize development efficiency with CI / CD standard schema-driven Scaffold
 - Achieve global scale with lower management costs
 
-![SOULs Architecture](https://souls.elsoul.nl/imgs/docs/SOULs-architecture.jpg)
+![SOULs Architecture](https://storage.googleapis.com/souls-bucket/imgs/SOULs-architecture.jpg)
 
 SOULs creates 3 types of App.
 
