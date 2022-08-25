@@ -10,7 +10,6 @@ module SOULs
       end
 
       create_manager(class_name, options[:mutation])
-      SOULs::Generate.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
       SOULs::Generate.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
     end
 

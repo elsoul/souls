@@ -1,6 +1,0 @@
-module Types
-  class QueryType
-    def self.field: (*untyped) -> untyped
-    def self.add_field: (*untyped) -> untyped
-  end
-end

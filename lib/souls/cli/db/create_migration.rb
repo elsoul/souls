@@ -6,7 +6,6 @@ module SOULs
       singularized_class_name = class_name.underscore.singularize
       SOULs::DB.new.invoke(:model, [singularized_class_name], {})
       SOULs::DB.new.invoke(:rspec_model, [singularized_class_name], {})
-      SOULs::DB.new.invoke(:model_rbs, [singularized_class_name], {})
       SOULs::Painter.create_file("")
       system("rake db:create_migration NAME=create_#{pluralized_class_name}")
       file_path = Dir["db/migrate/*create_#{pluralized_class_name}.rb"].first

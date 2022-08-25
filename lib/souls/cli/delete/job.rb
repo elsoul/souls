@@ -8,7 +8,6 @@ module SOULs
 
       FileUtils.rm_f(file_path)
       SOULs::Painter.delete_file(file_path.to_s)
-      SOULs::Delete.new.invoke(:job_rbs, [class_name], {})
       SOULs::Delete.new.invoke(:rspec_job, [class_name], {})
     end
   end

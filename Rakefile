@@ -18,17 +18,10 @@ namespace :upload do
     system("rm -rf #{file_name}")
   end
 
-  task :sig do
-    file_name = "./sig.tgz"
-    system("tar -czf #{file_name} sig/")
-    system("gsutil cp #{file_name} #{@gs_bucket_url}/sig/")
-    system("rm -rf #{file_name}")
-  end
 
   task :init_files do
     system("gcloud config set project elsoul-nl")
     Rake::Task["upload:github"].invoke
-    Rake::Task["upload:sig"].invoke
     files = Dir.glob("init_files/*", File::FNM_DOTMATCH)
     2.times { files.shift }
     files.each do |file|

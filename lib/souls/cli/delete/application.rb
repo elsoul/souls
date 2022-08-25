@@ -1,23 +1,17 @@
 module SOULs
   class Delete < Thor
     desc "scaffold [CLASS_NAME]", "Delete Scaffold"
-    method_option :rbs, type: :boolean, aliases: "--rbs", default: false, desc: "Deletes Only RBS Files"
     def scaffold(class_name)
       singularized_class_name = class_name.singularize
-      if options[:rbs]
-        run_rbs_scaffold(class_name: singularized_class_name)
-      else
-        run_scaffold(class_name: singularized_class_name)
-      end
+      run_scaffold(class_name: singularized_class_name)
       true
     end
 
     desc "scaffold_all", "Delete Scaffold All Tables from schema.rb"
-    method_option :rbs, type: :boolean, aliases: "--rbs", default: false, desc: "Deletes Only RBS Files"
     def scaffold_all
       puts(Paint["Delete All Scaffold Files!\n", :cyan])
       SOULs.get_tables.each do |table|
-        SOULs::Delete.new.invoke(:scaffold, [table.singularize], { rbs: options[:rbs] })
+        SOULs::Delete.new.invoke(:scaffold, [table.singularize])
       end
       true
     end
@@ -35,16 +29,6 @@ module SOULs
       rspec_mutation(class_name)
       rspec_query(class_name)
       rspec_resolver(class_name)
-      run_rbs_scaffold(class_name:)
-    end
-
-    def run_rbs_scaffold(class_name: "user")
-      type_rbs(class_name)
-      query_rbs(class_name)
-      mutation_rbs(class_name)
-      edge_rbs(class_name)
-      connection_rbs(class_name)
-      resolver_rbs(class_name)
     end
   end
 end

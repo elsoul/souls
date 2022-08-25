@@ -1,6 +1,0 @@
-module JsonWebToken
-  SECRET_KEY: String
-
-  def self.encode: (untyped payload, ?untyped exp) -> untyped
-  def self.decode: (untyped token) -> untyped
-end

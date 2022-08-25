@@ -1,5 +1,0 @@
-module Types
-  class ArticleConnection < Types::BaseConnection
-    def self.edge_type: (*untyped) -> untyped
-  end
-end

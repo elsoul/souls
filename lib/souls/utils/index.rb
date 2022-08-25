@@ -28,19 +28,6 @@ module SOULs
       }[type.to_sym]
     end
 
-    def rbs_type_check(type)
-      {
-        bigint: "Integer",
-        string: "String",
-        float: "Float",
-        text: "String",
-        datetime: "String",
-        date: "String",
-        boolean: "bool",
-        integer: "Integer"
-      }[type.to_sym]
-    end
-
     def get_type_and_name(line)
       line.split(",")[0].gsub("\"", "").scan(/((?<=t\.).+(?=\s)) (.+)/)[0]
     end

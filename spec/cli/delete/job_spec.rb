@@ -15,7 +15,6 @@ RSpec.describe(SOULs::Delete) do
         FileUtils.mkdir_p(file_dir)
         File.open(file_name, "w") { |f| f.write(Scaffold.scaffold_delete) }
 
-        allow_any_instance_of(SOULs::Delete).to(receive(:job_rbs)).and_return(true)
         allow_any_instance_of(SOULs::Delete).to(receive(:rspec_job)).and_return(true)
 
         expect(File.exist?(file_name)).to(be(true))
@@ -31,7 +30,6 @@ RSpec.describe(SOULs::Delete) do
         file_dir = "./app/graphql/queries/"
         file_name = "#{file_dir}user.rb"
 
-        allow_any_instance_of(SOULs::Delete).to(receive(:job_rbs)).and_return(true)
         allow_any_instance_of(SOULs::Delete).to(receive(:rspec_job)).and_return(true)
 
         expect(File.exist?(file_name)).to(be(false))

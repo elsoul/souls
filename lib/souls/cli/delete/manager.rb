@@ -9,7 +9,6 @@ module SOULs
 
       FileUtils.rm_f(file_path)
       SOULs::Painter.delete_file(file_path.to_s)
-      SOULs::Delete.new.invoke(:manager_rbs, [singularized_class_name], { mutation: options[:mutation] })
       SOULs::Delete.new.invoke(:rspec_manager, [singularized_class_name], { mutation: options[:mutation] })
       file_path
     end

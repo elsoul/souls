@@ -1,8 +1,6 @@
 require_relative "./create_migration"
-require_relative "./create_migration_rbs"
 require_relative "./model"
 require_relative "./rspec_model"
-require_relative "./model_rbs"
 require_relative "../cli_exception"
 
 module SOULs

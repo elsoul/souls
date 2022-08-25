@@ -10,7 +10,6 @@ module SOULs
         create_job_type(class_name)
         create_job(class_name)
       end
-      SOULs::Generate.new.invoke(:job_rbs, [class_name], {})
       SOULs::Generate.new.invoke(:rspec_job, [class_name], { mailer: options[:mailer] })
     end
 

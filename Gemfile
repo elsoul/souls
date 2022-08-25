@@ -29,5 +29,4 @@ group :test, :development do
   gem "rubocop-graphql", "0.13.0"
   gem "simplecov", "0.21.2", require: false
   gem "solargraph", "0.44.3"
-  gem "steep", "0.49.0"
 end

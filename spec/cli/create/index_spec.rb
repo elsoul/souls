@@ -1,4 +1,3 @@
-require_relative "./scaffolds/scaffold_steepfile"
 require_relative "./scaffolds/scaffold_souls"
 require_relative "./scaffolds/scaffold_workflow"
 require_relative "./scaffolds/scaffold_souls_helper"
@@ -30,29 +29,10 @@ RSpec.describe(SOULs::CLI) do
         allow(cli).to(receive(:procfile).and_return(true))
         allow(cli).to(receive(:mother_procfile).and_return(true))
         allow(cli).to(receive(:souls_config_init).and_return(true))
-        allow(cli).to(receive(:steepfile).and_return(true))
-        allow(cli).to(receive(:souls_helper_rbs).and_return(true))
         allow(cli).to(receive(:system).and_return(true))
         allow(cli).to(receive(:souls_worker_credit).and_return(true))
 
         expect(cli.worker("mailer")).to(eq(true))
-      end
-    end
-  end
-
-  describe "steepfile" do
-    it "should move Steepfile contents" do
-      cli = SOULs::Create.new
-
-      FakeFS.with_fresh do
-        FakeFS::FileSystem.clone(
-          "/Users/james.neve/development/ruby/souls/lib/souls/cli/create/templates/steepfile_template.erb"
-        )
-        FileUtils.mkdir_p("config") unless Dir.exist?("config")
-        File.open("./Steepfile", "w") { |file| file.write(Scaffold.scaffold_steepfile) }
-
-        cli.__send__(:steepfile, **{ worker_name: "worker-mailer" })
-        expect(File.exist?("./Steepfile")).to(eq(true))
       end
     end
   end
@@ -144,23 +124,6 @@ RSpec.describe(SOULs::CLI) do
         output = File.read("#{file_dir}/souls.rb")
 
         expected_output = Scaffold.scaffold_souls_init
-
-        expect(output).to(eq(expected_output))
-      end
-    end
-  end
-
-  describe "souls_helper_rbs" do
-    it "should write config file" do
-      FakeFS.with_fresh do
-        cli = SOULs::Create.new
-        file_dir = "./sig/worker-mailer/app/utils"
-        FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-
-        cli.__send__(:souls_helper_rbs, **{ worker_name: "worker-mailer" })
-        output = File.read("#{file_dir}/souls_helper.rbs")
-
-        expected_output = Scaffold.scaffold_souls_helper
 
         expect(output).to(eq(expected_output))
       end

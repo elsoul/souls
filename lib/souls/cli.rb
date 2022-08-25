@@ -50,27 +50,9 @@ module SOULs
     end
 
     desc "test", "Run Rspec & Rubocop"
-    method_option :all, type: :boolean, aliases: "--all", default: false, desc: "Run (Rspec & steep check & Rubocop)"
     def test
-      if options[:all]
-        Dir.chdir(SOULs.get_mother_path.to_s) do
-          system("steep check")
-        end
-        Dir.chdir(SOULs.get_api_path.to_s) do
-          system("rubocop -A")
-          system("bundle exec rspec")
-        end
-      else
-        system("rubocop -A")
-        system("bundle exec rspec")
-      end
-    end
-
-    desc "check", "Run steep check"
-    def check
-      Dir.chdir(SOULs.get_mother_path.to_s) do
-        system("steep check")
-      end
+      system("rubocop -A")
+      system("bundle exec rspec")
     end
 
     def self.exit_on_failure?

@@ -44,7 +44,7 @@ Ruby Serverless Framework 'SOULs'.
 The SOULs project was launched with the goal of reducing software development, operation and maintenance costs. 
 
 Build Serverless Apps faster like Rails.
-Powered by Ruby GraphQL, RBS/Steep, Active Record, RSpec, RuboCop, and Google Cloud. 
+Powered by Ruby GraphQL, Active Record, RSpec, RuboCop, and Google Cloud. 
 
 - Focus on business logic in serverless environment
 - Maximize development efficiency with CI / CD standard schema-driven Scaffold
@@ -57,23 +57,6 @@ SOULs creates 3 types of App.
 1. API - GraphQL (Ruby) - Simple API - Cloud Run
 2. Worker - Google Pub/Sub Messaging Worker API (Ruby) - Cloud Run
 3. Functions - Google Cloud Functions
-
-## Ruby type checking
-The SOULs framework uses RBS / Steep, which appeared in Ruby 3.0.
-
-- [RBS](https://github.com/ruby/rbs/)
-- [Steep](https://github.com/soutaro/steep/)
-
-As a result, typos, column types, etc.
-
-It is a development environment where you can immediately notice the mistakes that occur frequently.
-
-<p>
-  <a aria-label="RBS Demo" href="https://souls.elsoul.nl/ja/docs/guides/basic/type-check/">
-    <img src="https://souls.elsoul.nl/imgs/gifs/rbs-video.gif">
-  </a>
-</p>
-
 
 ## Dependency
 
@@ -123,11 +106,6 @@ And Create Your APP
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `souls t` to run the tests. You can also run `souls c` for an interactive prompt that will allow you to experiment.
 
-You need to add submodule
-
-```bash
-git submodule add -f https://github.com/ruby/gem_rbs_collection.git vendor/rbs/gem_rbs_collection
-```
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org/gems/souls).
 

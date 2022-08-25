@@ -8,7 +8,6 @@ module SOULs
         file_paths = {
           model_file_path: "./apps/api/app/models/#{singularized_class_name}.rb",
           rspec_file_path: "./apps/api/spec/models/#{singularized_class_name}_spec.rb",
-          rbs_file_path: "./sig/api/app/models/#{singularized_class_name}.rbs",
           migration_file_path: Dir["db/migrate/*create_#{pluralized_class_name}.rb"].first
         }
         file_paths.each do |_k, v|

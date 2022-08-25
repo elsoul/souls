@@ -24,7 +24,7 @@ module SOULs
       file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}/create_#{singularized_class_name}.rb"
-      raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
+      raise(Thor::Error, "Mutation already exist! #{file_path}") if File.exist?(file_path)
 
       params = SOULs.get_relation_params(class_name: singularized_class_name, col: "mutation")
       File.open(file_path, "a") do |f|
@@ -92,7 +92,7 @@ module SOULs
       file_dir = "./app/graphql/mutations/base/#{singularized_class_name}"
       FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
       file_path = "#{file_dir}/update_#{singularized_class_name}.rb"
-      raise(Thor::Error, "Mutation RBS already exist! #{file_path}") if File.exist?(file_path)
+      raise(Thor::Error, "Mutation already exist! #{file_path}") if File.exist?(file_path)
 
       params = SOULs.get_relation_params(class_name: singularized_class_name, col: "mutation")
       File.open(file_path, "w") do |f|

@@ -44,5 +44,4 @@ group :development do
   gem "rubocop", "1.26.0"
   gem "rubocop-graphql", "0.13.0"
   gem "solargraph", "0.44.3"
-  gem "steep", "0.49.0"
 end

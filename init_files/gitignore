@@ -13,6 +13,4 @@
 .env
 .env.production
 .irb_history
-/vendor/rbs/gem_rbs_collection/
 /apps/functions/.env.yaml
-.gem_rbs_collection

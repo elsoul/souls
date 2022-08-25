@@ -1,5 +1,0 @@
-class Object
-  def enable_extension: (String) -> untyped
-  def create_table: (*untyped) {(untyped)-> nil} -> untyped
-  def add_index: (*untyped) -> untyped
-end

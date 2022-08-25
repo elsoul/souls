@@ -1,5 +1,0 @@
-module Types
-  class BaseField < GraphQL::Schema::Field
-    def self.argument_class: (*untyped) -> untyped
-  end
-end

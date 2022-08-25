@@ -25,7 +25,6 @@ module SOULs
       initial_config_init(app_name:, service_name:)
       system("cd #{app_name}/apps/api && mv .env.sample .env")
       system("cd #{app_name} && git init --initial-branch=main")
-      system("cd #{app_name} && rbs collection init && rbs collection install")
       souls_api_credit(app_name)
     end
 
@@ -136,7 +135,6 @@ module SOULs
           gem "sinatra-activerecord", "2.0.25"
           gem "solargraph", "0.44.3"
           #{souls_gem}
-          gem "steep", "0.49.0"
           gem "thor", "1.2.1"
           gem "tty-prompt", "0.23.1"
           gem "whirly", "0.3.0"
@@ -155,21 +153,15 @@ module SOULs
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
       FileUtils.rm(file_name)
 
-      sig_name = "sig.tgz"
-      url = "#{@bucket_url}/sig/#{sig_name}"
-      system("curl -OL #{url}")
-      system("tar -zxvf ./#{sig_name} -C #{app_name}")
 
       system("cd #{app_name} && curl -OL #{@bucket_url}/rubocop.yml && mv rubocop.yml .rubocop.yml")
       get_latest_gem(app_name)
       system("cd #{app_name} && curl -OL #{@bucket_url}/Procfile.dev")
       system("cd #{app_name} && curl -OL #{@bucket_url}/Procfile")
-      system("cd #{app_name} && curl -OL #{@bucket_url}/Steepfile")
       system("cd #{app_name} && curl -OL #{@bucket_url}/gitignore")
       system("cd #{app_name} && mv gitignore .gitignore")
       system("cd #{app_name} && bundle")
       system("cd #{app_name}/apps/api && bundle")
-      FileUtils.rm(sig_name)
     end
 
     def souls_api_credit(app_name)

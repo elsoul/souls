@@ -18,8 +18,6 @@ module SOULs
         procfile(worker_name:, port:)
         mother_procfile(worker_name:)
         souls_config_init(worker_name:)
-        steepfile(worker_name:)
-        souls_helper_rbs(worker_name:)
         system("cd #{file_dir} && bundle")
         system("cd #{file_dir} && mv .env.sample .env")
         souls_worker_credit(worker_name:)
@@ -28,25 +26,6 @@ module SOULs
     end
 
     private
-
-    def steepfile(worker_name: "worker-mailer")
-      file_path = "./Steepfile"
-
-      write_txt = ""
-      File.open(file_path, "r") do |f|
-        f.each_line do |line|
-          if line.strip.to_s == "end"
-            ["app", "db/seeds.rb", "constants", "app.rb"].each do |path|
-              write_txt += "  check \"apps/#{worker_name}/#{path}\"\n"
-            end
-            write_txt += "end\n"
-          else
-            write_txt += line
-          end
-        end
-      end
-      File.open(file_path, "w") { |f| f.write(write_txt) }
-    end
 
     def procfile(worker_name: "worker-mailer", port: 123)
       file_path = "apps/#{worker_name}/Procfile.dev"
@@ -230,47 +209,6 @@ end
             config.strain = "worker"
             config.fixed_gems = ["graphql"]
             config.workers = []
-          end
-        TEXT
-      end
-    end
-
-    def souls_helper_rbs(worker_name: "worker-mailer")
-      file_dir = "./sig/#{worker_name}/app/utils"
-      FileUtils.mkdir_p(file_dir) unless Dir.exist?(file_dir)
-      file_path = "#{file_dir}/souls_helper.rbs"
-      File.open(file_path, "w") do |f|
-        f.write(<<~TEXT)
-          module SOULsHelper
-            def self.export_csv: (untyped model_name) -> (String? | StandardError )
-            def self.export_model_to_csv: (untyped model_name) -> (untyped | StandardError )
-            def self.upload_to_gcs: (String file_path, String upload_path) -> untyped
-            def self.get_selenium_driver: (?:chrome mode) -> untyped
-          end
-          module CSV
-            def self.open: (*untyped){(untyped) -> nil} -> untyped
-          end
-          module Selenium
-            module WebDriver
-              def self.for: (*untyped) -> untyped
-              module Chrome
-                module Options
-                  def self.new: ()-> untyped
-                end
-              end
-              module Remote
-                module Capabilities
-                  def self.firefox: ()-> untyped
-                end
-              end
-            end
-          end
-          module Google
-            module Cloud
-              module Storage
-                def self.new: ()-> untyped
-              end
-            end
           end
         TEXT
       end

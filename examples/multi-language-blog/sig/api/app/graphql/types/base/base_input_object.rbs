@@ -1,5 +1,0 @@
-module Types
-  class BaseInputObject  < GraphQL::Schema::InputObject
-    def self.argument_class: (*untyped) -> untyped
-  end
-end
