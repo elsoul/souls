@@ -3,29 +3,6 @@ RSpec.describe(SOULs::Delete) do
     allow($stdout).to(receive(:write))
   end
 
-  describe "scaffold" do
-
-      cli = SOULs::Delete.new
-
-      allow_any_instance_of(SOULs::Delete).to(receive(:run_scaffold).and_return(true))
-
-      expect_any_instance_of(SOULs::Delete).to(receive(:run_scaffold).with({ class_name: "user" }))
-
-    end
-  end
-
-  describe "scaffold_all" do
-    it "should call scaffold for each table" do
-      cli = SOULs::Delete.new
-
-      allow(SOULs).to(receive(:get_tables)).and_return(%w[apple])
-      allow_any_instance_of(SOULs::Delete).to(receive(:run_scaffold).and_return(true))
-
-      expect_any_instance_of(SOULs::Delete).to(receive(:run_scaffold))
-
-    end
-  end
-
   describe "run_scaffold" do
     it "should call a bunch of methods" do
       cli = SOULs::Delete.new

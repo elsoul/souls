@@ -11,7 +11,7 @@ module SOULs
     def scaffold_all
       puts(Paint["Delete All Scaffold Files!\n", :cyan])
       SOULs.get_tables.each do |table|
-        SOULs::Delete.new.invoke(:scaffold, [table.singularize])
+        SOULs::Delete.new.invoke(:scaffold, [table.singularize], {})
       end
       true
     end
