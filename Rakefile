@@ -18,7 +18,6 @@ namespace :upload do
     system("rm -rf #{file_name}")
   end
 
-
   task :init_files do
     system("gcloud config set project elsoul-nl")
     Rake::Task["upload:github"].invoke

@@ -31,7 +31,6 @@ module SOULs
       rspec_resolver(class_name)
     end
 
-
     def generated_paths(class_name)
       singularized_class_name = class_name.singularize.underscore
       pluralized_class_name = class_name.pluralize.underscore

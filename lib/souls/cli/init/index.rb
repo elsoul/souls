@@ -153,7 +153,6 @@ module SOULs
       system("tar -zxvf ./#{file_name} -C #{app_name}/apps/")
       FileUtils.rm(file_name)
 
-
       system("cd #{app_name} && curl -OL #{@bucket_url}/rubocop.yml && mv rubocop.yml .rubocop.yml")
       get_latest_gem(app_name)
       system("cd #{app_name} && curl -OL #{@bucket_url}/Procfile.dev")
