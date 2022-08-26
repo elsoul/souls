@@ -2,7 +2,7 @@ module SOULs
   class Iam < Thor
     desc "setup_key", "Create Google Cloud IAM Service Account Key And Set All Permissions"
     def setup_key
-      SOULs::Painter.success("Setting up credentials and permissions...")
+      SOULs::Painter.sync("Setting up credentials and permissions...")
       region = SOULs.configuration.region
       SOULs::Gcloud.new.auth_login
       SOULs::Upgrade.new.config
