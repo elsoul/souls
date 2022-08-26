@@ -102,7 +102,7 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.4)
-    jwt (2.4.1)
+    jwt (2.5.0)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -255,4 +255,4 @@ DEPENDENCIES
   whirly (= 0.3.0)
 
 BUNDLED WITH
-   2.3.20
+   2.3.21
