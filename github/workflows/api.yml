@@ -91,4 +91,5 @@ jobs:
             --set-env-vars="TZ=${{ secrets.TZ }}" \
             --set-env-vars="SOULS_SECRET_KEY_BASE=${{ secrets.SOULS_SECRET_KEY_BASE }}" \
             --set-env-vars="SOULS_GCP_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}" \
+            --set-env-vars="SOULS_FB_PROJECT_ID=${{ secrets.SOULS_FB_PROJECT_ID }}" \
             --set-env-vars="RUBY_YJIT_ENABLE=1"
