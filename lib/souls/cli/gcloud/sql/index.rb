@@ -9,7 +9,7 @@ module SOULs
       project_id = SOULs.configuration.project_id
       instance_name = SOULs.configuration.instance_name
       region = SOULs.configuration.region if options[:region].blank?
-      db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_13"
+      db_type = options[:mysql] ? "MYSQL_8_0" : "POSTGRES_14"
 
       zone = "#{region}-b"
       system("gcloud config set project #{project_id} >/dev/null 2>&1")
