@@ -4,7 +4,6 @@ class SOULsApiSchema < GraphQL::Schema
   max_depth 20
   mutation(Types::MutationType)
   query(Types::QueryType)
-  use GraphQL::Batch
 
   def self.id_from_object(object, _type_definition, _query_ctx)
     # Call your application"s UUID method here
