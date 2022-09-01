@@ -1,16 +1,16 @@
 module SOULs
   class Docker < Thor
-    desc "psql", "Run PostgreSQL13 Docker Container"
+    desc "psql", "Run PostgreSQL14 Docker Container"
     def psql
       system(
-        "docker run --rm -d \
+        "docker run --restart always -d \
           --name souls-psql \
           -p 5433:5432 \
           -v postgres-tmp:/var/lib/postgresql/data \
           -e POSTGRES_USER=postgres \
           -e POSTGRES_PASSWORD=postgres \
           -e POSTGRES_DB=souls_test \
-          postgres:13-alpine"
+          postgres:14-alpine"
       )
       system("docker ps")
     end

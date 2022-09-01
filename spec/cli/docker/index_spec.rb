@@ -6,14 +6,14 @@ RSpec.describe(SOULs::Docker) do
 
       expect(cli).to(
         receive(:system).with(
-          "docker run --rm -d \
+          "docker run --restart always -d \
           --name souls-psql \
           -p 5433:5432 \
           -v postgres-tmp:/var/lib/postgresql/data \
           -e POSTGRES_USER=postgres \
           -e POSTGRES_PASSWORD=postgres \
           -e POSTGRES_DB=souls_test \
-          postgres:13-alpine"
+          postgres:14-alpine"
         )
       )
 
