@@ -18,7 +18,7 @@ module SOULs
     desc "mysql", "Run MySQL Docker Container"
     def mysql
       system(
-        "docker run --rm -d \
+        "docker run --restart always -d \
           --name souls-mysql \
           -p 3306:3306 \
           -v mysql-tmp:/var/lib/mysql \
