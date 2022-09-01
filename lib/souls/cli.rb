@@ -55,6 +55,72 @@ module SOULs
       system("bundle exec rspec")
     end
 
+    desc "build", "Run Docker Build"
+    def build
+      app = SOULs.configuration.app
+      system("docker build . -t #{app}")
+    end
+
+    desc "tag", "Run Docker Tag"
+    def tag
+      souls_config = SOULs.configuration
+      app = souls_config.app
+      region = souls_config.region
+      gcr = region_to_container_url(region:)
+      project_id = souls_config.project_id
+      system("docker tag #{app}:latest #{gcr}/#{project_id}/#{app}:latest")
+    end
+
+    desc "push", "Run Docker Push"
+    def push
+      souls_config = SOULs.configuration
+      app = souls_config.app
+      region = souls_config.region
+      gcr = region_to_container_url(region:)
+      project_id = souls_config.project_id
+      system("docker push #{gcr}/#{project_id}/#{app}:latest")
+    end
+
+    def deploy
+      souls_config = SOULs.configuration
+      app = souls_config.app
+      region = souls_config.region
+      gcr = region_to_container_url(region:)
+      project_id = souls_config.project_id
+      system(
+        "gcloud beta run deploy #{app} \
+        --image #{gcr}/#{project_id}/#{app}:latest \
+        --memory=4Gi \
+        --cpu=2 \
+        --quiet \
+        --region=#{region} \
+        --allow-unauthenticated \
+        --platform=managed \
+        --no-cpu-throttling \
+        --set-cloudsql-instances=#{project_id}:#{region}:#{instance_name} \
+        --port=8080 \
+        --project=#{app} \
+        --set-env-vars='DB_USER=#{db_user}' \
+        --set-env-vars='DB_HOST=#{db_ip}' \
+        --set-env-vars='DB_NAME=#{db_name}' \
+        --set-env-vars='DB_PW=#{db_pw}' \
+        --set-env-vars='RACK_ENV=production' \
+        --set-env-vars='RUBY_YJIT_ENABLE=1' \
+        --set-env-vars='TZ=#{tz}' \
+        --set-env-vars='SOULS_SECRET_KEY_BASE=sokk'"
+      )
+    end
+
+    def region_to_container_url(region: "asia-northeast1")
+      if region.include?("asia")
+        "asia.gcr.io"
+      elsif region.include?("europe")
+        "eu.gcr.io"
+      else
+        "gcr.io"
+      end
+    end
+
     def self.exit_on_failure?
       false
     end
