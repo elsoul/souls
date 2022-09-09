@@ -108,6 +108,8 @@ Layout/LineLength:
     - "lib/souls/api/update/resolver.rb"
     - "lib/souls/api/update/mutation.rb"
     - "lib/souls/api/update/rspec_mutation.rb"
+    - "lib/souls/cli/docker/index.rb"
+    - "spec/cli/docker/index_spec.rb"
 
 Layout/LineEndStringConcatenationIndentation:
   Enabled: false

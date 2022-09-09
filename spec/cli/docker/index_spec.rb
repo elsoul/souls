@@ -6,14 +6,7 @@ RSpec.describe(SOULs::Docker) do
 
       expect(cli).to(
         receive(:system).with(
-          "docker run --restart always -d \
-          --name souls-psql \
-          -p 5433:5432 \
-          -v postgres-tmp:/var/lib/postgresql/data \
-          -e POSTGRES_USER=postgres \
-          -e POSTGRES_PASSWORD=postgres \
-          -e POSTGRES_DB=souls_test \
-          postgres:14-alpine"
+          "docker run --restart always -d --name souls-psql -p 5433:5432 -v postres-tmp:/var/lib/postgresql/data -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=souls_test postgres:14-alpine"
         )
       )
 
@@ -28,7 +21,7 @@ RSpec.describe(SOULs::Docker) do
 
       expect(cli).to(
         receive(:system).with(
-          "docker run --rm -d \
+          "docker run --restart always -d \
           --name souls-mysql \
           -p 3306:3306 \
           -v mysql-tmp:/var/lib/mysql \
