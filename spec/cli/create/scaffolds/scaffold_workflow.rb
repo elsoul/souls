@@ -47,29 +47,6 @@ module Scaffold
           - name: Set up Cloud SDK
             uses: google-github-actions/setup-gcloud@v0
 
-          - name: Build and test with Rake
-            env:
-              PGHOST: 127.0.0.1
-              PGUSER: postgres
-              RACK_ENV: test
-              RUBY_YJIT_ENABLE: 1
-              SOULS_GCP_PROJECT_ID: ${{ secrets.SOULS_GCP_PROJECT_ID }}
-            run: |
-              sudo apt-get -yqq install libpq-dev
-              cd apps/worker-mailer
-              rm -f .env
-              gem install bundler
-              bundle install --jobs 4 --retry 3
-              bundle exec rake db:create RACK_ENV=test
-              bundle exec rake db:migrate RACK_ENV=test
-              bundle exec rspec
-
-          - name: Sync PubSub
-            run: cd apps/worker-mailer && souls sync pubsub
-
-          - name: Sync Tasks
-            run: cd apps/worker-mailer && souls gcloud scheduler sync_schedules --timezone=${{ secrets.TZ }}
-
           - name: Configure Docker
             run: gcloud auth configure-docker --quiet
 
@@ -91,12 +68,6 @@ module Scaffold
                   --quiet \\
                   --concurrency=80 \\
                   --port=8080 \\
-                  --set-cloudsql-instances=${{ secrets.SOULS_GCLOUDSQL_INSTANCE }} \\
-                  --set-env-vars="SOULS_DB_USER=${{ secrets.SOULS_DB_USER }}" \\
-                  --set-env-vars="SOULS_DB_PW=${{ secrets.SOULS_DB_PW }}" \\
-                  --set-env-vars="SOULS_DB_HOST=${{ secrets.SOULS_DB_HOST }}" \\
-                  --set-env-vars="TZ=${{ secrets.TZ }}" \\
-                  --set-env-vars="SOULS_SECRET_KEY_BASE=${{ secrets.SOULS_SECRET_KEY_BASE }}" \\
                   --set-env-vars="SOULS_GCP_PROJECT_ID=${{ secrets.SOULS_GCP_PROJECT_ID }}" \\
                   --set-env-vars="RUBY_YJIT_ENABLE=1"
     WORKFLOW
