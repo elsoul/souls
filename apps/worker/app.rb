@@ -1,37 +1,20 @@
-require "erb"
-require "jwt"
-require "json"
-require "sinatra"
 require "rubygems"
 require "bundler/setup"
 Bundler.require(:default)
 require "sinatra/base"
 require "sinatra/json"
-require "sinatra/activerecord"
-require "rack/contrib"
-require "active_support"
-require "active_support/core_ext"
-require "factory_bot"
-require "faker"
+require "json"
 require "logger"
-require "base64"
+require "erb"
 require "./config/souls"
 require "./config/souls_logger"
 
 ENV["RACK_ENV"] ||= "development"
-Dir["./constants/*.rb"].each { |f| require f }
 @app_name = SOULs.configuration.app
-db_conf = YAML.safe_load(ERB.new(File.read("./config/database.yml")).result, permitted_classes: [Date], aliases: true)
-ActiveRecord::Base.establish_connection(db_conf[ENV["RACK_ENV"]])
-ActiveRecord.default_timezone = :local
 
 loader = Zeitwerk::Loader.new
-loader.push_dir("#{Dir.pwd}/app/models")
 
-loader.collapse("#{__dir__}/app/types")
-loader.collapse("#{__dir__}/app/mutations")
-loader.collapse("#{__dir__}/app/graphql/types/base")
-loader.push_dir("#{Dir.pwd}/app/graphql")
+loader.push_dir("#{Dir.pwd}/lib")
 loader.setup
 
 class SOULsApi < Sinatra::Base
@@ -42,8 +25,6 @@ class SOULsApi < Sinatra::Base
   error_logger.sync = true
 
   use Rack::JSONBodyParser
-  register Sinatra::ActiveRecordExtension
-  endpoint = SOULs.configuration.endpoint
 
   configure :production, :development do
     set :logger, Logger.new($stdout)
@@ -60,28 +41,5 @@ class SOULsApi < Sinatra::Base
   get "/" do
     message = { success: true, message: "SOULs Worker is Running!", env: ENV["RACK_ENV"] }
     json message
-  end
-
-  get "/db" do
-    message = { success: true, message: "SOULs Worker is Running!", env: ENV["RACK_ENV"], db: User.first.username }
-    json(message)
-  rescue StandardError => e
-    message = { error: e }
-    json(message)
-  end
-
-  post endpoint do
-    query =
-      if ENV["RACK_ENV"] == "production"
-        Base64.decode64(params["message"]["data"]).force_encoding("UTF-8")
-      else
-        params[:query]
-      end
-
-    result = SOULsApiSchema.execute(query.to_s)
-    json(result)
-  rescue StandardError => e
-    message = { error: e.backtrace }
-    json(message)
   end
 end
