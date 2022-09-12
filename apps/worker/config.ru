@@ -1,11 +1,5 @@
 require "./app"
 require "rack/cors"
-require "graphql_playground"
-
-map "/playground" do
-  endpoint = SOULs.configuration.endpoint
-  use GraphQLPlayground, endpoint:
-end
 
 run SOULsApi
 

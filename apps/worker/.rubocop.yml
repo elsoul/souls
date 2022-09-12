@@ -1,23 +1,14 @@
-require: rubocop-graphql
 AllCops:
   SuggestExtensions: false
   EnabledByDefault: true
-  Exclude:
-    - "db/migrate/*.rb"
-    - "db/schema.rb"
-    - "spec/spec_helper.rb"
 
 Style/Copyright:
   Description: "Include a copyright notice in each file before any code."
   Enabled: false
   VersionAdded: "0.30"
   Notice: '^Copyright (\(c\) )?2[0-9]{3} .+'
-  AutocorrectNotice: "Copyright 2021 by ELSOUL LABO B.V."
+  AutocorrectNotice: "Copyright 2022 by ELSOUL LABO B.V."
 
-Style/TopLevelMethodDefinition:
-  Exclude:
-    - "db/seeds.rb"
-    - "spec/spec_helper.rb"
 
 Style/IpAddresses:
   Exclude:
@@ -30,16 +21,9 @@ Style/HashSyntax:
     - "**/*.rake"
     - "Rakefile"
 
-Style/Semicolon:
-  Exclude:
-    - "spec/**/*"
-
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/ClassVars:
-  Exclude:
-  - "spec/spec_helper.rb"
 Style/StringConcatenation:
   Enabled: false
 
@@ -60,10 +44,6 @@ Style/AsciiComments:
 Style/MissingElse:
   Enabled: false
 
-Style/StringHashKeys:
-  Exclude:
-    - "spec/**/*.rb"
-
 Style/CollectionMethods:
   Enabled: false
 
@@ -72,10 +52,6 @@ Style/FormatString:
 
 Style/ClassAndModuleChildren:
   Enabled: false
-
-Layout/ExtraSpacing:
-  Exclude:
-    - "db/migrate/*.rb"
 
 Layout/LineEndStringConcatenationIndentation:
   Enabled: false
