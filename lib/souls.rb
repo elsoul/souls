@@ -40,5 +40,19 @@ module SOULs
     def instance_name
       "souls-#{@app}-db"
     end
+
+    def gcr_region
+      if @region.include?("asia")
+        "asia.gcr.io"
+      elsif @region.include?("eu")
+        "eu.gcr.io"
+      else
+        "gcr.io"
+      end
+    end
+
+    def gcp_db_host
+      "/cloudsql/#{@project_id}:#{@region}:#{instance_name}"
+    end
   end
 end

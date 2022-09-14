@@ -55,6 +55,11 @@ module SOULs
       system("bundle exec rspec")
     end
 
+    desc "secret", "Generate Secure Random String"
+    def secret
+      puts(SecureRandom.alphanumeric(85))
+    end
+
     desc "build", "Run Docker Build"
     def build
       app = SOULs.configuration.app
@@ -65,8 +70,7 @@ module SOULs
     def tag
       souls_config = SOULs.configuration
       app = souls_config.app
-      region = souls_config.region
-      gcr = region_to_container_url(region:)
+      gcr = souls_config.gcr_region
       project_id = souls_config.project_id
       system("docker tag #{app}:latest #{gcr}/#{project_id}/#{app}:latest")
     end
@@ -75,8 +79,7 @@ module SOULs
     def push
       souls_config = SOULs.configuration
       app = souls_config.app
-      region = souls_config.region
-      gcr = region_to_container_url(region:)
+      gcr = souls_config.gcr_region
       project_id = souls_config.project_id
       system("docker push #{gcr}/#{project_id}/#{app}:latest")
     end
