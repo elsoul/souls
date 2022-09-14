@@ -3,3 +3,76 @@ require "sinatra/activerecord/rake"
 require "graphql/rake_task"
 
 GraphQL::RakeTask.new(schema_name: "SOULsApiSchema")
+
+APP_NAME = SOULs.configuration.app
+APP_NAME_H = APP_NAME.gsub("_", "-")
+PROJECT_ID = SOULs.configuration.project_id
+REGION = SOULs.configuration.region
+GCR_REGION = SOULs.configuration.gcr_region
+INATANCE_NAME = SOULs.configuration.instance_name
+DB_USER = ENV.fetch("DB_USER", nil)
+DB_HOST = "/cloudsql/#{PROJECT_ID}:#{REGION}:#{INATANCE_NAME}"
+DB_NAME = ENV.fetch("DB_NAME", nil)
+DB_PW = ENV.fetch("DB_PW", nil)
+SECRET_KEY_BASE = ENV.fetch("SECRET_KEY_BASE", nil)
+PORT = ENV["PORT"] || 4000
+
+task :build do
+  system "docker build . -t #{APP_NAME}"
+end
+
+task :run do
+  system "docker run -d --env-file .env -p #{PORT}:#{PORT} --restart always --name #{APP_NAME} #{APP_NAME}"
+end
+
+task :rm do
+  system "docker rm -f #{APP_NAME}"
+end
+
+task :tag do
+  system "docker tag #{APP_NAME}:latest #{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest"
+end
+task :push do
+  system "docker push #{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest"
+end
+task :deploy do
+  rubocop_test = system("bundle exec rubocop")
+  raise(StandardError, "rubocop failed!") unless rubocop_test
+
+  rspec_test = system("bundle exec rspec")
+  raise(StandardError, "rspec failed!") unless rspec_test
+
+  Rake::Task["build"].invoke
+  SOULs::Painter.success("successfully built!")
+  Rake::Task["tag"].invoke
+  SOULs::Painter.success("successfully tagged!")
+  Rake::Task["push"].invoke
+  SOULs::Painter.success("successfully pushed!")
+  Rake::Task["run_deploy"].invoke
+  SOULs::Painter.success("successfully deployed!")
+rescue StandardError => e
+  SOULs::Painter.error(e)
+end
+
+task :run_deploy do
+  system "gcloud beta run deploy #{APP_NAME_H} \
+  --image #{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest \
+  --memory=4Gi \
+  --cpu=2 \
+  --quiet \
+  --region=#{REGION} \
+  --allow-unauthenticated \
+  --platform=managed \
+  --no-cpu-throttling \
+  --execution-environment=gen2 \
+  --set-cloudsql-instances=#{PROJECT_ID}:#{REGION}:#{INATANCE_NAME} \
+  --port=8080 \
+  --set-env-vars='DB_USER=#{DB_USER}' \
+  --set-env-vars='DB_HOST=#{DB_HOST}' \
+  --set-env-vars='DB_NAME=#{DB_NAME}' \
+  --set-env-vars='DB_PW=#{DB_PW}' \
+  --set-env-vars='RACK_ENV=production' \
+  --set-env-vars='SECRET_KEY_BASE=#{SECRET_KEY_BASE}' \
+  --set-env-vars='RUBY_YJIT_ENABLE=1' \
+  --project #{PROJECT_ID}"
+end
