@@ -5,14 +5,13 @@ APP_NAME_H = APP_NAME.gsub("_", "-")
 PROJECT_ID = SOULs.configuration.project_id
 REGION = SOULs.configuration.region
 GCR_REGION = SOULs.configuration.gcr_region
-PORT = ENV["PORT"] || 4000
 
 task :build do
   system "docker build . -t #{APP_NAME}"
 end
 
 task :run do
-  system "docker run -d --env-file .env -p #{PORT}:#{PORT} --restart always --name #{APP_NAME} #{APP_NAME}"
+  system "docker run --env-file .env -p #{PORT}:#{PORT} --restart always --name #{APP_NAME} #{APP_NAME}"
 end
 
 task :rm do
@@ -25,7 +24,6 @@ end
 task :push do
   system "docker push #{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest"
 end
-
 task :deploy do
   rubocop_test = system("bundle exec rubocop")
   raise(StandardError, "rubocop failed!") unless rubocop_test
@@ -46,24 +44,18 @@ rescue StandardError => e
 end
 
 task :run_deploy do
-  system "gcloud beta run deploy #{APP_NAME_H} \
-  --image #{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest \
+  system "gcloud run deploy souls-#{APP_NAME_H}-api \
+  --service-account=#{APP_NAME}@#{PROJECT_ID}.iam.gserviceaccount.com \
+  --image=#{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest \
   --memory=4Gi \
   --cpu=2 \
   --quiet \
   --region=#{REGION} \
+  --project=#{PROJECT_ID} \
   --allow-unauthenticated \
   --platform=managed \
   --no-cpu-throttling \
-  --execution-environment=gen2 \
-  --set-cloudsql-instances=#{PROJECT_ID}:#{REGION}:#{INATANCE_NAME} \
   --port=8080 \
-  --set-env-vars='DB_USER=#{DB_USER}' \
-  --set-env-vars='DB_HOST=#{DB_HOST}' \
-  --set-env-vars='DB_NAME=#{DB_NAME}' \
-  --set-env-vars='DB_PW=#{DB_PW}' \
-  --set-env-vars='RACK_ENV=production' \
-  --set-env-vars='SECRET_KEY_BASE=#{SECRET_KEY_BASE}' \
-  --set-env-vars='RUBY_YJIT_ENABLE=1' \
-  --project #{PROJECT_ID}"
+  --set-env-vars='SOULS_GCP_PROJECT_ID=#{PROJECT_ID}' \
+  --set-env-vars='RUBY_YJIT_ENABLE=1'"
 end
