@@ -16,6 +16,7 @@ DB_NAME = ENV.fetch("SOULS_DB_NAME", nil)
 DB_PW = ENV.fetch("SOULS_DB_PW", nil)
 SECRET_KEY_BASE = ENV.fetch("SOULS_SECRET_KEY_BASE", nil)
 TZ = ENV.fetch("TZ", nil)
+PORT = 4000
 
 task :build do
   system "docker build . -t #{APP_NAME}"

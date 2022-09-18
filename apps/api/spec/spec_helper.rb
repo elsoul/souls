@@ -5,6 +5,8 @@ require "rack/test"
 require "database_cleaner"
 require "capybara/rspec"
 require "webmock/rspec"
+require "faker"
+require "factory_bot"
 
 abort("The SOULs environment is running in production mode!") if ENV["RACK_ENV"] == "production"
 

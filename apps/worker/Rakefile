@@ -1,10 +1,12 @@
 require "./app"
 
-APP_NAME = SOULs.configuration.app
+MAIN_APP_NAME = SOULs.configuration.app
+APP_NAME = SOULs.configuration.app + FileUtils.pwd.split("/").last
 APP_NAME_H = APP_NAME.gsub("_", "-")
 PROJECT_ID = SOULs.configuration.project_id
 REGION = SOULs.configuration.region
 GCR_REGION = SOULs.configuration.gcr_region
+PORT = 3001
 
 task :build do
   system "docker build . -t #{APP_NAME}"
@@ -25,12 +27,6 @@ task :push do
   system "docker push #{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest"
 end
 task :deploy do
-  rubocop_test = system("bundle exec rubocop")
-  raise(StandardError, "rubocop failed!") unless rubocop_test
-
-  rspec_test = system("bundle exec rspec")
-  raise(StandardError, "rspec failed!") unless rspec_test
-
   Rake::Task["build"].invoke
   SOULs::Painter.success("successfully built!")
   Rake::Task["tag"].invoke
@@ -44,8 +40,8 @@ rescue StandardError => e
 end
 
 task :run_deploy do
-  system "gcloud run deploy souls-#{APP_NAME_H}-api \
-  --service-account=#{APP_NAME}@#{PROJECT_ID}.iam.gserviceaccount.com \
+  system "gcloud run deploy souls-#{APP_NAME_H} \
+  --service-account=#{MAIN_APP_NAME}@#{PROJECT_ID}.iam.gserviceaccount.com \
   --image=#{GCR_REGION}/#{PROJECT_ID}/#{APP_NAME}:latest \
   --memory=4Gi \
   --cpu=2 \

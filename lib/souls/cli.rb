@@ -62,26 +62,22 @@ module SOULs
 
     desc "build", "Run Docker Build"
     def build
-      app = SOULs.configuration.app
-      system("docker build . -t #{app}")
+      system("bundle exec rake build")
     end
 
     desc "tag", "Run Docker Tag"
     def tag
-      souls_config = SOULs.configuration
-      app = souls_config.app
-      gcr = souls_config.gcr_region
-      project_id = souls_config.project_id
-      system("docker tag #{app}:latest #{gcr}/#{project_id}/#{app}:latest")
+      system("bundle exec rake tag")
     end
 
     desc "push", "Run Docker Push"
     def push
-      souls_config = SOULs.configuration
-      app = souls_config.app
-      gcr = souls_config.gcr_region
-      project_id = souls_config.project_id
-      system("docker push #{gcr}/#{project_id}/#{app}:latest")
+      system("bundle exec rake push")
+    end
+
+    desc "deploy", "Deploy to Google Cloud Run"
+    def deploy
+      system("bundle exec rake deploy")
     end
 
     def self.exit_on_failure?

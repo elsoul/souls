@@ -38,6 +38,11 @@ class SOULsApi < Sinatra::Base
     StandardError.to_json
   end
 
+  post "/run" do
+    message = { define: "method here" }
+    json message
+  end
+
   get "/" do
     message = { success: true, message: "SOULs Worker is Running!", env: ENV["RACK_ENV"] }
     json message
