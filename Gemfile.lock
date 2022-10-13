@@ -2,11 +2,11 @@ PATH
   remote: .
   specs:
     souls (4.1.0)
-      activesupport (>= 7.0.2.3)
+      activesupport (<= 7.0.4)
       firebase_id_token (>= 2.4.0)
       foreman (>= 0.87.2)
       google-cloud-pubsub (>= 2.8.0)
-      graphql (>= 1.13.10)
+      graphql (<= 1.13.16)
       httpclient (>= 2.8.3)
       paint (>= 2.2.1)
       retryable (>= 3.0.5)
