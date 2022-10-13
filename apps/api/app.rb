@@ -15,7 +15,6 @@ require "logger"
 require "base64"
 require "search_object"
 require "search_object/plugin/graphql"
-require "graphql/batch"
 require "./config/souls"
 require "./config/souls_logger"
 
