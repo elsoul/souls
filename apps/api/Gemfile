@@ -18,7 +18,7 @@ gem "search_object_graphql", "1.0.2"
 gem "sinatra", "3.0.2"
 gem "sinatra-activerecord", "2.0.25", require: "sinatra/activerecord"
 gem "sinatra-contrib", "2.1.0", require: false
-gem "souls", "4.0.3"
+gem "souls", "4.1.0"
 gem "typhoeus", "1.4.0"
 gem "zeitwerk", "2.6.1"
 
