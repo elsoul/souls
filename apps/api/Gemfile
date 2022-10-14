@@ -28,6 +28,7 @@ group :development, :test do
   gem "factory_bot", "6.2.1"
   gem "faker", "2.23.0"
   gem "graphql_playground", "0.0.1"
+  gem "irb", "1.4.2"
   gem "rack-test", "2.0.2"
   gem "rspec", "3.11.0"
   gem "webmock", "3.18.1"

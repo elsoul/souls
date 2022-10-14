@@ -5,6 +5,7 @@ require "sinatra"
 require "rubygems"
 require "bundler/setup"
 Bundler.require(:default)
+require "dotenv/load"
 require "sinatra/base"
 require "sinatra/json"
 require "sinatra/activerecord"
@@ -22,7 +23,7 @@ ENV["RACK_ENV"] ||= "development"
 Dir["./constants/*.rb"].each { |f| require f }
 @app_name = SOULs.configuration.app
 db_conf = YAML.safe_load(ERB.new(File.read("./config/database.yml")).result, permitted_classes: [Date], aliases: true)
-ActiveRecord::Base.establish_connection(db_conf[ENV["RACK_ENV"]])
+ActiveRecord::Base.establish_connection(db_conf[ENV.fetch("RACK_ENV", nil)])
 ActiveRecord.default_timezone = :local
 
 loader = Zeitwerk::Loader.new
@@ -63,12 +64,17 @@ class SOULsApi < Sinatra::Base
   end
 
   get "/" do
-    message = { success: true, message: "SOULs API is Running!", env: ENV["RACK_ENV"] }
+    message = { success: true, message: "SOULs API is Running!", env: ENV.fetch("RACK_ENV", nil) }
     json message
   end
 
   get "/db" do
-    message = { success: true, message: "SOULs API is Running!", env: ENV["RACK_ENV"], db: User.first.username }
+    message = {
+      success: true,
+      message: "SOULs API is Running!",
+      env: ENV.fetch("RACK_ENV", nil),
+      db: User.first.username
+    }
     json(message)
   rescue StandardError => e
     message = { error: e }
