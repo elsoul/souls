@@ -44,7 +44,7 @@ class SOULsApi < Sinatra::Base
   end
 
   get "/" do
-    message = { success: true, message: "SOULs Worker is Running!", env: ENV["RACK_ENV"] }
+    message = { success: true, message: "SOULs Worker is Running!", env: ENV.fetch("RACK_ENV", nil) }
     json message
   end
 end
